@@ -1,0 +1,310 @@
+<div class="container">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>Add User</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#users">Users</a></li>
+				<li class="active">Add User</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+							<span>Create a new user and select what the user has access to.
+							</span>
+							<div class="vd-button-group">
+								<button class="btn btn-primary btn-lg"
+									ng-click="addUser()" 
+									ng-disabled="!userBean.firstName||!userBean.email||!userBean.lastName||
+									!userBean.password||userBean.password!=userBean.confirmPassword||!userBean.outletId||!userBean.roleId||
+									!rolesList||!outletsList" ng-show="!loading" >Save</button>
+								<button  ng-show="loading" class="btn btn-primary btn-lg">
+							    	Save Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+				       			 </button>
+								
+							</div>
+							
+
+						</div>
+					</div>
+					</vd-section>
+					<div class="box">
+						<div class="box-header">
+						<div class="alert alert-success alert-sm"
+								ng-show="userSuccess" ng-bind="userSuccessMessage"
+								ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="userError"
+								ng-bind="userErrorMessage" ng-cloak></div>
+							<i class="fa fa-user text-green" style="font-size: 3em;"></i>
+							<h3 class="box-title">Profile</h3>
+							
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<div class="box box-primary">
+								<div class="row">
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">First Name</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="inputstoreName" placeholder="First Name..."
+															data-ng-model="userBean.firstName" maxlength="100"
+															required>
+															<span ng-show="!userBean.firstName" style="color:red;">* Add First name</span>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Email</label>
+													<div class="col-sm-8">
+														<input type="email" class="form-control"
+															id="inputstoreName" placeholder="Email..."
+															data-ng-model="userBean.email" maxlength="100"
+															 required> 
+															 <span ng-show="!userBean.email" style="color:red;">* Add Email</span>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Outlets
+														</label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;"
+															data-ng-model="userBean.outletId"
+															ng-init="userBean.outletId=outletsList[0].outletId">
+															<option ng-repeat="outlet in outletsList"
+																value="{{outlet.outletId}}">{{outlet.outletName}}</option>
+
+														</select>
+														 <span ng-show="!userBean.outletId" style="color:red;">* Select Outlet</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Role</label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;"
+															data-ng-model="userBean.roleId"
+															ng-init="userBean.roleId='2'">
+															<option ng-repeat="role in rolesList"
+																value="{{role.roleId}}">{{role.description}}</option>
+
+														</select>
+														<span ng-show="!userBean.roleId" style="color:red;">* Select Role</span>
+													</div>
+												</div>
+
+										
+
+
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+											<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Last Name</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="inputstoreName" placeholder="Last Name..."
+															data-ng-model="userBean.lastName" maxlength="100"
+															 required> 
+															 <span ng-show="!userBean.lastName" style="color:red;">* Add Last name</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Password</label>
+													<div class="col-sm-8">
+													<input type="password" class="form-control"
+															id="inputstoreName" placeholder="Password..."
+															data-ng-model="userBean.password" maxlength="25" 
+															 required>
+															 <span ng-show="!userBean.password" style="color:red;">* Add Password </span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Confirm Password</label>
+													<div class="col-sm-8">
+														<input type="password" class="form-control"
+															id="inputstoreName" placeholder="Confirm Password..."
+															data-ng-model="userBean.confirmPassword" maxlength="25" 
+															 required>
+															 <span ng-show="!userBean.confirmPassword" style="color: red;">*	Confirm New Password</span>
+															<span ng-show="userBean.password!=userBean.confirmPassword && userBean.confirmPassword " style="color:red;">* Confirmed Password not matched </span>
+													</div>
+
+												</div>
+
+												
+												
+												
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- /.box -->
+
+					</div>
+					
+					<!-- /.box -->
+			<div class="box" ng-show="false" ng-cloak>
+						<div class="row">
+
+							<div class="col-md-10">
+								<div class="box-header">
+									<i class="fa fa-file-image-o text-purple"
+										style="font-size: 4em;"></i>
+									<h3 class="box-title">User Photo</h3>
+								</div>
+								<!-- /.box-header -->
+							</div>
+							<div class="col-md-2">
+								<div class="box-header">
+									<img class="profile-user-img img-responsive img-circle"
+										src="resources/dist/img/avatar5.png" alt="user image">
+								</div>
+							</div>
+							<!-- /.box-header -->
+						</div>
+						<div class="box-body no-padding">
+
+							<div class="row">
+								<div class="col-md-9">
+
+									<div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+										class="drop-box">
+										Drop your images here to upload
+										<img-crop image="picFile  | ngfDataUrl"
+											style=" margin-botton: 10%;" result-image="croppedDataUrl"
+											ng-init="croppedDataUrl=''"> </img-crop>
+									</div>
+
+									<div></div>
+									<button ngf-select ng-model="picFile" class="btn btn-primary"
+										accept="image/*">Choose Picture</button>
+								</div>
+								<div class="col-md-3">
+									<div class="cropArea_new">
+										<img style="margin-top: 10%; margin-left: 14%;"
+											ng-src="{{croppedDataUrl}}" />
+									</div>
+									<div class="top-buffer-div" />
+								</div>
+							</div>
+
+
+						</div>
+						<!-- /.box-body -->
+					</div>
+					
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+	</div>
+	</section>
+	<div class="col-md-1"></div>
+</div>
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+<script>
+	$(function() {
+		//  document.body.style.overflow = 'hidden';
+
+		setTimeout(function() {
+			$('#myTable').DataTable({
+				responsive : true
+			});
+			$('#myTable1').DataTable({
+				responsive : true
+			});
+		}, 1);
+
+	});
+</script>
+<style>
+.cropArea_new {
+	padding-top: 25px;
+	background: #E4E4E4;
+	overflow: hidden;
+	width: 100%;
+	height: 250px;
+	margin-top: 10px;
+}
+
+form .progress {
+	line-height: 15px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+}
+
+.button {
+	-moz-appearance: button;
+	/* Firefox */
+	-webkit-appearance: button;
+	/* Safari and Chrome */
+	padding: 10px;
+	margin: 10px;
+	width: 70px;
+}
+
+.drop-box {
+	background: #F8F8F8;
+	border: 5px dashed #DDD;
+	width: 100%;
+	height: 250px;
+	text-align: center;
+	padding-top: 25px;
+	margin: 10px;
+}
+
+.dragover {
+	border: 5px dashed blue;
+}
+</style>

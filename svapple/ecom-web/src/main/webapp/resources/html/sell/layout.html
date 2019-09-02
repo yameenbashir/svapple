@@ -1,0 +1,1187 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Sell</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li class="active">Sell</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row" ng-show="!makePayment">
+					<div class="col-md-1"></div>
+					<div class="col-md-6" >
+					<div class="box box-primary newFont">
+							<div class="box-body box-profile ">
+								<b  ng-show="!loadingSalePageComplete">Search for products and customers</b>
+								<b  ng-show="loadingSalePageComplete">Loading latest data, please hold!</b>
+								<i class="fa fa-arrow-right fa-spinner fa-spin text-green"  ng-show="loadingSalePageComplete"></i>
+								<div class="top-buffer-div"></div>
+								<div class="nav-tabs-custom">
+									<div class="inner-addon right-addon">
+
+										<i class="glyphicon glyphicon-search"></i> <input type="text" ng-disabled = "returnvalue < 1 || loadingSalePageComplete"
+											focus="true" ng-model="airportName"
+											style="width: 100%; height: 50px"
+											placeholder="Start typing or scanning..."
+											auto-complete="autoCompleteOptions"/>
+									</div>
+									<div class="all-test-holder"
+										style="overflow-y: auto; height: 495px; margin-top: 5px;" ng-disabled="loadingSalePageComplete">
+										<!--  ng-repeat = "layoutProduct in layoutProducts" -->
+										<div ng-if="layoutProduct.productName!=''" class="test"
+											style={{layoutProduct.css}} ng-repeat="layoutProduct in layoutProducts">
+											<a href="" ng-click="selectProductFunc(layoutProduct)">
+												<h4 ng-bind="layoutProduct.productName"></h4>
+											</a>
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+
+						<!-- Profile Image -->
+						<div class="alert alert-danger alert-sm"
+							ng-show="productquantityzero" ng-bind="produtquantitymsg"
+							ng-cloak></div>
+
+						<div class="alert alert-danger alert-sm"
+							ng-show="returnerrormsgvisible" ng-bind="returnerrormsg" ng-cloak></div>
+
+						<div class="alert alert-success alert-sm" ng-show="success"
+							ng-bind="successMessage" ng-cloak></div>
+						<div class="alert alert-danger alert-sm" ng-show="error"
+							ng-bind="errorMessage" ng-cloak></div>
+
+						<div class="box box-primary newFont" ng-show="registerOpen"
+							ng-cloak>
+
+							<div class="box-header box-profile" >
+							<div class="row">
+							<div class="col-md-5">
+								<a ng-hide="selectCustomer || returnvalue < 1" href="" ng-click="customerModal()"><i
+									class="fa fa-user"></i> Create customer</a> <a
+									ng-hide="!selectCustomer" href=""> <i class="fa fa-user"></i>
+									{{selectCustomerName}}
+								</a>
+							</div>
+							<div class="col-md-3">
+							<button class="btn btn-success btn-lg pull-right" type="button"
+									ng-click="parkSale()"
+									ng-if="online"
+									style="margin-right: -10px;"
+									ng-disabled="InvoiceMainBean.invoiceDetails.length==0 || InvoiceMainBean.status == 9 || returnvalue < 0">
+									<i class="fa fa-history"></i> Park
+								</button>
+							</div>
+							<div class="col-md-4">
+							<button class="btn btn-danger btn-lg pull-right" type="button"
+									ng-click="ResetSale()">
+									<i class="fa fa-trash-o"></i> Discard
+								</button>
+							</div>
+							</div>
+								
+								
+								
+
+								<!-- 	<button class="btn btn-danger btn-lg pull-right"
+				               ng-click="synchsales()" >Synch Data</button>
+ 						-->
+
+
+							</div>
+							<div class="box-body box-profile ">
+								<h3 class="profile-username text-center">{{aDDShiftsText}}</h3>
+
+								<div  class="box-body" style="overflow-y: auto; height: 436px;">
+									<ul class="todo-list">
+
+										<li ng-if="InvoiceMainBean.invoiceDetails.length>0"
+											ng-repeat="invoiceDetail in InvoiceMainBean.invoiceDetails">
+											<a href="" style="color: black" data-toggle='tooltip' data-placement='auto' data-original-title="Show Item Details"
+											ng-click="showProductItemDetails(invoiceDetail)"> <span
+												class="handle"> <iclass="fafa-ellipsis-v"> </i></span>
+												<span   class="text" style="color: gray; margin-right: 15px;"
+												ng-bind="invoiceDetail.productQuantity"></span> <span
+												class="text" ng-if="invoiceDetail.productVarientName"
+												ng-bind="invoiceDetail.productName +  ' - '+ invoiceDetail.productVarientName"></span>
+												<span   class="text" ng-if="!invoiceDetail.productVarientName"
+												ng-bind="invoiceDetail.productName"></span>
+
+												<div class="tools_new">
+													<span>{{returnvalue * invoiceDetail.itemNetPrice}}</span>
+													 <a data-toggle='tooltip' data-placement='auto' data-original-title="Remove Item"  href="" ng-click="removeProduct(invoiceDetail)"> 
+													 <i class="fa fa-trash-o text-red"></i>
+													</a>
+													<span ng-hide="!isReturnEnableonSell">
+													<input type="checkbox" data-toggle='tooltip' data-placement='auto' data-original-title="Return Item"   ng-model="invoiceDetail.isreturn" ng-click="CalculateReturn(invoiceDetail)">
+												</span>
+												</div>
+												
+										</a>
+											<div class="row" ng-show="invoiceDetail.showDetails">
+												<div class="col-md-3">Quantity</div>
+												<div class="col-md-6">Price</div>
+												<div class="col-md-3">Discount (%)</div>
+											</div>
+											<div class="row" ng-show="invoiceDetail.showDetails">
+
+												<div class="col-md-3">
+													<input ng-change="calculateBill(true,invoiceDetail,'add')"
+														ng-readonly="itemDetailDisable && returnvalue > 0"
+														ng-pattern="/^\d+$/"
+														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
+														name="tenderedAmount"
+														wr-autofocus="{ focusDelay: 600, selectText: true }"
+														data-ng-model="invoiceDetail.productQuantity" vd-number=""
+														required vd-number-options="" maxlength="10">
+												</div>
+												<div class="col-md-6">
+													<input ng-blur="calculateBill(false,invoiceDetail,'add')"
+														ng-readonly="itemDetailDisable"
+														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
+														name="tenderedAmount"
+														wr-autofocus="{ focusDelay: 600, selectText: true }"
+														data-ng-model="invoiceDetail.itemSalePrice" vd-number=""
+														required vd-number-options="" maxlength="10">
+												</div>
+												<div class="col-md-3">
+													<input ng-blur="calculateBill(true,invoiceDetail,'add')"
+														ng-readonly="itemDetailDisable"
+														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
+														name="tenderedAmount"
+														wr-autofocus="{ focusDelay: 600, selectText: true }"
+														data-ng-model="invoiceDetail.itemDiscountPrct"
+														vd-number="" vd-number-options="" >
+												</div>
+											</div>
+											<div class="row" ng-show="invoiceDetail.showDetails">
+
+												<div class="col-md-12">
+													<textarea rows="1" class="form-control" name="saleNotes"
+														ng-model="invoiceDetail.itemNotes" maxlength="100"
+														placeholder="Type to add note.."></textarea>
+												</div>
+
+											</div>
+
+										</li>
+										<li ng-if="invoiceDetail.length==0"><span class="handle">
+												<iclass="fafa-ellipsis-v"> </i>
+										</span></li>
+										<li ng-if="invoiceDetail.length==0"><span class="handle">
+												<iclass="fafa-ellipsis-v"> </i>
+										</span></li>
+										<li><span class="handle"> <iclass="fafa-ellipsis-v">
+												</i></span>
+											<div class="form-group">
+												<textarea rows="4" class="form-control" name="saleNotes"
+													ng-model="InvoiceMainBean.invoiceNotes" maxlength="200"
+													placeholder="Add sale note"></textarea>
+											</div></li>
+										<li><span class="handle"> <iclass="fafa-ellipsis-v">
+												</i></span> <!-- todo text --> <!-- todo text --> <span class="text">Sub-total
+
+										</span>
+											<div class="tools_new">
+
+												<span> {{(returnvalue * InvoiceMainBean.invoiceAmt)
+													== null ? 0 : (returnvalue * InvoiceMainBean.invoiceAmt)}}
+												</span>
+											</div></li>
+										<li ng-show = "isInvoiceLevelDiscountEnable"><span class="handle"> <iclass="fafa-ellipsis-v">
+												</i></span> <!-- todo text --> <!-- todo text --> <a href=""
+											ng-click="discounts()"><span class="text">Discounts</span></a>
+											<div class="row" ng-show="showDiscount">
+												<div class="col-md-1"></div>
+												<div class="col-md-3">Amount</div>
+												<div class="col-md-4">Discount(%)</div>
+											</div>
+											<div class="tools_new" ng-show="showDiscount">
+
+												<div class="col-md-4">
+													<input ng-change="calculateDiscount(false)"
+														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
+														name="tenderedAmount" ng-readonly="readonlyInvoiceDiscount"
+														wr-autofocus="{ focusDelay: 600, selectText: true }"
+														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" min="0" max="10"
+														data-ng-model="InvoiceMainBean.invoiceDiscountAmt"
+														vd-number="" vd-number-options="" maxlength="10">
+												</div>
+												<div class="col-md-4">
+													<input ng-change="calculateDiscount(true)"
+														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
+														name="discount" ng-readonly="readonlyInvoiceDiscount"
+														wr-autofocus="{ focusDelay: 600, selectText: true }"
+														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+														data-ng-model="InvoiceMainBean.invoiceDiscount" min="0"
+														max="4" vd-number="" vd-number-options="" >
+												</div>
+
+											</div></li>
+										<li><span class="handle"> <iclass="fafa-ellipsis-v">
+												</i></span> <!-- todo text --> <!-- todo text --> <span class="text">Tax
+
+										</span>
+											<div class="tools_new">
+
+												<span> {{InvoiceMainBean.invoiceTax == null ? 0 :
+													InvoiceMainBean.invoiceTax}} </span>
+											</div></li>
+
+										<li>
+											<hr class="vd-hr">
+										</li>
+										<li><span class="handle"> <iclass="fafa-ellipsis-v">
+												</i></span> <!-- todo text --> <!-- todo text --> <span class="text">Total
+												({{InvoiceMainBean.itemsCount}} item(s)) </span>
+											<div class="tools_new">
+
+												<span
+													ng-bind="(returnvalue * InvoiceMainBean.invoiceNetAmt ) == null ? 0 : (returnvalue * InvoiceMainBean.invoiceNetAmt )">
+
+												</span>
+											</div></li>
+											
+											<li ng-show = "showPaymentSale"><span class="handle"> <iclass="fafa-ellipsis-v" >
+												</i></span> <!-- todo text --> <!-- todo text --> <span class="text">Payment(s) </span>
+											<div class="tools_new">
+
+												<span
+													ng-bind="InvoiceMainBean.settledAmt">
+
+												</span>
+											</div></li>
+
+									</ul>
+								</div>
+								<hr class="vd-hr">
+								<button class="btn btn-success btn-block" type="button"
+									ng-click="pay()" ng-show="returnvalue >= 0"
+									ng-disabled="InvoiceMainBean.invoiceDetails.length==0">
+									<span class="pull-left">Pay</span> <span class="pull-right"
+										ng-bind="(returnvalue * InvoiceMainBean.invoiceGivenAmt) == null ? 0 : (returnvalue * InvoiceMainBean.invoiceGivenAmt)+' PKRs'"></span>
+
+								</button>
+
+								<button class="btn btn-danger btn-block" type="button"
+									ng-click="pay()" ng-show="returnvalue < 0"
+									ng-disabled="InvoiceMainBean.invoiceDetails.length==0">
+									<span class="pull-left">Return</span> <span class="pull-right"
+										ng-bind="(returnvalue * InvoiceMainBean.invoiceNetAmt ) == null ? 0 : (returnvalue * InvoiceMainBean.invoiceNetAmt )+' PKRs'"></span>
+
+								</button>
+
+
+
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<div class="box box-primary newFont" ng-show="!registerOpen"
+							style="overflow-y: auto; height: 632px;" ng-cloak>
+							<div class="vd-button-group pull-right">
+								<button class="btn btn-success btn-lg" ng-click="parkSale()"
+									ng-disabled="InvoiceMainBean.invoiceDetails.length==0">
+									<i class="fa fa-history"></i> Park Sale
+								</button>
+								<button class="btn btn-danger btn-lg" ng-click="ResetSale()">
+									<i class="fa fa-trash-o"></i> Discard
+								</button>
+
+							</div>
+							<div class="box-header box-profile ">
+								<div class="top-buffer"></div>
+								<div class="top-buffer"></div>
+								<div class="top-buffer"></div>
+								<div class="top-buffer"></div>
+								<img class="text-center" src="resources/images/closed.png"
+									style="margin-left: 30%;"></img>
+								<h2 class="text-center">Register closed</h2>
+								<h3 class="text-center">To make a sale, please open the
+									register</h3>
+							</div>
+							<div class="box-body box-profile ">
+								<input type="submit" class="btn btn-success btn-block"
+									value="Open Register" ng-click="openRegister()" />
+
+							</div>
+							<div class="top-buffer"></div>
+							<div class="top-buffer"></div>
+							<div class="top-buffer"></div>
+							<div class="top-buffer"></div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+
+						<!-- About Me Box -->
+
+					</div>
+					<!-- /.col -->
+
+					<div class="col-md-1"></div>
+				</div>
+				<div class="row" ng-show="makePayment">
+					<div class="col-md-1"></div>
+
+
+					<div class="col-md-4">
+
+						<!-- Profile Image -->
+						<div class="box box-primary newFont">
+
+							<div class="box-body box-profile ">
+								<h3 class="profile-username text-center">Sale Summary</h3>
+
+								<div class="box-body" style="height: 900px;">
+									<div class="container">
+										<div class="" id="printThisElement" style="font-family: monospaced sans serif; font-weight: 900;">
+											<div class="">
+												<div class="col-xs-2 "></div>
+												<div class="col-xs-8 text-center" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+													
+												<!-- Kites 	 -->
+												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
+														 src="{{sellControllerBean.companyImagePath}}"></img><br> 
+												<!-- Style & Style 	 
+												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
+														src="{{sellControllerBean.companyImagePath}}"></img><br> -->
+												<!-- Xpressions 		
+													 <img class="text-left" style="margin-top: 0px;height:120px !important;;  width: 350px !important;" 
+														src="{{sellControllerBean.companyImagePath}}"></img><br> 	-->
+
+													{{companyAddress}}
+													<br>
+													<span ng-bind="' Ph:'+ phoneNumber"></span>
+													<br>
+													 <!-- <span>Facebook: Xpressions.monas<span> --> 
+												</div>
+												<div class="col-xs-2"></div>
+
+											</div>
+											
+											<hr class="dash" />
+											<hr class="vd-hr no-print">
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="col-md-12"
+													ng-bind="'Receipt #: '+ InvoiceMainBean.invoiceRefNbr"></div>
+											</div>
+											<br>
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="col-md-12"
+													ng-bind="'Date: '+ invoiceGenerationDteFE"></div>
+											</div>
+											
+											<br>
+											<hr class="vd-hr no-print">
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="text-center col-md-12"
+													ng-bind="'Cashier: ' + userName"></div>
+												<div class="text-center col-md-12"
+													ng-bind="'Customer:  ' + selectCustomerName + ' : Num #  ' + selectCustomerPhoneNumber"></div>	
+													
+											</div>
+											
+											<hr class="dash" />
+											
+												<div class="items-table" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+													<div class="header">
+														<div class="col-xs-7 input-container">
+															<span>PARTICULARS</span>
+														</div>
+														<div class="col-xs-2 input-container">
+															<span>QTY</span>
+														</div>
+														<div class="col-xs-3 input-container">
+															<span class="text-right">AMT</span>
+														</div>
+
+													</div>
+													<hr class="dash" />
+													<div ng-if="InvoiceMainBean.invoiceDetails.length>0"
+														ng-repeat="invoiceDetails in InvoiceMainBean.invoiceDetails"
+														ng-animate="'slide-down'" class="row" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+														<hr class="vd-hr no-print">
+														<div class="col-xs-7 input-containe" style="font-size:12px; font-family: monospaced; font-weight: bolder; margin-top:-20px !important;">
+
+															<span class="text"
+																ng-if="invoiceDetails.productVarientName"
+																ng-bind="invoiceDetails.productName +  ' - '+ invoiceDetails.productVarientName"></span>
+															<span class="text"
+																ng-if="!invoiceDetails.productVarientName"
+																ng-bind="invoiceDetails.productName"></span>
+															<div class="row">
+															<small>
+															Was: <span class="text" ng-bind="invoiceDetails.itemRetailPrice" > </span>
+															Disc: <span class="text" ng-bind="invoiceDetails.itemDiscountPrct"></span> % :
+															<span class="text" >{{invoiceDetails.itemRetailPrice * (invoiceDetails.itemDiscountPrct/100) | number:2}}</span>
+															</small>
+															</div>																
+														</div>
+
+														<div class="col-xs-2 input-container" style="margin-top:-20px !important; margin-left: 8px !important;">
+															<span ng-bind="invoiceDetails.productQuantity"></span>
+														</div>
+																<!-- Xpressions   
+														<div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 70px !important; ">
+															<span class="text-right"
+																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
+														</div>  -->
+														<!-- Standard -->
+														<div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 40px !important; ">
+															<span class="text-right"
+																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
+														</div> 
+														
+													</div>
+													<div class="col-xs-7 input-container" >
+
+															<span class="text">Items Count :</span>
+															
+																														
+														</div>
+
+														<div class="col-xs-2 input-container" style="margin-left: 8px !important;">
+															<span ng-bind="InvoiceMainBean.itemsCount" ></span>
+														</div>
+
+														<div class="col-xs-3 input-container" >
+															<span class="text-right"></span>
+														</div>
+													<hr class="dash" style="margin-top:-20px !important;" />
+													
+													<hr class="vd-hr no-print">
+													<div style="font-size: 10px" style="margin-top:-20px; !important;">
+														<div class="col-xs-8 text-right">
+															Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> <br> Tax Amount <br>
+															Total:
+														</div>
+														<div class="col-xs-4 text-center">
+															<span
+																ng-bind="(returnvalue * InvoiceMainBean.invoiceAmt)"></span>
+															<span ng-show="InvoiceMainBean.invoiceDiscountAmt>0"><br></span>
+															 <span class="text-center" ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>{{InvoiceMainBean.invoiceDiscountAmt}}</span> 
+															 <span><br></span>
+															<span class="text-center"
+																ng-bind="(InvoiceMainBean.invoiceTax)"></span> <span><br></span>
+															<span class="text-center" style="font-size: larger;"
+																ng-bind="(returnvalue *InvoiceMainBean.invoiceNetAmt)"></span>
+														</div>
+													</div>
+													<hr class="dash" />
+													<div ng-if="listPayments.length > 0"
+														ng-repeat="payment in listPayments">
+														<div>
+															<div class="col-xs-8 text-right">{{payment.type}}</div>
+															<div class="col-xs-4 text-center"
+																ng-bind="payment.amount"></div>
+														</div>
+
+													</div>
+
+
+													<div ng-show="change > 0" style="font-size: 12px">
+														<div class="col-xs-8 text-right">Change</div>
+														<div class="col-xs-4 text-center">{{change | number
+															: 2}}</div>
+													</div>
+													<div style="font-size: 12px">
+														<div class="col-xs-8 text-right">Balance</div>
+														<div class="col-xs-4 text-center">{{returnvalue *
+															balance | number : 2}}</div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-xs-12 text-center">
+														<!--<barcode style="margin-top: 15px;" food="barcodeValues"></barcode>  -->
+														<svg class="barcode" jsbarcode-format="CODE128"
+															jsbarcode-value={{InvoiceMainBean.invoiceRefNbr}}
+															jsbarcode-fontSize="10" jsbarcode-height="35"
+															jsbarcode-width="1.9" jsbarcode-marginLeft=""
+															jsbarcode-textmargin="0" jsbarcode-fontoptions="">
+																</svg>
+													</div>
+
+												</div>
+
+												<div class="top-buffer-contact no-print"></div>
+												<!-- Kites  -->
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size: 9px">
+														Thank you for your Shopping.<br> No Exchange without
+														orignal Invoice.<br> No return, only exchange within
+														5 days <br>SALE ITEMS NO RETURN, NO CHANGE<br>NO
+														EXHANGE, AFTER ALTERATION <br> <br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div>  
+												
+												<!-- Xpressions 
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size: 8px">
+														Exchange can be furnished within 3 days if product is not user or altered/<b>No Replaced</b>.
+														<br> Once the dress is sold on "<B>SALE PRICE</B>" can not be exchanged or returned.<br>
+														All claims are subject to the approval of Head office as per the organizational policies.<br>
+														Exchange is not accepted on the product purchased dureing sale period of promotion.<br>
+														Dry Clean Only.<br> 
+														Cliam for defects because of faulty wahsing & improper care are not accepted.<br>
+														Cash not refundable in any case.<br>
+														<br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div>  -->
+												<!-- Style & Style  
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size:10px; font-family: monospaced; font-weight: bolder;">
+														Shoes used in water can't be claimed.
+														<br>
+														Used Item can't be replaced.
+														<br>"<B>Imported /Sale Item</B>"No guarntee, can not be exchanged or returned.<br>
+														Free Reparing can be done within two months of purchase.<br>
+														15 days will be required for reparing.<br>
+														Exchange is possible within 15 days.<br> 
+														No exchange without receipt.<br>
+														Cash not refundable in any case.<br>
+														<br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div> -->
+												
+										</div>
+									</div>
+
+								</div>
+
+
+
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+
+						<!-- About Me Box -->
+
+					</div>
+					<!-- /.col -->
+					<div class="col-md-6">
+						<div class="box box-primary newFont" style="height: 960px;"
+							ng-show="salesComplete">
+							<div class="box-body box-profile ">
+
+								<div class="top-buffer-contact"></div>
+								<div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-9">
+										<h1>
+											<i class="glyphicon glyphicon-ok-sign fa-2x text-green"></i>
+											Payment complete!
+										</h1>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+
+
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<hr class="vd-hr">
+								<div class="row">
+									<div class="col-md-4"></div>
+									<div class="col-md-4">
+										<button class="btn btn-primary btn-block" ng-print
+											print-element-id="printThisElement"
+											ng-click="printReceipt = !printReceipt">
+											<i class="fa fa-print"></i> Print Receipt
+										</button>
+
+									</div>
+									<!-- 									<div class="col-md-3"> -->
+									<!-- 										<button class="btn btn-success btn-lg" -->
+									<!-- 											ng-click="showAddProductTypePopup()"> -->
+									<!-- 											<i class="fa fa-gift"></i> Gift Receipt -->
+									<!-- 										</button> -->
+									<!-- 									</div> -->
+									<div class="col-md-3"></div>
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<hr class="vd-hr">
+								<div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" id="inputstoreName"
+											placeholder="Email Id..."
+											data-ng-model="outletBean.outletName" maxlength="25">
+										</button>
+									</div>
+									<div class="col-md-3">
+										<button class="btn btn-success btn-lg"
+											ng-click="showAddProductTypePopup()">Email Receipt</button>
+									</div>
+									<div class="col-md-3"></div>
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<hr class="vd-hr">
+								<div class="row">
+									<div class="col-md-3"></div>
+									<div class="col-md-6">
+										<input type="submit" class="btn btn-success btn-block"
+											ng-print print-element-id="printThisElement"
+											ng-click="ReceiptingDone()" value="Done (ESC)" />
+										</button>
+									</div>
+
+									<div class="col-md-3"></div>
+								</div>
+							</div>
+						</div>
+						<div class="box box-primary newFont" style="height: 960px;"
+							ng-show="!salesComplete">
+							<div class="box-body box-profile ">
+								<div class="row">
+									<div class="col-md-9"></div>
+									<div class="col-md-3" ng-show="gobackenable">
+										<h4>
+											<i class="fa fa-long-arrow-left"></i> <a href=""
+												ng-click="pay()" style="margin-right: 15px;">Back to
+												Sale </a>
+										</h4>
+									</div>
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="row">
+									<div class="col-md-3" ng-show="returnvalue >= 0">
+										<h2>Pay</h2>
+									</div>
+									<div class="col-md-3" ng-show="returnvalue < 0">
+										<h2>Return</h2>
+									</div>
+									<div class="col-md-5"></div>
+									<div class="col-md-4">
+										<input
+											class="wr-input wr-input--amount-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
+											name="tenderedAmount"
+											wr-autofocus="{ focusDelay: 600, selectText: true }" required
+											ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+											data-ng-click="InvoiceMainBean.invoiceGivenAmt=''"
+											data-ng-model="InvoiceMainBean.invoiceGivenAmt" vd-number=""
+											vd-number-options="">
+									</div>
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<div class="row">
+									<div class="col-md-4">
+
+
+										<button class="btn btn-success btn-block" type="button"
+											ng-show="returnvalue > 0 && !cashloading"
+											ng-click="payCash('cash')">Cash</button>
+
+										<button class="btn btn-danger btn-block" type="button"
+											ng-show="returnvalue < 0 && !cashloading"
+											ng-click="payCash('cash')">Cash</button>
+
+										<button ng-show="cashloading" type="button"
+											class="btn btn-success btn-block">
+											Save Processing<i
+												class="fa fa-arrow-right text-muted fa-spinner fa-spin ">
+											</i>
+										</button>
+
+
+
+
+									</div>
+									<div class="col-md-4">
+
+
+										<button class="btn btn-success btn-block" type="button"
+											ng-show="returnvalue > 0 && !creditloading"
+											ng-click="payCash('creditcard')">Credit Card</button>
+
+										<button class="btn btn-danger btn-block" type="button"
+											ng-show="returnvalue < 0 && !creditloading"
+											ng-click="payCash('creditcard')">Credit Card</button>
+
+										<button ng-show="creditloading" type="button"
+											class="btn btn-success btn-block">
+											Save Processing<i
+												class="fa fa-arrow-right text-muted fa-spinner fa-spin ">
+											</i>
+										</button>
+
+									</div>
+
+
+
+									<div class="col-md-4"></div>
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<div class="row" >
+									<div class="col-md-12" ng-show="!selectCustomer">
+										<h4>Customer</h4>
+										<hr class="vd-hr">
+										<a ng-hide="!selectCustomer || returnvalue < 0" href=""><i class="fa fa-user"></i>
+											{{selectCustomerName}} </a> <a href="" ng-hide="selectCustomer || returnvalue < 0"
+											ng-click="selectCustomerOrCreate()"><i class="fa fa-user" ></i>
+											Add a customer</a>
+											
+											<span  ng-hide="selectCustomer || returnvalue < 0">
+											to process this sale using the following:
+											</span> 
+									</div>
+									<div class="col-md-12" ng-show="selectCustomer">
+										<h4>Selected Customer</h4>
+										<hr class="vd-hr">
+										<a href=""><i class="fa fa-user"></i>
+											{{selectCustomerName}}</a>
+									</div>
+								</div>
+									<div class="row" >
+									<div class="col-md-12">
+										<hr class="vd-hr">
+										<h4>Sales User</h4>
+										<hr class="vd-hr">
+										<a ng-hide="!selectUserName|| returnvalue < 0" href="" ng-click="selectSalesUser()"><i class="fa fa-user"></i>
+											{{selectUserName}}</a> <a href="" ng-hide="selectUserName || returnvalue < 0"
+											ng-click="selectSalesUser()"><i class="fa fa-user" ></i>
+											Add a Sales User</a>
+											
+											<span  ng-hide="!selectUserName || returnvalue < 0">
+											Sales user added to process this sale using the following:
+											</span> 
+									</div>
+									
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<div class="row">
+									<div class="col-md-4">
+
+
+										<button class="btn btn-inverse btn-block" type="button"
+											ng-disabled="!selectCustomer"
+											ng-show="returnvalue > 0 && !laybyloading"
+											ng-click="salenoncash('layby')">Layby</button>
+
+										<button ng-show="laybyloading"
+											class="btn btn-inverse btn-block">
+											Save Processing<i
+												class="fa fa-arrow-right text-muted fa-spinner fa-spin ">
+											</i>
+										</button>
+
+									</div>
+									<div class="col-md-4" ng-show="False">
+
+										<button class="btn btn-inverse btn-block" type="button"
+											ng-disabled="!selectCustomer" ng-show="returnvalue > 0"
+											ng-click="salenoncash('onaccount')">On Account</button>
+									</div>
+									<!-- 									<div class="col-md-4"> -->
+									<!-- 										<input type="submit" class="btn btn-inverse btn-block" -->
+									<!-- 											value="Store Credit" /> -->
+									<!-- 									</div> -->
+								</div>
+								<div class="top-buffer-contact"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<modal title="Select Product Variant" visible="selectProduct" ng-cloak>
+
+<div class="registerForm">
+
+	<div class="card-group">
+		<div class="card" style="height: 120px"
+			ng-repeat="arrtibute1Value in productVaraintDetailBean.arrtibute1Values"
+			ng-hide="attribute1Level">
+			<a href="" ng-click="attribute1LevelFunc(arrtibute1Value)">
+				<div class="card-block text-center">
+
+					<h4 class="card-title" ng-bind="arrtibute1Value"></h4>
+
+				</div>
+			</a>
+		</div>
+		<div class="card" style="height: 120px"
+			ng-repeat="arrtibute1Value in productVaraintDetailBean.arrtibute2Values"
+			ng-hide="attribute2Level">
+			<a href="" ng-click="attribute1Leve2Func(arrtibute1Value)">
+				<div class="card-block text-center">
+
+					<h4 class="card-title" ng-bind="arrtibute1Value"></h4>
+
+				</div>
+			</a>
+		</div>
+		<div class="card" style="height: 120px"
+			ng-repeat="arrtibute1Value in productVaraintDetailBean.arrtibute3Values"
+			ng-hide="attribute3Level">
+			<a href="" ng-click="aattribute1Leve3Func(arrtibute1Value)">
+				<div class="card-block text-center">
+
+					<h4 class="card-title" ng-bind="arrtibute1Value"></h4>
+
+				</div>
+			</a>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+</modal>
+<modal title="Add Sales User" visible="showUserModal" ng-cloak>
+
+<div class="registerForm">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+				<div class="alert alert-success alert-sm"
+					ng-show="newCustomerSuccess" ng-bind="newCustomerSuccessMessage"
+					ng-cloak></div>
+				<div class="alert alert-danger alert-sm" ng-show="newCustomerError"
+					ng-bind="newCustomerErrorMessage" ng-cloak></div>
+				<div>
+					<div class="box-body box-profile">
+						<b>Search for Users</b>
+						<div class="top-buffer-div"></div>
+						<div class="nav-tabs-custom">
+							<div class="inner-addon right-addon">
+
+								<i class="glyphicon glyphicon-search"></i> <input type="text" ng-disabled = "returnvalue < 1"
+									focus="true" ng-model="salesUserBean"
+									style="width: 100%; height: 50px"
+									placeholder="Start typing or scanning..."
+									auto-complete="autoCompleteOptionsUsers" />
+							</div>
+
+						</div>
+					</div>
+					<div class="box-header box-profile">
+						<a  href=""><i class="fa fa-user"></i>
+							Selected User</a>
+							{{selectUserName}} </a>
+
+					</div>
+				</div>
+				
+			</div>
+		</form>
+		<div class="box-footer">
+			<button class="btn btn-success btn-lg pull-right"
+				ng-click="addNewUserSelected()" ng-disabled="!selectUserName">Add
+				User to sale</button>
+			<button class="btn btn-danger btn-lg pull-right"
+				ng-click="cancelUserAdd()">cancel</button>
+
+		</div>
+	</li>
+</div>
+
+</modal>
+<modal title="Create New Customers" visible="showCustomerModal" ng-cloak>
+
+<div class="registerForm">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+				<div class="alert alert-success alert-sm"
+					ng-show="newCustomerSuccess" ng-bind="newCustomerSuccessMessage"
+					ng-cloak></div>
+				<div class="alert alert-danger alert-sm" ng-show="newCustomerError"
+					ng-bind="newCustomerErrorMessage" ng-cloak></div>
+				<div ng-show="searchCustomer">
+					<div class="box-body box-profile">
+						<b>Search for customers</b>
+						<div class="top-buffer-div"></div>
+						<div class="nav-tabs-custom">
+							<div class="inner-addon right-addon">
+
+								<i class="glyphicon glyphicon-search"></i> <input type="text" ng-disabled = "returnvalue < 1"
+									focus="true" ng-model="CustomerName"
+									style="width: 100%; height: 50px"
+									placeholder="Start typing or scanning..."
+									auto-complete="autoCompleteOptionsCustomers" />
+							</div>
+
+						</div>
+					</div>
+					<div class="box-header box-profile">
+						<a ng-hide="selectCustomer" href=""><i class="fa fa-user"></i>
+							Selected customer</a> <a ng-hide="!selectCustomer" href=""
+							ng-click="customerModal()"><i class="fa fa-user"></i>
+							{{selectCustomerName}} </a>
+
+					</div>
+				</div>
+				<div ng-show="!searchCustomer">
+					<div class="row">
+						<div class="col-md-6">
+
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-4 control-label">First
+									Name</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="inputstoreName"
+										placeholder="first" data-ng-model="customerBean.firstName"
+										maxlength="25" ng-pattern='/^[a-zA-Z0-9\s]+$/'>
+
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-4 control-label">Company
+								</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="inputstoreName"
+										placeholder="Company" data-ng-model="customerBean.companyName"
+										maxlength="25" ng-pattern='/^[a-zA-Z0-9\s]+$/'>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-4 control-label">Last
+									Name</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="inputstoreName"
+										placeholder="Last" data-ng-model="customerBean.lastName"
+										maxlength="25" ng-pattern='/^[a-zA-Z0-9\s]+$/'>
+
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-4 control-label">Customer
+									group</label>
+								<div class="col-sm-8">
+									<select class="form-control " data-native-menu="false"
+										data-role="listview"
+										data-ng-model="customerBean.customerGroupId"
+										ng-init="customerBean.customerGroupId=customerGroupBeansList[0].customerGroupId" required>
+										<option ng-repeat="customerGroup in customerGroupBeansList"
+											value="{{customerGroup.customerGroupId}}">{{customerGroup.customerGroupName}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h3>Contact Information</h3>
+					<hr class="vd-hr page-header">
+					<div class="row">
+						<div class="col-md-6">
+
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-4 control-label">Email</label>
+								<div class="col-sm-8">
+									<input type="email" class="form-control" id="inputURL"
+										placeholder="Email..."
+										data-ng-model="customerBean.addressBeanList[0].email"
+										maxlength="25">
+								</div>
+							</div>
+
+						</div>
+						<div class="col-md-6">
+
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-4 control-label">Phone
+									Number</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control"
+										placeholder="Phone Number..." name="tag"
+										data-ng-model="customerBean.addressBeanList[0].phone"
+										maxlength="25"  ng-pattern='/^[a-zA-Z0-9\s\-]+$/' required>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="box-footer">
+						<button class="btn btn-success btn-lg pull-right"
+							ng-show="!addNewCustomerButton  && !searchCustomer"
+							ng-click="addNewCustomer()"
+							ng-disabled="!customerBean.addressBeanList[0].phone">Create
+							New Customer</button>
+
+
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="box-footer" ng-show="searchCustomer">
+			<button class="btn btn-success btn-lg pull-right"
+				ng-show="!addCustomerProcessingButton"
+				ng-click="createNewCustomerShow()">Create New
+				Customer</button>
+
+			<button class="btn btn-success btn-lg pull-right"
+				ng-show="addCustomerProcessingButton">
+				<i class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				Save Processing
+			</button>
+
+
+
+			<button class="btn btn-success btn-lg pull-right"
+				ng-click="addNewCustomerSelected()" ng-disabled="!selectCustomer">Add
+				Customer to sale</button>
+			<button class="btn btn-danger btn-lg pull-right"
+				ng-click="cancelCustomer()">cancel</button>
+
+		</div>
+	</li>
+</div>
+
+</modal>
+<modal title="Set opening cash drawer amount" visible="showCashModal"
+	ng-cloak>
+
+<div class="registerForm ">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+				<div class="alert alert-danger alert-sm"
+					ng-show="paymentTypeAddError" ng-bind="paymentTypeAddErrorMessage"
+					ng-cloak></div>
+
+
+				<div class="form-group">
+					<div class="col-sm-12">
+						<input type="text" class="form-control"
+							placeholder="Amount e.g, 50.00" name="tag"
+							data-ng-model="cashManagmentBean.cashAmount"
+							ng-pattern='/^[0-9]+$/' required maxlength="100">
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-sm-12">
+						<textarea class="form-control" placeholder="Type to add a note"
+							name="tag" data-ng-model="cashManagmentBean.notes"
+							ng-pattern='/^[a-zA-Z0-9\s]+$/' maxlength="200"></textarea>
+
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="box-footer">
+			<button class="btn btn-success btn-lg pull-right"
+				ng-show="!addCashProcessingButton" ng-click="cashInOut()" ng-disabled="!cashManagmentBean.cashAmount">Save Amount</button> 
+			<button class="btn btn-success btn-lg pull-right"
+				ng-show="addCashProcessingButton">
+				<i class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				Processing
+			</button>
+
+
+		</div>
+	</li>
+</div>
+
+</modal>
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 100%;
+	margin-top: 25%;
+}
+
+.newFont_receipt {
+	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial,
+		sans-serif;
+	font-weight: 800;
+	font-size: xx-small;
+}
+.wr-input--sell-tendered {
+    max-width: 100%;
+    width: 200px;
+    height: 40px;
+    text-align: right;
+    font-size: 15px;
+    font-weight: 300;
+}
+   @media print{
+   body *{display:none}
+   #printSection,#printSection *{display:inline}
+   #printSection{position:absolute;left:0;top:0}
+   }
+
+</style>

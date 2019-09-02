@@ -1,0 +1,162 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Send SMS</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li class="active">SendSMS</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-6">
+						<div class="box box-primary newFont">
+							<div class="box-body box-profile ">
+								<b ng-show="!loadingSalePageComplete">Search for customers</b> <b
+									ng-show="loadingSalePageComplete">Loading latest data,
+									please hold!</b> <i
+									class="fa fa-arrow-right fa-spinner fa-spin text-green"
+									ng-show="loadingSalePageComplete"></i>
+								<div class="top-buffer-div"></div>
+								<div class="nav-tabs-custom">
+									<div class="inner-addon right-addon">
+
+										<i class="glyphicon glyphicon-search"></i> <input type="text"
+											ng-disabled="returnvalue < 1 || loadingSalePageComplete"
+											focus="true" ng-model="airportName"
+											style="width: 100%; height: 50px"
+											placeholder="Start typing or scanning..."
+											auto-complete="autoCompleteOptions" />
+									</div>
+									<div class="all-test-holder"
+										style="overflow-y: auto; height: 450px; margin-top: 5px;"
+										ng-disabled="loadingSalePageComplete">
+										<!--  ng-repeat = "layoutProduct in layoutProducts" -->
+										<div class="test"
+											style="background: #f6f6f6; margin-left: 5px; border-top: 6px solid #3CA9E7"
+											ng-repeat="selectedCustomer in selectedCustomers">
+											<i class="fa text-red fa-remove" style="margin-left: 90%;"
+												ng-click="removeCustomer(selectedCustomer.customerId)">
+											</i> <a href="" ng-click="selectProductFunc(layoutProduct)">
+												<h4 ng-bind="selectedCustomer.firstName"></h4>
+											</a> <img ng-src="resources/images/User.png"
+												src="resources/images/User.png"
+												style="height: 40px; margin-left: 35%;">
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+
+						<!-- Profile Image -->
+
+
+						<div class="box box-primary newFont"
+							style="overflow-y: auto; height: 580px;" ng-cloak>
+
+
+
+							<div class="box-header box-profile ">
+
+								<vd-section sticky="" type="secondary"
+									class="cv-action-bar vd-section vd-section--secondary"
+									role="region">
+								<div class="vd-section-wrap">
+									<div
+										class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+										<span> SMS Used : {{smsUsedCount}} </span> <span> SMS
+											Remained : {{smsRemained}} </span>
+									</div>
+								</div>
+								</vd-section>
+							</div>
+
+							<div class="alert alert-success alert-sm" ng-show="success"
+								ng-bind="successMessage" ng-cloak></div>
+
+							<div class="alert alert-danger alert-sm" ng-show="error"
+								ng-bind="errorMessage" ng-cloak></div>
+
+							<div class="box-body box-profile ">
+								<div class="top-buffer-div"></div>
+								<img class="text-center" src="resources/images/sms.png"
+									style="margin-left: 30%; height: 165px;"></img>
+								<h2 class="text-center">Quick SMS</h2>
+								<h5 class="text-center">
+									Send SMS to all Customers <input type="checkbox" id="sendSMS"
+										data-ng-model="sendAllSms">
+								</h5>
+								<span class="text-orange" ng-show="sendAllSms">Please
+									note bulk SMS take more than 5 minutes, don't send again before
+									that time!</span>
+								<textarea rows="5" class="form-control" name="saleNotes"
+									ng-model="message" maxlength="160"
+									placeholder="Type to send SMS.."
+									ng-pattern="/^[a-zA-Z0-9\s',\-’!’%\.]+$/"></textarea>
+
+								<span class="text-red" ng-show="!message">In Valid
+									characters in message!</span>
+
+							</div>
+							<div class="box-body box-profile" ng-show="!loading">
+								<button ng-show="!loading" type="button"
+									ng-disabled="(selectedCustomers.length == 0 && !sendAllSms) || message=='' || !message"
+									class="btn btn-success btn-block" ng-click="sendMessage()">
+									Send SMS</button>
+
+
+							</div>
+
+							<div class="box-body box-profile" ng-show="loading">
+								<button ng-show="loading" type="button"
+									class="btn btn-success btn-block">
+									SMS Processing <i
+										class="fa fa-arrow-right text-muted fa-spinner fa-spin ">
+									</i>
+								</button>
+
+
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+
+						<!-- About Me Box -->
+
+					</div>
+					<!-- /.col -->
+
+					<div class="col-md-1"></div>
+				</div>
+
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,308 @@
+<div class="content-wrapper">
+	<section class="content-header">
+		<h1>Role Details</h1>
+		<ol class="breadcrumb">
+			<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#users">Users</a></li>
+			<li><a href="#roles">Roles</a></li>
+			<li class="active">Role Details</li>
+		</ol>
+	</section>
+	<section class="content-header"></section>
+
+	<div class="top-buffer-contact"></div>
+	<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+	<!-- Main content -->
+	<section class="content" ng-show="!globalPageLoader" ng-cloak>
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<vd-section sticky="" type="secondary"
+								class="cv-action-bar vd-section vd-section--secondary"
+								role="region">
+							<div class="vd-section-wrap">
+								<div
+									class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+									<span> Change what a Cashier can see and do across
+										assigned outlets. </span>
+									<div class="vd-button-group">
+										<button class="btn btn-success btn-lg" ng-click="addOutlet()">Save</button>
+
+									</div>
+								</div>
+							</div>
+							</vd-section>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div class="pull-right"></div>
+									<div class="table-container">
+										<table class="table table-filter">
+											<tbody>
+												<tr data-status="pagado">
+													<td>
+														<div class="media">
+															<a href="#" class="pull-left"> <img
+																src="resources/images/price.png" class="media-photo">
+															</a>
+															<div class="media-body">
+
+																<h4 class="title">
+																	Product Costs <span class="pull-right pagado"></span>
+																</h4>
+																<p class="summary">Show product costs, margins and
+																	profitability information in the Sell screen, product
+																	catalog, reporting and stock control.</p>
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Show Product
+																Cost</span> <input type="checkbox" id="checkbox1"> <label
+																for="checkbox1"> </label>
+
+
+														</div>
+													</td>
+
+												</tr>
+
+												<tr data-status="pagado">
+													<td>
+														<div class="media">
+															<a href="#" class="pull-left"> <img
+																src="resources/images/tag.png" class="media-photo">
+															</a>
+															<div class="media-body">
+
+																<h4 class="title">
+																	Labels <span class="pull-right pagado"></span>
+																</h4>
+																<p class="summary">Allow a Cashier to print labels
+																	from the product catalogue and on stock control.</p>
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Print Labels</span>
+															<input type="checkbox" id="checkbox2"> <label
+																for="checkbox2"> </label>
+
+
+														</div>
+													</td>
+
+												</tr>
+												<tr data-status="pagado">
+													<td>
+														<div class="media">
+															<a href="#" class="pull-left"> <img
+																src="resources/images/discount.png" class="media-photo">
+															</a>
+															<div class="media-body">
+
+																<h4 class="title">
+																	Discounts <span class="pull-right pagado"></span>
+																</h4>
+																<p class="summary">Allow a Cashier to provide
+																	discounts on a sale, including individual line items.
+																	This excludes managing price books.</p>
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Apply
+																Discounts</span> <input type="checkbox" id="checkbox3">
+															<label for="checkbox3"> </label>
+
+
+														</div>
+													</td>
+
+												</tr>
+												<tr data-status="pagado">
+													<td>
+														<div class="media">
+															<a href="#" class="pull-left"> <img
+																src="resources/images/sale.png" class="media-photo">
+															</a>
+															<div class="media-body">
+																<h4 class="title">
+																	Sell <span class="pull-right pagado"></span>
+																</h4>
+																<p class="summary">Show product costs, margins and
+																	profitability information in the Sell screen, product
+																	catalog, reporting and stock control.</p>
+															</div>
+														</div>
+													</td>
+													<td><span class="media-meta pull-right"> Create
+															or continue On-Account sales</span>
+														<div class="ckbox">
+															<input type="checkbox" id="checkbox4"> <label
+																for="checkbox4"> </label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right">Create or
+																continue Layby sales</span> <input type="checkbox"
+																id="checkbox5"> <label for="checkbox5">
+															</label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Perform sale
+																returns and exchanges</span> <input type="checkbox"
+																id="checkbox6"> <label for="checkbox6">
+															</label>
+
+														</div></td>
+
+												</tr>
+												<tr data-status="pagado">
+													<td>
+														<div class="media">
+															<a href="#" class="pull-left"> <img
+																src="resources/images/customers.png" class="media-photo">
+															</a>
+															<div class="media-body">
+																<h4 class="title">
+																	Customers <span class="pull-right pagado"></span>
+																</h4>
+																<p class="summary">Show product costs, margins and
+																	profitability information in the Sell screen, product
+																	catalog, reporting and stock control.</p>
+															</div>
+														</div>
+													</td>
+													<td><span class="media-meta pull-right"> Export
+															customer list</span>
+														<div class="ckbox">
+															<input type="checkbox" id="checkbox7"> <label
+																for="checkbox7"> </label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right">Add a new
+																customer</span> <input type="checkbox" id="checkbox8">
+															<label for="checkbox8"> </label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Remove a
+																customer</span> <input type="checkbox" id="checkbox9">
+															<label for="checkbox9"> </label>
+
+														</div></td>
+
+												</tr>
+												<tr data-status="pagado">
+													<td>
+														<div class="media">
+															<a href="#" class="pull-left"> <img
+																src="resources/images/products.png" class="media-photo">
+															</a>
+															<div class="media-body">
+																<h4 class="title">
+																	Products <span class="pull-right pagado"></span>
+																</h4>
+																<p class="summary">Show product costs, margins and
+																	profitability information in the Sell screen, product
+																	catalog, reporting and stock control.</p>
+															</div>
+														</div>
+													</td>
+													<td><span class="media-meta pull-right"> Create
+															and edit products</span>
+														<div class="ckbox">
+															<input type="checkbox" id="checkbox10"> <label
+																for="checkbox10"> </label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right">Perform
+																inventory counts</span> <input type="checkbox" id="checkbox11">
+															<label for="checkbox11"> </label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Perform
+																supplier stock orders and returns</span> <input type="checkbox"
+																id="checkbox12"> <label for="checkbox12">
+															</label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Create and
+																edit price books</span> <input type="checkbox" id="checkbox13">
+															<label for="checkbox13"> </label>
+
+														</div>
+														<div class="ckbox">
+															<span class="media-meta pull-right"> Perform a
+																stock transfer</span> <input type="checkbox" id="checkbox13">
+															<label for="checkbox13"> </label>
+
+														</div></td>
+
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<div class="top-buffer-contact"></div>
+
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</section>
+</div>
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+
+
+<!-- Modal end -->
+
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('.ckbox label').on('click', function() {
+			$(this).parents('tr').toggleClass('selected');
+		});
+
+	});
+</script>
+
+<style>
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc,
+	table.dataTable thead .sorting_desc {
+	background: none;
+}
+</style>

@@ -1,0 +1,299 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Products</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li class="active">Products</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-7">
+
+						<!-- <vd-tabs modifier="no-border large" class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
+			 
+			<vd-tab type="anchor" active="this.activeTab == 'users'" class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active" link="'#roles'">
+			<a  class="vd-tab-button ng-scope" ng-href="#roles"  href="/users/"><span class="ng-scope">
+			      Active({{productsList.length}})
+			    </span></a>
+			</vd-tab>
+			<vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
+			      Inactive(0)
+			    </span></a>
+			</vd-tab>
+			<vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
+			      All({{productsList.length}})
+			    </span></a>
+			</vd-tab>
+			  </vd-tabs> -->
+						<vd-section sticky="" type="primary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span> Add, view and edit your products. </span>
+
+
+								<div class="vd-button-group">
+									<button class="btn  btn-success btn-lg" ng-click="addProduct()"
+										ng-show="roledId=='1'">Add Product</button>
+
+								</div>
+							</div>
+
+						</div>
+
+						</vd-section>
+						<div call="row"></div>
+						<div class="box box-primary newFont">
+							<div class="box-header"></div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<table id="myTable" class="display" cellspacing="0" width="100%"
+									ng-show="productsList.length > 0" ng-clock>
+									<thead>
+										<tr>
+											<th>Product</th>
+											<th>Created</th>
+											<th>Brand</th>
+											<th ng-show="roledId=='1'">Supplier</th>
+											<th>Variants</th>
+											<th>Price</th>
+											<th>Count</th>
+											<th ng-show="roledId=='1'"></th>
+											<th ng-show="gui.showProductPriceHistory">Price History</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="product in productsList">
+
+											<td ng-click="showProduct(product)"><a href=""
+												ng-click="showProduct(product)">
+													<div class="user-block">
+														<div class="avatar micro">
+															<img ng-src="{{product.imagePath || '//:0'}}"
+																onerror="this.src='resources/images/product.png'">
+															<div class="opacity-border"></div>
+														</div>
+														<div class="user-info">
+															<div class="name" ng-bind="product.productName"></div>
+														</div>
+											</a>
+												</div></td>
+											<td ng-bind="product.createdDate"></td>
+											<td ng-bind="product.brandName"><a href=""></a></td>
+											<td ng-bind="product.supplierName" ng-show="roledId=='1'"><a
+												href=""></a></td>
+											<td ng-bind="(product.varinatsCount)+' variants'"><a
+												href=""></a></td>
+											<td ng-bind="product.netPrice"></td>
+											<td ng-bind="product.inventoryCount"></td>
+
+											<td ng-show="roledId=='1'">
+												<button class="btn fa fa-edit btn-primary btn-sm"
+													ng-click="editProduct(product)"></button>
+												
+											</td>
+											<td ng-show="gui.showProductPriceHistory">
+												
+												<button class="btn fa fa-money btn-success btn-sm"
+													ng-click="showProductPriceHistory(product)">  Price History</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<Span ng-hide="dataLoading"> Loading ...</Span>
+								<div class="loader" ng-hide="dataLoading"></div>
+							</div>
+						</div>
+						<div class="top-buffer-contact"></div>
+
+					</div>
+
+
+					<div class="col-md-5">
+						<vd-section sticky="" type="primary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+								<span> Search All products. </span>
+
+								<div class="vd-button-group" ng-show="dataLoading">
+									<button class="btn  btn-primary btn-lg"
+										ng-click="lodAllProducts()">Load All Products</button>
+
+								</div>
+								<div class="vd-button-group" ng-show="!dataLoading">
+									<button class="btn  btn-primary btn-lg" ng-disabled="true">
+										Loading All Products<i
+											class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+									</button>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						</vd-section>
+
+						<div class="box box-primary newFont">
+							<div class="box-header"></div>
+							<!-- /.box-header -->
+							<div class="box-body">
+
+								<div class="col-sm-12">
+									<div class="top-buffer-div"></div>
+									<div class="top-buffer-contact"></div>
+									<div class="top-buffer-contact"></div>
+
+									<div class="nav-tabs-custom">
+										<div class="inner-addon right-addon">
+
+											<i class="glyphicon glyphicon-search"></i> <input type="text"
+												ng-disabled="!dataLoading" focus="true"
+												ng-model="CustomerName"
+												style="width: 100%; height: 50px; color: black"
+												placeholder="Search products by name, brand and date ..."
+												auto-complete="autoCompleteOptionsProducts" />
+										</div>
+
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<div class="top-buffer-div"></div>
+								
+									<div class="well" style="height: 300px; background: white">
+										<Span>Products Count </Span><Span><b>( {{data.productBeanList.length}} ) </b></Span>
+											
+										<div style="margin-top: 50px;" id="chartContainerProductCount"></div>
+
+									</div>
+
+									<Span>Last 7 days Product Rise Up </Span>
+								</div>
+							</div>
+
+						</div>
+
+
+
+
+
+					</div>
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 65%;
+	margin-left: 25%;
+}
+
+
+.user-block {
+	white-space: nowrap;
+}
+
+@media ( min-width : 768px) .user-block {
+	width:inherit;
+}
+
+.avatar {
+	display: inline-block;
+	position: relative;
+}
+
+.user-block .user-info {
+	display: inline-block;
+	width: 55%;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+	float: left;
+	border-radius: 50%;
+}
+</style>
+<!-- DataTables -->
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+<script src="resources/js/buttons.flash.min.js"></script>
+<script src="resources/js/jszip.min.js"></script>
+<script src="resources/js/pdfmake.min.js"></script>
+
+<script src="resources/js/vfs_fonts.js"></script>
+<script src="resources/js/buttons.html5.min.js"></script>
+<script src="resources/js/buttons.print.min.js"></script>
+

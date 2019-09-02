@@ -1,0 +1,510 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<h1>Purchase Order Receive Edit</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li><a href="#stockControl">Stock Control</a></li>
+					<li class="active">Purchase Order Receive</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+
+						<div class="box">
+
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="alert alert-success alert-sm" ng-show="success"
+									ng-bind="successMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="error"
+									ng-bind="errorMessage" ng-cloak></div>
+								<div class="box box-primary">
+
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-4">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Name
+															/ Reference</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="Name"
+																placeholder="Name / Stock Reference No..."
+																data-ng-model="stockOrderBean.stockRefNo"
+																maxlength="100" ng-pattern='/^[-@:./#&+\w\s]*$/'
+																required> <span
+																ng-show="!stockOrderBean.stockRefNo" style="color: red;">*
+																Enter Name/ Reference</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="Supplier" class="col-sm-4 control-label">Order
+															from</label>
+														<div class="col-sm-8">
+															<select class="form-control " data-native-menu="false"
+																data-role="listview"
+																data-ng-model="stockOrderBean.supplierId">
+																<!-- ng-init="stockOrderBean.supplierId='-1'">
+																 <option value="-1" >Select Supplier</option> -->
+																<option ng-repeat="supplier in supplierList"
+																	value="{{supplier.supplierId}}">{{supplier.supplierName}}</option>
+															</select>
+															<!-- <span ng-show="stockOrderBean.supplierId==-1"
+																style="color: red;">* Select supplier</span> -->
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="outlet" class="col-sm-4 control-label">Deliver
+															to</label>
+														<div class="col-sm-8">
+															<select class="form-control " data-native-menu="false"
+																ng-disabled="true" data-role="listview"
+																data-ng-model="stockOrderBean.outletId">
+																<!--  ng-init="stockOrderBean.outletId='-1'">
+																<option value="-1" >Select Outlet</option> -->
+																<option ng-repeat="outlet in outletList"
+																	value="{{outlet.outletId}}">{{outlet.outletName}}</option>
+															</select>
+															<!-- <span ng-show="stockOrderBean.outletId==-1"
+																style="color: red;">* Select outlet</span> -->
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Auto
+															fill</label>
+														<div class="col-sm-8">
+															<select class="form-control select2" style="width: 100%;"
+																data-ng-model="stockOrderBean.autofillReorder"
+																ng-init="stockOrderBean.autofillReorder='true'">
+																<option value="true">Auto fill from re-order
+																	point</option>
+																<option value="false">Don't auto-fill</option>
+
+															</select>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Delivery
+															due</label>
+														<div class="col-sm-8">
+															<input type="date" class="form-control"
+																id="inputstoreName" placeholder="Delivery due..."
+																data-ng-model="stockOrderBean.diliveryDueDate"
+																maxlength="25" required> <span
+																ng-show="!stockOrderBean.diliveryDueDate"
+																style="color: red;">* Select Delivery due date</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Order
+															No.</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="inputstoreName" placeholder="Order No..."
+																data-ng-model="stockOrderBean.orderNo" maxlength="100"
+																ng-pattern='/^[-@:./#&+\w\s]*$/' required>
+															<!-- ng-pattern='/^[a-zA-Z0-9\s]+$/' -->
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Supplier
+															invoice</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="inputstoreName" placeholder="Supplier invoice..."
+																data-ng-model="stockOrderBean.supplierInvoiceNo"
+																maxlength="100" ng-pattern='/^[-@./#&+\w\s]*$/'>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-2">
+											<div class="box-header with-border"></div>
+											<div class="box-body">
+												<img src="resources/images/order.png"
+													class="img-responsive img-rounded" alt="Cinque Terre"
+													style="width: 204px; height: auto;">
+											</div>
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.box -->
+						</div>
+
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div class="">
+
+								<div class="row">
+									<div class="col-md-5">Product:</div>
+									<div class="col-md-2">Quantity:</div>
+									<div class="col-md-2"><span style="margin-left: 5px"> Add</span></div>
+									<div class= "col-md-3">Total Items: </div>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+										<div class="inner-addon right-addon">
+
+											<i class="glyphicon glyphicon-search"></i> <input id="lov" type="text"
+												focus="true" ng-model="airportName"
+												style="width: 100%; height: 50px; color: black"
+												placeholder="Start typing or scanning..."
+												auto-complete="autoCompleteOptions" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<input type="text"
+											data-ng-model="stockOrderDetailBean.orderProdQty"
+											name="product_search[quantity]"
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' autocomplete="off"
+											class=" form-control click-to-select unit"
+											id="product_search_quantity" ng-maxlength="9"
+											style="height: 50px;">
+									</div>
+									<div class="col-md-2">
+										<button class="btn btn-success btn click-to-select unit "
+											ng-click="checkProductStatus()"
+											ng-disabled="!productVariantBean || !stockOrderDetailBean.orderProdQty">Add
+											Product</button>
+									</div>
+									<div class="col-md-3">
+										<input type="text"
+											data-ng-model="stockOrderBean.itemCount"
+											name="product_search[quantity]"
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' autocomplete="off"
+											class=" form-control click-to-select unit"
+											id="product_search_quantity" ng-maxlength="50" ng-disabled = "true"
+											style="height: 50px; width: 1000px;">
+									</div>
+								</div>
+
+							</div>
+
+
+
+
+
+						</div>
+
+						</vd-section>
+						<div class="box">
+
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-12">
+</br>
+</br>
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<div class="box-body">
+												<div class="items-table">
+													<div class="row header">
+														<div class="col-md-1">Order</div>
+														<div class="col-md-2">Product</div>
+														<div class="col-md-1">Stock</div>
+														<div class="col-md-1">QTY</div>
+														<div class="col-md-1">Supply Price</div>
+														<div class="col-md-1">Total</div>
+														<div class="col-md-1">Recv QTY</div>
+														<div class="col-md-2">Recv Supply Price</div>
+														<div class="col-md-1">Total</div>
+														<div class="col-md-1"></div>
+
+													</div>
+													<div class="row invoice-item " ng-animate="'slide-down'"
+														style="font-size: 12px"
+														ng-repeat="stockOrderDetailBean in stockOrderDetailBeansList">
+														<div class="row items-sub-noMargin">
+															<div class="col-md-1 remove-item-container"
+																ng-bind="stockOrderDetailBean.order"></div>
+															<div class="col-md-2 input-container"
+																ng-bind="stockOrderDetailBean.variantAttributeName">
+															</div>
+															<div class="col-md-1 input-container"
+																ng-bind="stockOrderDetailBean.productVariantCurrInventory">
+															</div>
+															<div class="col-md-1 input-container">
+																<input type="text"
+																	data-ng-model="stockOrderDetailBean.orderProdQty"
+																	min="1" class="" id="Name" ng-maxlength="9"
+																	ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
+																	ng-blur="calculateTotal(stockOrderDetailBean.productVariantId)"
+																	required/ style="width: 100%;">
+															</div>
+															<div class="col-md-1 input-container"
+																ng-bind="stockOrderDetailBean.ordrSupplyPrice"></div>
+															<div class="col-md-1 input-container"
+																ng-bind="stockOrderDetailBean.total"></div>
+															<div class="col-md-1 input-container">
+																<input type="text"
+																	data-ng-model="stockOrderDetailBean.recvProdQty"
+																	min="1" class="" id="Name" ng-maxlength="9"
+																	ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
+																	ng-blur="calculateRecvTotal(stockOrderDetailBean.productVariantId)"
+																	required style="width: 100%;">
+															</div>
+															<div class="col-md-2 input-container">
+																<input type="text" min="0" class="" id="Name1"
+																	data-ng-model="stockOrderDetailBean.recvSupplyPrice"
+																	maxlength="25" ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
+																	ng-blur="calculateRecvTotal(stockOrderDetailBean.productVariantId)"
+																	required style="width: 45%;">
+															</div>
+															<div class="col-md-1 input-container"
+																ng-bind="stockOrderDetailBean.recvTotal"></div>
+															<div class="col-md-1 input-container">
+																<button class="btn btn-danger btn"
+																	ng-click="showConfirmDelete(stockOrderDetailBean)">
+																	<i class="fa fa-trash"></i>
+																</button>
+															</div>
+
+														</div>
+
+
+
+													</div>
+
+
+
+
+
+												</div>
+												<div class="top-buffer-contact">
+
+													<div class="row">
+														<div class="col-md-10"></div>
+														<div class="col-md-2">
+															<button class="btn btn-success btn pull-right"
+																ng-click="markAllReceive()"
+																ng-disabled="!checkStockOrderDetailList()">Mark
+																All Received</button>
+														</div>
+
+													</div>
+													<div class="row top-buffer-popup">
+														<div class="col-md-6"></div>
+														<div class="col-md-2">
+															<Span class=""><b>Total Recieved Items : </b></Span>
+														</div>														
+														<div class="col-md-2">
+															<Span class="" ng-bind="stockOrderBean.recItemCount"></Span>
+														</div>														
+														<div class="col-md-1">
+															<Span class=""><b>Total : </b></Span>
+														</div>														
+														<div class="col-md-1">
+															<Span class="" ng-bind="grandTotal"></Span>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class="box-footer text-right">
+												<button class="btn btn-primary btn  "
+													ng-click="addStockOrderUpdate()"
+													ng-disabled="!stockOrderBean.stockRefNo || !stockOrderBean.diliveryDueDate
+									 || !stockOrderBean.outletId || !stockOrderBean.supplierId || !checkStockOrderDetailList() || stockOrderBean.outletId=='-1' || stockOrderBean.supplierId=='-1'"
+													ng-show="!loading" ng-show="!loading">Save</button>
+												<button ng-show="loading" class="btn btn-primary btn">
+													Processing<i
+														class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+												</button>
+												<button class="btn btn-success btn-lg"
+													ng-click="showConfirmReceiveStockOrder()"
+													ng-disabled="!stockOrderBean.stockRefNo || !stockOrderBean.diliveryDueDate
+									 						|| !stockOrderBean.outletId || !stockOrderBean.supplierId || !checkStockOrderDetailListforRec() || stockOrderBean.outletId=='-1' ||stockOrderBean.supplierId=='-1'"
+													ng-show="!loading">Save and Receive</button>
+
+												<a href="#stockControl">
+													<button
+														class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button>
+												</a>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+			</section>
+			<!-- /.box -->
+		</div>
+	</div>
+</div>
+<div class="col-md-1"></div>
+</div>
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<modal title="Delete Selected Product" visible="showConfirmDeletePopup"
+	ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="delStockOrderDetail(stockOrderDetailBean)">Yes</button>
+
+				<button class="btn btn-default btn-sm pull-left btn-primary-spacing"
+					data-dismiss="modal">No</button>
+			</div>
+</div>
+</form>
+</li>
+</div>
+
+</modal>
+
+<!-- Modal end -->
+
+<!-- Modal -->
+<modal title="Confirm Receive!" visible="showConfirmReceivePopup"
+	ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addStockOrderUpdateandReceive()" ng-show="!loading">Yes</button>
+				<button ng-show="loading" class="btn btn-primary btn">
+					Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button class="btn btn-default btn-sm pull-left btn-primary-spacing"
+					data-dismiss="modal">No</button>
+			</div>
+</div>
+</form>
+</li>
+</div>
+
+</modal>
+
+
+<style>
+table.dataTable thead .sorting,table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc
+	{
+	background: none;
+}
+
+.items-sub-noMargin {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.items-sub-table {
+	margin-left: 15px;
+	margin-right: 15px;
+	background: white;
+}
+
+.items-table {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.items-table .row {
+	border-bottom: 1px solid #ddd;
+	line-height: 4em;
+}
+
+.items-table .row:last-child {
+	border-bottom: none;
+	line-height: 3em;
+}
+
+.items-table .row:nth-child(even) {
+	background: #f9f9f9;
+}
+
+.items-table input {
+	line-height: 2.5em;
+}
+
+.actions {
+	padding-top: 1em;
+}
+
+input:focus {
+	outline: 0;
+}
+
+.header.row {
+	font-weight: bold;
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	font-size: 12px;
+}
+
+input,textarea {
+	border: 1px solid #FFF;
+}
+
+.container input:hover,.container textarea:hover,.table-striped>tbody>tr:nth-child(2n+1)>td input:hover,.container input:focus,.container textarea:focus,.table-striped>tbody>tr:nth-child(2n+1)>td input:focus
+	{
+	border: 1px solid #CCC;
+}
+
+.table-striped>tbody>tr:nth-child(2n+1)>td input {
+	background-color: #F9F9F9;
+	border: 1px solid #F9F9F9;
+}
+</style>

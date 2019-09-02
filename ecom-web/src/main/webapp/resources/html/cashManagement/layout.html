@@ -1,0 +1,317 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Cash Management</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#personalInfo">Setup</a></li>
+					<li class="active">Cash Management</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<vd-section sticky="" type="secondary"
+							ng-show="registerEnableCashStatus" ng-cloak
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+								<span></span>
+
+								<div class="vd-button-group">
+									<button class="btn btn-danger btn-lg" ng-click="removeCash()" ng-disabled="disableMngmnt">Remove
+										Cash</button>
+									<button class="btn btn-success btn-lg" ng-click="addCash()" ng-disabled="disableMngmnt">Add
+										Cash</button>
+
+								</div>
+							</div>
+						</div>
+						</vd-section>
+
+						<div class="box newFont" ng-show="registerEnableCashStatus"
+							ng-cloak>
+
+							<div class="box-header"></div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<table id="myTable"  class="display" cellspacing="0" width="100%"  ng-clock>
+									<thead>
+										<tr>
+											<th>Time</th>
+											<th>User</th>
+											<th>Type</th>
+											<th>Reasons</th>
+											<th>Transaction (PKRs)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="cash in cashManagmentList">
+											<td ng-bind="cash.time"></td>
+											<td ng-bind="cash.createdBy"></td>
+											<td ng-bind="cash.expenseType"></td>
+											<td ng-bind="cash.notes"></td>
+											<td ng-bind="cash.cashAmount"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+						<div class="box box-info newFont"
+							ng-show="!registerEnableCashStatus" ng-cloak>
+
+							<div class="box-body box-profile popup-transparent">
+								<div class="row">
+									<div class="col-md-5"></div>
+									<div class="col-md-4">
+										<img style="margin-left: 15%;" src="resources/images/cash.png">
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+								<div class="row">
+									<div class="col-md-4"></div>
+									<div class="col-md-5">
+										<h2 style="text-align: center;">Introducing Cash
+											Management</h2>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+								<div class="row">
+									<div class="col-md-4"></div>
+									<div class="col-md-6">
+										<span style="text-align: center;">Start tracking cash
+											movements across shifts, days and cashiers, and take control
+											of your register.</span>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+								<div class="row">
+									<div class="col-md-5"></div>
+									<div class="col-md-3">
+										<h3>
+											<div class="">
+												<button class="btn btn-success btn-lg btn-block"
+													ng-click="cashManagement()">Enable Cash Management</button>
+
+											</div>
+									</div>
+									<div class="col-md-5"></div>
+								</div>
+								<hr class="vd-hr">
+								<div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-9">
+										<h3>
+											<i class="fa fa-exchange"></i> Track petty cash in and out,
+											plus safe deposit drops
+										</h3>
+										<span>Need to buy supplies? Want to make a cash deposit
+											at the bank? Cash management records the money you take out
+											of your cash drawer so you know exactly where your cash is.
+											You can even make notes to remind yourself. When you close
+											your register each day, Vend will automatically adjust the
+											amount.</span>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-9">
+										<h3>
+											<i class="glyphicon glyphicon-user"></i> Check for
+											discrepancies and reduce theft
+										</h3>
+										<span>With visibility over all your cash movements
+											throughout the day, it's easier to track discrepancies and
+											reduce theft.</span>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+								<div class="top-buffer-contact"></div>
+								<div class="top-buffer-contact"></div>
+								<div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-9">
+										<h3>
+											<i class="fa fa-calculator"></i> Keep your accounting in
+											check
+										</h3>
+										<span>Use Xero? Every cash movement will also be sent
+											to Xero. Your accountant will love you.</span>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+
+<modal title="Cash Managment" visible="showCashModal" ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+				<div class="alert alert-danger alert-sm"
+					ng-show="paymentTypeAddError" ng-bind="paymentTypeAddErrorMessage"
+					ng-cloak></div>
+
+				<div class="form-group" ng-hide="true" ng-cloak>
+					
+					<div class="col-md-12">
+						<label class="radio-inline"> <input  type="radio" ng-model="cashManagmentBean.cashType" value="Cash" checked> Cash In
+						</label> <label class="radio-inline"> <input ng-model="cashManagmentBean.cashType" type="radio" value="Petty" >Petty Cash in
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<input type="text" class="form-control" 
+							placeholder="Amount e.g, 50.00" name="tag"
+							data-ng-model="cashManagmentBean.cashAmount"
+							ng-pattern='/^[0-9]+$/' required maxlength="100">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-12">
+						 <select class="form-control " data-native-menu="false" 
+							data-role="listview" ng-change = "expenseTypeFunc(selectedExpenseType)"
+							data-ng-model="selectedExpenseType" ng-init="selectedExpenseType='-1'">
+							<option value="-1">Expense Type</option>
+							<option ng-repeat = "expenseType in expenseTypes" ng-selected="selectedExpenseType == expenseType.expenseTypeId"
+															value="{{expenseType.expenseTypeId}}">{{expenseType.expenseTypeName}}</option>
+						</select>
+					</div>
+				</div>
+								
+					<div class="form-group">
+					
+					<div class="col-sm-12">
+						<textarea class="form-control" rows="3"
+							placeholder="Details" name="tag"
+							data-ng-model="cashManagmentBean.notes"
+							
+							ng-pattern='/^[a-zA-Z0-9\s]+$/' maxlength="200"></textarea>
+
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="box-footer">
+			<button class="btn btn-success btn-lg pull-right" ng-show="!addCashProcessingButton" ng-disabled="!cashManagmentBean.cashAmount || selectedExpenseType=='-1'" ng-click="addCashIn()" ng-bind="cashModalButtonLabel"></button>
+			<button class="btn btn-success btn-lg pull-right" ng-show="addCashProcessingButton" ><i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i> Processing</button>
+
+
+		</div>
+	</li>
+</div>
+
+</modal>
+
+<!-- DataTables -->
+     <script src="resources/js/jquery.dataTables.min.js"></script>
+    
+     <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script>
+     
+<script>
+      $(function () {
+    	//  document.body.style.overflow = 'hidden';
+    	
+    	  setTimeout(
+    			  function() 
+    			  {
+    			  $('#myTable').DataTable( {
+    			        responsive: true
+    			    } );
+    				 
+    			  }, 1);
+      
+      });
+      $(window, ".wrapper").resize(function () {
+    	  setTimeout(
+    			  function() 
+    			  {
+    				  var oTable = $('#myTable').dataTable();
+    					oTable.fnDestroy();
+    			  $('#myTable').DataTable( {
+    			        responsive: true
+    			    } );
+    				 
+    			  },100);
+    	  });
+    </script>
+    <style>
+  
+.center {
+    margin-top:50px;   
+}
+
+.modal-header {
+    padding-bottom: 5px;
+}
+
+.modal-footer {
+        padding: 0;
+}
+    
+.modal-footer .btn-group button {
+    height:40px;
+    border-top-left-radius : 0;
+    border-top-right-radius : 0;
+    border: none;
+}
+    
+.modal-footer .btn-group:last-child > button {
+    border-right: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    width: 65%;
+    margin-left: 25%;
+}
+</style>
+
+

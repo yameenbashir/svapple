@@ -1,0 +1,8 @@
+
+USE `ecom`;
+
+delete from invoice_detail where INVOICE_MAIN_ASSOCICATION_ID =115;
+delete from invoice_main where INVOICE_MAIN_ID = 115;
+update product_variant set CURRENT_INVENTORY = 3 where PRODUCT_VARIANT_ID = 6299;
+update product_variant set CURRENT_INVENTORY = 2 where PRODUCT_VARIANT_ID = 7069;
+

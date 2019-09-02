@@ -1,0 +1,1299 @@
+<div class="container">
+<div class="row">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>Add Product</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<!--  <li><a href="#empView">Managed Services</a></li> -->
+				<li><a href="#products">Products</a></li>
+				<li class="active">Add Product</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="box">
+						<div class="box-header">
+							<i class="fi-page text-blue" style="font-size: 3em;"></i>
+							<h3 class="box-title">Details</h3>
+							<div class="alert alert-success alert-sm" ng-show="productSuccess"
+								ng-bind="productSuccessMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="productError"
+								ng-bind="productErrorMessage" ng-cloak></div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<div class="box box-primary">
+								<div class="row">
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal" name="myForm">
+											<div class="box-body">
+
+												<div class="form-group">
+													<label for="productName" class="col-sm-4 control-label">Product
+														name</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="productName" placeholder="name..." ng-blur="checkSkuExist()"
+															data-ng-model="productBean.productName" maxlength="15"
+															 required ng-change="changeHandler(productBean)">
+															<span ng-show="!productBean.productName" style="color:red;">* Add Product name</span>
+															<span ng-show="barCode && !productConfigurationBean.sku" style="color:red;">* Product/ Barcode already exist</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="readyForSold" class="col-sm-4 control-label"></label>
+													<div class="col-sm-8">
+														<div class="ckbox">
+															<span class="media-meta pull-right"> This product
+																can be sold</span> <input type="checkbox" id="readyForSold"
+																data-ng-model="gui.productCanBeSold"> <label
+																for="checkbox2" > </label>
+
+
+														</div>
+													</div>
+
+												</div>
+												<div class="form-group" ng-show="productConfigurationBean.sku">
+													<label for="sku" class="col-sm-4 control-label">Bar code</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="sku"
+															placeholder="Bar code..." ng-blur="checkSkuExist()"
+															data-ng-model="productBean.sku"  maxlength="15"
+															 required>
+															<i ng-show="checkDuplicate" class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+															<span ng-show="!productBean.sku" style="color:red;">* Add Bar code</span>
+															<span ng-show="barCode" style="color:red;">* Bar Code already exist</span>
+													</div>
+													<!-- <label for="productHandler" class="col-sm-4 control-label">Product
+														handle</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="productHandler" placeholder="Product Handle..."
+															data-ng-model="productBean.productHandler" maxlength="25"
+															ng-pattern='/^[a-zA-Z0-9\s]+$/' required> A unique
+														identifier for this product
+													</div> -->
+												</div>
+												<div class="form-group">
+													<label for="productTypeId" class="col-sm-4 control-label">Product
+														type</label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;"
+															data-ng-model="productBean.productTypeId" id="productTypeId"
+															ng-change="showAddProductTypePopup(productBean.productTypeId)"
+															ng-init="productBean.productTypeId='-1'">
+															<option value="-1" >Please select an option</option>
+															<option value="0" >+ Add Product Type</option>
+															<option ng-repeat = "productType in productTypeList" ng-selected=" productBean.productTypeId == productType.productTypeId"
+															value="{{productType.productTypeId}}">{{productType.productTypeName}}</option>
+
+														</select>
+														<span ng-show="productBean.productTypeId=='-1'||productBean.productTypeId=='0'
+														||!productBean.productTypeId" style="color:red;">* Select Product type</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="supplierId" class="col-sm-4 control-label">Supplier</label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;" id="supplierId"
+															data-ng-model="productBean.supplierId"
+															ng-change="showAddSupplierPopup(productBean.supplierId)"
+															ng-init="productBean.supplierId='-1'" >
+															<option value="-1" >Please select an option</option>
+															<option value="0" >+ Add Supplier</option>
+															<option ng-repeat="supplier in supplierList" ng-selected=" productBean.supplierId == supplier.supplierId"
+															value="{{supplier.supplierId}}">{{supplier.supplierName}}</option>
+
+														</select>
+														<span ng-show="productBean.supplierId=='-1'||productBean.supplierId=='0'
+														||!productBean.supplierId" style="color:red;">* Select Supplier</span>
+														
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label for="brandId" class="col-sm-4 control-label">Product
+														brand</label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;"
+															data-ng-model="productBean.brandId" id="brandId"
+															ng-change="showAddBrandPopup(productBean.brandId)"
+															ng-init="productBean.brandId='-1'">
+															<option value="-1" >Please select an option</option>
+															<option value="0" >+ Add Brand</option>
+															<option ng-repeat="brand in brandList" ng-selected=" productBean.brandId == brand.brandId"
+															value="{{brand.brandId}}">{{brand.brandName}}</option>
+
+														</select>
+														<span ng-show="productBean.brandId=='-1'||productBean.brandId=='0'
+														||!productBean.brandId" style="color:red;">* Select Product brand</span>
+													</div>
+												</div>
+												<div class="form-group" ng-show="productConfigurationBean.supplierId">
+													<label for="code" class="col-sm-4 control-label">Supplier
+														code</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="code" placeholder="Code..."
+															data-ng-model="productBean.supplierId" maxlength="25"
+															ng-pattern='/^[a-zA-Z0-9\s]+$/' required ng-disabled="true">
+													</div>
+												</div>
+												
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+												<div class="form-group" ng-show="productConfigurationBean.productDesc">
+													<label for="productDescs" class="col-sm-4 control-label">Description</label>
+													<div class="col-sm-8">
+														<textArea type="text" class="form-control"
+															id="inputstoreName" placeholder="Description..." rows="3"
+															data-ng-model="productBean.productDesc" maxlength="25" id="productDescs"
+															 required></textArea>
+															<span ng-show="!productBean.productDesc" style="color:red;">* Add Description</span>
+													</div>
+												</div>
+												
+												<div class="form-group" ng-show="productConfigurationBean.salesAccountCode">
+													<label for="salesAccountCode" class="col-sm-4 control-label">Sales
+														account</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="salesAccountCode" placeholder="Sales Account Code..."
+															data-ng-model="productBean.salesAccountCode" maxlength="25"
+															ng-pattern='/^[a-zA-Z0-9\s]+$/' >
+													</div>
+												</div>
+												<div class="form-group" ng-show="productConfigurationBean.purchaseAccountCode">
+													<label for="inputEmail3" class="col-sm-4 control-label">Purchase
+														account</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="inputstoreName" placeholder="Purchase Account Code..."
+															data-ng-model="productBean.purchaseAccountCode" maxlength="25"
+															ng-pattern='/^[a-zA-Z0-9\s]+$/' >
+													</div>
+												</div>
+												<div class="form-group" ng-show="productConfigurationBean.productTag">
+														<label for="tag" class="col-sm-4 control-label">Tag
+															</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="tag"
+																placeholder="Tag Name..." name="tag"
+																data-ng-model="tagBean.tagName" ng-pattern='/^[a-zA-Z0-9\s]+$/' maxlength="10"
+																ng-keyup="($event.keyCode == 13) && addTagDynamically(tagBean.tagName)">
+																<a href="" ng-click="addTag()" ng-show="tagBean.tagName"
+																class="vd-mls vd-link ng-scope">+ Add Tag</a>
+																<a href=""  ng-show="!tagBean.tagName"
+																class="vd-mls vd-link ng-scope">+ Add Tag</a>
+																<div class="alert alert-danger alert-sm" ng-show="variantError"
+																		ng-bind="variantErrorMessage" ng-cloak></div>
+															<!-- <SPAN><button  class="btn btn-primary btn-sm" ng-click="addTag()" ng-disabled="!tagBean.tagName">Add</button></SPAN> -->
+
+														</div>
+													
+												</div>
+												<!-- <div class="form-group" >
+													<div class="form-inline">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															tags</label>
+														<div class="col-sm-8">
+															<span class="label label-info " ng-repeat="tag in tagList">{{tag.tagName}}</span>
+														</div>
+													</div>
+												</div> -->
+												<div ng-show="productConfigurationBean.productTag">
+													<div class="form-group">
+														<label for="tag" class="col-sm-4 control-label">Search
+															for tags</label>
+															<div class="col-sm-8">
+														<div class="top-buffer-div"></div>
+														<div class="nav-tabs-custom">
+															<div class="inner-addon right-addon">
+								
+																<i class="glyphicon glyphicon-search"></i> <input type="text" ng-disabled = "returnvalue < 1"
+																	focus="true" ng-model="CustomerName"
+																	style="width: 100%; height: 30px"
+																	placeholder="Start typing ..."
+																	auto-complete="autoCompleteOptionsTags" />
+															</div>
+								
+														</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="tag" class="col-sm-4 control-label">Tags
+															<a ng-hide="tagDisplayList.length<0" href=""
+															><i class="fa  fa-tags"></i></label>
+														<div class="col-sm-8">
+															<span class="label label-info " ng-repeat="tag in tagDisplayList">{{tag.tagName}}
+															<i
+																				style="margin-left: 10px; color: red; height: 20px"
+																				class="fa fa-times" aria-hidden="true"
+																				ng-click="removeFromDisplayTagList(tag)"></i></span> </a>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- /.box -->
+
+					</div>
+
+					<!-- /.box-body -->
+					<div class="box" ng-show="productConfigurationBean.productImage">
+						<div class="row">
+
+							<div class="col-md-10">
+								<div class="box-header">
+									<i class="fa fa-file-image-o text-purple"
+										style="font-size: 4em;"></i>
+									<h3 class="box-title">Product Photo</h3>
+								</div>
+								<!-- /.box-header -->
+							</div>
+							<div class="col-md-2">
+								<div class="box-header">
+									<img class="profile-user-img img-responsive img-circle"
+										src="resources/images/products.png" alt="user image">
+								</div>
+							</div>
+							<!-- /.box-header -->
+						</div>
+						<div class="box-body no-padding">
+
+							<div class="row">
+								<div class="col-md-9">
+
+									<div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+										class="drop-box">
+										Drop your images here to upload
+										<img-crop image="picFile  | ngfDataUrl"
+											style=" margin-botton: 10%;" result-image="croppedDataUrl"
+											ng-init="croppedDataUrl=''"> </img-crop>
+									</div>
+
+									<div></div>
+									<button ngf-select ng-model="picFile" class="btn btn-primary"
+										accept="image/*">Choose Picture</button>
+								</div>
+								<div class="col-md-3">
+									<div class="cropArea_new">
+										<img style="margin-top: 10%; margin-left: 14%;"
+											ng-src="{{croppedDataUrl}}" />
+									</div>
+									<div class="top-buffer-div" />
+								</div>
+							</div>
+
+
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Pricing</h3>
+							<a href="" ng-show="gui.showDutyCalculator"><div ng-click="showDutyCalcuator()">Duty Calculator</div></a>
+							<!-- <a href=""><div ng-click="showDutyCalcuator()">Duty Calculator</div></a> -->
+													</div>
+						<div class="box-body no-padding">
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-10">
+									<div class="line pricing-values box-2 man inline-block">
+									<div class="row">
+									<div class="col-md-4">
+										<div class="unit pricing-component " ng-show="productConfigurationBean.supplyPriceExclusiveTax">
+											<label for="vend_product_supply_price">Supply price</label> <input
+												type="text" name="vend_product[supply_price]" 
+												ng-model="productBean.supplyPriceExclTax"
+												class="block is-supply-price ng-pristine ng-valid ng-empty ng-touched"
+												data-edit-handler="edit_supply" ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
+												id="vend_product_supply_price" ng-change="evaluateRetailPrice()" maxlength="9">
+											<div class="help">Excluding tax</div>
+											<span ng-show="!productBean.supplyPriceExclTax" style="color:red;">* Invalid Supply Price</span>
+										</div>
+										</div>
+										<div class="col-md-4" ng-show="productConfigurationBean.markupPrct">
+										<div class="unit pricing-component ">
+											<label for="vend_product_adjustment_display">&nbsp;&nbsp;Markup
+												(%)</label> <input type="text"
+												name="vend_product[adjustment_display]" value="0"
+												ng-model="productBean.markupPrct"
+												class="block is-percentage ng-pristine ng-valid ng-empty ng-touched"
+												data-edit-handler="edit_markup" ng-pattern='/^[0-9]+(\.[0-9]{1,5})?$/'
+												id="vend_product_adjustment_display" ng-blur="evaluateRetailPrice()" >
+										</div>
+										</div>
+										<div class="col-md-4" ng-show="productConfigurationBean.retailPriceExclusiveTax">
+										<div class="unit pricing-component">
+											<label for="vend_product_default_pricebook_retail_price">=&nbsp;&nbsp;Retail
+												price</label> <input type="text"
+												name="vend_product[default_pricebook_retail_price]"
+												ng-model="productBean.retailPriceExclTax"
+												class="block is-retail ng-pristine ng-valid ng-empty ng-touched"
+												data-edit-handler="edit_retail" ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
+												id="vend_product_default_pricebook_retail_price" maxlength="9" ng-change="adjustMarkUpByChangeOfRetailPrice()">
+											<div class="help">Excluding tax</div>
+										</div>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+							</div>
+							<div class="text-center mvl">
+								<a href="" class="js-toggle-tax-by-outlet-table no-decoration"
+									ng-click="showHidePrice()"><i
+									ng-class="showHidePriceFlag ? 'icon-general-arrow-blue-up' : 'icon-general-arrow-blue-down'"></i><span
+									class="mls font-large" ng-bind="showHidePriceText"></span></a>
+							</div>
+							<table id="myTable" class="table table-condensed"
+								ng-hide="showHidePriceFlag">
+								<thead>
+									<tr>
+										<th>Outlet Name</th>
+										<th>Default Tax %</th>
+										<th>Tax amount</th>
+										<th>Retail price</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="outlet in outletList">
+										<td ng-bind="outlet.outletName"></td>
+										<td ng-bind="outlet.salesTaxName"></td>
+										<td ng-bind="outlet.taxAmount"></td>
+										<td ng-bind="outlet.retailPrice"></td>
+
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
+					<!-- /.box -->
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Product Type & Inventory</h3>
+
+						</div>
+						<div class="box-body no-padding">
+
+							<div class="container">
+								<!-- <div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-4 user-block">
+										
+										<button class="btn btn-primary btn  btn-block" ng-click="singleProduct()"
+											 ng-show="!loading"><img
+												ng-src="resources/images/product.png">Standard</button>
+									</div>
+									<div class="col-md-4 user-block">
+										<p>
+										<button class="btn btn-success btn  btn-block" ng-click="mutltiProduct()"
+											 ng-show="!loading"><img
+												ng-src="resources/images/salesTag.png">Composite</button>
+											
+										</p>
+									</div>
+									<div class="col-md-2"></div>
+								</div> -->
+							</div>
+							<!--<hr class="vd-hr">
+							 <div class="row">
+								<form class="form-horizontal">
+									<div class="box-body">
+
+										<div class="form-group">
+											<label for="sku" class="col-sm-4 control-label">Stock
+												keeping unit (SKU)</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="sku"
+													placeholder="name..."
+													data-ng-model="productBean.sku" maxlength="25"
+													ng-pattern='/^[0-9]+$/' required>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div> -->
+							<div class="table-container" ng-show="gui.standardProduct">
+								<table class="table table-filter">
+									<tbody>
+										<tr data-status="pagado" ng-show="productConfigurationBean.variantProducts">
+											<td >
+												<div class="media" >
+													<a href="#" class="pull-left"> <img
+														src="resources/images/price.png" class="media-photo">
+													</a>
+													<div class="media-body">
+
+														<h4 class="title">
+															Variant Products <span class="pull-right pagado"></span>
+														</h4>
+														<p class="summary">These are products that have
+															different versions, like size or color. Turn this on to
+															specify up to three attributes (like color), and
+															unlimited values for each attribute (like green, blue,
+															black).</p>
+													</div>
+												</div>
+											</td>
+											<td >
+												<div class="ckbox" ng-click="productVariants()">
+													<span class="media-meta pull-right"> </span> <input
+														type="checkbox" id="checkbox1"
+														data-ng-model="gui.varientProducts"> <label
+														for="checkbox1"> </label>
+
+
+												</div>
+											</td>
+
+										</tr>
+
+										<tr data-status="pagado" ng-show="productConfigurationBean.trackingInventory">
+											<td>
+												<div class="media">
+													<a href="#" class="pull-left"> <img
+														src="resources/images/tag.png" class="media-photo">
+													</a>
+													<div class="media-body">
+
+														<h4 class="title">
+															Tracking Inventory <span class="pull-right pagado"></span>
+														</h4>
+														<p class="summary">Leave this on if you want to keep
+															track of your inventory quantities. You'll be able to
+															report on cost of goods sold, product performance, and
+															projected weeks cover, as well as manage your store using
+															inventory orders, transfers and rolling inventory counts.
+														</p>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="ckbox" ng-click="trackingInventory()">
+													<span class="media-meta pull-right"></span> <input
+														type="checkbox" id="checkbox2"
+														data-ng-model="gui.trackingProduct"> <label
+														for="checkbox2"> </label>
+
+
+												</div>
+											</td>
+
+										</tr>
+
+
+
+
+									</tbody>
+								</table>
+								<hr class="vd-hr">
+									<div class="alert alert-danger alert-sm" ng-show="variantError"
+												ng-bind="variantErrorMessage" ng-cloak></div>
+								<span ng-show="sameProductVariantAttribute" style="color:red;">* Attribute Names never be same.</span>
+								<div class="row" ng-show="gui.varientProducts" ng-repeat="varientObject in productVariantsCollection">
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+												<div class="box-body">
+													<div class="form-group"  >
+														<label for="inputEmail3" class="col-sm-4 control-label">Attribute
+															(e.g. Colour)</label>
+														<div class="col-sm-8">
+															<select class="form-control select2" style="width: 100%;"
+																data-ng-model="varientObject.varientAttributeId" ng-change="showAddVarientAttributePopup(varientObject.varientAttributeId)"
+																ng-init="varientObject.varientAttributeId='-1'">
+																<option value="-1" >Select Attribute</option>
+																<option value="0" >+Add Attribute</option>
+																<option ng-repeat="varientattribute in varientAttributesList" ng-selected="varientObject.varientAttributeId == varientattribute.varientAttributeId"
+																 value="{{varientattribute.varientAttributeId}}">{{varientattribute.attributeName}}</option>
+
+															</select>
+															<span ng-show="varientObject.varientAttributeId=='-1'||varientObject.varientAttributeId=='0'
+																	||!varientObject.varientAttributeId" style="color:red;">* Select Attribute</span>
+															 <a href="" ng-click="addAttributeDynamically()" ng-show="productVariantsCollection.length<=2"
+																class="vd-mls vd-link ng-scope">+ Add Attribute</a>
+
+														</div>
+													</div>
+													
+
+												</div >
+
+
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+												<div class="box-body">
+													<div class="form-group" >
+														<label for="" class="col-sm-4 control-label">Value
+															(e.g. Red, Blue, Green)</label>
+														<div class="col-sm-8">
+															<div class="row">
+																	<div class="col-md-10">
+																		<input type="text" class="form-control" id=""
+																			placeholder="Separated by commas..."
+																			data-ng-model="varientObject.value" maxlength="25"
+																			ng-keyup="($event.keyCode == 13 ||$event.keyCode== 188) && addVarientValuesDynamically(varientObject)">
+																		<a ng-show="varientObject.id=='1'"><span
+																			class="label label-info"
+																			ng-repeat="verientValue in productVariantValuesCollectionOne">{{verientValue.value}}<i
+																				style="margin-left: 10px; color: red; height: 20px"
+																				class="fa fa-times" aria-hidden="true"
+																				ng-click="removeFromOne(verientValue.value)"></i></span></a> <span
+																			ng-show="varientObject.id=='1' && productVariantValuesCollectionOne.length<1"
+																			style="color: red;">* Add value</span> <a
+																			ng-show="varientObject.id=='2'"><span
+																			class="label label-info"
+																			ng-repeat="verientValue in productVariantValuesCollectionTwo">{{verientValue.value}}<i
+																				style="margin-left: 10px; color: red; height: 20px"
+																				class="fa fa-times" aria-hidden="true"
+																				ng-click="removeFromTwo(verientValue.value)"></i>
+																		</span></a> <span
+																			ng-show="varientObject.id=='2' && productVariantValuesCollectionTwo.length<1"
+																			style="color: red;">* Add value</span> <a
+																			ng-show="varientObject.id=='3'"><span
+																			class="label label-info"
+																			ng-repeat="verientValue in productVariantValuesCollectionThree">{{verientValue.value}}<i
+																				style="margin-left: 10px; color: red; height: 20px"
+																				class="fa fa-times" aria-hidden="true"
+																				ng-click="removeFromThree(verientValue.value)"></i>
+																		</span></a> <span
+																			ng-show="varientObject.id=='3' && productVariantValuesCollectionThree.length<1"
+																			style="color: red;">* Add value</span>
+
+																	</div>
+																	<div class="col-md-2">
+																		<span
+																			ng-show="varientObject.id=='2' && productVariantValuesCollectionTwo.length<1"
+																			style="color: red;"><i
+																			class="btn fa fa-trash btn-danger btn-sm "
+																			aria-hidden="true" ng-click="hidePanel(2)"></i></span> <span
+																			ng-show="varientObject.id=='3' && productVariantValuesCollectionThree.length<1"
+																			style="color: red;"><i
+																			class="btn fa fa-trash btn-danger btn-sm "
+																			aria-hidden="true" ng-click="hidePanel(3)"></i></span>
+																	</div>
+																</div>
+														</div>
+													</div>
+
+												</div>
+
+
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+								<div  ng-show="gui.varientProducts" >
+								
+									<!-- <div class="form-group" ng-show="productVariantValuesCollection.length > 0">
+										<label for="inputEmail3" class="col-sm-3 control-label">Add Prefix Bar Code for Variants</label>
+										<div class="col-sm-3">
+											<input type="text" class="form-control"
+												id="inputstoreName" placeholder="Bar code..."
+												data-ng-model="gui.sku" maxlength="6"
+												 ng-change="manageVariantsBarCodePrefix()">
+										</div>
+									</div> -->
+												
+									<table id="myTable1" class="table table-condensed" ng-show="productVariantValuesCollection.length > 0">
+									<thead>
+										<tr>
+											<th>Varient Name</th>
+											<th>Outlet Name</th>
+											<th style="width:30%">Bar Code</th>
+											<th>Supplier Code</th>
+											<th>Supplier Price</th>
+											<th>Markup (%)</th>
+											<th>Retail Price <br>(Exculding tax)</br></th>
+											<th ng-show="gui.trackingProduct && productConfigurationBean.currentInventory">Current Inventory</th>
+											<th ng-show="gui.trackingProduct && productConfigurationBean.reOrderPoint">Reorder point</th>
+											<th ng-show="gui.trackingProduct && productConfigurationBean.reOrderAmount">Reorder amount</th>
+											<!-- <th></th> -->
+										</tr>
+									</thead>
+									<tbody ng-repeat="verientValue in productVariantValuesCollection | orderBy: 'varientName'" >
+										<tr ng-repeat="outlet in verientValue.varientsOutletList">
+										<td ng-bind="verientValue.varientName"></td>
+										<td ng-bind="outlet.outletName"></td>
+										<td style="width:30%"><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Bar Code..."
+											data-ng-model="outlet.sku" maxlength="15"  ng-change="checkDuplicateVariantBarCode(verientValue,outlet)">
+											<i ng-show="checkDuplicateVariant" class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+											<span ng-show="!outlet.sku" style="color:red;">* Invalid Bar code</span>
+											<span ng-show="outlet.isDuplicateBarCode=='true'" style="color:red;">* Bar Code already exist</span>
+											<span ng-show="outlet.sku.length > 15 " style="color:red;">* Bar Code exceeded from max length(15)</span></td>
+										<td><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Supplier Code..."
+											data-ng-model="outlet.supplierCode" maxlength="25"
+											ng-pattern='/^[0-9]+$/' ng-disabled="true" required ></td>
+										<td><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Supplier Price..."
+											data-ng-model="outlet.supplyPriceExclTax" maxlength="9"
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' ng-change="evaluateVariantRetailPrice(verientValue,outlet)"></td>
+										<td><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Markup..."
+											data-ng-model="outlet.markupPrct" 
+											ng-pattern='/^[0-9]+(\.[0-9]{1,5})?$/' ng-change="evaluateVariantRetailPrice(verientValue,outlet)"></td>
+										<td><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Retail Price..."
+											data-ng-model="outlet.retailPriceExclTax" ng-change="adjustMarkUpByChangeOfVariantRetailPrice(verientValue,outlet)" 
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' maxlength="9"></td>
+										<td ng-show="gui.trackingProduct && productConfigurationBean.currentInventory"><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Current Inventory..."
+											data-ng-model="outlet.currentInventory" maxlength="9"
+											ng-pattern='/^[0-9]+$/' ></td>
+										<td ng-show="gui.trackingProduct && productConfigurationBean.reOrderPoint"><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Reorder Point..."
+											data-ng-model="outlet.reorderPoint" maxlength="9"
+											ng-pattern='/^[0-9]+$/' ></td>
+										<td ng-show="gui.trackingProduct && productConfigurationBean.reOrderAmount"><input type="text" class="form-control"
+											id="inputstoreName" placeholder="Reorder Amount..."
+											data-ng-model="outlet.reorderAmount" maxlength="9"
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' ></td>
+										<!-- <td><a href=""><i class="btn fa fa-trash btn-danger btn-sm "   ng-click="deleteProductVerientValue(verientValue,outlet)"></i></a>
+										</td> -->
+
+										</tr>
+									</tbody>
+								</table>
+								
+								</div>
+								<table id="myTable2" class="table table-condensed"
+									ng-show="gui.trackingProduct && !gui.varientProducts" >
+									<thead>
+										<tr>
+											<th>Outlet</th>
+											<th ng-show="productConfigurationBean.currentInventory">Current Inventory</th>
+											<th ng-show="productConfigurationBean.reOrderPoint">Reorder point</th>
+											<th ng-show="productConfigurationBean.reOrderAmount">Reorder amount</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="outlet in outletList">
+										<td ng-bind="outlet.outletName"></td>
+											<td ng-show="productConfigurationBean.currentInventory"><input type="text" class="form-control"
+												id="inputstoreName" placeholder="Current Inventory..."
+												data-ng-model="outlet.currentInventory" maxlength="9"
+												ng-pattern='/^[0-9]+$/' ></td>
+											<td ng-show="productConfigurationBean.reOrderPoint"><input type="text" class="form-control"
+												id="inputstoreName" placeholder="Reorder Point..."
+												data-ng-model="outlet.reorderPoint" maxlength="9"
+												ng-pattern='/^[0-9]+$/' ></td>
+											<td ng-show="productConfigurationBean.reOrderAmount"><input type="text" class="form-control"
+												id="inputstoreName" placeholder="Reorder Amount..."
+												data-ng-model="outlet.reorderAmount" maxlength="9"
+												ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' ></td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="row" ng-show="!gui.standardProduct">
+						<hr class="vd-hr">
+										
+							<div class="col-md-1"></div>
+							<div class="col-md-10">
+								<div class="inventory relative box-2" id="composite-items"
+									scrolltop="0">
+								<h2>Included Products</h2>	
+								<h4>Composite products contain specified quantities of one or more standard products.</h4>
+									
+									<div id="product-search">
+									
+										<div class="line search-toolbar">
+											<div class="unit line size2of4">
+												<div class="unit unit-product">
+													<label for="product_search[product_sku]">Product:</label> 
+														<select class="form-control select2" style="width: 100%;"
+															data-ng-model="compositProduct.productId"
+															ng-init="compositProduct.productId='0'">
+															<option value="0">Select Product</option>
+															<option ng-repeat="productVariant in productVariantBeanList"
+															value="{{productVariant.productId}}:{{productVariant.productName}}:{{productVariant.variantAttributeName}}:{{productVariant.productVariantId}}">{{productVariant.productName}}:{{productVariant.variantAttributeName}}</option>
+
+														</select>
+												</div>
+												<div class="unit unit-quantity">
+													<label for="product_search[quantity]">Quantity:</label> <input
+														type="text" ng-pattern='/^[0-9]+$/' name="product_search[quantity]" ng-model="compositProduct.compositQunatity" 
+														autocomplete="off" class=" form-control click-to-select unit"
+														id="product_search_quantity">
+												</div>
+												
+											</div>
+											<div class="unit">
+												<a form-controlhref="#" class="btn btn--pill" id="btn-add-products" ng-click="addCompositProductDynamically()" 
+												ng-disabled="!compositProduct.productId||compositProduct.productId=='0'">Add</a>
+											</div>
+											<span class="unit size1of4 discrete help">Tip: Product
+												quantities can be less than 1.</span>
+										</div>
+
+									</div>
+									
+									<div id="product-search" ng-show="compositProductCollection.length>0" ng-repeat="composit in compositProductCollection">
+									
+										<div class="line search-toolbar">
+											<div class="unit line size2of4">
+												<div class="unit unit-product">
+													<label for="product_search[product_sku]">Product:</label> 
+														<br/><br/>
+														{{composit.productName}}:{{composit.productVariantName}}
+												</div>
+												<div class="unit unit-quantity">
+													<label for="product_search[quantity]">Quantity:</label> <input
+														type="text" ng-pattern='/^[0-9]+$/' name="product_search[quantity]" ng-model="composit.compositQunatity"
+														autocomplete="off" class=" form-control click-to-select unit"
+														id="product_search_quantity">
+												</div>
+												
+											</div>
+											
+										</div>
+
+									</div>
+									
+									<div class="hr line" id="composite-product-list">
+										<div class="table-wrapper">
+											<table class="table-1 borderless item_list">
+												<tbody>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							</div>
+							<div class="col-md-1"></div>
+						</div>
+						<div class="alert alert-danger alert-sm " ng-show="productAddError"
+							ng-bind="productAddErrorMessage" ng-cloak></div>
+						<div class="box-footer text-right">
+							<button class="btn btn-primary btn-sm pull-right btn-primary-spacing" ng-click="addProduct( croppedDataUrl, picFile.name)"
+								ng-disabled="!productBean.productName||!productBean.sku||!productBean.productHandler||!productBean.supplyPriceExclTax
+								||!productBean.markupPrct||!productBean.productTypeId||productBean.productTypeId=='-1'||productBean.productTypeId=='0'
+								||!productBean.supplierId||productBean.supplierId=='-1'||productBean.supplierId=='0'
+								||!productBean.brandId||productBean.brandId=='-1'||productBean.brandId=='0'||barCode||disableAddproductButton" ng-show="!loading">Add
+								Product</button>
+							<button  ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+							    	Add Product Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+				       	    </button>
+							<a href="#products"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+							
+						</div>
+					</div>
+					<!-- /.box-body -->
+
+				</div>
+
+			</div>
+			<!-- /.col-md-10 -->
+	
+	</section>
+	</div>
+	</div>
+	<div class="col-md-1"></div>
+</div>
+
+<!-- Modal -->
+	<modal title="New Variant Attribute" visible="showNewVarientAttriubuteModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					<div class="alert alert-danger alert-sm" ng-show="variantAttributeAddError"
+								ng-bind="variantAttributeAddErrorMessage" ng-cloak></div>
+					
+					
+					<div class="form-group">
+						<label for="varient" class="col-sm-4 control-label">Variant Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="varient"
+								placeholder="Variant Name..." name="varient"
+								data-ng-model="varientAttributeBean.attributeName" ng-pattern='/^[a-zA-Z0-9\s]+$/' required maxlength="100">
+						</div>
+					</div>
+					
+				</div>
+			</form>
+			<div class="box-footer">
+			
+			
+			
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addVarientAttribute(varientAttributeBean)"
+					ng-disabled="!varientAttributeBean.attributeName"
+					ng-show="!loadingVarient">Add Varient</button>
+				<button ng-show="loadingVarient"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Add Varient Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+	
+	<modal title="New Product Type" visible="showAddProducTypeModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+								
+					<div class="form-group">
+						<label for="tag" class="col-sm-4 control-label">Product Type Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="tag"
+								placeholder="Product Type Name..." name="tag"
+								data-ng-model="productTypeBean.productTypeName"  required maxlength="100">
+						</div>
+					</div>					
+				</div>
+			</form>
+			<div class="box-footer">
+				
+					<button class="btn btn-primary btn-sm pull-right btn-primary-spacing" ng-click="addProductType()"
+						ng-disabled="!productTypeBean.productTypeName" ng-show="!loading">Add
+						Product Type</button>
+					<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+						Add Product Type Processing<i
+							class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+					</button>
+					<button class="btn btn-default btn-sm pull-right btn-primary-spacing" data-dismiss="modal">Cancel</button>
+				
+		   </div>
+	</li>
+	</div>
+
+	</modal>
+	
+	<modal title="New Supplier" visible="showAddSupplierModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+								
+					<div class="form-group">
+						<label for="tag" class="col-sm-4 control-label">Supplier Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="inputstoreName"
+								placeholder="Supplier Name..." data-ng-model="supplierBean.supplierName"
+								 required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="tag" class="col-sm-4 control-label">Default Markup</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="inputURL"
+								placeholder="Markup..." ng-pattern="/^[0-5]+$/"
+								data-ng-model="supplierBean.defaultMarkup" maxlength="5">
+						</div>
+					</div>							
+				</div>
+			</form>
+			<div class="box-footer">
+					<button class="btn btn-primary btn-sm pull-right btn-primary-spacing" ng-click="addSupplier()"
+						ng-disabled="!supplierBean.supplierName" ng-show="!loading">Add
+						Supplier</button>
+					<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+						Add Supplier Processing<i
+							class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+					</button>
+					<button class="btn btn-default btn-sm pull-right btn-primary-spacing" data-dismiss="modal">Cancel</button>
+				
+		   </div>
+	</li>
+	</div>
+
+	</modal>
+	
+	<modal title="New Brand" visible="showAddBrandModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					<div class="alert alert-danger alert-sm" ng-show="paymentTypeAddError"
+								ng-bind="paymentTypeAddErrorMessage" ng-cloak></div>
+					
+					
+					<div class="form-group">
+						<label for="tag" class="col-sm-4 control-label">Brand Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="tag"
+								placeholder="Brand Name..." name="tag"
+								data-ng-model="brandBean.brandName"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="brand" class="col-sm-4 control-label">Brand Decription</label>
+						<div class="col-sm-8">
+						<textarea class="form-control" id="brand"
+								placeholder="Brand Decirption..." name="tag"
+								data-ng-model="brandBean.brandDescription"   maxlength="200"></textarea>
+							
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addBrand()"
+					ng-disabled="!brandBean.brandName"
+					ng-show="!loading">Add Brand</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Add Brand Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+					</div>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+	
+	<modal title="Duty Calculation" visible="showDutyCalculationModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					<div class="text-center mvl">
+								<a href="" class="js-toggle-tax-by-outlet-table no-decoration"
+									ng-click="showHideRateArea()"><i
+									ng-class="!RateArea ? 'icon-general-arrow-blue-up' : 'icon-general-arrow-blue-down'"></i><span
+									class="mls font-large" ng-bind="showHideRateText"></span></a>
+							</div>
+					<div class="alert alert-danger alert-sm" ng-show="paymentTypeAddError"
+								ng-bind="paymentTypeAddErrorMessage" ng-cloak></div>
+					<div ng-show="RateArea">
+					<div class="form-group">
+						<label for="numberOfUnits" class="col-sm-3 control-label"></label>
+						<div class="col-sm-4">
+							Quantity
+							<input type="text" class="form-control" id="numberOfUnits"
+								placeholder="Quantity..." name="numberOfUnits"
+								data-ng-model="productPriceHistoryBean.numberOfUnits" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+						
+						
+						<div class="col-sm-4">
+						Rate($)
+							<input type="text" class="form-control" id="dollarRate"
+								placeholder="Dollor Rate..." name="dollarRate"
+								data-ng-model="productPriceHistoryBean.dollarRate" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="DUnitValueDeclared" class="col-sm-3 control-label">Unit Value($)</label>
+						<div class="col-sm-4">
+							Declared
+							<input type="text" class="form-control" id="DUnitValueDeclared"
+								placeholder="$Unit Value Declared..." name="DUnitValueDeclared"
+								data-ng-model="productPriceHistoryBean.dUnitValueDeclared"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							Assessed
+							<input type="text" class="form-control" id="DUnitValueAssessed"
+								placeholder="$ Unit Value Assessed..." name="DUnitValueAssessed"
+								data-ng-model="productPriceHistoryBean.dUnitValueAssessed" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="tag" class="col-sm-3 control-label">Total Value($)</label>
+						<div class="col-sm-4">
+							Declared
+							<input type="text" class="form-control" id="DTotalValueDeclared"
+								placeholder="$ Total Value Declared..." name="DTotalValueDeclared"
+								data-ng-model="productPriceHistoryBean.dTotalValueDeclared"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							Assessed
+							<input type="text" class="form-control" id="DTotalValueAssessed"
+								placeholder="$ Total Value Assessed..." name="DTotalValueAssessed"
+								data-ng-model="productPriceHistoryBean.dTotalValueAssessed"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="tag" class="col-sm-3 control-label">Custom Value(PKR)</label>
+						<div class="col-sm-4">
+							Declared
+							<input type="text" class="form-control" id="PCustomValueDeclared"
+								placeholder="PKR Custom Value Declared..." name="PCustomValueDeclared"
+								data-ng-model="productPriceHistoryBean.pCustomValueDeclared"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							Assessed
+							<input type="text" class="form-control" id="PCustomValueAssessed"
+								placeholder="PKR Custom Value Assessed..." name="PCustomValueAssessed"
+								data-ng-model="productPriceHistoryBean.pCustomValueAssessed"  required maxlength="100">
+						</div>
+					</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="customDutyPrct" class="col-sm-3 control-label">Custom D(%)</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="customDutyPrct"
+								placeholder="Custom D(%)..." name="customDutyPrct"
+								data-ng-model="productPriceHistoryBean.customDutyPrct" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="customDutyValue"
+								placeholder="Custom Value..." name="customDutyValue"
+								data-ng-model="productPriceHistoryBean.customDutyValue"  ng-disabled="true"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="salesTaxPrct" class="col-sm-3 control-label">S Tax(%)</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="salesTaxPrct"
+								placeholder="S Tax(%)..." name="salesTaxPrct"
+								data-ng-model="productPriceHistoryBean.salesTaxPrct" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="salesTaxValue"
+								placeholder="S Tax Value..." name="salesTaxValue"
+								data-ng-model="productPriceHistoryBean.salesTaxValue" ng-disabled="true"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="additionalSalesTaxPrct" class="col-sm-3 control-label">ADD S.Tax(%)</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="additionalSalesTaxPrct"
+								placeholder="Add Sales Tax(%)..." name="additionalSalesTaxPrct"
+								data-ng-model="productPriceHistoryBean.additionalSalesTaxPrct" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="additionalSalesTaxValue"
+								placeholder="Add Sales Tax Value..." name="additionalSalesTaxValue"
+								data-ng-model="productPriceHistoryBean.additionalSalesTaxValue" ng-disabled="true"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="regularityDutyPrct" class="col-sm-3 control-label">RD(%)</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="regularityDutyPrct"
+								placeholder="RD(%)..." name="regularityDutyPrct"
+								data-ng-model="productPriceHistoryBean.regularityDutyPrct" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="regularityDutyValue"
+								placeholder="RD Value..." name="regularityDutyValue"
+								data-ng-model="productPriceHistoryBean.regularityDutyValue" ng-disabled="true"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="itPrct" class="col-sm-3 control-label">I Tax(%)</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="itPrct"
+								placeholder="I Tax(%)..." name="itPrct"
+								data-ng-model="productPriceHistoryBean.itPrct" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="itValue"
+								placeholder="I Tax Value..." name="itValue"
+								data-ng-model="productPriceHistoryBean.itValue" ng-disabled="true"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="additionalCustomDutyPrct" class="col-sm-3 control-label">Add C Duty(%)</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="additionalCustomDutyPrct"
+								placeholder="Add C Duty(%)..." name="additionalCustomDutyPrct"
+								data-ng-model="productPriceHistoryBean.additionalCustomDutyPrct" ng-change="calculateAssessedValues()"  required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="additionalCustomDutyValue"
+								placeholder="Add C Duty Value..." name="additionalCustomDutyValue"
+								data-ng-model="productPriceHistoryBean.additionalCustomDutyValue" ng-disabled="true"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="excisePrct" class="col-sm-3 control-label">Excise(%)</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="excisePrct"
+								placeholder="Excise(%)..." name="excisePrct"
+								data-ng-model="productPriceHistoryBean.excisePrct" ng-change="calculateAssessedValues()" required maxlength="100">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="exciseValue"
+								placeholder="Excise Value..." name="exciseValue"
+								data-ng-model="productPriceHistoryBean.exciseValue" ng-disabled="true"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="totalValue" class="col-sm-3 control-label">Total</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="totalValue"
+								placeholder="Total..." name="totalValue"
+								data-ng-model="productPriceHistoryBean.totalValue"  required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="desciption" class="col-sm-3 control-label">Decription</label>
+						<div class="col-sm-9">
+						<textarea class="form-control" id="desciption"
+								placeholder="Decirption..." name="desciption"
+								data-ng-model="productPriceHistoryBean.description"   maxlength="200"></textarea>
+							
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hsCode" class="col-sm-3 control-label">HS Code</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="hsCode"
+								placeholder="HS Code..." name="hsCode"
+								data-ng-model="productPriceHistoryBean.hsCode"  required maxlength="100">
+						</div>
+						
+					</div>
+					<div class="form-group">
+						<label for="grNumber" class="col-sm-3 control-label">GR Number</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="grNumber"
+								placeholder="GR Number..." name="grNumber"
+								data-ng-model="productPriceHistoryBean.grNumber"  required maxlength="300">
+						</div>
+						
+					</div>
+					
+					
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addSupplierPrice()"
+					
+					ng-show="!loading" >Add Supplier Price</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Add Supplier Price Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+					</div>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+	
+	<!-- Modal end -->	
+
+<style>
+.cropArea_new {
+	padding-top: 25px;
+	background: #E4E4E4;
+	overflow: hidden;
+	width: 100%;
+	height: 250px;
+	margin-top: 10px;
+}
+
+form .progress {
+	line-height: 15px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+}
+
+.button {
+	-moz-appearance: button;
+	/* Firefox */
+	-webkit-appearance: button;
+	/* Safari and Chrome */
+	padding: 10px;
+	margin: 10px;
+	width: 70px;
+}
+
+.drop-box {
+	background: #F8F8F8;
+	border: 5px dashed #DDD;
+	width: 100%;
+	height: 250px;
+	text-align: center;
+	padding-top: 25px;
+	margin: 10px;
+}
+
+.dragover {
+	border: 5px dashed blue;
+}
+</style>

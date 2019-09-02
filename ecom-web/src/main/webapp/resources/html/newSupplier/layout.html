@@ -1,0 +1,439 @@
+<div class="container">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>{{supplierScreenMode}}</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#suppliers">Suppliers</a></li>
+				<li class="active">{{supplierScreenMode}}</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="box">
+						<div class="box-header">
+							<i class="fi-page-multiple fa-2x text-blue" aria-hidden="true"></i>
+							<h3 class="box-title">{{supplierScreenMode}}</h3>
+							<div class="alert alert-success alert-sm" ng-show="Success"
+								ng-bind="SuccessMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="Error"
+								ng-bind="ErrorMessage" ng-cloak></div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box box-info">
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+
+									<div class="box-header with-border"></div>
+									<!-- /.box-header -->
+									<!-- form start -->
+									<form ID="form1" class="form-horizontal">
+										<div class="box-body">
+
+											<div class="form-group">
+												<label for="inputEmail3" class="col-sm-4 control-label">Store
+													Supplier Name</label>
+												<div class="col-sm-8">
+													<input type="text" class="form-control" id="inputstoreName"
+														placeholder="Supplier name..." data-ng-model="supplierBean.supplierName"
+														maxlength="100"  required>
+														<span ng-show="!supplierBean.supplierName" style="color:red;">* Add Supplier name</span>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="inputEmail3" class="col-sm-4 control-label">Default
+													Markup</label>
+												<div class="col-sm-8">
+													<input type="text" class="form-control" id="inputURL"
+														placeholder="Default Markup..." ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
+														data-ng-model="supplierBean.defaultMarkup" maxlength="5">
+														
+												</div>
+											</div>
+
+
+
+
+
+										</div>
+									</form>
+
+								</div>
+								<div class="col-md-5">
+
+									<div class="box-header with-border"></div>
+									<!-- /.box-header -->
+									<!-- form start -->
+									<form ID="form2" class="form-horizontal">
+										<div class="box-body">
+
+
+											<div class="form-group">
+												<label for="inputEmail3" class="col-sm-4 control-label">Description
+												</label>
+												<div class="col-sm-8">
+													<textarea type="text" class="form-control"
+														id="inputsequenceNo" placeholder="Description"
+														data-ng-model="supplierBean.description" maxlength="100"
+														required rows="4"></textarea>
+												</div>
+											</div>
+
+
+
+
+
+										</div>
+									</form>
+
+								</div>
+								<div class="col-md-1"></div>
+							</div>
+						</div>
+
+
+
+
+
+						<!-- /.box-footer -->
+
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+	
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<div class="box">
+				<div class="box-header">
+					<i class="fa fa-building-o fa-4x" aria-hidden="true"></i>
+					<h3 class="box-title">Contact Information</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<div class="box box-info">
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-5">
+
+								<div class="box-header with-border"></div>
+								<!-- /.box-header -->
+								<!-- form start -->
+								<form ID="form3" class="form-horizontal">
+									<div class="box-body">
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">Contact
+												Name</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputstoreName"
+													placeholder="Contact Name..."
+													data-ng-model="physicalAddressBean.contactName"
+													maxlength="25" ng-pattern='/^[A-Za-z\s]+$/'>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">Company</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputstoreName"
+													placeholder="" data-ng-model="supplierBean.companyName"
+													maxlength="25" ng-pattern='/^[A-Za-z\s]+$/'>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												Email</label>
+											<div class="col-sm-8">
+												<input type="email" class="form-control" id="inputURL"
+													placeholder="Email..."
+													data-ng-model="physicalAddressBean.email" maxlength="25">
+											</div>
+										</div>
+
+
+
+
+									</div>
+								</form>
+
+							</div>
+							<div class="col-md-5">
+
+								<div class="box-header with-border"></div>
+								<!-- /.box-header -->
+								<!-- form start -->
+								<form ID="form4" class="form-horizontal">
+									<div class="box-body">
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												Phone</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													placeholder="Phone..." ng-pattern=""
+													data-ng-model="physicalAddressBean.phone" maxlength="25">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												Mobile</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													placeholder="Mobile..." ng-pattern=""
+													data-ng-model="physicalAddressBean.phone" maxlength="25">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">Web
+												Site </label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													placeholder="Web Site..."
+													data-ng-model="physicalAddressBean.website" maxlength="25">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">Twiter
+											</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													placeholder="Twiter..."
+													data-ng-model="physicalAddressBean.twitter" maxlength="25">
+											</div>
+										</div>
+
+
+
+									</div>
+								</form>
+
+							</div>
+							<div class="col-md-1"></div>
+						</div>
+					</div>
+
+
+
+
+
+					<!-- /.box-footer -->
+
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<div class="box">
+				<div class="box-header">
+					<i class="fa fa-building-o fa-4x" aria-hidden="true"></i>
+					<h3 class="box-title">Address</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<div class="box box-info">
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-5">
+
+								<div class="box-header with-border"></div>
+								<!-- /.box-header -->
+								<!-- form start -->
+								<form ID="form5" class="form-horizontal">
+									<div class="box-body">
+
+										<div class="subhead info_bar">
+											<p>Physical Address</p>
+										</div>
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">Street
+											</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputstoreName"
+													data-ng-model="physicalAddressBean.street" maxlength="100">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												Suburb</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="physicalAddressBean.suburb" maxlength="25">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												City</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="physicalAddressBean.city" maxlength="25">
+											</div>
+										</div>
+
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												Postal Code</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="physicalAddressBean.postalCode"
+													maxlength="25">
+											</div>
+										</div>
+
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												State</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="physicalAddressBean.state" maxlength="25">
+											</div>
+										</div>
+
+
+									</div>
+								</form>
+
+							</div>
+							<div class="col-md-5">
+
+								<div class="box-header with-border"></div>
+								<!-- /.box-header -->
+								<!-- form start -->
+								<form ID="form6" class="form-horizontal">
+									<div class="box-body">
+
+
+										<div class="subhead info_bar">
+											<p style="width: 150px; float: left;">Postal Address</p>
+											<a ng-click="populatePhysicalAddress()"
+												id="copy_physical_address">Same as Physical Address</a>
+											<div class="clearer"></div>
+										</div>
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">Street
+											</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputstoreName"
+													data-ng-model="postalAddressBean.street" maxlength="50"
+													ng-pattern='/^[A-Za-z\s]+$/'>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												Suburb</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="postalAddressBean.suburb" maxlength="25">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												City</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="postalAddressBean.city" maxlength="25">
+											</div>
+										</div>
+
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												Postal Code</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="postalAddressBean.postalCode" maxlength="25">
+											</div>
+										</div>
+
+
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">
+												State</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="inputURL"
+													data-ng-model="postalAddressBean.state" maxlength="25">
+											</div>
+										</div>
+
+
+									</div>
+								</form>
+
+							</div>
+							<div class="col-md-1"></div>
+						</div>
+					</div>
+
+
+
+
+					<!-- /.box-footer -->
+
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer text-right">
+					
+					<button
+						class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+						ng-click="addSupplier()" ng-disabled="!supplierBean.supplierName"
+						ng-show="!loading&&!cookieSupplierBean">Save</button>
+					<button
+						class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+						ng-click="updateSupplier()"
+						ng-disabled="!supplierBean.supplierName"
+						ng-show="!loading&&cookieSupplierBean">Update</button>
+
+					<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+						Save Processing<i
+							class="fa fa-arrow-right text-muted fa-spinner fa-spin "> </i>
+					</button>
+					<a href="#suppliers"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+						
+
+				</div>
+
+				<!-- /.box -->
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+
+	</div>
+
+	</section>
+	<div class="col-md-1"></div>
+</div>
+</div>
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>

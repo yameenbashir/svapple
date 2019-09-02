@@ -1,0 +1,158 @@
+<div class="">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>Loyalty</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li class="active">Loyalty</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+
+		<div class="top-buffer-contact"></div>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+		<!-- Main content -->
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+			<div class="head box-gradient-4">
+            <div class="input-row contains-checkbox line mbn mlm">
+                <div class="unit field">
+                    <input type="checkbox" id="readyForSold" data-ng-model="gui.loyaltyEnabled"></div>
+                <div class="unit">
+                    <label for="loyaltyEnabled">Enable loyalty</label>                </div>
+            </div>
+            <div class="alert alert-success alert-sm" ng-show="loyaltySuccess"
+								ng-bind="loyaltySuccessMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="loyaltyError"
+								ng-bind="loyaltyErrorMessage" ng-cloak></div>
+        </div>
+					<vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap" >
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+							Allow customers to earn Loyalty PKRs when purchasing products. You can set Loyalty PKRs earned on individual products from the Edit Product page or from a price book. You can turn off Loyalty for individual customers on the Edit Customer page.
+						</div>
+					</div>
+					</vd-section>
+					<div class="box newFont">
+
+						<div class="box-header"></div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<div class="content padded-20">
+								<div class="toggle-container mvl ptm disabled"
+									data-target="loyalty">
+									<div class="box-2 size2of5 block-center">
+										<h3 class="strong text-center mbl mtl">Earning Loyalty</h3>
+										<div
+											class="input-row line block-center size4of5 font-large-xl ptm pbm">
+											<div class="unit">
+												<input type="text"
+													name="vend_retailer_loyalty[loyalty_spend_amount]"
+													class="small text-right mrs"
+													id="vend_retailer_loyalty_loyalty_spend_amount"
+													data-ng-model="companyLoyalty.loyaltyInvoiceAmount" ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required> <span>PKR <b class="strong phl">==</b> PKRs<input type="text"
+													name="vend_retailer_loyalty[loyalty_spend_amount]"
+													class="small text-right mrs"
+													id="vend_retailer_loyalty_loyalty_spend_amount"
+													data-ng-model="companyLoyalty.loyaltyAmount" ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required> Loyalty</span>
+											</div>
+										</div>
+									</div>
+									<div class="em font-12 text-center mtm pbl">
+										Spending PKRs<span id="loyalty-spend-amount">{{companyLoyalty.loyaltyInvoiceAmount}}</span>
+										earns PKRs{{companyLoyalty.loyaltyAmount}} Loyalty.
+									</div>
+									<hr>
+									<div class="mtl pts">
+										<div class="input-row line contains-checkbox">
+											<div class="unit">
+												<label
+													for="vend_retailer_loyalty_offer_signup_bonus_loyalty">Bonus
+													Loyalty</label>
+											</div>
+											<div class="unit field">
+												<input type="checkbox"
+													name="vend_retailer_loyalty[offer_signup_bonus_loyalty]"
+													class="toggle-btn" data-target="bonus"
+													id="vend_retailer_loyalty_offer_signup_bonus_loyalty"
+													data-ng-model="gui.loyaltyBonusEnabled">
+												<div class="help">
+													Offer bonus Loyalty PKRs if a customer fills out all of
+													their details in the Customer Portal (<a
+														href="/loyalty/example" target="_blank">see example</a>)
+												</div>
+
+											</div>
+											<div class="error clear strong"></div>
+										</div>
+										<div class="input-row line mbl">
+											<div class="unit">
+												<label></label>
+											</div>
+											<div class="unit field mll toggle-container disabled"
+												data-target="bonus">
+												<input type="text"
+													name="vend_retailer_loyalty[signup_bonus_loyalty_amount]"
+													value="0.00" class="small text-right"
+													id="vend_retailer_loyalty_signup_bonus_loyalty_amount"
+													data-ng-model="companyLoyalty.loyaltyBonusAmount" ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'> <span class="pls font-large">Loyalty</span>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+						<!-- /.box-body -->
+						<div class="box-footer">
+							<button
+								class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+								ng-click="updateCompanyLoyalty()"
+								ng-disabled="!companyLoyalty.loyaltyInvoiceAmount||!companyLoyalty.loyaltyAmount||!companyLoyalty.loyaltyBonusAmount"
+								ng-show="!loading">Save</button>
+							<button ng-show="loading"
+								class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+								Save Processing<i
+									class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+							</button>
+							<a href="#home"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+								
+
+					</div>
+					</div>
+					<!-- /.box -->
+					<div class="top-buffer-contact"></div>
+
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+		</section>
+	</div>
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+	<script src="resources/js/jquery.dataTables.min.js"></script>
+
+	<script src="resources/js/dataTables.responsive.min.js"></script>
+	<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+
+	<style>
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc,
+	table.dataTable thead .sorting_desc {
+	background: none;
+}
+</style>

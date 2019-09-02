@@ -1,0 +1,5 @@
+1: Create Hibernate CFG File.
+2: Create Hibernate COnfiguration file using Hibernate Cfg.
+3: Create Reverse Engineering  file using Hibernate Configuration file.
+4. Create Hibernate console configuration using Hibernate Reverse engineering file.
+5. Generate Pojo using Console configuration, and select EJB 3 based annotations.

@@ -1,0 +1,475 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<h1>Outlet Details</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!--  <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#outlets">Outlets</a></li>
+					<li class="active">Outlet Details</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+								<div class="vd-button-group">
+									<button class="btn btn-success btn-lg" ng-click="addPayment()" ng-hide="isHeadOffice()" >Adjust
+										Payment</button>
+
+								</div>
+
+							</div>
+						</div>
+						</vd-section>
+						<div class="box">
+							<div class="box-header">
+								{{product.productDesc}}
+								<div>
+									<span class="label label-info"
+										ng-repeat="productTag in product.productTagBeanList">{{productTag.productTagName}}</span>
+								</div>
+
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-6">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-md-6 control-label">Outlet
+															Name</label>
+														<div class="col-md-6">
+															<span class="unit control-label"
+																ng-bind="supplierBean.supplierName"></span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-md-6 control-label">Contact
+															Number</label>
+														<div class="col-md-6">
+															<span class="unit control-label"
+																ng-bind="supplierBean.addresses[0].phone"></span>
+														</div>
+													</div>
+
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-6">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-md-6 control-label">Outlet
+															Balance </label>
+														<div class="col-md-6">
+															<span class="unit control-label"
+																ng-bind="supplierBean.supplierBalance"></span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-md-6 control-label">Company
+															Name</label>
+														<div class="col-md-6">
+															<span class="unit control-label"
+																ng-bind="supplierBean.companyName"></span>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-2">
+											<div class="box-header with-border"></div>
+											<div class="box-body">
+												<img ng-src="{{product.imagePath || '//:0'}}"
+													class="img-responsive img-rounded" alt="Cinque Terre"
+													style="width: 204px; height: auto;">
+											</div>
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.box -->
+						</div>
+
+
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+								<h2>Payment History</h2>
+
+							</div>
+						</div>
+						</vd-section>
+						<div class="box">
+							<div class="box-header">
+								<h3 class="box-title">Inventory</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-12">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<div class="box-body">
+												<table id="myTable1" class="display" cellspacing="0"
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Date</th>
+															<th>Entry Type</th>
+															<th>Notes</th>
+															<th>Order Name</th>
+															<th>Order Amount</th>
+															<th>Balance</th>
+															<th>Total Paid</th>
+															<th>New Balance</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="supplierPayment in supplierPaymentBeansList">
+															<td ng-bind="supplierPayment.createdDate" data-th="Lastrun" data-order="[unixTimestamp]"></td>
+															<td ng-bind="supplierPayment.adjustmentType"></td>
+															<td ng-bind="supplierPayment.description"></td>
+															<td ng-bind="supplierPayment.orderRefNum"></td>
+															<td ng-bind="supplierPayment.paymentAmount"></td>
+															<td ng-bind="supplierPayment.supplierBalance"></td>
+															<td ng-bind="supplierPayment.totalPaid"></td>
+															<td ng-bind="supplierPayment.supplierNewBalance"></td>
+														</tr>
+													</tbody>
+												</table>
+
+											</div>
+
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+						</div>
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+								<h2>Orders History</h2>
+
+							</div>
+						</div>
+						</vd-section>
+						<div class="box">
+							<div class="box-header">
+								<h3 class="box-title">Inventory</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-12">
+
+											<div class="box box-primary newFont">
+												<div class="box-header"></div>
+												<!-- /.box-header -->
+												<div class="box-body">
+													<table id="myTable" class="display" cellspacing="0"
+														width="100%" ng-clock>
+														<thead>
+															<tr>
+																<th>Name / Reference</th>
+																<th>Type</th>
+																<th>Date</th>
+																<th>Delivery Due</th>
+																<th>Order No</th>
+																<th>Outlet</th>
+																<th>Source</th>
+																<th>Status</th>
+																<th>Items</th>
+																<th>Total Cost</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="stockOrderBean in stockOrderBeansList">
+
+																<td ng-bind="stockOrderBean.stockRefNo"></td>
+																<td ng-bind="stockOrderBean.stockOrderTypeDesc"></td>
+																<td ng-bind="stockOrderBean.createdDate"></td>
+																<td ng-bind="stockOrderBean.diliveryDueDate"></td>
+																<td ng-bind="stockOrderBean.orderNo"></td>
+																<td ng-bind="stockOrderBean.outletName"></td>
+																<td ng-bind="stockOrderBean.supplierName"></td>
+																<td ng-bind="stockOrderBean.status"></td>
+																<td ng-bind="stockOrderBean.itemCount"></td>
+																<td ng-bind="stockOrderBean.totalCost"></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+				<!-- /.box -->
+
+			</section>
+
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+<modal title="Adjust Payment" visible="showUpdatePaymentModal" ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<form class="form-horizontal" name="myForm">
+		<div class="box-body">
+			<div class="alert alert-success alert-sm" ng-show="success"
+				ng-bind="successMessage" ng-cloak></div>
+			<div class="alert alert-danger alert-sm" ng-show="error"
+				ng-bind="errorMessage" ng-cloak></div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="box box-primary">
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Adjustment
+								Type</label>
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-6">
+										<label class="radio-inline"> <input type="radio"
+											ng-model="supplierPaymentBean.adjustmentType" value="Cash In"
+											ng-change="calculateNewBalance()"> Cash In
+										</label>
+									</div>
+									<div class="col-md-6">
+										<label class="radio-inline"> <input
+											ng-model="supplierPaymentBean.adjustmentType" type="radio"
+											value="Cash Out" ng-change="calculateNewBalance()">Cash
+											Out
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Order #</label>
+							<div class="col-md-6">
+								<select class="form-control " data-native-menu="false"
+									data-role="listview"
+									data-ng-model="supplierPaymentBean.orderRefNum"
+									ng-change="populateOrderAmount()"
+									ng-disabled="!supplierPaymentBean.adjustmentType">
+									<option value="-1">Select Order</option>
+									<option ng-repeat="stockOrder in stockOrderBeansList"
+										value="{{stockOrder.stockOrderId}}">{{stockOrder.stockRefNo}}</option>
+								</select> <span ng-show="supplierPaymentBean.orderRefNum==-1"
+									style="color: red;">* Select Order</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Order
+								Amount</label>
+							<div class="col-md-6">
+								<span class="unit control-label"
+									ng-bind="supplierPaymentBean.paymentAmount"></span>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Cash Given</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Cash..." name="tag"
+									data-ng-model="supplierPaymentBean.paymentCash"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="box box-primary">
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Credit
+								Card</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Credit Card..." name="tag"
+									data-ng-model="supplierPaymentBean.paymentCreditCard"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Other
+								Payment</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Payment Other Type" name="tag"
+									data-ng-model="supplierPaymentBean.paymentOtherType"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Cash
+								Return</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Cash Return..." name="tag"
+									data-ng-model="supplierPaymentBean.cashReturn"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Balance</label>
+							<div class="col-md-6">
+								<span class="unit control-label"
+									ng-bind="supplierPaymentBean.supplierBalance"></span>
+							</div>
+						</div>
+						
+
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+			<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">New
+								Balance</label>
+							<div class="col-md-6">
+								<span class="unit control-label"
+									ng-bind="supplierPaymentBean.supplierNewBalance"></span>
+							</div>
+						</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<textArea type="text" class="form-control" id="tag"
+							placeholder="Payment Notes..." name="tag"
+							data-ng-model="supplierPaymentBean.description"
+							ng-disabled="!supplierPaymentBean.orderRefNum" rows="2"
+							columns="5" ng-pattern='/^[-@./#&+\w\s]*$/'
+							maxlength="100"></textArea>
+
+					</div>
+				</div>
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addSuppliersPayment()"
+					ng-disabled="!supplierPaymentBean.paymentAmount || supplierPaymentBean.orderRefNum==-1 || !supplierPaymentBean.paymentCash || !supplierPaymentBean.paymentCreditCard || !supplierPaymentBean.cashReturn || !supplierPaymentBean.paymentOtherType"
+					 ng-show="!loading">Adjust
+					Payment</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</div>
+
+	</form>
+
+</div>
+
+</modal>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></scrip
+<!-- <script>
+	$(function() {
+		//  document.body.style.overflow = 'hidden';
+
+		setTimeout(function() {
+			$('#myTable').DataTable({
+				responsive : true
+			});
+			$('#myTable1').DataTable({
+				responsive : true
+			});
+		}, 1);
+
+	});
+</script> -->

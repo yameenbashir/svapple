@@ -1,0 +1,311 @@
+<div class="">
+	<div class="">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Inventory Report Product wise <small>Inventory Report Product wise summary</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+					<li class="active">Inventory Report Product wise</li>
+				</ol>
+			</section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+
+
+				<div class="row">
+
+
+					<div class="box box-primary newFont">
+
+
+						<div class="box-header">
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-3">
+									<div class="form-group" >
+										<label for="inputPassword3" class="col-sm-5 control-label">Select
+											Outlet</label>
+
+										<div class="col-sm-7">
+											<select class="form-control " data-native-menu="false"
+												data-role="listview" ng-change="changeOutletName()"
+												data-ng-model="outletName"
+												ng-init="outletName=outletSelected">
+												<option value="All Outlets">All Outlets</option>
+												<option ng-repeat="outlet in outlets"
+													ng-selected=" inventoryReportOutletName == outlet.outletName"
+													value="{{outlet.outletName}}">{{outlet.outletName}}</option>
+
+											</select>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body" style="overflow-x: auto;">
+							<table id="myTable" class="display" cellspacing="0" width="100%"
+								ng-clock>
+								<thead>
+									<tr>
+										<th>Product</th>
+										<!-- <th>Outlet</th> -->
+										<th>Supplier</th>
+										<th>Variants Count</th>
+										<th>Total Inventory</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="product in productBeanList">
+
+										<td ng-bind="product.productName"></td>
+										<!-- <td ng-bind="product.outletName"></td> -->
+										<td ng-bind="product.supplierName"></td>
+										<td ng-bind="product.varinatsCount"></td>
+										<td ng-bind="product.inventoryCount"></td>
+										
+									</tr>
+								</tbody>
+								
+							</table>
+						</div>
+						<!-- <div class="box-body" ng-show="!hideSalesDetails">
+							<table id="myTable1" class="display" cellspacing="0" width="100%"
+								ng-clock>
+								<thead>
+									<tr>
+										<th>Product</th>
+										<th>Outlet</th>
+										<th>SKU</th>
+										<th>Brand</th>
+										<th>Supplier</th>
+										<th>Type</th>
+										<th>Tag</th>
+										<th>Current Stock</th>
+										<th>Stock Value</th>
+										<th>Reorder Point</th>
+										<th>Reorder Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="inventory in inventoryReport">
+
+										<td ng-bind="inventory.varinatAttributeName"></td>
+										<td ng-bind="inventory.outletName"></td>
+										<td ng-bind="inventory.sku"></td>
+										<td ng-bind="inventory.brand"></td>
+										<td ng-bind="inventory.supplierName"></td>
+										<td ng-bind="inventory.type"></td>
+										<td ng-bind="inventory.tag"></td>
+										<td ng-bind="inventory.currentStock"></td>
+										<td ng-bind="inventory.stockValue"></td>
+										<td ng-bind="inventory.reorderPoint"></td>
+										<td ng-bind="inventory.reorderAmount"></td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th>Total Current Stock</th>
+										<th ng-bind="totalCurrentStock"></th>
+
+										<th>Total Stock Value</th>
+										<th ng-bind="totalCurrentValue"></th>
+										<th></th>
+										<th></th>
+
+									</tr>
+								</tfoot>
+							</table>
+						</div> -->
+					</div>
+
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018 - Version 1.0.0</div>
+		</div>
+	</div>
+</div>
+
+<style>
+#right {
+	position: relative;
+	margin-top: 10%;
+	overflow-y: scroll;
+	width: 100%;
+	margin-bottom: 10%;
+	height: 138px;
+}
+
+.personicon {
+	font-size: 30px;
+	color: rgba(201, 6, 34, 0.89);
+	width: 30px;
+}
+
+.panel-heading span {
+	margin-top: -20px;
+	font-size: 15px;
+}
+
+.row {
+	margin-top: 5px;
+	padding: 0 10px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+</style>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+<script src="resources/js/buttons.flash.min.js"></script>
+<script src="resources/js/jszip.min.js"></script>
+<script src="resources/js/pdfmake.min.js"></script>
+
+<script src="resources/js/vfs_fonts.js"></script>
+<script src="resources/js/buttons.html5.min.js"></script>
+<script src="resources/js/buttons.print.min.js"></script>
+<script src="resources/js/dataTables.colReorder.min.js"></script>
+
+
+
+
+<script>
+ setTimeout(
+			  function() 
+			  {
+				$('#myTable').DataTable(
+					{
+						responsive : true,
+						dom : 'Bfrtip',
+						caption : "Mike Smith",
+						buttons : {
+							buttons : [
+									{
+										extend : 'print',
+										text : '<i class="fa fa-print"></i> Print',
+										title : $('h1').text(),
+										key : {
+											key : 'p',
+											altkey : true
+										},
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true,
+										autoPrint : false
+									},
+									{
+										extend : 'excel',
+										text : '<i class="fa fa-book"></i> Excel',
+										title : $('h1').text(),
+										key : {
+											key : 'p',
+											altkey : true
+										},
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true,
+										autoPrint : false
+									},
+									{
+										extend : 'pdf',
+										text : '<i class="fa fa-file-pdf-o"></i> PDF',
+										title : $('h1').text(),
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true
+									} ],
+							dom : {
+								container : {
+									className : 'dt-buttons'
+								},
+								button : {
+									className : 'btn btn-default'
+								}
+							}
+						}
+					});
+				$('#myTable1').DataTable(
+						{
+							responsive : true,
+							dom : 'Bfrtip',
+							caption : "Mike Smith",
+							buttons : {
+								buttons : [
+										{
+											extend : 'print',
+											text : '<i class="fa fa-print"></i> Print',
+											title : $('h1').text(),
+											key : {
+												key : 'p',
+												altkey : true
+											},
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true,
+											autoPrint : false
+										},
+										{
+											extend : 'excel',
+											text : '<i class="fa fa-book"></i> Excel',
+											title : $('h1').text(),
+											key : {
+												key : 'p',
+												altkey : true
+											},
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true,
+											autoPrint : false
+										},
+										{
+											extend : 'pdf',
+											text : '<i class="fa fa-file-pdf-o"></i> PDF',
+											title : $('h1').text(),
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true
+										} ],
+								dom : {
+									container : {
+										className : 'dt-buttons'
+									},
+									button : {
+										className : 'btn btn-default'
+									}
+								}
+							}
+						});
+			  }, 10);
+ 
+    </script>

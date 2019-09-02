@@ -1,0 +1,273 @@
+<div class="container">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>New Price Book</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#priceBook">Price Books</a></li>
+				<li class="active">New Price Book</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="box">
+						<div class="box-header">
+							<i class="fi-page text-blue" style="font-size: 3em;"></i>
+							<h3 class="box-title"> Details</h3>
+							<div class="alert alert-success alert-sm" ng-show="priceBookSuccess"
+								ng-bind="priceBookSuccessMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="priceBookError"
+								ng-bind="priceBookErrorMessage" ng-cloak></div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<div class="box box-primary">
+								<div class="row">
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+												
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Name</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="inputstoreName" placeholder="name..."
+															data-ng-model="priceBookBean.priceBookName" maxlength="25"
+															 required>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Valid on</label>
+													<div class="col-sm-8">
+													<label class="radio-inline"><input type="radio" ng-model="validOn.value" value="Yes"> In Store</label>
+													<label class="radio-inline"><input type="radio" ng-model="validOn.value" value="No">Ecommerce</label>
+													 <!-- <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> Yes </input>
+													           <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> No </input> -->
+													  
+													</div>
+													
+												</div>
+											<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Customer group</label>
+													<div class="col-sm-8">
+														<select class="form-control " data-native-menu="false"
+															data-role="listview"
+															data-ng-model="priceBookBean.contactGroupId" ng-init="priceBookBean.contactGroupId=customerGroupList[0].customerGroupId" required>
+															<option ng-repeat="customerGroup in customerGroupList"
+																value="{{customerGroup.customerGroupId}}">{{customerGroup.customerGroupName}}</option>
+														</select>
+														<span ng-show="!priceBookBean.contactGroupId" style="color:red;">* Select Customer group</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Outlet</label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;"
+															data-ng-model="priceBookBean.outletId"
+															ng-init="priceBookBean.outletId=outletsList[0].outletId">
+															<option ng-repeat="outlet in outletsList"
+																value="{{outlet.outletId}}">{{outlet.outletName}}</option>
+															<option value="-1">All Outlets</option>
+														</select>
+														 <span ng-show="!priceBookBean.outletId" style="color:red;">* Select Outlet</span>
+													</div>
+												</div>
+												
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+												<!-- <div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Valid From</label>
+													<div class="col-sm-8">
+														<input type="date" class="form-control"
+															id="inputstoreName" placeholder=""
+															data-ng-model="registerBean.registerName" maxlength="25"
+															 required>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Valid To</label>
+													<div class="col-sm-8">
+														<input type="date" class="form-control"
+															id="inputstoreName" placeholder="."
+															data-ng-model="registerBean.registerName" maxlength="25"
+															 required>
+													</div>
+												</div> -->
+												<div class="form-group">
+												<label for="inputEmail3" class="col-sm-4 control-label">Valid From</label>
+									                <div class='input-group date' id='startDate'>
+									                <label for="inputEmail3" class="form-control" >{{priceBookBean.validFrom}}</label>
+									                    <input type='text' ng-show="false" class="form-control" ng-model="priceBookBean.validFrom"  id='startDate1' />
+									                    <span class="input-group-addon text-green">
+									                        <span class="glyphicon glyphicon-calendar"></span>
+									                    </span>
+									                </div>
+									            </div>	
+									            <div class="form-group">
+												<label for="inputEmail3" class="col-sm-4 control-label">Valid To</label>
+									                <div class='input-group date' id='endDate'>
+									                <label for="inputEmail3" class="form-control">{{priceBookBean.validTo}}</label>
+									                    <input type='text' ng-show="false" class="form-control" ng-model="priceBookBean.validTo"  id='endDate1' />
+									                    <span class="input-group-addon text-blue">
+									                        <span class="glyphicon glyphicon-calendar"></span>
+									                    </span>
+									                </div>
+									            </div>	
+									            <div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Active Price Book</label>
+													<div class="col-sm-8">
+													<label class="radio-inline"><input type="checkbox" ng-model="gui.activePriceBook" ></label>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Flat sale</label>
+													<div class="col-sm-8">
+													<label class="radio-inline"><input type="checkbox" ng-model="gui.flatSale" ></label>
+													</div>
+												</div>
+												<div class="form-group" ng-show="gui.flatSale">
+													<label for="inputEmail3" class="col-sm-4 control-label">Discont %</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="inputstoreName" placeholder="name..." min="1"
+															data-ng-model="priceBookBean.flatDiscount" ng-pattern='/^[0-9]+(\.[0-9]{1,5})?$/'
+															 required>
+													</div>
+												</div>
+												
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- /.box -->
+						<div class="box-footer">
+
+							<button
+								class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+								ng-click="addPriceBook()"
+								ng-disabled="!priceBookBean.priceBookName"
+								ng-show="!loading">Save</button>
+							
+
+							<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+								Save Processing<i
+									class="fa fa-arrow-right text-muted fa-spinner fa-spin "> </i>
+							</button>
+							<a href="#priceBook"><button
+									class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+
+
+						</div>
+					</div>
+					
+					<!-- /.box-body -->
+					
+				</div>
+				<!-- /.box -->
+
+			</div>
+		</section>
+		<div class="col-md-1"></div>
+	</div>
+</div>
+<div class="modal ng-scope" id="alertBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="alert alert-danger">
+        <h4 class="" id="myModalLabel">Alert!</h4>
+      </div>
+      <div class="modal-body ng-binding">
+        {{alertMessage}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+	
+<script>
+      $(function () {
+    	//  document.body.style.overflow = 'hidden';
+    	 $('#startDate').datetimepicker({
+    			 format:"YYYY-MM-DD"}
+    			 );
+    	 
+    	 
+      });
+     
+    </script>
+<script>
+      $(function () {
+    	//  document.body.style.overflow = 'hidden';
+    	 $('#endDate').datetimepicker({
+    			 format:"YYYY-MM-DD"}
+    			 );
+    	 
+      });
+    </script>
+    
+ <script class="ng-scope" type="text/javascript">
+    $("#startDate").on("dp.change",function (e) {
+       //alert(angular.toJson(e.date));
+        $("#startDate").trigger("change");
+        $("#startDat1").trigger("change");
+        
+    });
+    $("#endDate").on("dp.change",function (e) {
+        // alert(angular.toJson(e.date));
+         $("#endDate").trigger("change");
+         $("#endDate1").trigger("change");
+        
+         
+     });
+    $("#startDate").on("dp.show",function (e) {
+    	
+    	$('#endDate').data("DateTimePicker").hide();
+    	
+    	
+    });
+    
+	$("#endDate").on("dp.show",function (e) {
+    	
+    	$('#startDate').data("DateTimePicker").hide();
+    	
+    	
+    });
+
+ </script>

@@ -1,0 +1,116 @@
+===================AngualarJS Gant CHart============================
+https://www.angular-gantt.com/demo/
+==================ngDraggable======================================
+http://ngmodules.org/modules/ngDraggable
+===================AngualarJS Heaven Gadgets=====================
+http://js.syncfusion.com/demos/web/#!/azure/angularsupport/schedule
+EssentailJS
+=======================Google Charts===============================
+https://ngmap.github.io/
+=========================AngualrJS Grid Reporting===================
+https://www.ag-grid.com/best-angularjs-data-grid/index.php
+=====================AngualarJS Charts=============================
+http://krispo.github.io/angular-nvd3/#/
+===============================POJO Hibernate======================
+http://www.wikihow.com/Generate-Hibernate-Pojo-Classes-from-DB-Tables
+===========================Mutti Tenant Architecture================
+https://www.javacodegeeks.com/2013/11/architecting-a-multi-tenant-application.html
+============================Application Architecture===============
+https://www.javacodegeeks.com/wp-content/uploads/2013/11/architecture.png
+============================Bootstrap resorces===============
+http://bootsnipp.com/snippets/KB904
+http://bootsnipp.com/snippets/featured/testimonials-based-on-bootstrap039s-6-primary-colors
+http://bootsnipp.com/snippets/featured/responsive-column-chart
+=============================AngularJS=====================================
+http://paislee.io/a-conceptual-introduction-to-angularjs/
+=============================Code Pen===================================
+https://codepen.io/siiron/pen/aLkdE
+CSS of organization Chart
+==================================Fonts Logo=========================
+http://www.dafont.com/search.php?text=WorkVitals&af=on&q=Modern
+============================= Reporting ng-cell======================
+http://gdepourtales.github.io/ng-cells/
+=============================SSL Open Shift configurations=============
+https://access.redhat.com/solutions/749733
+==================================SSL BUY===================================
+https://store.ssl2buy.com
+==================================== Open SSL =============================
+http://stackoverflow.com/questions/15144046/need-help-converting-p12-certificate-into-pem-using-openssl
+====================================== Logo Work===================================
+https://www.fiverr.com/conversations/attique_315
+===================================== Web site Theme ======================================
+https://themeforest.net/order_confirmation/8053dcee-a3b2-4f7c-832f-d3225a84b621
+=====================================Cover Photo | Landing Page purchase ====================
+https://us.fotolia.com/Shoppingcart/3Rbk5Jt4x7nu#
+============================================ ICONS HUB ====================================
+http://glyphsearch.com/?query=spin
+================================AngularJS Dashboard Themes=================================
+https://wrapbootstrap.com/tag/dashboard
+http://byrushan.com/projects/ma/1-6-1/jquery/light/list-view.html
+====================================AngualrJS Flowcharts Demos=============================
+http://stackoverflow.com/questions/30162704/implementing-flowchart-using-angularjs-and-canvas
+https://github.com/codecapers/AngularJS-FlowChart
+================================Animations===============================
+https://codepen.io/ghost028/pen/wzKBXa
+https://codepen.io/balapa/pen/GjJvwg
+===============================Device Hive Sensors COntrol IOT=================================
+http://docs.devicehive.com/docs/examples-1
+https://github.com/RIOT-OS/RIOT/wiki/Introduction
+http://kinoma.com/develop/documentation/projects/cat-door/
+https://www.oracle.com/solutions/internet-of-things/
+http://www.humanyze.com/products.html
+http://www.computerworld.com/article/3006631/data-analytics/startup-humanyzes-people-analytics-wants-to-transform-your-workplace.html
+https://www.amazon.com/People-Analytics-Technology-Transform-Business/dp/0133158314
+======================verify ssl==========================
+https://www.sslshopper.com/ssl-checker.html#hostname=https://web.workvitals.com/
+
+======================Autocomplete AngualrJS=======================
+https://github.com/vickramravichandran/angular-auto-complete
+http://vickramravichandran.github.io/angular-auto-complete/
+=========================App Cache================================
+https://blog.iterativ.ch/2014/09/04/create-offline-web-applications-with-angularjs/
+https://github.com/iterativ/angularjs-pdf-offline-demo/blob/master/app/index.html
+=============================Barcode work============================
+http://plnkr.co/edit/z2nXgXyGi6LhSHth8ZNi?p=preview
+============================CanvasJS Charts==========================
+http://www.chaosm.net/angularjs/ex5_canvasjs/
+==================================================Tomcat Server XML File Path================
+/var/lib/openshift/58a851df89f5cfe479000018/app-root/runtime/repo/.openshift/config
+=========================JsBarcode================================================
+http://lindell.me/JsBarcode/
+======================== MYSQL DUMP =============================================
+mysqldump -h $OPENSHIFT_MYSQL_DB_HOST -P ${OPENSHIFT_MYSQL_DB_PORT:-3306} -u ${OPENSHIFT_MYSQL_DB_USERNAME:-'admin'} --password="$OPENSHIFT_MYSQL_DB_PASSWORD" 
+
+mysqldump -h $OPENSHIFT_MYSQL_DB_HOST -P 3306 -u admineApYEG1 --password=9mzQXhK6x62k  --databases ecom > /tmp/ecom_backup.sql
+
+mysqldump -h localhost -P 3306 -u root --password=123456  --databases ecom > /tmp/ecom_backup.sql
+
+======================= MYSQL IMPORT ============================================
+mysql> source /var/lib/openshift/5958727e2d5271e688000050/app-root/data/ECOM.SQL;
+===================================File Merge and JS minifier================================
+cd C:\Users\IBM_ADMIN\git\ecom\ecom-web\src\main\webapp\resources\js\controllers
+Delete File(C:\Users\IBM_ADMIN\git\ecom\ecom-web\src\main\webapp\resources\js\controllers\merged\output.js)
+file-merge -i **/*.js -o merged\merged.js
+cd merged
+uglifyjs merged.js -c -m -o output.js
+
+
+minify  output.js
+http://www.minifier.org/
+https://jscompress.com/
+=============================================================================
+========================SMS Delivery STatus==================================
+http://sendpk.com/api/delivery.php?username=923214823566&password=9183&id=e607e7b1-057f-4cd0-ac7b-266ddd66b601
+
+=================== JS compression =====================
+https://github.com/nodeca/pako/blob/master/examples/server.js
+
+
+================Selenium Chrome Linux=============
+
+https://askubuntu.com/questions/82186/how-do-i-completely-uninstall-google-chrome-and-chromium
+
+https://blog.softhints.com/ubuntu-16-04-server-install-headless-google-chrome/
+
+google-chrome-stable --headless --disable-gpu --dump-dom --no-sandbox https://www.chromestatus.com/
+---------------------

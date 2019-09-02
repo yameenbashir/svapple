@@ -1,0 +1,624 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        
+
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ 
+http://www.springframework.org/schema/tx
+ 
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/mvc 
+http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+ 
+http://www.springframework.org/schema/context
+ 
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+
+http://www.springframework.org/schema/aop 
+
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+">
+
+
+	<!-- Service Declarations -->
+	<!-- <bean id="EmailService" class="com.dowhile.service.impl.EmailService"> -->
+	<bean id="CompanyService" class="com.dowhile.service.impl.CompanyServiceImpl">
+		<property name="companyDAO" ref="CompanyDAO" />
+	</bean>
+
+	<bean id="OutletService" class="com.dowhile.service.impl.OutletServiceImpl">
+		<property name="outletDAO" ref="OutletDAO" />
+	</bean>
+
+	<bean id="RegisterService" class="com.dowhile.service.impl.RegisterServiceImpl">
+		<property name="registerDAO" ref="RegisterDAO" />
+	</bean>
+	<bean id="SeverityService" class="com.dowhile.service.impl.SeverityServiceImpl">
+		<property name="severityDAO" ref="SeverityDAO" />
+	</bean>
+	<bean id="ActivityDetailService" class="com.dowhile.service.impl.ActivityDetailServiceImpl">
+		<property name="activityDetailDAO" ref="ActivityDetailDAO" />
+	</bean>
+	<bean id="ServiceUtil" class="com.dowhile.service.util.ServiceUtil">
+		<property name="activityDetailDAO" ref="ActivityDetailDAO" />
+		<property name="severityDAO" ref="SeverityDAO" />
+
+	</bean>
+	<bean id="ResourceService" class="com.dowhile.service.impl.ResourceServiceImpl">
+		<property name="resourceDAO" ref="ResourceDAO" />
+	</bean>
+
+	<bean id="CurrencyService" class="com.dowhile.service.impl.CurrencyServiceImpl">
+		<property name="currencyDAO" ref="CurrencyDAO" />
+	</bean>
+
+	<bean id="PrinterFormatService" class="com.dowhile.service.impl.PrinterFormatServiceImpl">
+		<property name="printerFormatDAO" ref="PrinterFormatDAO" />
+	</bean>
+
+	<bean id="TimeZoneService" class="com.dowhile.service.impl.TimeZoneServiceImpl">
+		<property name="timeZoneDAO" ref="TimeZoneDAO" />
+	</bean>
+	<bean id="MenuService" class="com.dowhile.service.impl.MenuServiceImpl">
+		<property name="menuDAO" ref="MenuDAO" />
+	</bean>
+	<bean id="CountryService" class="com.dowhile.service.impl.CountryServiceImpl">
+		<property name="countryDAO" ref="CountryDAO" />
+	</bean>
+	<bean id="SalesTaxService" class="com.dowhile.service.impl.SalesTaxServiceImpl">
+		<property name="salesTaxDAO" ref="SalesTaxDAO" />
+	</bean>
+	<bean id="AddressService" class="com.dowhile.service.impl.AddressServiceImpl">
+		<property name="addressDAO" ref="AddressDAO" />
+	</bean>
+	<bean id="PaymentTypeService" class="com.dowhile.service.impl.PaymentTypeServiceImpl">
+		<property name="paymentTypeDAO" ref="PaymentTypeDAO" />
+	</bean>
+	<bean id="RoleService" class="com.dowhile.service.impl.RoleServiceImpl">
+		<property name="roleDAO" ref="RoleDAO" />
+	</bean>
+
+	<bean id="TagService" class="com.dowhile.service.impl.TagServiceImpl">
+		<property name="tagDAO" ref="TagDAO" />
+	</bean>
+	<bean id="ProductTagService" class="com.dowhile.service.impl.ProductTagServiceImpl">
+		<property name="productTagDAO" ref="ProductTagDAO" />
+	</bean>
+	<bean id="BrandService" class="com.dowhile.service.impl.BrandServiceImpl">
+		<property name="brandDAO" ref="BrandDAO" />
+	</bean>
+	<bean id="ProductService" class="com.dowhile.service.impl.ProductServiceImpl">
+		<property name="productDAO" ref="ProductDAO" />
+	</bean>
+	<bean id="ProductTypeService" class="com.dowhile.service.impl.ProductTypeServiceImpl">
+		<property name="productTypeDAO" ref="ProductTypeDAO" />
+	</bean>
+	<bean id="StockOrderService" class="com.dowhile.service.impl.StockOrderServiceImpl">
+		<property name="stockOrderDAO" ref="StockOrderDAO" />
+	</bean>
+	<bean id="InventoryCountService" class="com.dowhile.service.impl.InventoryCountServiceImpl">
+		<property name="inventoryCountDAO" ref="InventoryCountDAO" />
+	</bean>
+	<bean id="StatusService" class="com.dowhile.service.impl.StatusServiceImpl">
+		<property name="statusDAO" ref="StatusDAO" />
+	</bean>
+	<bean id="StockOrderTypeService" class="com.dowhile.service.impl.StockOrderTypeServiceImpl">
+		<property name="stockOrderTypeDAO" ref="StockOrderTypeDAO" />
+	</bean>
+	<bean id="InventoryCountTypeService" class="com.dowhile.service.impl.InventoryCountTypeServiceImpl">
+		<property name="inventoryCountTypeDAO" ref="InventoryCountTypeDAO" />
+	</bean>
+	<bean id="SaleService" class="com.dowhile.service.impl.SaleServiceImpl">
+		<property name="saleDAO" ref="SaleDAO" />
+	</bean>
+	<bean id="ProductVariantService" class="com.dowhile.service.impl.ProductVariantServiceImpl">
+		<property name="productVariantDAO" ref="ProductVariantDAO" />
+	</bean>
+	<bean id="VariantAttributeService" class="com.dowhile.service.impl.VariantAttributeServiceImpl">
+		<property name="variantAttributeDAO" ref="VariantAttributeDAO" />
+	</bean>
+	<bean id="VariantAttributeValuesService"
+		class="com.dowhile.service.impl.VariantAttributeValuesServiceImpl">
+		<property name="variantAttributeValuesDAO" ref="VariantAttributeValuesDAO" />
+	</bean>
+	<bean id="ContactService" class="com.dowhile.service.impl.ContactServiceImpl">
+		<property name="contactDAO" ref="ContactDAO" />
+		<property name="contactGroupDAO" ref="ContactGroupDAO" />
+	</bean>
+	<bean id="ContactGroupService" class="com.dowhile.service.impl.ContactGroupServiceImpl">
+		<property name="contactGroupDAO" ref="ContactGroupDAO" />
+	</bean>
+
+	<bean id="ReceiptService" class="com.dowhile.service.impl.ReceiptServiceImpl">
+		<property name="receiptDAO" ref="ReceiptDAO" />
+	</bean>
+	<bean id="StockOrderDetailService" class="com.dowhile.service.impl.StockOrderDetailServiceImpl">
+		<property name="stockOrderDetailDAO" ref="StockOrderDetailDAO" />
+	</bean>
+	<bean id="InventoryCountDetailService" class="com.dowhile.service.impl.InventoryCountDetailServiceImpl">
+		<property name="inventoryCountDetailDAO" ref="InventoryCountDetailDAO" />
+	</bean>
+	<bean id="CompositeProductService" class="com.dowhile.service.impl.CompositeProductServiceImpl">
+		<property name="compositeProductDAO" ref="CompositeProductDAO" />
+	</bean>
+
+
+	<bean id="CashManagmentService" class="com.dowhile.service.impl.CashManagmentServiceImpl">
+		<property name="cashManagmentDAO" ref="CashManagmentDAO" />
+	</bean>
+	<bean id="DailyRegisterService" class="com.dowhile.service.impl.DailyRegisterServiceImpl">
+		<property name="dailyRegisterDAO" ref="DailyRegisterDAO" />
+	</bean>
+	<bean id="ProductHistoryService" class="com.dowhile.service.impl.ProductHistoryServiceImpl">
+		<property name="productHistoryDAO" ref="ProductHistoryDAO" />
+	</bean>
+	<bean id="UserOutletsService" class="com.dowhile.service.impl.UserOutletsServiceImpl">
+		<property name="userOutletsDAO" ref="UserOutletsDAO" />
+	</bean>
+	<bean id="ConfigurationService" class="com.dowhile.service.impl.ConfigurationServiceImpl">
+		<property name="configurationDAO" ref="ConfigurationDAO" />
+	</bean>
+	<bean id="WebActivityDetailService" class="com.dowhile.service.impl.WebActivityDetailServiceImpl">
+		<property name="webActivityDetailDAO" ref="WebActivityDetailDAO" />
+	</bean>
+	<bean id="TicketService" class="com.dowhile.service.impl.TicketServiceImpl">
+		<property name="ticketDAO" ref="TicketDAO" />
+	</bean>
+	<bean id="TicketActivityService" class="com.dowhile.service.impl.TicketActivityServiceImpl">
+		<property name="ticketActivityDAO" ref="TicketActivityDAO" />
+	</bean>
+
+
+	<bean id="ContactPaymentsService" class="com.dowhile.service.impl.ContactPaymentsServiceImpl">
+		<property name="contactPaymentsDAO" ref="ContactPaymentsDAO" />
+	</bean>
+	<bean id="ContactPaymentsTypeService" class="com.dowhile.service.impl.ContactPaymentsTypeServiceImpl">
+		<property name="contactPaymentsTypeDAO" ref="ContactPaymentsTypeDAO" />
+	</bean>
+	<bean id="ProductSummmaryService" class="com.dowhile.service.impl.ProductSummmaryServiceImpl">
+		<property name="productSummmaryDAO" ref="ProductSummmaryDAO" />
+	</bean>
+	<bean id="ContactsSummmaryService" class="com.dowhile.service.impl.ContactsSummmaryServiceImpl">
+		<property name="contactsSummmaryDAO" ref="ContactsSummmaryDAO" />
+	</bean>
+	<bean id="TempSaleService" class="com.dowhile.service.impl.TempSaleServiceImpl">
+		<property name="tempSaleDAO" ref="TempSaleDAO" />
+	</bean>
+	<bean id="EcomOrderService" class="com.dowhile.service.impl.EcomOrderServiceImpl">
+		<property name="ecomOrderDAO" ref="EcomOrderDAO" />
+	</bean>
+	<bean id="PriceBookService" class="com.dowhile.service.impl.PriceBookServiceImpl">
+		<property name="priceBookDAO" ref="PriceBookDAO" />
+	</bean>
+	<bean id="PriceBookDetailService" class="com.dowhile.service.impl.PriceBookDetailServiceImpl">
+		<property name="priceBookDetailDAO" ref="PriceBookDetailDAO" />
+	</bean>
+	<bean id="InventoryReportService" class="com.dowhile.service.impl.InventoryReportServiceImpl">
+		<property name="inventoryReportDAO" ref="InventoryReportDAO" />
+	</bean>
+	<bean id="RegisterReportService" class="com.dowhile.service.impl.RegisterReportServiceImpl">
+		<property name="registerReportDAO" ref="RegisterReportDAO" />
+	</bean>
+	<bean id="PriceBookDetailSummaryService"
+		class="com.dowhile.service.impl.PriceBookDetailSummaryServiceImpl">
+		<property name="priceBookDetailSummaryDAO" ref="PriceBookDetailSummaryDAO" />
+	</bean>
+
+	<bean id="DeliveryMethodService" class="com.dowhile.service.impl.DeliveryMethodServiceImpl">
+		<property name="deliveryMethodDAO" ref="DeliveryMethodDAO" />
+	</bean>
+	<bean id="OrderDetailService" class="com.dowhile.service.impl.OrderDetailServiceImpl">
+		<property name="orderDetailDAO" ref="OrderDetailDAO" />
+	</bean>
+	<bean id="OrderMainService" class="com.dowhile.service.impl.OrderMainServiceImpl">
+		<property name="orderMainDAO" ref="OrderMainDAO" />
+	</bean>
+	<bean id="MessageService" class="com.dowhile.service.impl.MessageServiceImpl">
+		<property name="messageDAO" ref="MessageDAO" />
+	</bean>
+	<bean id="MessageDetailService" class="com.dowhile.service.impl.MessageDetailServiceImpl">
+		<property name="messageDetailDAO" ref="MessageDetailDAO" />
+	</bean>
+	
+	<bean id="SmsReportService" class="com.dowhile.service.impl.SmsReportServiceImpl">
+		<property name="smsReportDAO" ref="SmsReportDAO" />
+	</bean>
+	<bean id="ExpenseTypeService" class="com.dowhile.service.impl.ExpenseTypeServiceImpl">
+		<property name="expenseTypeDAO" ref="ExpenseTypeDAO" />
+	</bean>
+	<bean id="InventoryDetailReportService" class="com.dowhile.service.impl.InventoryDetailReportServiceImpl">
+		<property name="inventoryDetailReportDAO" ref="InventoryDetailReportDAO" />
+	</bean>
+	<bean id="ProductPriceHistoryService" class="com.dowhile.service.impl.ProductPriceHistoryServiceImpl">
+		<property name="productPriceHistoryDAO" ref="ProductPriceHistoryDAO" />
+	</bean>
+	<bean id="NotificationService" class="com.dowhile.service.impl.NotificationServiceImpl">
+		<property name="notificationDAO" ref="NotificationDAO" />
+	</bean>
+	
+	<!-- <bean id="ContactUsService" class="com.dowhile.service.impl.ContactUsServiceImpl">
+		<property name="contactUsDAO" ref="ContactUsDAO" />
+	</bean> -->
+	<!-- Service Declarations end -->
+
+
+	<bean id="CashManagmentDAO" class="com.dowhile.dao.impl.CashManagmentDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="DailyRegisterDAO" class="com.dowhile.dao.impl.DailyRegisterDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="CompanyDAO" class="com.dowhile.dao.impl.CompanyDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="OutletDAO" class="com.dowhile.dao.impl.OutletDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="RegisterDAO" class="com.dowhile.dao.impl.RegisterDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="SeverityDAO" class="com.dowhile.dao.impl.SeverityDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ActivityDetailDAO" class="com.dowhile.dao.impl.ActivityDetailDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ResourceDAO" class="com.dowhile.dao.impl.ResourceDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="CurrencyDAO" class="com.dowhile.dao.impl.CurrencyDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="PrinterFormatDAO" class="com.dowhile.dao.impl.PrinterFormatDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="TimeZoneDAO" class="com.dowhile.dao.impl.TimeZoneDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="MenuDAO" class="com.dowhile.dao.impl.MenuDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="CountryDAO" class="com.dowhile.dao.impl.CountryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="SalesTaxDAO" class="com.dowhile.dao.impl.SalesTaxDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="AddressDAO" class="com.dowhile.dao.impl.AddressDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="PaymentTypeDAO" class="com.dowhile.dao.impl.PaymentTypeDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="RoleDAO" class="com.dowhile.dao.impl.RoleDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="TagDAO" class="com.dowhile.dao.impl.TagDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProductTagDAO" class="com.dowhile.dao.impl.ProductTagDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="BrandDAO" class="com.dowhile.dao.impl.BrandDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProductDAO" class="com.dowhile.dao.impl.ProductDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProductTypeDAO" class="com.dowhile.dao.impl.ProductTypeDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="StatusDAO" class="com.dowhile.dao.impl.StatusDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="StockOrderDAO" class="com.dowhile.dao.impl.StockOrderDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="InventoryCountDAO" class="com.dowhile.dao.impl.InventoryCountDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="StockOrderTypeDAO" class="com.dowhile.dao.impl.StockOrderTypeDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="InventoryCountTypeDAO" class="com.dowhile.dao.impl.InventoryCountTypeDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="SaleDAO" class="com.dowhile.dao.impl.SaleDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="ProductVariantDAO" class="com.dowhile.dao.impl.ProductVariantDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="VariantAttributeDAO" class="com.dowhile.dao.impl.VariantAttributeDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="VariantAttributeValuesDAO" class="com.dowhile.dao.impl.VariantAttributeValuesDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ContactDAO" class="com.dowhile.dao.impl.ContactDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ContactGroupDAO" class="com.dowhile.dao.impl.ContactGroupDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="ExpenseTypeDAO" class="com.dowhile.dao.impl.ExpenseTypeDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ReceiptDAO" class="com.dowhile.dao.impl.ReceiptDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="StockOrderDetailDAO" class="com.dowhile.dao.impl.StockOrderDetailDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="InventoryCountDetailDAO" class="com.dowhile.dao.impl.InventoryCountDetailDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="CompositeProductDAO" class="com.dowhile.dao.impl.CompositeProductDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProductHistoryDAO" class="com.dowhile.dao.impl.ProductHistoryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="UserOutletsDAO" class="com.dowhile.dao.impl.UserOutletsDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ConfigurationDAO" class="com.dowhile.dao.impl.ConfigurationDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="WebActivityDetailDAO" class="com.dowhile.dao.impl.WebActivityDetailDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="TicketDAO" class="com.dowhile.dao.impl.TicketDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="TicketActivityDAO" class="com.dowhile.dao.impl.TicketActivityDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="ContactPaymentsDAO" class="com.dowhile.dao.impl.ContactPaymentsDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ContactPaymentsTypeDAO" class="com.dowhile.dao.impl.ContactPaymentsTypeDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProductSummmaryDAO" class="com.dowhile.dao.impl.ProductSummmaryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ContactsSummmaryDAO" class="com.dowhile.dao.impl.ContactsSummmaryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	
+	
+	<bean id="TempSaleDAO" class="com.dowhile.dao.impl.TempSaleDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+
+	<bean id="EcomOrderDAO" class="com.dowhile.dao.impl.EcomOrderDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="PriceBookDAO" class="com.dowhile.dao.impl.PriceBookDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="PriceBookDetailDAO" class="com.dowhile.dao.impl.PriceBookDetailDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="InventoryReportDAO" class="com.dowhile.dao.impl.InventoryReportDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="RegisterReportDAO" class="com.dowhile.dao.impl.RegisterReportDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="PriceBookDetailSummaryDAO" class="com.dowhile.dao.impl.PriceBookDetailSummaryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="DeliveryMethodDAO" class="com.dowhile.dao.impl.DeliveryMethodDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="OrderDetailDAO" class="com.dowhile.dao.impl.OrderDetailDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="OrderMainDAO" class="com.dowhile.dao.impl.OrderMainDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="MessageDAO" class="com.dowhile.dao.impl.MessageDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="MessageDetailDAO" class="com.dowhile.dao.impl.MessageDetailDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	
+	<bean id="SmsReportDAO" class="com.dowhile.dao.impl.SmsReportDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="InventoryDetailReportDAO" class="com.dowhile.dao.impl.InventoryDetailReportDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProductPriceHistoryDAO" class="com.dowhile.dao.impl.ProductPriceHistoryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="NotificationDAO" class="com.dowhile.dao.impl.NotificationDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+		
+	<!-- <bean id="ContactUsDAO" class="com.dowhile.dao.impl.ContactUsDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean> -->
+	<!-- DAO Declarations end -->
+
+
+	<bean id="SessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<property name="annotatedClasses">
+			<list>
+
+				<value>com.dowhile.ActivityDetail</value>
+				<value>com.dowhile.Address</value>
+				<value>com.dowhile.Brand</value>
+				<value>com.dowhile.Company</value>
+				<value>com.dowhile.CompositeProduct</value>
+				<value>com.dowhile.Country</value>
+				<value>com.dowhile.Configuration</value>
+				<value>com.dowhile.Currency</value>
+				<value>com.dowhile.Contact</value>
+				<value>com.dowhile.ContactPaymentsType</value>
+				<value>com.dowhile.Currency</value>
+				<value>com.dowhile.ContactGroup</value>
+				<value>com.dowhile.DeliveryMethod</value>
+				<value>com.dowhile.InvoiceDetail</value>
+				<value>com.dowhile.InvoiceMain</value>
+				<value>com.dowhile.Loyalty</value>
+				<value>com.dowhile.Menu</value>
+				<value>com.dowhile.Outlet</value>
+				<value>com.dowhile.PaymentType</value>
+				<value>com.dowhile.PriceBook</value>
+				<value>com.dowhile.PriceBookDetail</value>
+				<value>com.dowhile.PrinterFormat</value>
+				<value>com.dowhile.Product</value>
+				<value>com.dowhile.ProductHistory</value>
+				<value>com.dowhile.ProductTag</value>
+				<value>com.dowhile.ProductType</value>
+				<value>com.dowhile.ProductVariant</value>
+				<value>com.dowhile.ProductSummmary</value>
+				<value>com.dowhile.Receipt</value>
+				<value>com.dowhile.Register</value>
+				<value>com.dowhile.Role</value>
+				<value>com.dowhile.SalesTax</value>
+				<value>com.dowhile.Severity</value>
+				<value>com.dowhile.Status</value>
+				<value>com.dowhile.StockOrder</value>
+				<value>com.dowhile.StockOrderDetail</value>
+				<value>com.dowhile.StockOrderType</value>
+				<value>com.dowhile.InventoryCount</value>
+				<value>com.dowhile.InventoryCountDetail</value>
+				<value>com.dowhile.InventoryCountType</value>
+				<value>com.dowhile.Tag</value>
+				<value>com.dowhile.TimeZone</value>
+				<value>com.dowhile.User</value>
+				<value>com.dowhile.UserOutlets</value>
+				<value>com.dowhile.VariantAttribute</value>
+				<value>com.dowhile.VariantAttributeValues</value>
+				<value>com.dowhile.DailyRegister</value>
+				<value>com.dowhile.CashManagment</value>
+				<value>com.dowhile.ContactPayments</value>
+				<value>com.dowhile.Announcement</value>
+				<value>com.dowhile.ContactUs</value>
+				<value>com.dowhile.WebActivityDetail</value>
+				<value>com.dowhile.TicketActivity</value>
+				<value>com.dowhile.Ticket</value>
+				<value>com.dowhile.TempSale</value>
+				<value>com.dowhile.Notification</value>
+				<value>com.dowhile.GeneralLedger</value>
+				<value>com.dowhile.BankAccount</value>
+				<value>com.dowhile.AccountType</value>
+				<value>com.dowhile.GeneralLedgerEvent</value>
+				<value>com.dowhile.ChartOfAccount</value>
+				<value>com.dowhile.GlTransConfig</value>
+				<value>com.dowhile.Module</value>
+				<value>com.dowhile.Message</value>
+				<value>com.dowhile.MessageDetail</value>
+				<value>com.dowhile.ContactUs</value>
+				<value>com.dowhile.OrderMain</value>
+				<value>com.dowhile.OrderDetail</value>
+				<value>com.dowhile.InventoryReport</value>
+				<value>com.dowhile.InventoryDetailReport</value>
+				<value>com.dowhile.RegisterReport</value>
+				<value>com.dowhile.PriceBookDetailSummary</value>
+				<value>com.dowhile.SmsReport</value>
+				<value>com.dowhile.ExpenseType</value>
+				<value>com.dowhile.ContactsSummmary</value>
+				<value>com.dowhile.ProductPriceHistory</value>
+
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<!--  <prop key="hibernate.current_session_context_class">thread</prop>-->
+				<prop key="hibernate.jdbc.batch_size">1000</prop>
+				
+			</props>
+		</property>
+	</bean>
+
+
+
+	<!-- <bean id="DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
+		name="url" value="jdbc:mysql://162.213.10.107:3306/freecall_iproject" /> 
+		<property name="username" value="freecall_ipu" /> <property name="password" 
+		value="Masood123" /> </bean> -->
+
+
+
+<!--DEV SERVER  JAmx8xUWfAKW-->
+
+	<bean id="DataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/ecom" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+		
+	</bean>
+	<!-- SandBox 172.30.96.159 
+	<bean id="DataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://10.128.34.129:3306/ecom" />
+		<property name="username" value="root" />
+		<property name="password" value="qwSDlMHWF7bo5nwR" />
+		
+	</bean> -->
+	<!-- Backup Data Source Declaration local 
+	   <bean id="DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
+		name="url" value="jdbc:mysql://127.6.205.130:3306/ecom" /> <property name="username" 
+		value="adminLUrgBeJ" /> <property name="password" value="nXxrb8Ge1Ccw" /> 
+		</bean>  -->
+	<!-- Prod Data Source Declaration local 
+	 <bean id="DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
+		name="url" value="jdbc:mysql://127.2.132.130:3306/ecom" /> 
+		<property name="username"  value="admineApYEG1" /> 
+		<property name="password" value="9mzQXhK6x62k" /> 
+		</bean>-->
+	<!-- Session Factory Declaration -->
+
+
+	<!-- Enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- Transaction Manager is defined -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<!-- <bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler"> 
+		<property name="exceptionMappings"> <props> <prop key="org.springframework.security.authentication.BadCredentialsException">/login/error/badCredentials</prop> 
+		<prop key="org.springframework.security.authentication.CredentialsExpiredException">/login/error/credentialsExpired</prop> 
+		<prop key="org.springframework.security.authentication.LockedException">/login/error/accountLocked</prop> 
+		<prop key="org.springframework.security.authentication.DisabledException">/login/error/accountDisabled</prop> 
+		</props> </property> </bean> -->
+
+	<!--for cahce control -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="cacheSeconds" value="0" />
+	</bean>
+
+	<aop:aspectj-autoproxy />
+
+	<!-- Aspect -->
+
+
+</beans>

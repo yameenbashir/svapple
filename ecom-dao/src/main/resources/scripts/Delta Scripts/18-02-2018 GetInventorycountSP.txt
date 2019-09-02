@@ -1,0 +1,73 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `ecom`.`GetInventoryCountByCompanyOutlet`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetInventoryCountByCompanyOutlet`(companyId int, outletId int)
+BEGIN 
+
+
+
+-- received--
+
+select product.PRODUCT_NAME , mpv.VARIANT_ATTRIBUTE_NAME , mpv.sku, sum(IFNULL(stock_order_detail.ORDER_PROD_QTY,0)) as Items_Received, sum(IFNULL(Items_Returned,0)) as Items_Returned, 
+
+(sum(IFNULL(Items_Sell,0)) - sum(IFNULL(Items_Sell_Return,0))) as Items_Sold,
+
+sum(IFNULL(Items_Available,0)) as Items_Available
+
+from stock_order_detail
+inner join stock_order on STOCK_ORDER_ID = stock_order_detail.STOCK_ORDER_ASSOCICATION_ID and stock_order.STATUS_ASSOCICATION_ID = 3 
+and stock_order.STOCK_ORDER_TYPE_ASSOCICATION_ID =3
+inner join product_variant mpv on stock_order_detail.PRODUCT_VARIANT_ASSOCICATION_ID = mpv.PRODUCT_VARIANT_ID
+inner join product on PRODUCT_ID = mpv.PRODUCT_ASSOCICATION_ID
+
+Left join -- returned to whare house
+( 
+select product_variant.sku, sum(IFNULL(stock_order_detail.ORDER_PROD_QTY,0)) as Items_Returned  from stock_order_detail
+inner join stock_order on STOCK_ORDER_ID = stock_order_detail.STOCK_ORDER_ASSOCICATION_ID and stock_order.STATUS_ASSOCICATION_ID = 3
+and stock_order.STOCK_ORDER_TYPE_ASSOCICATION_ID =4
+inner join product_variant on stock_order_detail.PRODUCT_VARIANT_ASSOCICATION_ID = product_variant.PRODUCT_VARIANT_ID
+where   stock_order.COMPANY_ASSOCIATION_ID =companyId and stock_order.OUTLET_ASSOCICATION_ID = 1  and (stock_order.SOURCE_OUTLET_ASSOCICATION_ID= outletId OR outletId is null) -- 1 is wharehouse
+group by product_variant.sku 
+) returned
+on mpv.sku = returned.sku
+
+
+Left join -- Sold
+( 
+select product_variant.SKU, sum(IFNULL(invoice_detail.PRODUCT_QUANTITY,0)) as Items_Sell 
+from invoice_main inner join invoice_detail
+on  INVOICE_MAIN_ID = INVOICE_MAIN_ASSOCICATION_ID and invoice_main.STATUS_ASSOCICATION_ID <> 11
+and invoice_detail.ITEM_SALE_PRICE > 0
+inner join product_variant on invoice_detail.PRODUCT_VARIENT_ASSOCIATION_ID = product_variant.PRODUCT_VARIANT_ID
+where   invoice_main.COMPANY_ASSOCIATION_ID = companyId and (invoice_main.OUTLET_ASSOCICATION_ID =outletId OR outletId is null)
+group by product_variant.sku
+) sold
+on mpv.sku = sold.sku
+Left join -- Sold Return
+( 
+select product_variant.SKU, sum(IFNULL(invoice_detail.PRODUCT_QUANTITY,0)) as Items_Sell_Return 
+from invoice_main inner join invoice_detail
+on  INVOICE_MAIN_ID = INVOICE_MAIN_ASSOCICATION_ID and invoice_main.STATUS_ASSOCICATION_ID <> 11
+and invoice_detail.ITEM_SALE_PRICE < 0
+inner join product_variant on invoice_detail.PRODUCT_VARIENT_ASSOCIATION_ID = product_variant.PRODUCT_VARIANT_ID
+where   invoice_main.COMPANY_ASSOCIATION_ID = companyId and (invoice_main.OUTLET_ASSOCICATION_ID =outletId OR outletId is null)
+group by product_variant.sku
+) saleReturn
+on mpv.sku = saleReturn.sku
+
+Left join -- Available
+( 
+select product_variant.sku,sum(IFNULL(product_variant.CURRENT_INVENTORY,0))as Items_Available
+from product_variant
+where   product_variant.COMPANY_ASSOCIATION_ID =companyId  and (product_variant.OUTLET_ASSOCICATION_ID = outletId OR outletId is null)
+group by product_variant.sku
+) available
+on mpv.sku = available.sku
+
+where  stock_order.COMPANY_ASSOCIATION_ID =companyId and (stock_order.OUTLET_ASSOCICATION_ID = outletId OR outletId is null)
+group by mpv.sku;
+
+END$$
+
+DELIMITER ;

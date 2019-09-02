@@ -1,0 +1,311 @@
+<div class="container">
+	<div class="row">
+	  <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+          Customer Group
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+             <!-- <li><a href="#customers">Customers</a></li> -->
+            <li class="active">Customer Group</li>
+          </ol>
+        </section>
+	     <section class="content-header">
+   
+    </section>
+		 <div class="top-buffer-contact"> </div>
+	 <div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+  			 <div class="row">
+	  <div class="col-md-1">
+	   </div>
+	   <div class="col-md-10">
+	   
+	  
+			   <vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+							  
+              
+							<span>   Group customers for reporting and promotional pricing using Price Books.
+							</span>
+							<div class="vd-button-group">
+							 <button class="btn fa btn-success btn-lg" ng-click="showAddCustomerGroupPopup()">Add Group</button>
+                                
+							</div>
+							<div class="alert alert-success alert-sm" ng-show="customerGroupSuccess"
+								ng-bind="customerGroupSuccessMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="customerGroupError"
+								ng-bind="customerGroupErrorMessage" ng-cloak></div>
+						</div>
+					</div>
+					</vd-section>
+
+	    	
+	    			<div class="box box-primary newFont">
+                <div class="box-header">
+               
+				 </div><!-- /.box-header -->
+				<div class="box-body">
+				<table id="myTable"  class="display" cellspacing="0" width="100%"  ng-clock>
+				    <thead >
+				        <tr >
+				           <th>Name</th>
+				           <th>Date Created	</th>
+				           <th>Country</th>
+				             <th></th>
+				              <th></th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				          <tr ng-repeat="customerGroup in customerGroupList" >					
+				       <td ng-bind="customerGroup.customerGroupName"></td>
+				        <td ng-bind="customerGroup.createdDate"></td>
+				        <td ng-bind="customerGroup.countryName"></td>
+				        <td ><a href="" ng-click="showCustomers(customerGroup)">View Customers </a></td>
+				             <td class="">
+		                      <a href=""><i class="btn fa fa-edit btn-primary btn-sm "   ng-click="showUpdateCustomerGroupPopup(customerGroup)"></i></a>
+					          <a href=""><i class="btn fa fa-trash btn-danger btn-sm "   ng-click="deleteEmployeeIdentificationOnPopUp(identificationNational)"></i></a>
+	                 	 </td>
+				        </tr>
+				          
+				    </tbody>
+				</table>
+				</div>
+			</div>
+                 <div class="top-buffer-contact"> </div>
+                 
+                         </div>
+               <div class="col-md-2">
+	   </div>
+	</div>
+	</section>
+			</div>
+	</div>
+</div>
+
+        
+
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals
+					2017</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal -->
+	<modal title="New Customer Group" visible="showAddCustomerGroupModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+								
+					<div class="form-group">
+						<label for="tag" class="col-sm-4 control-label">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="tag"
+								placeholder="Customer Group Name..." name="tag"
+								data-ng-model="customerGroupBean.customerGroupName" ng-pattern='/^[a-zA-Z0-9\s]+$/' required maxlength="100">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="Country" class="col-sm-4 control-label">Country</label>
+							
+							<div class="col-sm-8" >
+							 <select class="form-control " data-native-menu="false"
+								data-role="listview" 
+								data-ng-model="customerGroupBean.countryId" ng-init="customerGroupBean.countryId='1'">
+								<option ng-repeat="country in countryList"
+									value="{{country.countryId}}">{{country.countryName}}</option>
+							</select>
+						</div>
+					</div>					
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addCustomerGroup()"
+					ng-disabled="!customerGroupBean.customerGroupName||!customerGroupBean.countryId"
+					ng-show="!loading">Add Customer Group</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Add Customer Group Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->	
+	
+	<!-- Modal -->
+	<modal title="Edit Customer Group" visible="showUpdateCustomerGroupModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					
+						<label for="tag" class="col-sm-4 control-label">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="tag"
+								placeholder="Product Type Name..." name="tag"
+								data-ng-model="updateCustomerGroupBean.customerGroupName" ng-pattern='/^[a-zA-Z0-9\s]+$/' required maxlength="100">
+						</div>
+							<div class="form-group">
+													<label for="Country" class="col-sm-4 control-label">Country</label>
+														
+														<div class="col-sm-8" >
+														 <select class="form-control " data-native-menu="false"
+															data-role="listview" 
+															data-ng-model="customerGroupBean.countryId" >
+															<option ng-repeat="country in countryList"
+																value="{{country.countryId}}">{{country.countryName}}</option>
+														</select>
+													</div>
+												</div>	
+					</div>					
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="updateCustomerGroup()"
+					ng-disabled="!updateCustomerGroupBean.customerGroupName"
+					ng-show="!loading">Update Customer Group</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Update Customer Group Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->	
+    <style>
+.center {
+    margin-top:50px;   
+}
+
+.modal-header {
+    padding-bottom: 5px;
+}
+
+.modal-footer {
+        padding: 0;
+}
+    
+.modal-footer .btn-group button {
+    height:40px;
+    border-top-left-radius : 0;
+    border-top-right-radius : 0;
+    border: none;
+}
+    
+.modal-footer .btn-group:last-child > button {
+    border-right: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    width: 65%;
+    margin-left: 25%;
+}
+</style>
+    <!-- DataTables -->
+     <script src="resources/js/jquery.dataTables.min.js"></script>
+    
+     <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script>
+     
+  
+       
+   
+   
+ <!-- <script>
+      $(function () {
+    	//  document.body.style.overflow = 'hidden';
+    	
+    	  setTimeout(
+    			  function() 
+    			  {
+    			  $('#myTable').DataTable( {
+    			        responsive: true
+    			    } );
+    				 
+    			  }, 1);
+      
+      });
+      $(window, ".wrapper").resize(function () {
+    	  setTimeout(
+    			  function() 
+    			  {
+    				  var oTable = $('#myTable').dataTable();
+    					oTable.fnDestroy();
+    			  $('#myTable').DataTable( {
+    			        responsive: true
+    			    } );
+    				 
+    			  }, 1);
+    	  });
+    </script> -->
+<style>
+ .user-block {
+    white-space: nowrap;
+}
+
+@media (min-width: 768px)
+.user-block {
+    width: inherit;
+}
+.avatar {
+    display: inline-block;
+    position: relative;
+}
+ .user-block .user-info {
+    display: inline-block;
+    width: 55%;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.user-block img {
+    width: 40px;
+    height: 40px;
+    float: left;
+    border-radius: 50%;
+}
+
+
+</style>

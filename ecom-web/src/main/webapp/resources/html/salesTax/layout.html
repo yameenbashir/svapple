@@ -1,0 +1,233 @@
+<div class="content-wrapper">
+		<section class="content-header">
+			<h1>Sales Taxes</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li class="active">Sales Taxes</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+
+		<div class="top-buffer-contact"></div>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+		<!-- Main content -->
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+
+					<vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center   ng-scope">
+							<span ng-show="roledId=='1'" ng-cloak>     Create and manage your Sales taxes 
+							</span>
+							<div class="vd-button-group ">
+								<button class="btn  btn-success btn-lg "
+									ng-click="showModalForAddSalesTax()" ng-show="roledId=='1'" ng-cloak>Add Sales Tax</button>
+							</div>
+							
+						</div>
+					</div>
+					</vd-section>
+					<div class="box newFont">
+
+						<div class="box-header">
+							<div class="alert alert-success alert-sm" ng-show="salesTaxSuccess"
+								ng-bind="salesTaxSuccessMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="salesTaxError"
+								ng-bind="salesTaxErrorMessage" ng-cloak></div>
+						
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<table id="myTable" class="table table-condensed" ng-show="roledId=='1'" ng-cloak>
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Rate</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="salesTax in salesTaxList">
+										<td ng-bind="salesTax.salesTaxName" ></td>
+										<td ng-bind="salesTax.salesTaxPercentage+' %'" ></td>
+										<td class="pull-right">
+					                      	<a href=""><i class="btn fa fa-edit btn-primary btn-sm "   ng-click="showModalForUpdateSalesTax(salesTax)"></i></a>
+					                      	<!-- <a href=""><i class="btn fa fa-trash btn-danger btn-sm "   ng-click="deleteEmployeeIdentificationOnPopUp(identificationNational)"></i></a> -->
+					                    </td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
+					<div class="top-buffer-contact"></div>
+					<div class="box newFont">
+
+						<div class="box-header">
+							<h3>Outlet Taxes</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<table id="myTable" class="table table-condensed">
+                   <thead >
+	                    <tr >
+	                      <th>Outlet Name</th>
+	                      <th>Sales Tax</th>
+	                      
+	                      <th ng-show="roledId=='1'" ng-cloak></th>
+	                    </tr>
+                     </thead>
+                   <tbody>
+	                    <tr ng-repeat="outlet in outletsList">
+	                      <td ng-bind="outlet.outletName" href="" ng-click="editOutlet(outlet)" style="Cursor:pointer;"></td>
+	                      <td ng-bind="outlet.salesTaxName+' %'"></td>
+	                     <td class="pull-right" ng-show="roledId=='1'" ng-cloak>
+		                      <button  class="btn fa fa-edit btn-primary btn-sm " ng-click="editOutlet(outlet)" ></button>
+	                 		  
+	                      </td>
+	                    </tr>
+				    </tbody>
+                        </table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+		</section>
+	</div>
+	 <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<modal title="Add Sales Tax" visible="showAddSalesTaxModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-4 control-label">Tax
+							Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="inputstoreName"
+								placeholder="Tax Name..."
+								data-ng-model="salesTaxBean.salesTaxName" maxlength="25"
+								ng-pattern='/^[A-Za-z0-9\s]+$/' required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="salesTax" class="col-sm-4 control-label">Tax
+							Rate (%)</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="salesTax"
+								placeholder="Tax Rate..." name="salesTax"
+								data-ng-model="salesTaxBean.salesTaxPercentage" 
+								ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required>
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addSalesTax()"
+					ng-disabled="!salesTaxBean.salesTaxName||!salesTaxBean.salesTaxPercentage"
+					ng-show="!loading">Add Sales Tax</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Add Sales Tax Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->
+
+	<modal title="Update Sales Tax" visible="showUpdateSalesTaxModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm1">
+				<div class="box-body">
+
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-4 control-label">Tax
+							Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="inputstoreName"
+								placeholder="Tax Name..."
+								data-ng-model="updateSalesTax.salesTaxName" maxlength="25"
+								ng-pattern='/^[A-Za-z0-9\s]+$/' required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="salesTax" class="col-sm-4 control-label">Tax
+							Rate (%)</label>
+						<div class="col-sm-8">
+							<input type="text"  class="form-control" id="salesTax"
+								placeholder="Tax Rate..." name="salesTax"
+								data-ng-model="updateSalesTax.salesTaxPercentage" 
+								ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required> 
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="editSalesTax()"
+					ng-disabled="!updateSalesTax.salesTaxName||!updateSalesTax.salesTaxPercentage"
+					ng-show="!loading">Update</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Update Sales Tax Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->
+	<script src="resources/js/jquery.dataTables.min.js"></script>
+
+	<script src="resources/js/dataTables.responsive.min.js"></script>
+	<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+
+	<style>
+table.dataTable thead .sorting,table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc
+	{
+	background: none;
+}
+</style>

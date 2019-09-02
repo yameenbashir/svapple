@@ -1,0 +1,97 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Change Password</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li class="active">Change Password</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+					   <vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+							  
+              
+							<span>   Change, update and edit your password all in one place.
+							</span>
+																				
+												
+						
+						</div>
+					</div>
+					</vd-section>
+						<div class="box newFont">
+							<div class="box-header">
+								<h3 class="box-title">
+									
+								</h3>
+								<div class="alert alert-success alert-sm" ng-show="success"
+									ng-bind="successMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="error"
+									ng-bind="errorMessage" ng-cloak></div>
+								<div class="form-group">
+									Email<input type="email" class="form-control " id="email"
+										ng-model="email" ng-disabled="true" maxlength="100" required />
+								</div>
+								<div class="form-group">
+									Current<input type="password" class="form-control "
+										id="password" ng-model="passwordBean.password" maxlength="100" />
+									<span ng-show="!passwordBean.password" style="color: red;">*
+										Enter Current Password</span>
+								</div>
+
+								<div class="form-group">
+									New Password<input type="password" class="form-control "
+										id="newPassword" ng-model="passwordBean.newPassword"
+										maxlength="100" /> <span ng-show="!passwordBean.newPassword"
+										style="color: red;">* Enter New Password</span>
+								</div>
+
+								<div class="form-group">
+									Confirm New Password<input type="password"
+										class="form-control " id="confirmPassword"
+										ng-model="passwordBean.confirmPassword" maxlength="100" /> <span
+										ng-show="!passwordBean.confirmPassword" style="color: red;">*
+										Confirm New Password</span>
+										<span ng-show="passwordBean.newPassword!=passwordBean.confirmPassword && passwordBean.confirmPassword " style="color:red;">* Confirmed Password not matched </span>
+								</div>
+
+								<div class="top-buffer-buttons">
+									<button class="btn btn-primary btn-block btn-lg"
+										ng-show="!loading" ng-click="changePasswordReq()"
+										ng-disabled="!passwordBean.password || !passwordBean.newPassword ||
+								 !passwordBean.confirmPassword || passwordBean.newPassword != passwordBean.confirmPassword">
+										Change Password</button>
+									<button class="btn btn-primary btn-block btn-lg"
+										ng-show="loading" ng-disabled="true" ng-cloak>
+										Save Processing <i
+											class="fa fa-arrow-right fa-spinner fa-spin "></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</div>
+

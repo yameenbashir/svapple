@@ -1,0 +1,308 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Print Labels</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li><a href="#products">Products</a></li>
+					<li><a href="#productDetails">Product Details</a></li>
+					<li class="active">Print Labels</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<img src="resources/images/20.gif" class="ajax-loader">
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row" ng-show="!makePayment">
+					<div class="col-md-1"></div>
+
+					<div class="col-md-10">
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+								<div class="inner-addon right-addon">
+
+										<i class="glyphicon glyphicon-search"></i> <input type="text"
+											focus="true" ng-model="airportName"
+											style="width: 100%; height: 50px ;    color: black;"
+											placeholder="Start typing or scanning..."
+											auto-complete="autoCompleteOptions" />
+									</div>
+								<lable>Count</lable>
+								<input
+									class="wr-input wr-input--amount-tendered ng-pristine ng-valid ng-not-empty"
+									type="number" style="color: black" required
+									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+									data-ng-model="printCounting"
+									vd-number-options="" ng-change="printCountChange()"><span> Print Labels for
+									selected product. </span>
+								<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Print Options</label>
+													<div class="col-sm-8">
+														<select class="form-control " data-native-menu="false"
+															data-role="listview" ng-change="changePrinter()"
+															data-ng-model="printOptions" ng-init="printOptions='-1'">
+															<option value="-1">Change Printer</option>
+															<option value="A4">A4</option>
+															<option value="Continous">Continous(2x1)</option>
+															<option value="ContinousNew">Continous New(2x1)</option>
+															<option value="ContinousLarge">Continous(2.15x1.70)</option>
+														
+														</select>
+													</div>
+								</div>	
+								<div class="vd-button-group">
+
+									<button class="btn btn-primary btn-lg" ng-print
+										print-element-id="printThisElement">
+										<i class="fa fa-print"></i> Print
+									</button>
+								</div>
+
+							</div>
+						</div>
+						<div  style="overflow-x: auto;" >
+						<span class="label label-info" style="margin-right: 5px;" ng-repeat="printLabel in printList  track by $index">{{printLabel}}
+						</span>
+						</div>
+						</vd-section>
+						
+						
+						<div class="box box-info newFont" ng-show="printOptionsA4">
+						
+						
+						
+						
+							<div class="box-body box-profile popup-transparent" style="height: 1150px;">
+								<div class="alert alert-success alert-sm" ng-show="success"
+									ng-bind="successMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="error"
+									ng-bind="errorMessage" ng-cloak></div>
+
+								<b>Print Labels for products</b>
+									<div class="all-test-holder" style="margin-top: 25px; margin-left: 24px; height:210mm; display: block !important; font-size: 8px;" id={{printThisElementA4}}>
+									<div class=""  >
+										<div id="left"></div>
+										<div id="incenter">
+											<div class="test_nw"
+												ng-repeat="productIn in layoutproducts  track by $index" style="">
+												<span style="margin-bottom: 0px; display: block !important;"
+													class="text-center" ng-bind="companyName"></span>
+													<svg style="width: 160px; height: 40px; margin-bottom: -10px;" class="barcode"
+														jsbarcode-format="CODE128" jsbarcode-value={{productIn.sku}}
+														jsbarcode-fontSize="10" jsbarcode-height="40" jsbarcode-marginLeft="10px"
+														jsbarcode-width="2" jsbarcode-textmargin="0"
+														jsbarcode-fontoptions="">
+												</svg>
+													<span class="text-center" ng-bind="productIn.productName"></span><br>
+													<span class="text-center" ng-bind="'Rs. '+ productIn.price"></span>
+
+											</div>
+										</div>
+										<div id="right"></div>
+
+
+
+									</div>
+								</div>
+
+								
+							</div>
+						</div>
+						<div class="box box-info newFont" ng-show="printOptionsContinous">
+							<div class="box-body box-profile popup-transparent">
+								<div class="alert alert-success alert-sm" ng-show="success"
+									ng-bind="successMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="error"
+									ng-bind="errorMessage" ng-cloak></div>
+
+								<b>Print Labels for products</b>
+								<!-- Orignal -->
+									<div>
+									<div id="left_Cont"></div>
+										<div style="display: table-cell !important;" id={{printThisElementContinous}}>
+											<div ng-if="layoutProduct.productName!=''" 
+												ng-repeat="productIn in layoutproducts"  style=" margin-top:10px; display: block !important;">
+													<span style=" margin-top:10px; display: block !important;  font-size: 8px; font-family: cursive; font-weight: bolder;"
+													class="text-center" ng-bind="companyName"></span>
+													<img class="barcode"  style="margin-top:0px; display: block !important;"
+														jsbarcode-format="CODE128" jsbarcode-value={{productIn.sku}}
+														jsbarcode-fontSize="10" jsbarcode-height="25" jsbarcode-marginRight="10px"
+														jsbarcode-width="1" jsbarcode-textmargin="0" jsbarcode-displayValue="false"
+														jsbarcode-fontoptions="">
+												</img>
+												<span style="margin-top: -8px; display: block !important;   font-size: 7px; font-family: cursive; font-weight: bolder;" class="text-center"  ng-bind="productIn.sku"></span>
+      											<span style="margin-top: -2px; margin-left: 15px; display: block !important;   font-size: 8px; font-weight: bolder;" class="text-center"  ng-bind="productIn.productName"></span>
+      									      <span style="margin-top: -2px; display: block !important;     font-size: 9px;  font-family: cursive; font-weight: bolder;" class="text-center" ng-bind="'Rs. '+ productIn.price"></span>
+      									     
+											</div>
+										</div>
+										<div id="right"></div>
+
+									</div> 
+									
+								<!-- Xpressions 
+							<div>
+									<div id="left_Cont"></div>
+										<div style="display: table-cell !important;" id={{printThisElementContinous}}>
+											<div ng-if="layoutProduct.productName!=''" 
+												ng-repeat="productIn in layoutproducts"  style=" margin-top:10px; display: block !important;">
+													<span style=" margin-top:10px; display: block !important;  font-size: 8px; font-family: sans-serif; font-weight: bolder;"
+													class="text-center" ng-bind="companyName"></span>
+													<img class="barcode"  style="margin-top:0px; display: block !important; margin-left: 25px; "
+														jsbarcode-format="CODE128" jsbarcode-value={{productIn.sku}}
+														jsbarcode-fontSize="10" jsbarcode-height="25" jsbarcode-marginRight="10px"
+														jsbarcode-width="1" jsbarcode-textmargin="0" jsbarcode-displayValue="false"
+														jsbarcode-fontoptions="">
+												</img>
+												<span style="margin-top: -2px; margin-left: 15px; display: block !important; font-family: sans-serif;  font-size: 8px; font-weight: bolder;" class="text-center"  ng-bind="productIn.productName"></span>
+      									      <span style="margin-top: -6px; display: block !important;     font-size: 14px !important;  font-family: sans-serif; font-weight: bolder;" class="text-center" ng-bind="'Rs. '+ productIn.price"></span>
+      									     
+											</div>
+										</div>
+										<div id="right"></div>
+
+								</div>  -->
+								
+								<!-- Style & Style 
+								 <div>
+									<div id="left_Cont"></div>
+										<div style="display: table-cell !important;" id={{printThisElementContinous}}>
+											<div ng-if="layoutProduct.productName!=''" 
+												ng-repeat="productIn in layoutproducts"  style=" margin-top:10px; display: block !important;">
+													<span style=" margin-top:10px ; margin-left: 15px !important; display: block !important;  font-size: 12px; font-family: sans-serif; font-weight: bolder;"
+													class="text-center" ng-bind="companyName"></span>
+													<img class="barcode"  style="margin-top:-4px; display: block !important; margin-left: 25px; "
+														jsbarcode-format="CODE128" jsbarcode-value={{productIn.sku}}
+														jsbarcode-fontSize="10" jsbarcode-height="25" jsbarcode-marginRight="10px"
+														jsbarcode-width="1" jsbarcode-textmargin="0" jsbarcode-displayValue="false"
+														jsbarcode-fontoptions="">
+												</img>
+												<span style="margin-top: -10px; margin-left: 15px; display: block !important; font-family: sans-serif;  font-size: 12px; font-weight: bolder;" class="text-center"  ng-bind="productIn.productName"></span>
+      									      <span style="margin-top: -6px; display: block !important; margin-left: 15px !important;    font-size: 10px !important;  font-family: sans-serif; font-weight: bolder;" class="text-center" ng-bind="'Rs. '+ productIn.price"></span>
+      									     
+											</div>
+										</div>
+										<div id="right"></div>
+
+								</div> -->
+								
+							</div>
+						</div>
+						<div class="box box-info newFont" ng-show="printOptionsContinousNew">
+							<div class="box-body box-profile popup-transparent">
+								<div class="alert alert-success alert-sm" ng-show="success"
+									ng-bind="successMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="error"
+									ng-bind="errorMessage" ng-cloak></div>
+
+								<b>Print Labels for products</b>
+								<!-- LeoConcept -->
+								<div style=" margin-top:25px; display: block !important; ">
+							         <div id="left_Cont"></div>
+							          <div style="display: table-cell !important;" id={{printThisElementContinousNew}}>
+							            <div style=" margin-top:25px; display: block !important; "></div>
+							           <div ng-if="layoutProduct.productName!=''" 
+							            ng-repeat="productIn in layoutproducts"  style="display: block !important; ">
+							            
+							            <span style="margin-top:-20px ; margin-left: 10px !important; display: block !important;  font-size: 8px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+							             class="text-center" ng-bind="productIn.productName"></span>
+							             <span style="margin-top:-20px ; margin-left: 140px !important; display: block !important;  font-size: 8px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+							             class="text-center" ng-bind="'Rs. '+ productIn.price"></span>
+							             <span style=" margin-top:-5px ; margin-left: 50px !important; display: block !important;  font-size: 8px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+							             class="text-center" ng-bind="productIn.productDesc"></span>
+							             <img class="barcode"  style="margin-top:0px; display: block !important; margin-left: 25px; "
+							              jsbarcode-format="CODE128" jsbarcode-value={{productIn.sku}}
+							              jsbarcode-fontSize="10" jsbarcode-height="25" jsbarcode-marginRight="10px"
+							              jsbarcode-width="1" jsbarcode-textmargin="0" jsbarcode-displayValue="false"
+							              jsbarcode-fontoptions="">
+							            </img>
+							            <span style="margin-top: -7px; margin-left: 15px; display: block !important; font-family: sans-serif;  font-size: 8px; font-weight: bolder;" class="text-center"  ng-bind="productIn.sku"></span>
+							                    <span style="margin-top:2px ; margin-left: 10px !important; display: block !important;  font-size: 8px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+							             class="text-center" ng-bind="productIn.variantAttributeValue1"></span>
+							             <span style="margin-top:2px ; margin-left: 140px !important; display: block !important;  font-size: 8px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+							             class="text-center" ng-bind="productIn.variantAttributeValue2"></span>
+							                    <div  style=" margin-top:7px !important; display: block !important; ">
+							                    <br/>
+							            </div> 
+							            
+							           </div>
+							          </div>
+							          <div id="right"></div>
+							
+							        </div>
+								
+							</div>
+						</div>
+						<div class="box box-info newFont" ng-show="printOptionsContinousLarge">
+							<div class="box-body box-profile popup-transparent">
+								<div class="alert alert-success alert-sm" ng-show="success"
+									ng-bind="successMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="error"
+									ng-bind="errorMessage" ng-cloak></div>
+
+								<b>Print Labels for products</b>
+								<div>
+									<div id="left_Cont"></div>
+									<div style="display: table-cell !important;" id={{printThisElementContinousLarge}}>
+								           <div ng-if="layoutProduct.productName!=''" 
+								            ng-repeat="productIn in layoutproducts"  style=" margin-top:10px; display: block !important;">
+								             <span style=" margin-top:40px ; margin-left: 15px !important; display: block !important;  font-size: 20px; font-family: sans-serif; font-weight: bolder;"
+								             class="text-center" ng-bind="companyName"></span>
+								             <img class="barcode"  style="margin-top:0px; display: block !important; margin-left: 25px; "
+								              jsbarcode-format="CODE128" jsbarcode-value={{productIn.sku}}
+								              jsbarcode-fontSize="10" jsbarcode-height="25" jsbarcode-marginRight="10px"
+								              jsbarcode-width="1" jsbarcode-textmargin="0" jsbarcode-displayValue="false"
+								              jsbarcode-fontoptions="">
+								            </img>
+								            <span style="margin-top: -7px; margin-left: 15px; display: block !important; font-family: sans-serif;  font-size: 16px; font-weight: bolder;" class="text-center"  ng-bind="productIn.productName"></span>
+								            <span style="margin-top: -6px; display: block !important; margin-left: 15px !important;    font-size: 16px !important;  font-family: sans-serif; font-weight: bolder;" class="text-center" ng-bind="'Rs. '+ productIn.price"></span>
+								                    
+								           </div>
+								          </div>
+										<div id="right"></div>
+
+								</div>
+								 
+							</div>
+						</div>
+					</div>
+					</div>
+
+					<div class="col-md-1"></div>
+				</div>
+
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+<style>
+ @media print{
+   body *{display:none}
+   #printSection,#printSection *{display:inline}
+   #printSection{position:absolute;left:0;top:0}
+   }
+#left_Cont {
+    display: table-cell !important;
+    width: 10.5%;
+}
+</style>
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>

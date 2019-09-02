@@ -1,0 +1,235 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>All Products</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#ecommerce"></a>Ecommerce</li>
+					<li class="active">Products</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+
+						<vd-tabs modifier="no-border large"
+							class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
+
+						<vd-tab type="anchor" active="this.activeTab == 'users'"
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
+							link="'#roles'"> <a class="vd-tab-button ng-scope"
+							ng-href="#roles" href="/users/"><span class="ng-scope">
+								Enabled(1) </span></a> </vd-tab> <vd-tab
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab"
+							type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+						<a class="vd-tab-button ng-scope" ng-href="#users"
+							href="/users/roles"><span class="ng-scope">
+								Disabled(0) </span></a> </vd-tab> <vd-tab
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab"
+							type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+						<a class="vd-tab-button ng-scope" ng-href="#users"
+							href="/users/roles"><span class="ng-scope"> Total(1) </span></a>
+						</vd-tab> </vd-tabs>
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span> Enable and disable products from being sold online.
+								</span>
+								<div class="vd-button-group">
+									<button class="btn btn-success btn-lg" ng-click="addProduct()">Add
+										Product</button>
+
+								</div>
+							</div>
+						</div>
+						</vd-section>
+
+
+						<div class="box box-primary newFont">
+							<div class="box-header"></div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<table id="myTable" class="display" cellspacing="0" width="100%"
+									ng-clock>
+									<thead>
+										<tr>
+											<th>Product</th>
+											<th>Price</th>
+											<th>Count</th>
+											<th></th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+
+											<td ng-click="showProduct()"><a href=""
+												ng-click="showProduct()">
+													<div class="user-block">
+														<div class="avatar micro">
+															<img ng-src="resources/images/products.png">
+															<div class="opacity-border"></div>
+														</div>
+														<div class="user-info">
+															<div class="name">Shirts</div>
+
+														</div>
+											</a>
+											<td>495.00</td>
+											<td>45</td>
+
+											<td>
+												<div class="ckbox">
+															<input type="checkbox" id="checkbox2"
+																data-ng-model="allowSale"> <label
+																for="checkbox2"> </label>
+
+
+														</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="top-buffer-contact"></div>
+
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 65%;
+	margin-left: 25%;
+}
+</style>
+<!-- DataTables -->
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+
+
+
+<script>
+	$(function() {
+		//  document.body.style.overflow = 'hidden';
+
+		setTimeout(function() {
+			$('#myTable').DataTable({
+				responsive : true
+			});
+
+		}, 1);
+
+	});
+	$(window, ".wrapper").resize(function() {
+		setTimeout(function() {
+			var oTable = $('#myTable').dataTable();
+			oTable.fnDestroy();
+			$('#myTable').DataTable({
+				responsive : true
+			});
+
+		}, 1);
+	});
+</script>
+<style>
+.user-block {
+	white-space: nowrap;
+}
+
+@media ( min-width : 768px) .user-block {
+	width
+	:
+	 
+	inherit
+	;
+	
+
+}
+
+.avatar {
+	display: inline-block;
+	position: relative;
+}
+
+.user-block .user-info {
+	display: inline-block;
+	width: 55%;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+	float: left;
+	border-radius: 50%;
+}
+</style>

@@ -1,0 +1,302 @@
+<div class="container">
+	<div class="row">
+	  <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+         Notifications
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+            <!-- <li><a href="#empView">Managed Services</a></li> -->
+            <!--  <li><a href="#products">Products</a></li> -->
+            <li class="active">Notifications</li>
+          </ol>
+        </section>
+	     <section class="content-header">
+   
+    </section>
+		 <div class="top-buffer-contact"> </div>
+	 <div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+  			 <div class="row">
+	  <div class="col-md-1">
+	   </div>
+	   <div class="col-md-10">
+	   
+	  
+			   <vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+							  
+              
+							<span>   A list of all of your Notifications.
+							</span>
+							<!-- <div class="vd-button-group">
+							 <button class="btn  btn-primary btn-lg" ng-click="loadAllNotifications()" ng-show="dataLoading">Load All Notifications</button>
+                                
+							</div>
+							<div class="vd-button-group" ng-show="!dataLoading">
+									<button class="btn  btn-primary btn-lg" ng-disabled="true">
+										Loading All Notifications<i
+											class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+									</button>
+
+								</div> -->
+							
+							
+						</div>
+					</div>
+					</vd-section>
+
+	    	
+	    			<div class="box box-primary newFont">
+                <div class="box-header">
+               <div class="alert alert-success alert-sm" ng-show="tagSuccess"
+								ng-bind="tagSuccessMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="tagError"
+								ng-bind="tagErrorMessage" ng-cloak></div>
+				 </div><!-- /.box-header -->
+				<div class="box-body">
+				<table id="myTable"  class="display" cellspacing="0" width="100%"  ng-clock ng-if="notificationBeanList.length > 0">
+				    <thead >
+				        <tr >
+				           <th>Notification To</th>
+				           <th>Notification From</th>
+				           <th>Description</th>
+				           <th>Created Date</th>
+				            
+				        </tr>
+				    </thead>
+				    <tbody>
+				          <tr ng-if="notificationBeanList.length > 0" ng-repeat="notificationBean in notificationBeanList">
+						
+				        <td ng-bind="notificationBean.outletByOutletIdToName"></td>
+				        <td ng-bind="notificationBean.outletByOutletIdFromName"></td>
+				        <td ng-bind="notificationBean.description"></td>
+				        <td ng-bind="notificationBean.createdDate"></td>
+				       
+				        </tr>
+				          
+				    </tbody>
+				</table>
+				</div>
+			</div>
+                 <div class="top-buffer-contact"> </div>
+                 
+                         </div>
+               <div class="col-md-2">
+	   </div>
+	</div>
+	</section>
+			</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+        
+
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals
+					2017</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- Modal -->
+	<modal title="New Tag" visible="showNewTagModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					<div class="alert alert-danger alert-sm" ng-show="paymentTypeAddError"
+								ng-bind="paymentTypeAddErrorMessage" ng-cloak></div>
+					
+					
+					<div class="form-group">
+						<label for="tag" class="col-sm-4 control-label">Tag Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="tag"
+								placeholder="Tag Name..." name="tag"
+								data-ng-model="tagBean.tagName" ng-pattern='/^[a-zA-Z0-9\s]+$/' required maxlength="100">
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addTag()"
+					ng-disabled="!tagBean.tagName"
+					ng-show="!loading">Add Tag</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Add Tag Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->	
+	<!-- Modal -->
+	<modal title="Edit Tag" visible="showUpdateTagModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					<div class="alert alert-danger alert-sm" ng-show="paymentTypeAddError"
+								ng-bind="paymentTypeAddErrorMessage" ng-cloak></div>
+					
+					
+					<div class="form-group">
+						<label for="tag" class="col-sm-4 control-label">Tag Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="tag"
+								placeholder="Tag Name..." name="tag"
+								data-ng-model="updateTagBean.tagName" ng-pattern='/^[a-zA-Z0-9\s]+$/' required maxlength="100">
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="updateTag()"
+					ng-disabled="!updateTagBean.tagName"
+					ng-show="!loading">Update Tag</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Update Tag Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->	
+
+    <style>
+.center {
+    margin-top:50px;   
+}
+
+.modal-header {
+    padding-bottom: 5px;
+}
+
+.modal-footer {
+        padding: 0;
+}
+    
+.modal-footer .btn-group button {
+    height:40px;
+    border-top-left-radius : 0;
+    border-top-right-radius : 0;
+    border: none;
+}
+    
+.modal-footer .btn-group:last-child > button {
+    border-right: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    width: 65%;
+    margin-left: 25%;
+}
+</style>
+    <!-- DataTables -->
+     <script src="resources/js/jquery.dataTables.min.js"></script>
+    
+     <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script>
+     
+  
+       
+   
+   
+ <!-- <script>
+      $(function () {
+    	//  document.body.style.overflow = 'hidden';
+    	
+    	  setTimeout(
+    			  function() 
+    			  {
+    			  $('#myTable').DataTable( {
+    			        responsive: true
+    			    } );
+    				 
+    			  }, 1);
+      
+      });
+      $(window, ".wrapper").resize(function () {
+    	  setTimeout(
+    			  function() 
+    			  {
+    				  var oTable = $('#myTable').dataTable();
+    					oTable.fnDestroy();
+    			  $('#myTable').DataTable( {
+    			        responsive: true
+    			    } );
+    				 
+    			  }, 1);
+    	  });
+    </script> -->
+<style>
+ .user-block {
+    white-space: nowrap;
+}
+
+@media (min-width: 768px)
+.user-block {
+    width: inherit;
+}
+.avatar {
+    display: inline-block;
+    position: relative;
+}
+ .user-block .user-info {
+    display: inline-block;
+    width: 55%;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.user-block img {
+    width: 40px;
+    height: 40px;
+    float: left;
+    border-radius: 50%;
+}
+
+
+</style>

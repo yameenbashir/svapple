@@ -1,0 +1,6 @@
+USE `ecom`;
+SELECT @companyId := 1, @createdBy := 1;
+
+-- ----------------------------DEFAULT_COMPANY_LVEVEL_CONFIGURATIONS_ECOM.sql-------------------------------------------------
+
+insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,CREATED_BY,UPDATED_BY,CREATED_DATE,LAST_UPDATED,ACTIVE_INDICATOR) values ('SHOW_PRODCUT_TAG','false',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);

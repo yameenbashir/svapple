@@ -1,0 +1,16 @@
+use ecom;
+DROP VIEW IF EXISTS contacts_summmary;
+Create VIEW contacts_summmary AS
+select  CONTACT_ID, coalesce(CONCAT(FIRST_NAME,' ',coalesce(LAST_NAME,'')),'-') AS 'CONTACT_NAME' ,
+coalesce(FIRST_NAME,' ') AS FIRST_NAME,
+coalesce(LAST_NAME,' ') AS LAST_NAME,
+coalesce(COMPANY_NAME,'-') AS COMPANY_NAME, coalesce(CONTACT_BALANCE,0) As BALANCE,
+coalesce((select coalesce(address.PHONE,'##') from address where contact.CONTACT_ID  = address.CONTACT_ASSOCICATION_ID AND ADDRESS_TYPE='Physical Address'),'-') AS PHONE,
+CREATED_DATE,ACTIVE_INDICATOR,OUTLET_ASSOCIATION_ID,COMPANY_ASSOCIATION_ID,LAST_UPDATED,
+(select CONTACT_GROUP_NAME from contact_group where contact.CONTACT_GROUP_ASSOCIATION_ID = contact_group.CONTACT_GROUP_ID) AS CONTACT_GROUP
+,CONTACT_TYPE
+from contact 
+ order by CREATED_DATE desc ;
+ 
+ 
+

@@ -1,0 +1,218 @@
+<div class="">
+	<div class="">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Register Report <small>Register Report summary</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+					<li class="active">Register Report</li>
+				</ol>
+			</section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<section class="content" ng-show="!globalPageLoader"
+				ng-cloak>
+
+
+				<div class="row">
+
+
+					<div class="box box-primary newFont">
+
+
+						<div class="box-header">
+							<div class="row">
+							<div class="col-md-1"></div>
+								<div class="col-md-3">
+									<div class="form-group" ng-show="isHeadOffice">
+													<label for="inputPassword3" class="col-sm-5 control-label">Select Outlet</label>
+														
+														<div class="col-sm-7">
+														 <select class="form-control " data-native-menu="false"
+															data-role="listview" ng-change = "changeOutletName()"
+															data-ng-model="outletName"
+															ng-init="outletName=outletSelected">
+															<option value="All Outlets" >All Outlets</option>
+															<option ng-repeat = "outlet in outlets" ng-selected=" inventoryReportOutletName == outlet.outletName"
+															value="{{outlet.outletName}}">{{outlet.outletName}}</option>
+
+														</select>
+													</div>
+												</div>
+								
+								</div>
+															</div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+																			<table id="myTable" class="display" cellspacing="0"
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Outlet</th>
+															<th>Cash Amount</th>
+															<th>Credit Amount</th>
+															<th>Opening Date</th>
+															<th>Closing Date</th>
+															<th>Open By</th>
+															<th>Close By</th>
+															<th>Status</th>
+															
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="report in registerReport">
+
+															<td ng-click="showRegisterDetail(report)"><a href=""
+																ng-click="showRegisterDetail(report)">
+																	<div class="user-block">
+																		<div class="user-info">
+																			<div class="name" ng-bind="report.outletName"></div>
+																		</div>
+																	</div>
+															</a></td>
+															<td ng-bind="report.cashAmtActual"></td>
+															<td ng-bind="report.creditCardAmtActual"></td>
+															<td ng-bind="report.openingDate"></td>
+															<td ng-bind="report.closingDate"></td>
+															<td ng-bind="report.openBy"></td>
+															<td ng-bind="report.closeBy"></td>
+															<td ng-bind="report.status"></td>
+															
+														</tr>
+													</tbody>
+													
+												</table>
+						</div>
+					</div>
+
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018 - Version 1.0.0</div>
+		</div>
+	</div>
+</div>
+
+<style>
+#right {
+	position: relative;
+	margin-top: 10%;
+	overflow-y: scroll;
+	width: 100%;
+	margin-bottom: 10%;
+	height: 138px;
+}
+
+.personicon {
+	font-size: 30px;
+	color: rgba(201, 6, 34, 0.89);
+	width: 30px;
+}
+
+.panel-heading span {
+	margin-top: -20px;
+	font-size: 15px;
+}
+
+.row {
+	margin-top: 5px;
+	padding: 0 10px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+</style>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+<script src="resources/js/buttons.flash.min.js"></script>
+<script src="resources/js/jszip.min.js"></script>
+<script src="resources/js/pdfmake.min.js"></script>
+
+<script src="resources/js/vfs_fonts.js"></script>
+<script src="resources/js/buttons.html5.min.js"></script>
+<script src="resources/js/buttons.print.min.js"></script>
+<script src="resources/js/dataTables.colReorder.min.js"></script>
+
+
+
+
+<script>
+ setTimeout(
+			  function() 
+			  {
+				$('#myTable').DataTable(
+					{
+						responsive : true,
+						dom : 'Bfrtip',
+						caption : "Mike Smith",
+						buttons : {
+							buttons : [
+									{
+										extend : 'print',
+										text : '<i class="fa fa-print"></i> Print',
+										title : $('h1').text(),
+										key : {
+											key : 'p',
+											altkey : true
+										},
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true,
+										autoPrint : false
+									},
+									{
+										extend : 'excel',
+										text : '<i class="fa fa-book"></i> Excel',
+										title : $('h1').text(),
+										key : {
+											key : 'p',
+											altkey : true
+										},
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true,
+										autoPrint : false
+									},
+									{
+										extend : 'pdf',
+										text : '<i class="fa fa-file-pdf-o"></i> PDF',
+										title : $('h1').text(),
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true
+									} ],
+							dom : {
+								container : {
+									className : 'dt-buttons'
+								},
+								button : {
+									className : 'btn btn-default'
+								}
+							}
+						}
+					});
+				 
+			  }, 10);
+    </script>

@@ -1,0 +1,2 @@
+INSERT INTO `ecom`.`delivery_method` (`DELIVERY_METHOD_ID`, `DELIVERY_METHOD_NAME`, `SHIPPING_RATE`, `ACTIVE_INDICATOR`, `CREATED_BY`, `UPDATED_BY`) VALUES ('1', 'COD', '300', true, '1', '1');
+UPDATE `ecom`.`delivery_method` SET `LAST_UPDATED`=current_timestamp WHERE `DELIVERY_METHOD_ID`='1';

@@ -1,0 +1,256 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Dashboard</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#personalInfo">Ecommerce</a></li>
+					<li class="active">Dashboard</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+
+						<div class="box box-info newFont">
+
+							<div class="box-body box-profile popup-transparent">
+								<div class="row">
+									<div class="col-md-5"></div>
+									<div class="col-md-4">
+										<img style="margin-left: 15%;"
+											src="resources/images/shopping_cart.png">
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+								<div class="row">
+									<div class="col-md-4"></div>
+									<div class="col-md-5">
+										<h2 style="text-align: center;">Ready, set, go!</h2>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+								<div class="row">
+									<div class="col-md-4"></div>
+									<div class="col-md-6">
+										<p style="text-align: center;">We've ruffled the pillows
+											and prepared the table while you were creating your store. To
+											help you start selling right away, follow our 3-step guide to
+											set up the essentials.</p>
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+
+								<hr class="vd-hr">
+								<div class="row">
+									<div class="col-md-2"></div>
+									<div class="col-md-3">
+									<a href="" >
+										<div class="box box-primary">
+
+											<div class="box-header">
+												<h3 class="box-title">01 Shipping</h3>
+												<img class="pull-right" ng-src="resources/images/plane.png">
+
+											</div>
+
+											<div class="box-body">
+												<p>Set up the shipping methods and rates to your first
+													shipping location.</p>
+											</div>
+										</div>
+									 </a>
+									</div>
+									<div class="col-md-3">
+									<a href="" >
+										<div class="box box-primary">
+
+											<div class="box-header">
+												<h3 class="box-title">02 Payments</h3>
+												<img class="pull-right" style="height: 25px;" ng-src="resources/images/credit_card.png">
+
+											</div>
+
+											<div class="box-body">
+												<p>Select your preferred payment methods to enable on your website.</p>
+											</div>
+										</div>
+										</a>
+									</div>
+									<div class="col-md-3">
+									<a href="" >
+										<div class="box box-primary">
+
+											<div class="box-header">
+												<h3 class="box-title">03 Taxes</h3>
+												<img class="pull-right" ng-src="resources/images/calculator.png">
+
+											</div>
+
+											<div class="box-body">
+												<p>Choose the zones or countries for taxes and we'll do the rest.</p>
+											</div>
+										</div>
+										</a>
+									</div>
+									<div class="col-md-1"></div>
+									
+
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2"></div>
+					</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 65%;
+	margin-left: 25%;
+}
+</style>
+<!-- DataTables -->
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+
+
+
+<script>
+	$(function() {
+		//  document.body.style.overflow = 'hidden';
+
+		setTimeout(function() {
+			$('#myTable').DataTable({
+				responsive : true
+			});
+
+		}, 1);
+
+	});
+	$(window, ".wrapper").resize(function() {
+		setTimeout(function() {
+			var oTable = $('#myTable').dataTable();
+			oTable.fnDestroy();
+			$('#myTable').DataTable({
+				responsive : true
+			});
+
+		}, 1);
+	});
+</script>
+<style>
+.user-block {
+	white-space: nowrap;
+}
+
+@media ( min-width : 768px) .user-block {
+	width
+	
+	
+	
+	
+	
+	
+	
+	
+	:
+	
+	
+	
+	
+	 
+	
+	
+	
+	
+	inherit
+	
+	
+	
+	
+	
+	
+	
+	
+	;
+}
+
+.avatar {
+	display: inline-block;
+	position: relative;
+}
+
+.user-block .user-info {
+	display: inline-block;
+	width: 55%;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+	float: left;
+	border-radius: 50%;
+}
+</style>

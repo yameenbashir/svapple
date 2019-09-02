@@ -1,0 +1,351 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<h1 ng-bind="'Manage Register for - '+(registerBean.outletName)">Manage Register</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!--  <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#outlets">Outlets</a></li>
+					<li class="active">Manage Register</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+
+			<section class="content" ng-show="!globalPageLoader"
+				ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<div class="box">
+							<div class="box-header">
+								<i class="fi-page text-blue" style="font-size: 3em;"></i>
+								<h3 class="box-title">Details</h3>
+								<div class="alert alert-success alert-sm"
+									ng-show="registerSuccess" ng-bind="registerSuccessMessage"
+									ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="registerError"
+									ng-bind="registerErrorMessage" ng-cloak></div>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Register
+															name</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="inputstoreName" placeholder="Register name..."
+																data-ng-model="registerBean.registerName" maxlength="100"
+																required>
+																<span ng-show="!registerBean.registerName" style="color:red;">* Add Register name</span>
+														</div>
+													</div>
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Cash
+															management enabled</label>
+														<div class="col-sm-8">
+															<label class="radio-inline"><input type="radio"
+																ng-model="cashManagement.value" value="Yes">Yes</label>
+															<label class="radio-inline"><input type="radio"
+																ng-model="cashManagement.value" value="No">No</label> </br>Only
+															for Register (Mac, PC, iPad)
+															<!-- <input type="checkbox" 
+													            name="cashManagementEenabled" value="Yes"> Yes </input>
+													           <input type="checkbox" 
+													            name="cashManagementEenabled" value="No"> No </input> -->
+
+														</div>
+														<label for="inputEmail3"
+															ng-show="cashManagement.value=='Yes'"
+															class="col-sm-4 control-label">Cash type</label>
+														<div class="col-sm-8"
+															ng-show="cashManagement.value=='Yes'">
+															<select class="form-control select2" style="width: 100%;"
+																data-ng-model="receiptBean.timeZone"
+																ng-init="receiptBean.timeZone='0'">
+																<option value="0">Cash</option>
+
+															</select>
+														</div>
+
+													</div>
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.box -->
+						</div>
+						<div class="box">
+							<div class="box-header">
+								<h3 class="box-title">Receipt</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Number</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="inputstoreName" placeholder="number..."
+																data-ng-model="registerBean.receiptNumber"
+																maxlength="25" ng-pattern='/^[0-9]*$/' required>
+																<span ng-show="!registerBean.receiptNumber" style="color:red;">* Add Receipt number</span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Prefix</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="Prefix..."
+																data-ng-model="registerBean.receiptPrefix"
+																maxlength="25" required>
+																<span ng-show="!registerBean.receiptPrefix" style="color:red;">* Add Receipt prefix</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															Sufix</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="Sufix.."
+																data-ng-model="registerBean.receiptSufix" maxlength="25">
+																<span ng-show="!registerBean.receiptSufix" style="color:red;">* Add Receipt sufix</span>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+								<!-- /.box-footer -->
+
+							</div>
+							<!-- /.box -->
+						</div>
+						<!-- /.box-body -->
+						<div class="box">
+							<div class="box-header">
+								<h3 class="box-title">At End of Sale</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Select
+															user for next sale</label>
+														<div class="col-sm-8">
+															<label class="radio-inline"><input type="radio"
+																ng-model="userNextSale.value" value="Yes">Yes</label> <label
+																class="radio-inline"><input type="radio"
+																ng-model="userNextSale.value" value="No">No</label>
+															<!--  <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> Yes </input>
+													           <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> No </input> -->
+
+														</div>
+
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Email
+															receipt</label>
+														<div class="col-sm-8">
+															<label class="radio-inline"><input type="radio"
+																ng-model="receiptEmail.value" value="Yes">Yes</label> <label
+																class="radio-inline"><input type="radio"
+																ng-model="receiptEmail.value" value="No">No</label>
+															<!-- <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> Yes </input>
+													           <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> No </input> -->
+
+														</div>
+
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Print
+															receipt</label>
+														<div class="col-sm-8">
+															<label class="radio-inline"><input type="radio"
+																ng-model="receiptPrint.value" value="Yes">Yes</label> <label
+																class="radio-inline"><input type="radio"
+																ng-model="receiptPrint.value" value="No">No</label>
+															<!-- <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> Yes </input>
+													           <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> No </input> -->
+
+														</div>
+
+													</div>
+
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Ask
+															for note</label>
+														<div class="col-sm-8">
+															<select class="form-control select2" style="width: 100%;"
+																data-ng-model="registerBean.notes"
+																ng-init="registerBean.notes='On Save/Layby/Account/Return'">
+																<!-- ng-init="receiptBean.timeZone='0'" -->
+																<option value="On Save/Layby/Account/Return">On
+																	Save/Layby/Account/Return</option>
+
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Print
+															note on receipt</label>
+														<div class="col-sm-8">
+															<label class="radio-inline"><input type="radio"
+																ng-model="receiptPrintNotes.value" value="Yes">Yes</label>
+															<label class="radio-inline"><input type="radio"
+																ng-model="receiptPrintNotes.value" value="No">No</label>
+															<!-- <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> Yes </input>
+													           <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> No </input> -->
+
+														</div>
+
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Show
+															discounts on receipts</label>
+														<div class="col-sm-8">
+															<label class="radio-inline"><input type="radio"
+																ng-model="discountsOnReceipt.value" value="Yes">Yes</label>
+															<label class="radio-inline"><input type="radio"
+																ng-model="discountsOnReceipt.value" value="No">No</label>
+															<!-- <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> Yes </input>
+													           <input type="checkbox" ng-model="checkboxModel.value2"
+													           ng-true-value="'YES'" ng-false-value="'NO'"> No </input> -->
+
+														</div>
+
+													</div>
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+
+
+								<!-- /.box-body -->
+								<div class="box-footer">
+									<button
+										class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+										ng-click="updateRegister()"
+										ng-disabled="!registerBean.registerName || !registerBean.receiptNumber
+									||!registerBean.receiptPrefix||!registerBean.receiptSufix"
+										ng-show="!loading">Update Register</button>
+									<button ng-show="loading"
+										class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+										Update Register Processing<i
+											class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+									</button>
+									<a href="#outlets"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+
+								</div>
+
+								<!-- /.box-footer -->
+
+							</div>
+							<!-- /.box -->
+						</div>
+					</div>
+					<!-- /.box -->
+
+				</div>
+			</section>
+			<div class="col-md-1"></div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>

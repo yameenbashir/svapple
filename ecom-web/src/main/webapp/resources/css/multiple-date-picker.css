@@ -1,0 +1,42 @@
+.text-center{text-align:center}.multiple-date-picker{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.multiple-date-picker,.picker-days-row,.picker-days-week-row,.picker-top-row{width:100%}.picker-top-row>div{display:inline-block}.picker-navigate{width:16.66%}.picker-navigate:hover{cursor:pointer}.picker-navigate.disabled,.picker-navigate.disabled:hover{color:#ddd;cursor:default}.picker-month{width:66.66%}.picker-days-row>div,.picker-days-week-row>div{width:14.28%;display:inline-block}.picker-day,.picker-top-row{padding:10px 0}.picker-day{background-color:#fff;border:1px solid #eee;box-sizing:border-box;color:#000}.picker-day.today,.picker-day.today.picker-off,.picker-day.today.picker-off:hover,.picker-day.today.picker-selected,.picker-day.today:hover{color:#00a3ff}.picker-day:not(.picker-off):not(.picker-empty):hover{background-color:#C6000B;color:#fff;cursor:pointer}.picker-day.picker-selected{background-color:#C6000B;color:#fff}.picker-day.picker-off,.picker-day.picker-off:hover{background-color:#eee;color:#bbb;cursor:default}.picker-day.picker-empty,.picker-day.picker-empty:hover{background-color:#fafafa;cursor:default}
+.picker-day.picker-other-month-custom{
+    background-color: #3c8dbc;
+    color: #fff;
+}
+
+.picker-day.picker-other-month-custom:hover{
+    cursor: pointer;
+    background-color: #ae5d4a;
+    color: #fff;
+}
+
+.picker-day.picker-other-month-custom.picker-selected{
+    background-color: #C6000B;
+}
+
+.picker-day.holiday{
+    background-color: #00ffa2;
+    color: #fff;
+}
+
+.picker-day.holiday.picker-selected{
+    background-color: #00ae69;
+    color: #fff;
+}
+
+.picker-day.holiday.picker-off{
+    background-color: #00a267;
+    color: #fff;
+    cursor: default;
+}
+
+.picker-day.holiday:not(.picker-off):hover{
+    background-color: #00e795;
+    color: #fff;
+}
+
+
+.picker-day.birthday:not(.picker-selected){
+    background-color: #ded100;
+    color: #000;
+}

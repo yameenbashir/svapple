@@ -1,0 +1,160 @@
+body{background:url(../images/mainbg.png);}
+
+body .navbar-inverse {
+	background-color: transparent;
+	border-color: transparent;
+	background-image: none;
+	box-shadow: 0 0 0 transparent;
+}
+
+body .navbar-inverse .navbar-nav > li > a {
+	background-color: #000000;
+	color: #fff;
+	text-shadow: 0 0 0 transparent;
+	font-size: 16px;
+	text-transform: uppercase;
+	padding: 25px 30px;
+	margin-right: 2px;
+}
+
+body .navbar-inverse .navbar-nav > li > a:hover {
+	background-color: #111111;
+}
+ 
+html body {
+font-family: main_font , arial;
+padding-top: 72px;
+}
+
+body .navbar-inverse .navbar-brand {
+padding: 0;
+}
+
+@font-face {
+  font-family: 'main_font';
+  src: url('../fonts/framdcn_0.ttf');
+}
+body .btn-danger , body .btn-danger:hover , body .btn-danger:active{
+background: #cd181f; /* Old browsers */
+background: -moz-linear-gradient(top,  #cd181f 0%, #af1a16 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cd181f), color-stop(100%,#af1a16)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #cd181f 0%,#af1a16 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #cd181f 0%,#af1a16 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #cd181f 0%,#af1a16 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #cd181f 0%,#af1a16 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cd181f', endColorstr='#af1a16',GradientType=0 ); /* IE6-9 */
+/*border:1px solid #880502;*/
+background-position: 0 0;
+}
+body .btn-danger:hover{
+	text-shadow:0 1px 2px #000;
+		box-shadow: 0 1px 2px #ffffff inset;
+}
+.mobile-image {
+background: url(../images/mobile.png) scroll 0 0 transparent;
+width: 430px;
+height: 580px;
+position: absolute;
+bottom: 0;
+}
+.homecontainer{
+	
+}
+.homecontainer img {
+margin: 50px auto 40px;
+}
+.homecontainer h1{
+    color: #ffffff;
+}
+.homecontainer button {
+font-size: 28px;
+padding: 10px 19px;
+margin: 4px;
+}
+.homecontainer p{
+    color: #000;
+    font-size: 20px;
+	margin-bottom:40px
+}
+@media (max-width:767px){
+	
+	.mobile-image{display:none;}
+
+.homecontainer h1{display:none}
+.homecontainer p{display:none;}
+.homecontainer button {
+	width: 100%;
+	margin-bottom: 15px;
+	margin: 0 0 15px;	
+}
+}
+@media (max-width:1100px){
+.container .mobile-image {
+background: url(../images/mobile.png) scroll 0 0 transparent;
+width: 40%;
+height: 580px;
+position: absolute;
+bottom: 0;
+background-size: 100% auto;
+background-repeat: no-repeat;
+background-position: bottom;
+}
+}
+@media (min-width:767px){
+.home-container-master .col-md-7 {
+	width: 52.8%;
+}
+.home-container-master .col-md-offset-5 {
+	margin-left: 47.2%;
+}
+}
+@media (max-width:350px){
+	html body .navbar-inverse .container .navbar-nav.nav.pull-right > li > a {font-size:9px}
+}
+@media (max-width:380px){
+	html body .navbar-inverse .navbar-nav.nav.pull-right > li > a {font-size:10px;padding: 15px 0;}
+}
+@media (max-width:450px){
+	html body .navbar-inverse .navbar-nav.nav > li > a {font-size:12px}
+}
+@media (max-width:500px){
+	html body .navbar-inverse .navbar-nav > li > a {font-size:14px}
+}
+@media (max-width:767px){
+	.navbar-nav {
+		margin: 0;
+		width: 100%;
+	}
+	body .navbar-inverse .navbar-nav > li > a {
+		background-color: #000000;
+		color: #fff;
+		text-shadow: 0 0 0 transparent;
+		font-size: 16px;
+		text-transform: uppercase;
+		padding: 25px 0;
+		margin-right: 0px;
+		text-align: center;
+		width: 20%;
+		display: block;
+		clear: none;
+		float: left;
+	}
+.navbar-inverse .container{padding:0;}
+}
+.navbar-brand{display:none;}
+
+
+.popup-transparent{margin-top:50px;position: relative;z-index: 200;}
+.popup-transparent input{font-size: 24px;height: 57px;margin-bottom: 10px;}
+.popup-transparent input[type=text] , .popup-transparent input[type=password]{font-family:Arial, Helvetica, sans-serif;font-size:22px;margin-bottom:10px;background: rgba(0, 0, 0, 0.11);border: 1px solid #777;box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.59);color: #000;}
+.popup-transparent input[type=submit]{margin-bottom:10px;}
+.popup-transparent legend{margin-bottom:10px;color: #000;font-size: 37px;border-bottom: 0px none transparent;}
+.popup-bg{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(121, 120, 117, 0.68);
+    z-index: 100;
+}

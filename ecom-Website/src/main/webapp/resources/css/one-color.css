@@ -1,0 +1,42 @@
+ @charset "utf-8";
+/* CSS Document */
+
+.green {
+	background:#00a2df;
+	}
+.green_light {
+	background: rgba(130, 180, 64, 0.65);
+	}
+.blue{
+	background:#116ead;
+	} 
+.dark_gray {
+	background:#969696;
+	}
+.we-do .do-wrap a{
+	color:#969696;
+}
+
+.we-do .do-wrap a:hover{
+	color:#116ead;
+}
+.we-do .do-wrap:hover .top, we-do .do-wrap:focus .top, .we-do .do-wrap:hover span, .we-do .do-wrap:focus span{
+	background:#116ead;
+}
+
+.pricing_item.dark_gray {
+    border-color: #969696;
+}
+
+.pricing_item.dark_gray .pricing_action{
+    background: #969696;
+}
+
+
+.pricing_item.dark_gray:hover .pricing_action{
+	border:1px solid transparent;
+	background:#116ead !important;
+}
+
+
+	

@@ -1,0 +1,339 @@
+<div class="">
+	<div class="">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Product Type Sales Report <small>Product Type Sales Report summary</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+					<li class="active">Product Type Sales Report</li>
+				</ol>
+			</section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<section class="content" ng-show="!globalPageLoader"
+				ng-cloak>
+
+
+				<div class="row">
+
+
+					<div class="box box-primary newFont">
+
+
+						<div class="box-header">
+							<div class="row">
+							<!-- <div class="col-md-1"></div> -->
+								<div class="col-md-3">
+								<div class="form-group">
+													<label for="inputPassword3" class="col-sm-5 control-label">Select Outlet</label>
+														
+														<div class="col-sm-7">
+														 <select class="form-control " data-native-menu="false"
+															data-role="listview" ng-change = "changeOutletName()"
+															data-ng-model="outletName"
+															ng-init="outletName=outletSelected">
+															<option value="All Outlets" >All Outlets</option>
+															<option ng-repeat = "outlet in outlets" ng-selected=" inventoryReportOutletName == outlet.outletName"
+															value="{{outlet.outletName}}">{{outlet.outletName}}</option>
+
+														</select>
+													</div>
+												</div>
+												</div>
+								<div class="col-md-3">
+									<div class="form-group">
+													<label for="inputPassword3" class="col-sm-4 control-label">Report Type</label>
+														
+														<div class="col-sm-8">
+														 <select class="form-control " data-native-menu="false"
+															data-role="listview" ng-change = "changeReportDataType()"
+															data-ng-model="reportType"
+															ng-init="reportType=reportTypeSelect">
+															<option value="Revenue">Revenue</option>
+															<option value="Cost of Goods">Cost of Goods</option>
+															<option value="Gross Profit">Gross Profit</option>
+															<option value="Items Sold">Items Sold</option>
+															<option value="Margin">Margin</option>
+															<option value="Revenue (tax incl)">Revenue (tax incl)</option>
+															<option value="First Sale">First Sale</option>
+															<option value="Last Sale">Last Sale</option>
+														</select>
+													</div>
+												</div>
+								
+								</div>
+								<div class="col-md-2">
+									<div id="reportrange" class="pull-right"
+										style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+										<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+										<span></span> <b class="caret"></b>
+									</div>
+								</div>
+								<div class="col-md-1">
+									<div class="ckbox">
+										<span class="media-meta pull-right">Daily</span> <input
+											type="checkbox" id="checkbox1" selected="true" ng-model="checkbox1" ng-change="changeReportType('Daily')"> <label
+											for="checkbox1"> </label>
+
+									</div>
+								</div>
+								<div class="col-md-1">
+									<div class="ckbox">
+										<span class="media-meta pull-right">Weekly</span> <input
+											type="checkbox" id="checkbox2" ng-model="checkbox2" ng-change="changeReportType('weekly')" > <label
+											for="checkbox2"> </label>
+
+									</div>
+								</div>
+								<div class="col-md-1">
+									<div class="ckbox">
+										<span class="media-meta pull-right">Monthly</span> <input
+											type="checkbox" id="checkbox3" ng-model="checkbox3" ng-change="changeReportType('monthly')"> <label
+											for="checkbox3"> </label>
+
+									</div>
+								</div>
+								<div class="col-md-1">
+									<div class="ckbox">
+										<span class="media-meta pull-right">Yearly</span> <input
+											type="checkbox" id="checkbox4" ng-model="checkbox4" ng-change="changeReportType('yearly')"> <label
+											for="checkbox4"> </label>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body" style="overflow-x: auto;">
+							<table id="myTable" class="display table-curved" cellspacing="0"
+								style="width: 100%; font-size: 12px;">
+								
+								<caption></br></caption>
+								<thead>
+
+									<tr>
+										<th ng-repeat="column in salesReport.columns" ng-bind="column"></th>
+									</tr>
+
+								</thead>
+									
+							
+
+								<tbody>
+									<tr ng-repeat="row in salesReport.rows">
+										<td ng-repeat="data in row.columns track by $index" ng-bind="data"></td>
+									</tr>
+								</tbody>
+								<tfoot>
+
+									<tr>
+										<th ng-repeat="column in salesReport.footer.columns  track by $index" ng-bind="column"></th>
+									</tr>
+
+								</tfoot>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018 - Version 1.0.0</div>
+		</div>
+	</div>
+</div>
+
+<style>
+#right {
+	position: relative;
+	margin-top: 10%;
+	overflow-y: scroll;
+	width: 100%;
+	margin-bottom: 10%;
+	height: 138px;
+}
+
+.personicon {
+	font-size: 30px;
+	color: rgba(201, 6, 34, 0.89);
+	width: 30px;
+}
+
+.panel-heading span {
+	margin-top: -20px;
+	font-size: 15px;
+}
+
+.row {
+	margin-top: 5px;
+	padding: 0 10px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+</style>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+<script src="resources/js/buttons.flash.min.js"></script>
+<script src="resources/js/jszip.min.js"></script>
+<script src="resources/js/pdfmake.min.js"></script>
+
+<script src="resources/js/vfs_fonts.js"></script>
+<script src="resources/js/buttons.html5.min.js"></script>
+<script src="resources/js/buttons.print.min.js"></script>
+<script src="resources/js/dataTables.colReorder.min.js"></script>
+
+
+
+
+<script>
+	$(function() {
+
+  	  setTimeout(
+  			  function() 
+  			  {
+  				$('#myTable').DataTable(
+						{
+							responsive : true,
+							 
+							dom : 'Bfrtip',
+							caption : "Mike Smith",
+							buttons : {
+								buttons : [
+										{
+											extend : 'print',
+											text : '<i class="fa fa-print"></i> Print',
+											title : $('h1').text(),
+											key : {
+												key : 'p',
+												altkey : true
+											},
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true,
+											message : '<b> Sales Summary for for Dates</b>',
+											autoPrint : false,
+											customize : function(win) {
+												$(win.document.body)
+														.css('font-size',
+																'10pt')
+														.prepend(
+																'<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />');
+
+												$(win.document.body).find(
+														'table').addClass(
+														'compact').css(
+														'font-size', 'inherit');
+											}
+										},
+										{
+											extend : 'pdf',
+											text : '<i class="fa fa-file-pdf-o"></i> PDF',
+											title : $('h1').text(),
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true
+										} ,
+										{
+											extend : 'excel',
+											text : '<i class="fa fa-book"></i> Excel',
+											title : $('h1').text(),
+											key : {
+												key : 'p',
+												altkey : true
+											},
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true,
+											autoPrint : false
+										}],
+								dom : {
+									container : {
+										className : 'dt-buttons'
+									},
+									button : {
+										className : 'btn btn-default'
+									}
+								}
+							}
+						});
+  				 
+  			  }, 10);
+		
+//		$("div.header").html('Charges list');
+//		$("div.footer").html('Total');
+//		$('#myTable caption').text('Sales Report');
+
+		var start = moment().subtract(6, 'days');
+		var end = moment();
+
+		function cb(start, end) {
+			if(!localStorage.getItem('startProductTypeSalesDate') || !localStorage.getItem('endProductTypeSalesDate')){
+				$('#reportrange span').html(
+						start.format('MMMM D, YYYY') + ' - '
+								+ end.format('MMMM D, YYYY'));
+			}else{
+				$('#reportrange span').html(
+						localStorage.getItem('startProductTypeSalesDate')  + ' - '
+								+ localStorage.getItem('endProductTypeSalesDate'));
+				
+			}
+		}
+
+		$('#reportrange').daterangepicker(
+				{
+					ranges : {
+						'Today' : [ moment(), moment() ],
+						'Yesterday' : [ moment().subtract('days', 1),
+								moment().subtract('days', 1) ],
+						'Last 7 Days' : [ moment().subtract('days', 6),
+								moment() ],
+						'Last 30 Days' : [ moment().subtract('days', 29),
+								moment() ],
+						'This Month' : [ moment().startOf('month'),
+								moment().endOf('month') ],
+						'Last Month' : [
+								moment().subtract('month', 1).startOf('month'),
+								moment().subtract('month', 1).endOf('month') ]
+					},
+					startDate : moment().subtract('days', 29),
+					endDate : moment()
+				},
+				function(start, end) {
+					localStorage.setItem('startProductTypeSalesDate',start.format('MMMM D, YYYY'));
+					localStorage.setItem('endProductTypeSalesDate',end.format('MMMM D, YYYY'));
+					$('#reportrange span').html(
+							start.format('MMMM D, YYYY') + ' - '
+									+ end.format('MMMM D, YYYY'));
+					$("#reportrange").trigger("change");
+				});
+
+		cb(start, end);
+		$('.ckbox label').on('click', function() {
+			$(this).parents('tr').toggleClass('selected');
+		});
+		
+
+
+	});
+</script>

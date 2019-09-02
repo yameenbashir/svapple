@@ -1,0 +1,416 @@
+<div class="">
+	<div class="">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Product Stock History Report <small>Product Stock History Report summary</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+					<li class="active">Product Stock History Report</li>
+				</ol>
+			</section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<section class="content" ng-show="!globalPageLoader"
+				ng-cloak>
+
+
+				<div class="row">
+
+
+					<div class="box box-primary newFont">
+
+
+						<div class="box-header">
+							<div class="row">
+							<!-- <div class="col-md-1"></div> -->
+								<div class="col-md-4">
+								<div class="form-group" >
+													<label for="inputPassword3" class="col-sm-5 control-label">Select Product</label>														
+														<div class="col-sm-12">
+														 <div class="inner-addon right-addon">
+											<i class="glyphicon glyphicon-search"></i> <input type="text"
+												focus="true" ng-model="airportName"
+												style="width: 100%; height: 50px; color: black"
+												placeholder="Start typing or scanning..."
+												auto-complete="autoCompleteOptions" />
+										</div>
+													</div>
+												</div>
+												</div>
+								<div class="col-md-3">
+									<div class="form-group">
+													<label for="inputPassword3" class="col-sm-4 control-label">Stock Type</label>
+														
+														<div class="col-sm-12">
+														 <select class="form-control " data-native-menu="false" style="height: 50px;"
+															data-role="listview" ng-change = "checkProductStatus()"
+															data-ng-model="productStockHistoryReportType" ng-init="productStockHistoryReportType='-1'">
+															<option value="-1">Select Type</option>
+															<option value="1">Purchase Order</option>
+															<option value="2">Stock Return to Supplier</option>
+															<option value="3">Stock Transfer</option>
+															<option value="4">Stock Return to Warehouse</option>
+														</select>
+													</div>
+												</div>
+								
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-8 control-label">Date Range</label>
+										<div class="col-sm-10">
+
+											<div id="reportrange" class="pull-right"
+												style="background: #fff; cursor: pointer; padding: 14px 26px; border: 1px solid #ccc;">
+												<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+												<span></span> <b class="caret"></b>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1">
+									<div class="form-group">
+										<div class="col-sm-10" style="padding: 25px">
+
+											<button
+												class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+												ng-click="checkProductStatus()" ng-show="!loading">Generate
+												Report</button>
+											<button ng-show="loading"
+												class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+												Processing<i
+													class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+											</button>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body" >
+						<div  class="box-body" ng-hide = "stockOrder">
+					<table id="myTable" class="display" cellspacing="0"	width="100%" ng-clock >
+													<thead>
+														<tr>
+															<th>Order</th>
+															<th>Order Name</th>
+															<th>Outlet </th>
+															<th>Supplier</th>
+															<th>Product</th>
+															<th>Quantity</th>
+															<th>Supply Price</th>
+															<th>Total</th>
+															<th>Recv Quantity</th>
+															<th>Recv Supply Price</th>
+															<th>Total</th>
+															<th>Dated</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="stockOrderDetailBean in stockOrderDetailBeansList">
+
+															<td ng-bind="stockOrderDetailBean.order"></td>
+															<td ng-bind="stockOrderDetailBean.stockOrderRefNo"></td>
+															<td ng-bind="stockOrderDetailBean.outletName"></td>
+															<td ng-bind="stockOrderDetailBean.contactName"></td>
+															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
+															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>
+															<td ng-bind="stockOrderDetailBean.ordrSupplyPrice"></td>
+															<td ng-bind="stockOrderDetailBean.total"></td>
+															<td ng-bind="stockOrderDetailBean.recvProdQty"></td>
+															<td ng-bind="stockOrderDetailBean.recvSupplyPrice"></td>
+															<td ng-bind="stockOrderDetailBean.recvTotal"></td>
+															<td ng-bind="stockOrderDetailBean.lastUpdated"></td>
+														</tr>
+													</tbody>
+													<tfoot>
+													<tr>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th>Total Amount</th>
+														<th ng-bind = "productBean.totalReceived"></th>
+														<th>Total Items</th>
+														<th ng-bind = "productBean.totalItems"></th>
+														<th></th>
+														<th></th>
+													</tr>
+													
+												</tfoot>
+												</table>
+												</div>
+												<div  class="box-body" ng-hide = "stockReturn">
+												<table id="myTable2" class="display" cellspacing="0" 
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Order</th>
+															<th>Order Name</th>
+															<th>Outlet</th>
+															<th>Supplier</th>
+															<th>Product</th>
+															<th>Quantity</th>															
+															<th>Retail Price</th>
+															<th>Total</th>
+															<th>Dated</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="stockOrderDetailBean in stockOrderDetailBeansList1">
+															<td ng-bind="stockOrderDetailBean.order"></td>
+															<td ng-bind="stockOrderDetailBean.stockOrderRefNo"></td>
+															<td ng-bind="stockOrderDetailBean.outletName"></td>
+															<td ng-bind="stockOrderDetailBean.contactName"></td>
+															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
+															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>
+															<td ng-bind="stockOrderDetailBean.ordrSupplyPrice"></td>
+															<td ng-bind="stockOrderDetailBean.total"></td>
+															<td ng-bind="stockOrderDetailBean.lastUpdated"></td>
+														</tr>
+													</tbody>
+													<tfoot>
+													<tr>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th>Total Amount</th>
+														<th ng-bind = "productBean.totalReturn"></th>
+														<th>Total Items</th>
+														<th ng-bind = "productBean.totalItems"></th>
+														<th></th>
+													</tr>
+												</tfoot>
+												</table>
+												</div>
+												<div  class="box-body" ng-hide = "stockTransfer">
+												<table id="myTable1" class="display" cellspacing="0" 
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Order</th>
+															<th>Order Name</th>
+															<th>Source</th>
+															<th>Outlet</th>
+															<th>Product</th>
+															<th>Quantity</th>
+															<th>Retail Price</th>
+															<th>Total</th>
+															<th>Dated</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="stockOrderDetailBean in stockOrderDetailBeansList2">
+
+															<td ng-bind="stockOrderDetailBean.order"></td>
+															<td ng-bind="stockOrderDetailBean.stockOrderRefNo"></td>
+															<td ng-bind="stockOrderDetailBean.sourceOutletName"></td>
+															<td ng-bind="stockOrderDetailBean.outletName"></td>
+															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
+															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>
+															<td ng-bind="stockOrderDetailBean.retailPrice"></td>
+															<td ng-bind="stockOrderDetailBean.total"></td>
+															<td ng-bind="stockOrderDetailBean.lastUpdated"></td>
+														</tr>
+													</tbody>
+													<tfoot>
+													<tr>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th>Total Amount</th>
+														<th ng-bind = "productBean.totalTransfered"></th>
+														<th>Total Items</th>
+														<th ng-bind = "productBean.totalItems"></th>
+													</tr>
+												</tfoot>
+												</table>
+												</div>
+												<div  class="box-body" ng-hide = "stockReturnToWarehouse">
+												<table id="myTable3" class="display" cellspacing="0" 
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Order</th>
+															<th>Order Name</th>
+															<th>Source</th>
+															<th>Outlet</th>
+															<th>Product</th>
+															<!-- <th>Current Inventory</th> -->
+															<th>Quantity</th>
+															<th>Retail Price</th>
+															<th>Total</th>
+															<th>Dated</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="stockOrderDetailBean in stockOrderDetailBeansList3">
+															<td ng-bind="stockOrderDetailBean.order"></td>
+															<td ng-bind="stockOrderDetailBean.stockOrderRefNo"></td>
+															<td ng-bind="stockOrderDetailBean.sourceOutletName"></td>
+															<td ng-bind="stockOrderDetailBean.outletName"></td>
+															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
+															<!-- <td ng-bind="stockOrderDetailBean.productVariantCurrInventory"></td> -->
+															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>															
+															<td ng-bind="stockOrderDetailBean.retailPrice"></td>
+															<td ng-bind="stockOrderDetailBean.total"></td>
+															<td ng-bind="stockOrderDetailBean.lastUpdated"></td>
+														</tr>
+													</tbody>
+													<tfoot>
+													<tr>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th>Total Amount</th>
+														<th ng-bind = "productBean.totalRtw"></th>
+														<th>Total Items</th>
+														<th ng-bind = "productBean.totalItems"></th>
+														<th></th>
+													</tr>
+												</tfoot>
+												</table>
+												</div>
+												
+						</div>
+					</div>
+
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018 - Version 1.0.0</div>
+		</div>
+	</div>
+</div>
+
+<style>
+#right {
+	position: relative;
+	margin-top: 10%;
+	overflow-y: scroll;
+	width: 100%;
+	margin-bottom: 10%;
+	height: 138px;
+}
+
+.personicon {
+	font-size: 30px;
+	color: rgba(201, 6, 34, 0.89);
+	width: 30px;
+}
+
+.panel-heading span {
+	margin-top: -20px;
+	font-size: 15px;
+}
+
+.row {
+	margin-top: 5px;
+	padding: 0 10px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+</style>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+<script src="resources/js/buttons.flash.min.js"></script>
+<script src="resources/js/jszip.min.js"></script>
+<script src="resources/js/pdfmake.min.js"></script>
+
+<script src="resources/js/vfs_fonts.js"></script>
+<script src="resources/js/buttons.html5.min.js"></script>
+<script src="resources/js/buttons.print.min.js"></script>
+<script src="resources/js/dataTables.colReorder.min.js"></script>
+
+
+
+
+<script>
+	$(function() {
+
+
+		
+//		$("div.header").html('Charges list');
+//		$("div.footer").html('Total');
+//		$('#myTable caption').text('ProductStockHistory Report');
+
+		var start = moment().subtract(29, 'days');
+		var end = moment();
+		
+		function cb(start, end) {
+			if(!localStorage.getItem('startProductStockHistoryDate') || !localStorage.getItem('endProductStockHistoryDate')){
+				$('#reportrange span').html(
+						start.format('MMMM D, YYYY') + ' - '
+								+ end.format('MMMM D, YYYY'));
+			}else{
+				$('#reportrange span').html(
+						localStorage.getItem('startProductStockHistoryDate')  + ' - '
+								+ localStorage.getItem('endProductStockHistoryDate'));
+				
+			}
+			
+		}
+		
+		$('#reportrange').daterangepicker(
+				{
+					ranges : {
+						'Today' : [ moment(), moment() ],
+						'Yesterday' : [ moment().subtract('days', 1),
+								moment().subtract('days', 1) ],
+						'Last 7 Days' : [ moment().subtract('days', 6),
+								moment() ],
+						'Last 30 Days' : [ moment().subtract('days', 29),
+								moment() ],
+						'This Month' : [ moment().startOf('month'),
+								moment().endOf('month') ],
+						'Last Month' : [
+								moment().subtract('month', 1).startOf('month'),
+								moment().subtract('month', 1).endOf('month') ]
+					},
+					startDate : start,
+					endDate : end
+				},
+				function(start, end) {
+					localStorage.setItem('startProductStockHistoryDate',start.format('MMMM D, YYYY'));
+					localStorage.setItem('endProductStockHistoryDate',end.format('MMMM D, YYYY'));
+					$('#reportrange span').html(
+							start.format('MMMM D, YYYY') + ' - '
+									+ end.format('MMMM D, YYYY'));
+					$("#reportrange").trigger("change");
+				});
+
+		cb(start, end);
+		$('.ckbox label').on('click', function() {
+			$(this).parents('tr').toggleClass('selected');
+		});
+	});
+</script>

@@ -1,0 +1,304 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<h1>Add Outlet</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!--  <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#outlets">Outlets</a></li>
+					<li class="active">Add Outlet</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<div class="box">
+							<div class="box-header">
+								<i class="ionicons ion-outlet text-blue" style="font-size: 3em;"></i>
+								<h3 class="box-title">Details</h3>
+								<div class="alert alert-success alert-sm"
+									ng-show="outletSuccess" ng-bind="outletSuccessMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="outletError"
+									ng-bind="outletErrorMessage" ng-cloak></div>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Outlet
+															name</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="inputstoreName" placeholder="Outlet name..."
+																data-ng-model="outletBean.outletName" maxlength="25"
+																ng-pattern='/^[A-Za-z\s]+$/' required>
+																<span ng-show="!outletBean.outletName" style="color:red;">* Add Outlet name</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="Sales Tax" class="col-sm-4 control-label">Default
+															Sales Tax</label>
+
+														<div class="col-sm-8">
+															<select class="form-control " data-native-menu="false"
+																data-role="listview"
+																data-ng-model="outletBean.salesTaxId"
+																ng-init="outletBean.salesTaxId='1'">
+																<option ng-repeat="salesTax in salesTaxList"
+																	value="{{salesTax.salesTaxId}}">{{salesTax.salesTaxName}}:
+																	{{salesTax.salesTaxPercentage}}%</option>
+															</select>
+														</div>
+													</div>
+
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Order
+															number</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="Order number.."
+																data-ng-model="outletBean.orderNumber" maxlength="25">
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Order
+															number prefix</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="Order number prefix..."
+																data-ng-model="outletBean.orderNumberPrefix"
+																maxlength="25">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Supplier
+															number prefix</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="Supplier number prefix..."
+																data-ng-model="outletBean.supplieNumberPrefix"
+																maxlength="25">
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Supplier
+															return number</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="Supplier return number..."
+																data-ng-model="outletBean.supplierReturnNumber"
+																maxlength="25">
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.box -->
+						</div>
+						<div class="box">
+							<div class="box-header">
+								<h3 class="box-title">Physical Address and Contact Details</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Street</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="inputstoreName" placeholder="Street..."
+																data-ng-model="outletBean.addressbean.street"
+																maxlength="100"  >
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">City</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="City..."
+																data-ng-model="outletBean.addressbean.city"
+																maxlength="100" >
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															Physical Postcode</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="Postcode.."
+																data-ng-model="outletBean.addressbean.postalCode"
+																maxlength="100" >
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															State</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																placeholder="State.."
+																data-ng-model="outletBean.addressbean.state"
+																maxlength="100" >
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="Country" class="col-sm-4 control-label">Country</label>
+
+														<div class="col-sm-8">
+															<select class="form-control " data-native-menu="false"
+																data-role="listview"
+																data-ng-model="outletBean.addressbean.countryId"
+																ng-init="outletBean.addressbean.countryId='1'">
+																<option ng-repeat="country in countryList"
+																	value="{{country.countryId}}">{{country.countryName}}</option>
+															</select>
+															<span ng-show="!outletBean.addressbean.countryId" style="color:red;">* Select Country</span>
+														</div>
+													</div>
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="form-group">
+													<label for="TimeZone" class="col-sm-4 control-label">Time
+														Zone</label>
+
+													<div class="col-sm-8">
+														<select class="form-control " data-native-menu="false"
+															data-role="listview"
+															data-ng-model="outletBean.addressbean.timeZoneId"
+															ng-init="outletBean.addressbean.timeZoneId='1'">
+															<option ng-repeat="timeZone in timeZonesList"
+																value="{{timeZone.timeZoneId}}">{{timeZone.timeZoneValue}}</option>
+														</select>
+														<span ng-show="!outletBean.addressbean.timeZoneId" style="color:red;">* Select TimeZone</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Email</label>
+													<div class="col-sm-8">
+														<input type="email" class="form-control" id="inputURL"
+															placeholder="Email..."
+															data-ng-model="outletBean.addressbean.email"
+															maxlength="25">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Phone</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="inputURL"
+															placeholder="Phone..."
+															data-ng-model="outletBean.addressbean.phone"
+															maxlength="25">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Twitter</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="inputURL"
+															placeholder="Twitter..."
+															data-ng-model="outletBean.addressbean.twitter"
+															maxlength="25">
+													</div>
+												</div>
+										</div>
+										</form>
+
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+
+
+
+							<!-- /.box-body -->
+							<div class="box-footer">
+								<button
+									class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+									ng-click="addOutlet()"
+									ng-disabled="!outletBean.outletName||!outletBean.addressbean.countryId
+									||!outletBean.addressbean.timeZoneId "
+									ng-show="!loading">Save</button>
+								<button ng-show="loading"
+									class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+									Save Processing<i
+										class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+								</button>
+								<a href="#outlets"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+
+							</div>
+
+							<!-- /.box-footer -->
+
+						</div>
+						<!-- /.box -->
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+		</div>
+		</section>
+		<div class="col-md-1"></div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="advisoray-interview-model" default="default" basedir=".." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+	<path id="maven-ant-tasks.classpath" path="ant/maven-ant-tasks-2.1.0.jar" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath" />
+
+
+	<!-- Do nothing by default (for now) -->
+	<target name="default" />
+
+
+
+
+
+	<!-- 
+	**************************************
+		Database-related targets.
+	************************************** 
+	-->
+
+
+	<!-- Do a full db rebuild -->
+	<target name="db-rebuild" depends="db-deps,db-drop-tables,db-create-tables,db-populate-tables" />
+	
+	
+	<!-- DB task dependencies -->
+	<target name="db-deps">
+
+		<echo>JDBC Driver: ${jdbcdriver}</echo>
+		<echo>JDBC URL: ${jdbcurl}</echo>
+		<artifact:dependencies pathid="jdbc-classpath">
+			<dependency groupId="postgresql" artifactId="postgresql" version="9.1-901.jdbc4" scope="test" />
+		</artifact:dependencies>
+
+		
+
+	</target>
+
+
+	<!-- Drop schema. Ignore errors on the drops-the table may not yet exist -->
+	<target name="db-drop-tables" >		
+		<sql rdbms="postgres" driver="${jdbcdriver}" url="${jdbcurl}" userid="${jdbcuser}" password="${jdbcpass}" onerror="continue" classpathref="jdbc-classpath">
+			
+			<path>
+			    <fileset dir="src/main/resources/sql/schema/drop/">
+			      <include name="dropSchema.sql"/>
+			    </fileset>
+			</path>
+		</sql>
+	</target>
+
+
+	<!-- Create schema -->
+	<target name="db-create-tables" depends="db-deps" >		
+		<sql rdbms="postgres" driver="${jdbcdriver}" url="${jdbcurl}" userid="${jdbcuser}" password="${jdbcpass}" onerror="continue" classpathref="jdbc-classpath">
+			
+			<path>
+                <fileset dir="src/main/resources/sql">
+                    <include name="*.sql" />
+                </fileset>
+            </path>			
+		</sql>
+		<sql rdbms="postgres" driver="${jdbcdriver}" url="${jdbcurl}" userid="${jdbcuser}" password="${jdbcpass}" onerror="continue" classpathref="jdbc-classpath">
+		            
+            <path>
+                <fileset dir="src/main/resources/sql/schema">
+                    <include name="*.sql" />
+                </fileset>
+            </path>         
+        </sql>
+	</target>
+
+
+	<!-- Populate tables -->
+	<target name="db-populate-tables" depends="db-deps" >
+		<sql driver="${jdbcdriver}" url="${jdbcurl}" userid="${jdbcuser}" password="${jdbcpass}" classpathref="jdbc-classpath">
+			<path>
+				<fileset dir="src/main/resources/sql/data">
+					<include name="*.sql" />
+				</fileset>
+			</path>
+		</sql>
+
+	</target>
+
+</project>

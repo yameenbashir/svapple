@@ -1,0 +1,346 @@
+<div class="container">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>Inventory Count Details</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				 <li><a href="#stockControl">Stock Control</a></li> 
+				<li><a href="#inventoryCount">Inventory Count</a></li>
+				<li><a href="#inventoryCountCreate">Inventory Count Create</a></li>
+				<li class="active">Inventory Count Details</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+			
+					<div class="box">
+						
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+						<div class="alert alert-success alert-sm" ng-show="success"
+								ng-bind="successMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="error"
+								ng-bind="errorMessage" ng-cloak></div>
+							<div class="box box-primary">
+							
+								<div class="row">								
+									<div class="col-md-1"></div>
+									<div class="col-md-4">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-6 control-label">Name / Reference</label>
+													<div class="col-sm-6">
+														<span class="unit control-label" ng-bind="inventoryCountBean.inventoryCountRefNo"></span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-6 control-label">Outlet</label>
+													<div class="col-sm-6">
+														<span class="unit control-label" ng-bind="inventoryCountBean.outletName"></span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-6 control-label">Total Price Expected</label>
+													<div class="col-sm-6">
+														<span class="unit control-label" ng-bind="inventoryCountBean.retailPriceExp"></span>
+													</div>
+												</div>
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-4">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+											<div class="form-group">												
+													<label for="inputEmail3" class="col-sm-6 control-label">Type</label>
+														<div class="col-sm-6">
+														<span class="unit control-label" ng-bind="inventoryCountBean.inventoryCountTypeDesc"></span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-6 control-label"><b>Remarks</b></label>
+													<div class="col-sm-6">
+														<span class="unit control-label"  ng-bind="inventoryCountBean.remarks"></span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-6 control-label"><b>Total Price Counted</b></label>
+													<div class="col-sm-6">
+														<span class="unit control-label"  ng-bind="inventoryCountBean.retailPriceCounted"></span>
+													</div>
+												</div>											
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-2">
+										<div class="box-header with-border"></div>
+										<div class="box-body">
+											<img src="resources/images/order.png"
+												class="img-responsive img-rounded" alt="Cinque Terre"
+												style="width: 204px; height: auto;">
+										</div>
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- /.box -->
+					</div>
+					
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div class="row">
+									<div class="col-md-5">Product</div>
+									<div class="col-md-1">Quantity</div>
+									<div class="col-md-2" ><span style="margin-left:5px"> Add</span></div>
+									<div class="col-md-2">Items Expected</div>
+									<div class="col-md-2">Items Counted</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-md-5">
+										<div class="inner-addon right-addon">
+
+											<i class="glyphicon glyphicon-search"></i> <input id="lov" type="text"
+												focus="true" ng-model="airportName"
+												style="width: 100%; height: 50px; color: black"
+												placeholder="Start typing or scanning..."
+												auto-complete="autoCompleteOptions" />
+										</div>
+									</div>
+									<div class="col-md-1">
+										<input type="text"
+											data-ng-model="inventoryCountDetailBean.countedProdQty"
+											name="product_search[quantity]"
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' autocomplete="off"
+											class=" form-control click-to-select unit"
+											id="product_search_quantity" ng-maxlength="9"
+											style="height: 50px;">
+									</div>
+									<div class="col-md-2">
+										<button class="btn btn-success btn click-to-select unit "
+											ng-click="checkProductStatus()"
+											ng-disabled="!productVariantBean || !inventoryCountDetailBean.countedProdQty">Add
+											Product</button>
+									</div>
+									<div class="col-md-2">
+										<input type="text"
+											data-ng-model="inventoryCountBean.itemCountExp"
+											name="product_search[quantity]"
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' autocomplete="off"
+											class=" form-control click-to-select unit"
+											id="product_search_quantity" ng-maxlength="50" ng-disabled = "true"
+											style="height: 50px; width: 1000px;">
+									</div>
+									<div class="col-md-2">
+										<input type="text"
+											data-ng-model="inventoryCountBean.itemCountCounted"
+											name="product_search[quantity]"
+											ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' autocomplete="off"
+											class=" form-control click-to-select unit"
+											id="product_search_quantity" ng-maxlength="50" ng-disabled = "true"
+											style="height: 50px; width: 1000px;">
+									</div>
+									
+								</div>
+				</div>
+			
+
+						</vd-section>
+					<div class="box">
+						
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<div class="box box-primary">
+								<div class="row">
+									<div class="col-md-12">
+</br>
+</br>
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<div class="box-body">
+											<table id="myTable" class="display" cellspacing="0"
+												width="100%" ng-clock>
+												<thead>
+													<tr>
+														<th>Order</th>
+														<th>Product</th>
+														<th>Exp Quantity</th>
+														<th>Counted Quantity</th>
+														<th>Diff</th>
+														<th>Exp Retail Price</th>
+														<th>Counted Retail Price</th>
+														<th>Diff</th>
+														<th ng-show="!hideTransferInfo">Audit Transfer</th>
+														<th ng-show="!isFull"></th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="inventoryCountDetailBean in inventoryCountDetailBeansList">
+
+														<td ng-bind="inventoryCountDetailBean.order"></td>
+														<td ng-bind="inventoryCountDetailBean.variantAttributeName"></td>
+														<td ng-bind="inventoryCountDetailBean.expProdQty">
+														</td>
+														<td ><input type="text" data-ng-model="inventoryCountDetailBean.countedProdQty" min="1" class=""
+															id="Name"  ng-maxlength="9" ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' ng-blur = "changeQuantity(inventoryCountDetailBean)" required></td>														
+														<td ng-bind="inventoryCountDetailBean.countDiff"></td>
+														<td ng-bind="inventoryCountDetailBean.retailPriceExp"></td>
+														<td ng-bind="inventoryCountDetailBean.retailPriceCounted"></td>
+														<td ng-bind="inventoryCountDetailBean.priceDiff"></td>
+														<td ng-show="!hideTransferInfo" ng-bind="inventoryCountDetailBean.auditTransfer"></td>
+														<td  ng-show="!isFull"><button class="btn btn-danger btn" ng-click="showConfirmDelete(inventoryCountDetailBean)" ><i class="fa fa-trash"></i></button></td>
+													
+													</tr>
+												</tbody>
+											</table>
+
+										</div>
+					<div class="box-footer text-right">
+								<button class="btn btn-primary btn  "
+									ng-click="addInventoryCountDetail()" ng-disabled="!checkInventoryCountDetailList()" ng-show="!loading">Save</button>
+								<button  ng-show="loading" class="btn btn-primary btn">
+							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+				       	    </button>
+				       	    <button class="btn btn-primary btn  "
+									ng-click="addAndUpdateInventoryCountDetail()" ng-disabled="!checkInventoryCountDetailList()" ng-show="!loading">Complete</button>
+								<button  ng-show="loading" class="btn btn-primary btn">
+							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+				       	    </button>
+								<a href="#inventoryCount"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+
+							</div>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+
+
+
+
+
+					</div>
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+	</div>
+	</section>
+	<div class="col-md-1"></div>
+</div>
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<modal title="Delete Selected Product" visible="showConfirmDeletePopup" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					
+					<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="delInventoryCountDetail(inventoryCountDetailBean)">Yes</button>
+				
+				<button
+					class="btn btn-default btn-sm pull-left btn-primary-spacing"
+					data-dismiss="modal">No</button>
+					</div>					
+				</div>
+			</form>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->	
+	
+	
+    <style>
+.center {
+    margin-top:50px;   
+}
+
+.modal-header {
+    padding-bottom: 5px;
+}
+
+.modal-footer {
+        padding: 0;
+}
+    
+.modal-footer .btn-group button {
+    height:40px;
+    border-top-left-radius : 0;
+    border-top-right-radius : 0;
+    border: none;
+}
+    
+.modal-footer .btn-group:last-child > button {
+    border-right: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    width: 65%;
+    margin-left: 25%;
+}
+</style>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+<!-- <script>
+	$(function() {
+		//  document.body.style.overflow = 'hidden';
+
+		setTimeout(function() {
+			$('#myTable').DataTable({
+				responsive : true
+			});
+			$('#myTable1').DataTable({
+				responsive : true
+			});
+		}, 1);
+
+	});
+</script> -->

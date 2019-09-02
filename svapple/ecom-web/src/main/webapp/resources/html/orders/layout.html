@@ -1,0 +1,198 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Online Orders</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#ecommerce"></a>Ecommerce</li>
+					<li class="active">Orders</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+
+
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span> View, manage, and process your orders. </span>
+								<div class="vd-button-group">
+									<button class="btn btn-success btn-lg"
+										ng-click="ProcessOrder()">Process Order</button>
+
+								</div>
+							</div>
+						</div>
+						</vd-section>
+
+
+						<div class="box box-primary newFont">
+							<div class="box-header"></div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<table id="myTable" class="display" cellspacing="0" width="100%"
+									ng-clock>
+									<thead>
+										<tr>
+											<th>Order Ref No</th>
+											<th>Order Tracking No</th>
+											<th>Expected Delivery Date</th>
+											<th>Delivery Date</th>
+											<th>Order Amount</th>
+											<th>Tax Amount</th>
+											<th>Total</th>
+											<th>Status</th>
+										
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="orderMainBean in orderMainBeansList">
+											<td ng-bind="orderMainBean.orderRefNbr"></td>
+											<td ng-bind="orderMainBean.orderTrackingNbr"></td>
+											<td ng-bind="orderMainBean.orderExpectedDeliveryDte"></td>
+											<td ng-bind="orderMainBean.orderDeliveryDte"></td>
+											<td ng-bind="orderMainBean.orderBillAmt"></td>
+											<td ng-bind="orderMainBean.taxAmt"></td>
+											<td ng-bind="orderMainBean.orderBillAmt"></td>
+											<td ng-bind="orderMainBean.status"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="top-buffer-contact"></div>
+
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 65%;
+	margin-left: 25%;
+}
+</style>
+<!-- DataTables -->
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+
+
+
+
+<style>
+.user-block {
+	white-space: nowrap;
+}
+
+@media ( min-width : 768px) .user-block {
+	width
+	
+	
+	
+	
+	
+	
+	:
+	
+	
+	
+	 
+	
+	
+	
+	inherit
+	
+	
+	
+	
+	
+	
+	;
+}
+
+.avatar {
+	display: inline-block;
+	position: relative;
+}
+
+.user-block .user-info {
+	display: inline-block;
+	width: 55%;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+	float: left;
+	border-radius: 50%;
+}
+</style>

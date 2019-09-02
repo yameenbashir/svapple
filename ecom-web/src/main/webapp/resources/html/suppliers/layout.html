@@ -1,0 +1,359 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Suppliers</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li class="active">Suppliers</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+
+
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span> View and manage your suppliers. </span>
+								<div class="vd-button-group">
+									<button class="btn btn-success btn-lg" ng-click="addSupplier()">Add
+										Supplier</button>
+
+								</div>
+							</div>
+						</div>
+						</vd-section>
+
+
+						<div class="box box-primary newFont">
+							<div class="box-header"></div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<table id="myTable" class="display" cellspacing="0" width="100%"
+									ng-clock>
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Description</th>
+											<th>Default Markup</th>
+											<th>Number of Products</th>
+											<th>Balance</th>
+											<th>Adjust Payment</th>								
+											<th></th>
+
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in supplierBean">
+
+											<td ><a href="" ng-bind="item.supplierName" ng-click="showDetails(item.supplierId)"></a></td>
+											<td ng-bind="item.description"></td>
+											<td ng-bind="item.defaultMarkup"></td>											
+											<td ng-bind="item.productCount"></td>
+											<td ng-bind="item.supplierBalance"></td>
+											<td><div class="vd-button-group">
+									<button class="btn btn-success btn-lg" ng-click="addPayment(item.supplierId, item.supplierBalance)">Adjust
+										Payment</button>
+
+								</div></td>
+											<td class=""><a href=""><i
+													class="btn fa fa-edit btn-primary btn-sm "
+													ng-click="EditRecord(item)"></i></a> 
+													<!-- <a href=""><i class="btn fa fa-trash btn-danger btn-sm "
+													ng-click="deleteEmployeeIdentificationOnPopUp(identificationNational)"></i></a> -->
+											</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="top-buffer-contact"></div>
+
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+
+
+<modal title="Adjust Payment" visible="showUpdatePaymentModal" ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<form class="form-horizontal" name="myForm">
+		<div class="box-body">
+			<div class="alert alert-success alert-sm" ng-show="success"
+				ng-bind="successMessage" ng-cloak></div>
+			<div class="alert alert-danger alert-sm" ng-show="error"
+				ng-bind="errorMessage" ng-cloak></div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="box box-primary">
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Adjustment
+								Type</label>
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-6">
+										<label class="radio-inline"> <input type="radio"
+											ng-model="supplierPaymentBean.adjustmentType" value="Cash In"
+											ng-change="calculateNewBalance()"> Cash In
+										</label>
+									</div>
+									<div class="col-md-6">
+										<label class="radio-inline"> <input
+											ng-model="supplierPaymentBean.adjustmentType" type="radio"
+											value="Cash Out" ng-change="calculateNewBalance()">Cash
+											Out
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Order #</label>
+							<div class="col-md-6">
+								<select class="form-control " data-native-menu="false"
+									data-role="listview"
+									data-ng-model="supplierPaymentBean.orderRefNum"
+									ng-change="populateOrderAmount()"
+									ng-disabled="!supplierPaymentBean.adjustmentType">
+									<option value="-1">Select Order</option>
+									<option ng-repeat="stockOrder in stockOrderBeansList"
+										value="{{stockOrder.stockOrderId}}">{{stockOrder.stockRefNo}}</option>
+								</select> <span ng-show="supplierPaymentBean.orderRefNum==-1"
+									style="color: red;">* Select Order</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Order
+								Amount</label>
+							<div class="col-md-6">
+								<span class="unit control-label"
+									ng-bind="supplierPaymentBean.paymentAmount"></span>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Cash Given</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Cash..." name="tag"
+									data-ng-model="supplierPaymentBean.paymentCash"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="box box-primary">
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Credit
+								Card</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Credit Card..." name="tag"
+									data-ng-model="supplierPaymentBean.paymentCreditCard"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Other
+								Payment</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Payment Other Type" name="tag"
+									data-ng-model="supplierPaymentBean.paymentOtherType"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Cash
+								Return</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="tag"
+									placeholder="Cash Return..." name="tag"
+									data-ng-model="supplierPaymentBean.cashReturn"
+									ng-disabled="!supplierPaymentBean.orderRefNum"
+									ng-change="calculateNewBalance()"
+									ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' required maxlength="100">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">Balance</label>
+							<div class="col-md-6">
+								<span class="unit control-label"
+									ng-bind="supplierPaymentBean.supplierBalance"></span>
+							</div>
+						</div>
+						
+
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+			<div class="form-group">
+							<label for="brand" class="col-md-6 control-label">New
+								Balance</label>
+							<div class="col-md-6">
+								<span class="unit control-label"
+									ng-bind="supplierPaymentBean.supplierNewBalance"></span>
+							</div>
+						</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<textArea type="text" class="form-control" id="tag"
+							placeholder="Payment Notes..." name="tag"
+							data-ng-model="supplierPaymentBean.description"
+							ng-disabled="!supplierPaymentBean.orderRefNum" rows="2"
+							columns="5" ng-pattern='/^[-@./#&+\w\s]*$/'
+							maxlength="100"></textArea>
+
+					</div>
+				</div>
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addSuppliersPayment()"
+					ng-disabled="!supplierPaymentBean.paymentAmount || supplierPaymentBean.orderRefNum==-1 || !supplierPaymentBean.paymentCash || !supplierPaymentBean.paymentCreditCard || !supplierPaymentBean.cashReturn || !supplierPaymentBean.paymentOtherType" 
+					ng-show="!loading">Adjust
+					Payment</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Processing<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</div>
+
+	</form>
+
+</div>
+
+</modal>
+
+
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 65%;
+	margin-left: 25%;
+}
+</style>
+<!-- DataTables -->
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+
+
+
+
+<style>
+.user-block {
+	white-space: nowrap;
+}
+
+@media ( min-width : 768px) .user-block {
+	width
+	:
+	 
+	inherit
+	;
+	
+
+}
+
+.avatar {
+	display: inline-block;
+	position: relative;
+}
+
+.user-block .user-info {
+	display: inline-block;
+	width: 55%;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+	float: left;
+	border-radius: 50%;
+}
+</style>

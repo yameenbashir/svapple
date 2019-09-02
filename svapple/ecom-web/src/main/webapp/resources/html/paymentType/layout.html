@@ -1,0 +1,239 @@
+<div class="content-wrapper">
+  <section class="content-header">
+          <h1>
+         Payment Types
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Payment Types</li>
+          </ol>
+        </section>
+	     <section class="content-header">
+   
+    </section>
+ 
+	 <div class="top-buffer-contact"> </div>
+	 <div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+  			 <div class="row">
+	  <div class="col-md-1">
+	   </div>
+	   <div class="col-md-10">
+	     
+					<vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap"
+					>
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+							  
+              
+							<span>     <!-- Create and --> Manage your payment types 
+							</span>
+							<div class="vd-button-group">
+							<!--  <button class="btn  btn-success btn-lg" ng-click="showAddPaymentTypePopup()">Add Payment Type</button> -->
+                                
+							</div>
+							
+						</div>
+					</div>
+					</vd-section>
+					<div class="box newFont">
+	    
+                <div class="box-header">
+              	 <div class="alert alert-success alert-sm" ng-show="paymentTypeSuccess"
+					ng-bind="paymentTypeSuccessMessage" ng-cloak></div>
+				<div class="alert alert-danger alert-sm" ng-show="paymentTypeError"
+					ng-bind="paymentTypeErrorMessage" ng-cloak></div>
+               
+                </div><!-- /.box-header --> 
+                <div class="box-body no-padding">
+                  <table id="myTable" class="table table-condensed">
+                   <thead >
+	                    <tr >
+	                      <th>Name</th>
+	                      <th></th>
+	                    </tr>
+                     </thead>
+                   <tbody>
+	                    <tr ng-repeat="paymentType in paymentTypeList">
+	                    <td ng-bind="paymentType.paymentTypeValue"></td>
+	                       <!-- <td class="pull-right">
+		                      <a href="" ><i class="btn fa fa-edit btn-primary btn-sm " ng-disabled="paymentTypeSuccess"   ng-click="showUpdatePaymentTypePopup(paymentType)"></i></a>
+					          <a href=""><i class="btn fa fa-trash btn-danger btn-sm "   ng-click="deleteEmployeeIdentificationOnPopUp(identificationNational)"></i></a>
+	                 	 </td> -->
+	                    </tr>
+	                     
+				    </tbody>
+                        </table>
+                </div><!-- /.box-body -->
+                 </div><!-- /.box -->
+                 <div class="top-buffer-contact"> </div>
+                 
+                         </div>
+               <div class="col-md-2">
+	   </div>
+	</div>
+	</section>
+	</div>
+	 <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<modal title="Add Payment Type" visible="showAddPaymentTypeModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+					<div class="alert alert-danger alert-sm" ng-show="paymentTypeAddError"
+								ng-bind="paymentTypeAddErrorMessage" ng-cloak></div>
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-4 control-label">Payment Type</label>
+						<div class="col-sm-8">
+							<select class="form-control select2" style="width: 100%;"
+								data-ng-model="paymentTypeBean.paymentTypeValue" ng-init="paymentTypeBean.paymentTypeValue='Cash'">
+								<option value="Cash" >Cash</option>
+								<option value="Credit Card" >Credit Card</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" ng-show="paymentTypeBean.paymentTypeValue=='Cash'">
+						<label for="inputEmail3" class="col-sm-4 control-label">Round To</label>
+						<div class="col-sm-8">
+							<select class="form-control select2" style="width: 100%;"
+								data-ng-model="paymentTypeBean.roundTo" ng-init="paymentTypeBean.roundTo='0.01 cash denomination'">
+								<option value="0.01 cash denomination">0.01 cash denomination</option>
+								<option value="0.05 cash denomination">0.05 cash denomination</option>
+								<option value="0.10 cash denomination">0.10 cash denomination</option>
+								<option value="0.50 cash denomination">0.50 cash denomination</option>
+								<option value="1.00 cash denomination">1.00 cash denomination</option>
+							</select>
+							<span>Payments will be rounded to the denomination selected.</span>
+							
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="salesTax" class="col-sm-4 control-label">Gateway (optional)</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="salesTax"
+								placeholder="Gateway..." name="salesTax"
+								data-ng-model="paymentTypeBean.gateway" maxlength="100">
+								URL of external payment system.
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addPaymentType()"
+					ng-disabled="!paymentTypeBean.paymentTypeValue"
+					ng-show="!loading">Save Payment Type</button>
+				<button ng-show="loading"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Save Payment Type<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->
+	<!-- Modal -->
+	<modal title="Update Payment Type" visible="showUpdatePaymentTypeModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-4 control-label">Payment Type</label>
+						<div class="col-sm-8">
+							<select class="form-control select2" style="width: 100%;"
+								data-ng-model="updatePaymentTypeBean.paymentTypeValue" ng-disabled="true">
+								<option value="Cash">Cash</option>
+								<option value="Credit Card">Credit Card</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" ng-show="updatePaymentTypeBean.paymentTypeValue=='Cash'">
+						<label for="inputEmail3" class="col-sm-4 control-label">Round To</label>
+						<div class="col-sm-8">
+							<select class="form-control select2" style="width: 100%;"
+								data-ng-model="updatePaymentTypeBean.roundTo" >
+								<option value="0.01 cash denomination">0.01 cash denomination</option>
+								<option value="0.05 cash denomination">0.05 cash denomination</option>
+								<option value="0.10 cash denomination">0.10 cash denomination</option>
+								<option value="0.50 cash denomination">0.50 cash denomination</option>
+								<option value="1.00 cash denomination">1.00 cash denomination</option>
+							</select>
+							<span>Payments will be rounded to the denomination selected.</span>
+							
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="salesTax" class="col-sm-4 control-label">Gateway (optional)</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="salesTax"
+								placeholder="Gateway..." name="salesTax"
+								data-ng-model="updatePaymentTypeBean.gateway" maxlength="100">
+								URL of external payment system.
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="box-footer">
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="updatePaymentType()"
+					ng-disabled="!updatePaymentTypeBean.paymentTypeValue"
+					ng-show="!loadingUpdate">Update Payment Type</button>
+				<button ng-show="loadingUpdate"
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+					Update Payment Type<i
+						class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				</button>
+				<button
+					class="btn btn-default btn-sm pull-right btn-primary-spacing"
+					data-dismiss="modal">Cancel</button>
+
+			</div>
+		</li>
+	</div>
+
+	</modal>
+
+	<!-- Modal end -->
+
+	  <script src="resources/js/jquery.dataTables.min.js"></script>
+    
+     <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script>
+     
+  
+
+        <style>
+table.dataTable thead .sorting, 
+table.dataTable thead .sorting_asc, 
+table.dataTable thead .sorting_desc {
+    background : none;
+}
+    </style>

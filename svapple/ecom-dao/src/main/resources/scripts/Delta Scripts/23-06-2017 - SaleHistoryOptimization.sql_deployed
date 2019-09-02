@@ -1,0 +1,128 @@
+use `ecom`;
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `ecom`.`GetAllInvoiceByOutletId`$$
+
+CREATE  PROCEDURE GetAllInvoiceByOutletId (companyid int, outletid int)
+BEGIN
+ SELECT 
+   invoice_main.INVOICE_MAIN_ID ,
+   invoice_main.INVOICE_REF_NBR ,
+   invoice_main.INVOICE_NOTES ,
+   COALESCE(invoice_main.INVOICE_DISCOUNT,0) as INVOICE_DISCOUNT ,
+   COALESCE(invoice_main.INVOICE_TAX,0) as INVOICE_TAX  ,
+   invoice_main.INVC_TYPE_CDE  ,
+   invoice_main.INVOICE_GENERATION_DTE ,
+   invoice_main.INVOICE_CANCEL_DTE ,
+   COALESCE(invoice_main.INVOICE_AMT,0) as INVOICE_AMT ,
+   COALESCE(invoice_main.INVOICE_DISCOUNT_AMT,0) as INVOICE_DISCOUNT_AMT ,
+   COALESCE(invoice_main.INVOICE_NET_AMT,0)  as INVOICE_NET_AMT,
+   COALESCE(invoice_main.INVOICE_GIVEN_AMT ,0)  as INVOICE_GIVEN_AMT,
+   COALESCE(invoice_main.INVOICE_ORIGNAL_AMT,0) as INVOICE_ORIGNAL_AMT ,
+   COALESCE(invoice_main.SETTLED_AMT,0) as SETTLED_AMT  ,
+   invoice_main.STATUS_ASSOCICATION_ID  ,
+   invoice_main.ORDER_ASSOCICATION_ID  ,
+   invoice_main.CONTACT_ASSOCIATION_ID  ,
+   invoice_main.COMPANY_ASSOCIATION_ID  ,
+   invoice_main.OUTLET_ASSOCICATION_ID  ,
+   invoice_main.DAILY_REGISTER_ASSOCICATION_ID  ,
+   invoice_main.PAYMENT_TYPE_ASSOCICATION_ID ,
+   invoice_main.SALES_USER ,
+ contact.CONTACT_ID,
+ contact.CONTACT_NAME,
+ contact.FIRST_NAME,
+ contact.LAST_NAME,
+invoice_main.CREATED_DATE,
+user.FIRST_NAME as SALE_PERSON_NAME,
+status.STATUS_ID,
+ status.STATUS_DESC 
+ FROM invoice_main 
+ left join contact on CONTACT_ID = CONTACT_ASSOCIATION_ID
+Left join user on USER_ID = SALES_USER
+left join status on STATUS_ID = invoice_main.STATUS_ASSOCICATION_ID
+where invoice_main.OUTLET_ASSOCICATION_ID  =outletid and invoice_main.COMPANY_ASSOCIATION_ID  = companyid
+order by invoice_main.INVOICE_MAIN_ID desc;
+END$$
+
+DELIMITER ;
+
+
+-- ---------------------------------------
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS  ecom . GetAllInvoiceDetailByOutletCompanyId $$
+
+CREATE  PROCEDURE  GetAllInvoiceDetailByOutletCompanyId (companyid int , outletid int)
+BEGIN
+ 
+select 
+
+  invcDetl.INVOICE_DETAIL_ID as invoiceDetailId, 
+   invcDetl.PRODUCT_VARIENT_ASSOCIATION_ID  as productVariantId,
+   invcDetl.PRODUCT_ASSOCIATION_ID   as productId,
+   invcDetl.ITEM_RETAIL_PRICE  as itemRetailPrice,
+   invcDetl.ITEM_SALE_PRICE   as itemSalePrice,
+   invcDetl.ITEM_DISCOUNT_PRCT   as itemDiscountPrct,
+   invcDetl.ITEM_TAX_AMOUNT   as itemTaxAmount,
+   invcDetl.ITEM_ORIGNAL_AMT   as itemOrignalAmt,
+   invcDetl.ITEM_NOTES   as itemNotes,
+   invcDetl.INVOICE_MAIN_ASSOCICATION_ID  as invoiceMainId,
+   invcDetl.PRODUCT_QUANTITY   as productQuantity,
+   invcDetl.CREATED_DATE   as createdDate,
+   invcDetl.LAST_UPDATED   as lastUpdated,
+   invcDetl.CREATED_BY   as createdBy,
+   invcDetl.UPDATED_BY  as updatedBy,
+   invcDetl.COMPANY_ASSOCIATION_ID  as companyId,
+   invcDetl.OUTLET_ASSOCICATION_ID  as outletId,
+   invcDetl.ISRETURN  as isreturn,
+   prod.PRODUCT_NAME as productName,
+   prodVar.VARIANT_ATTRIBUTE_NAME as varientAttributeName
+  
+
+ from invoice_detail invcDetl
+inner join product prod on prod.PRODUCT_ID = invcDetl.PRODUCT_ASSOCIATION_ID
+left join product_variant prodVar on prodVar.PRODUCT_VARIANT_ID = invcDetl.PRODUCT_VARIENT_ASSOCIATION_ID
+where invcDetl.COMPANY_ASSOCIATION_ID = companyid and invcDetl.OUTLET_ASSOCICATION_ID  = outletid;
+	
+END$$
+
+DELIMITER ;
+
+-- -----------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `ecom`.`GetAllReceiptsByCompanyOutletId`$$
+
+CREATE  PROCEDURE GetAllReceiptsByCompanyOutletId (companyid int, outletid int)
+BEGIN
+ 
+select 
+ `RECEIPT_ID` as receiptId, 
+`RECEIPT_REF_NO` as receiptRefNo,
+ `RECEIPT_DATE` as receiptDate, 
+`RECEIPT_AMOUNT` as receiptAmount, 
+`PAYMENT_TYPE_ASSOCICATION_ID` as paymentTypeId, 
+`STATUS_ASSOCICATION_ID` as statusId,
+ `RECEIPT_CANCELLATION_DATE` as receiptCancellationDate, 
+`RECEIPT_UAF_AMT` as receiptUafAmt, 
+`OUTLET_ASSOCIATION_ID` as outletId, 
+`CONTACT_ASSOCIATION_ID` as contactId, 
+`INVOICE_MAIN_ASSOCICATION_ID` as invoiceMainId, 
+`ACTIVE_INDICATOR` as activeIndicator,
+ `CREATED_DATE` as createdDate, 
+`LAST_UPDATED` as lastUpdated, 
+`CREATED_BY` as createdBy,
+ `UPDATED_BY` as updatedBy, 
+`DAILY_REGISTER_ASSOCICATION_ID` as dailyRegisterId,
+ `COMPANY_ASSOCIATION_ID` as companyId
+from receipt
+where OUTLET_ASSOCIATION_ID = outletid and COMPANY_ASSOCIATION_ID = companyid;
+
+
+END$$
+
+DELIMITER ;

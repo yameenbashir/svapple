@@ -1,0 +1,477 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<h1>Stock Return to Warehouse Actions</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li><a href="#stockControl">Stock Control</a></li>
+					<li class="active">Stock Return to Warehouse Actions</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div class="alert alert-success alert-sm" ng-show="success"
+								ng-bind="successMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="error"
+								ng-bind="errorMessage" ng-cloak></div>
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span> A list of all of your consignments. </span>
+								<div class="vd-button-group">
+									<!-- <button class="btn btn-success btn-lg" ng-click="addPurchaseOrder()" ng-disabled = "disableProcess" >Process Order</button>
+							 <button class="btn btn-success btn-lg" ng-click="addStockReturn()" ng-disabled = "disableProcess" >Resend Order</button> -->
+									<button class="btn btn-success btn-lg"
+										ng-click="purchaseOrderEditProducts()"
+										ng-disabled="disableProcess">Edit Products</button>
+									<button class="btn btn-success btn-lg"
+										ng-click="purchaseOrderEditDetails()"
+										ng-disabled="disableProcess">Edit Details</button>
+									<button class="btn btn-success btn-lg"
+										ng-click="showSendTransferStockOrder()"
+										ng-disabled="true" ng-hide="isAdmin()">Confirm Transfer</button>
+									<button class="btn btn-danger btn-lg"
+										ng-click="showCancelStockOrder()" ng-disabled="disableProcess"  ng-hide="isAdmin()">Cancel
+										Order</button>
+<a href="#stockControl"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+								</div>
+
+							</div>
+						</div>
+						</vd-section>
+						<div class="box">
+
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-4">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-6 control-label">Stock
+															Return Name</label>
+														<div class="col-sm-6">
+															<span class="unit control-label"
+																ng-bind="stockOrderBean.stockRefNo"></span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-6 control-label">Source
+															outlet</label>
+														<div class="col-sm-6">
+															<span class="unit control-label"
+																ng-bind="stockOrderBean.sourceOutletName"></span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-6 control-label">Destination
+															outlet</label>
+														<div class="col-sm-6">
+															<span class="unit control-label"
+																ng-bind="stockOrderBean.outletName"></span>
+														</div>
+													</div>
+
+
+												</div>
+
+											</form>
+
+										</div>
+										<div class="col-md-4">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Delivery
+															due</label>
+														<div class="col-sm-8">
+															<span class="unit control-label"
+																ng-bind="stockOrderBean.diliveryDueDate"></span>
+														</div>
+													</div>
+
+
+												</div>
+												<div class="form-group" ng-hide="true">
+														<label for="inputEmail3" class="col-sm-4 control-label" ng-hide="true">Bill on Retail Price
+															</label>
+														<div class="col-sm-8">
+															<div class="ckbox" ng-hide="true">
+																<span class="media-meta pull-right"> </span> <input
+																	type="checkbox" id="checkbox1" ng-disabled = "true"
+																	data-ng-model="stockOrderBean.retailPriceBill"> <label
+																	for="checkbox1"> </label>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Item Count</label>
+														<div class="col-sm-8">
+															<span class="unit control-label"
+																ng-bind="stockOrderBean.itemCount"></span>
+														</div>
+													</div>
+											</form>
+
+										</div>
+										<div class="col-md-2">
+											<div class="box-header with-border"></div>
+											<div class="box-body">
+												<img src="resources/images/order.png"
+													class="img-responsive img-rounded" alt="Cinque Terre"
+													style="width: 204px; height: auto;">
+											</div>
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.box -->
+						</div>
+
+						<!-- <vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+							<div class="line search-toolbar">
+											<div class="unit line size2of4">
+												<div class="unit unit-product" >
+													<label for="product_search[product_sku]">Product:</label> 
+														<select class="form-control " data-native-menu="false"
+															data-role="listview"
+															data-ng-model="productVariantBean" ng-init="productVariantBean.productVariantBeanId = '1'">															
+															<option ng-repeat="productVariantBean in productVariantBeansList"
+															value="{{productVariantBean}}" >{{productVariantBean.variantAttributeName}}
+																</option>
+														</select>
+												</div>
+												<div class="unit unit-quantity">
+													<label for="product_search[quantity]">Quantity:</label> <input
+														type="text" data-ng-model="stockOrderDetailBean.orderProdQty" name="product_search[quantity]"
+														ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' autocomplete="off" class=" form-control click-to-select unit"
+														id="product_search_quantity" >
+												</div>
+												<div class="unit unit-quantity">
+													<label for="product_search[quantity]"> Add</label> 
+													<button class="btn btn-success btn click-to-select unit " ng-click="addProduct()" 
+													ng-disabled = "!productVariantBean || !stockOrderDetailBean.orderProdQty">Add Product</button>
+											
+												</div>
+												
+											</div>
+										
+											
+										</div>
+											
+						</div>
+						
+					</div>
+
+					</vd-section> -->
+						<div class="box" ng-hide="isAdmin()">
+
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-12">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<div class="box-body">
+												<table id="myTable" class="display" cellspacing="0"
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Order</th>
+															<th>Product</th>
+															<th>Stock at Source</th>
+															<th ng-hide="isAdmin()">Stock at Destination</th>
+															<th>Quantity</th>
+															<th ng-hide="isAdmin()">Recv QTY</th>
+															<th  ng-hide="isAdmin()">Supply Price</th>
+															<th>Retail Price</th>
+															<th>Total</th>
+															<th ng-hide="isAdmin()">Total Recv</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="stockOrderDetailBean in stockOrderDetailBeansList">
+
+															<td ng-bind="stockOrderDetailBean.order"></td>
+															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
+															<td ng-bind="stockOrderDetailBean.productVariantCurrInventory"></td>
+															<td ng-hide="isAdmin()" ng-bind="stockOrderDetailBean.productVariantRecvOutletInventory"></td>
+															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>
+															<td ng-bind="stockOrderDetailBean.recvProdQty" ng-hide="isAdmin()"></td>
+															<td ng-bind="stockOrderDetailBean.ordrSupplyPrice"  ng-hide="isAdmin()"></td>
+															<td ng-bind="stockOrderDetailBean.retailPrice"></td>
+															<td ng-bind="stockOrderDetailBean.total"></td>
+															<td ng-hide="isAdmin()" ng-bind="stockOrderDetailBean.recvTotal"></td>
+														</tr>
+													</tbody>
+													<tfoot>
+													<tr>
+														<th>Total Item Count</th>
+														<th ng-bind = "stockOrderBean.itemCount"></th>														
+														<th ng-hide="isAdmin()">Item Recv</th>
+														<th ng-hide="isAdmin()" ng-bind = "stockOrderBean.itemCountRecv"></th>
+														<th>Total</th>														
+														<th ng-bind = "grandTotal"></th>
+														<th  ng-hide="isAdmin()" >Total Recv</th>														
+														<th ng-hide="isAdmin()" ng-bind = "grandrecvTotal"></th>
+													</tr>
+												</tfoot>
+												</table>
+
+											</div>
+											<!-- <div class="box-footer text-right">
+								<button class="btn btn-primary btn  "
+									ng-click="addStockOrderDetail()" ng-disabled="!checkStockOrderDetailList()" ng-show="!loading">Save</button>
+								
+								<button class="btn btn-default btn "
+									ng-click="todo">Cancel</button>
+
+							</div>
+ -->
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+						</div>
+						<div class="box" ng-hide="!isAdmin()">
+
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-12">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<div class="box-body">
+												<table id="myTable1" class="display" cellspacing="0"
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Order</th>
+															<th>Product</th>
+															<!-- <th ng-hide="isAdmin()">Stock at Destination</th> -->
+															<th>Quantity</th>
+															<th>Retail Price</th>
+															<th>Total</th>
+
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="stockOrderDetailBean in stockOrderDetailBeansList">
+
+															<td ng-bind="stockOrderDetailBean.order"></td>
+															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
+															<!-- <td ng-hide="isAdmin()" ng-bind="stockOrderDetailBean.productVariantRecvOutletInventory"></td> -->
+															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>
+															<td ng-bind="stockOrderDetailBean.retailPrice"></td>
+															<td ng-bind="stockOrderDetailBean.total"></td>
+														</tr>
+													</tbody>
+													<tfoot>
+													<tr>
+														<th></th>
+														<th></th>
+														<th>Total Item Count</th>
+														<th ng-bind = "stockOrderBean.itemCount"></th>													
+														<th>Total</th>
+														
+														<th ng-bind = "grandTotal"></th>
+													</tr>
+												</tfoot>
+												</table>
+
+											</div>
+											<!-- <div class="box-footer text-right">
+								<button class="btn btn-primary btn  "
+									ng-click="addStockOrderDetail()" ng-disabled="!checkStockOrderDetailList()" ng-show="!loading">Save</button>
+								
+								<button class="btn btn-default btn "
+									ng-click="todo">Cancel</button>
+
+							</div>
+ -->
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+						</div>
+					</div>
+					<!-- /.box-body -->
+					<div class="col-md-1"></div>
+				</div>
+
+			</section>
+
+			<!-- /.box -->
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<modal title="Cancel Selected Order!" visible="showConfirmCancelPopup"
+	ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="cancelStockOrder()">Yes</button>
+
+				<button class="btn btn-default btn-sm pull-left btn-primary-spacing"
+					data-dismiss="modal">No</button>
+			</div>
+</div>
+</form>
+</li>
+</div>
+
+</modal>
+
+<!-- Modal end -->
+<!-- Modal -->
+<modal title="Confirm Send Transfer!"
+	visible="showConfirmSendTransferPopup" ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="transferStockOrder()" ng-show="!loading">Yes</button>
+					<button ng-show="loading" class="btn btn-primary btn">
+					Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+					</button>
+
+				<button class="btn btn-default btn-sm pull-left btn-primary-spacing"
+					data-dismiss="modal">No</button>
+			</div>
+</div>
+</form>
+</li>
+</div>
+
+</modal>
+
+<!-- Modal end -->
+
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 65%;
+	margin-left: 25%;
+}
+</style>
+  <!-- DataTables -->
+     <script src="resources/js/jquery.dataTables.min.js"></script>
+    
+     <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script>
+     
+ 
+<script src="resources/js/buttons.flash.min.js"></script>
+<script src="resources/js/jszip.min.js"></script>
+<script src="resources/js/pdfmake.min.js"></script>
+
+<script src="resources/js/vfs_fonts.js"></script>
+<script src="resources/js/buttons.html5.min.js"></script>
+<script src="resources/js/buttons.print.min.js"></script> 
+       
+   
+   
+  

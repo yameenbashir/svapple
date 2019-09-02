@@ -1,0 +1,298 @@
+<div class="container" id="hirearchyPage">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Sales Ledger</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!-- <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#sell">Sell</a></li>
+					<li class="active">Sales Ledger</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div class="top-buffer-contact"></div>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span>Sales Ledger Read Only Information.
+									To process a return or continue sales, go to <a
+									Style="color: #03a9f4" href="#salesHistory">Sales History.</a>
+									</span>
+									<div class="vd-button-group" ng-show="dataLoading">
+							 <button class="btn  btn-primary btn-lg" ng-click="LoadAllSales()" >Load All Sales</button>
+                                
+							</div>
+							<div class="vd-button-group" ng-show="!dataLoading">
+							 <button class="btn  btn-primary btn-lg" ng-disabled="true" >Loading All Sales<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i></button>
+                                
+							</div>
+							</div>
+						</div>
+						</vd-section>
+
+
+						<div class="box box-primary newFont">
+							<div class="box-header"></div>
+							<!-- /.box-header -->
+
+							<div class="box-body">
+								<table id="example" class="display" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Date</th>
+											<th>Receipt</th>
+											<th>Sold by</th>
+											<th>Customer</th>
+											<th>Note</th>
+											<th>Status</th>
+											<th>Total</th>
+										</tr>
+									</thead>
+
+								</table>
+							</div>
+							<div class="top-buffer-contact"></div>
+
+						</div>
+						<div class="col-md-2"></div>
+					</div>
+			</section>
+		</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<style>
+.center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+	width: 65%;
+	margin-left: 25%;
+}
+</style>
+<!-- DataTables -->
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+
+
+
+
+<script>
+	function format(d) {
+		// `d` is the original data object for the row
+		var rows = "";
+		var cashRows = "";
+		if (d.receipts.length >= 1) {
+			for (i = 0; i < d.receipts.length; i++) {
+
+				cashRows = cashRows + '<hr class="vd-hr">'
+						+ '<div class="row">' + '<div class="col-md-6"></div>'
+						+ '<div class="col-md-2">Cash :    '
+						+ d.receipts[i].receiptAmount + '</div>'
+						+ '<div class="col-md-2">' + d.receipts[i].receiptDate
+						+ '</div>';
+				if (i != d.products.length) {
+					rows = rows + '<hr class="vd-hr">';
+				}
+
+			}
+		} else if (d.status != "LayBy") {
+
+			if (d.cashReturn === "0.00") {
+				cashRows = '<hr class="vd-hr">' + '<div class="row">'
+						+ '<div class="col-md-6"></div>'
+						+ '<div class="col-md-2">Cash :    ' + d.cashGivenDate
+						+ '</div>' + '<div class="col-md-2">' + d.cashGiven
+						+ '</div>';
+
+			} else {
+				cashRows = '<hr class="vd-hr">' + '<div class="row">'
+						+ '<div class="col-md-6"></div>'
+						+ '<div class="col-md-2">Cash :    ' + d.cashGivenDate
+						+ '</div>' + '<div class="col-md-2">' + d.cashGiven
+						+ '</div>' + '</div>' + '<div class="row">'
+						+ '<div class="col-md-6"></div>'
+						+ '<div class="col-md-2">Cash  :  ' + d.cashReturnDate
+						+ '</div>' + '<div class="col-md-2">' + d.cashReturn
+						+ '</div>' + '</div>';
+
+			}
+
+		}
+
+		for (i = 0; i < d.products.length; i++) {
+			rows = rows + '<div class="row">'
+
+			+ '<div class="col-md-1"></div>' + '<div class="col-md-1">'
+					+ d.products[i].quantity + '</div>'
+					+ '<div class="col-md-4">' + d.products[i].productName
+					+ '</div>' + '<div class="col-md-2">'
+					+ d.products[i].pricewithoutTax + '</div>'
+					+ '<div class="col-md-2">' + d.products[i].pricewithTax
+					+ '</div>' + '<div class="col-md-2"></div>' + '</div>';
+			if (i != d.products.length) {
+				rows = rows + '<hr class="vd-hr">';
+			}
+
+		}
+
+		return rows + '<div class="row">' + '<div class="col-md-6"></div>'
+				+ '<div class="col-md-2">Sub Total</div>'
+				+ '<div class="col-md-2">' + d.subtotal + '</div>' + '</div>'
+				+ '<div class="row">' + '<div class="col-md-6"></div>'
+				+ '<div class="col-md-2">Discount</div>'
+				+ '<div class="col-md-2">' + d.discount + '</div>' + '</div>'
+				+ '<div class="row">' + '<div class="col-md-6"></div>'
+				+ '<div class="col-md-2">Total tax (No Tax)</div>'
+				+ '<div class="col-md-2">' + d.totalTax + '</div>' + '</div>'
+				+ '<hr class="vd-hr">' + '<div class="row">'
+				+ '<div class="col-md-6"></div>'
+				+ '<div class="col-md-2"><b>Total</b></div>'
+				+ '<div class="col-md-2"><b>' + d.total + '</b></div>'
+				+ '</div>' + cashRows
+
+				+ '<hr class="vd-hr">' + '<div class="row">'
+				+ '<div class="col-md-6"></div>'
+				+ '<div class="col-md-2"><b>Balance</b></div>'
+				+ '<div class="col-md-1"><b>' + d.balance + '</b></div>'
+				+ '</div>';
+	}
+
+	$(document).ready(function() {
+		var sessionId = Cookies.get('_s_tk_com', {
+			path : '/app'
+		});
+		var sales = JSON.parse(localStorage.getItem('salesHistory'));
+		var table = $('#example').DataTable({
+			// "ajax": "../app/resources/files/objects.txt"
+			// 	"ajax": {
+			// 	    "url": "/app/salesHistory/getData/"+sessionId,
+			// 	    "type": "GET"
+			//	  }
+			"data" : sales.data,
+			"columns" : [ {
+				"className" : 'details-control',
+				"orderable" : false,
+				"data" : null,
+				"defaultContent" : ''
+			}, {
+				"data" : "date"
+			}, {
+				"data" : "receipt"
+			}, {
+				"data" : "soldby"
+			}, {
+				"data" : "customerName"
+			}, {
+				"data" : "note"
+			}, {
+				"data" : "status"
+			}, {
+				"data" : "saleTotal"
+			}
+
+			],
+			"order" : [ [ 1, 'desc' ] ],
+			responsive : true,
+			
+			"initComplete" : function(settings, json) {
+				Cookies.set('salesHostoryLoaded', true, {
+					path : '/app'
+				});
+			},
+			"fnDrawCallback" : function(oSettings) {
+				Cookies.set('salesHostoryLoaded', true, {
+					path : '/app'
+				});
+			}
+
+		});
+
+		// Add event listener for opening and closing details
+		$('#example tbody').on('click', 'td.details-control', function() {
+			var tr = $(this).closest('tr');
+			var row = table.row(tr);
+
+			if (row.child.isShown()) {
+				// This row is already open - close it
+				row.child.hide();
+				tr.removeClass('shown');
+			} else {
+				// Open this row
+				row.child(format(row.data())).show();
+				tr.addClass('shown');
+
+			}
+		});
+	});
+</script>
+<style>
+td.details-control {
+	background: url('../app/resources/images/details_open.png') no-repeat
+		center center;
+	cursor: pointer;
+}
+
+tr.shown td.details-control {
+	background: url('../app/resources/images/details_close.png') no-repeat
+		center center;
+}
+</style>

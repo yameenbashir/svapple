@@ -1,0 +1,213 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Dashboard</h1>
+		<ol class="breadcrumb">
+			<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li class="active">Dashboard</li>
+		</ol>
+	</section>
+
+	<div class="top-buffer-contact"></div>
+	<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<!-- <div class="loader"></div> -->
+		
+		<div class="loader"></div>
+	</div>
+	<!-- Main content -->
+	<section class="content" ng-show="!globalPageLoader" ng-cloak>
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>REVENUE</Span> <span
+								ng-class="revenuePercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="'PKRs ' + todayRevenue"></h2>
+							<h4
+								ng-class="revenuePercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="revenuePercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="revenuePercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + revenuePercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerRevenue"></div>
+						</div>
+
+					</div>
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>SALE COUNT</Span> <span
+								ng-class="salesCountPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="' ' + todaySalesCount"></h2>
+							<h4
+								ng-class="revenuePercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="salesCountPercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="salesCountPercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + salesCountPercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerSaleCount"></div>
+						</div>
+
+
+					</div>
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>CUSTOMER COUNT</Span> <span
+								ng-class="customerCountPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="' ' + todayCustomerCount"></h2>
+							<h4
+								ng-class="customerCountPercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="customerCountPercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="customerCountPercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + customerCountPercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerCustomerCount"></div>
+						</div>
+
+
+					</div>
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>GROSS PROFIT</Span> <span
+								ng-class="grossProfitPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="'PKRs ' + todayGrossProfit"  ng-hide="hideSalesDetails"></h2>
+							<h4  ng-hide="hideSalesDetails"
+								ng-class="grossProfitPercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="grossProfitPercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="grossProfitPercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + grossProfitPercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerGrossProfit"  ng-hide="hideSalesDetails"></div>
+						</div>
+
+
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<div class="row" style="margin-top: 2%;">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>DISCOUNT</Span> <span
+								ng-class="discountPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="'PKRs ' + todayDiscount"></h2>
+							<h4
+								ng-class="discountPercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="discountPercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="discountPercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + discountPercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerDiscount"></div>
+						</div>
+
+
+					</div>
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>DISCOUNT PERCENT</Span> <span
+								ng-class="discountPecPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="'' + todayDiscountPec"></h2>
+							<h4
+								ng-class="discountPecPercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="discountPecPercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="discountPecPercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + discountPecPercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerDiscountPercent"></div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>BASKET VALUE</Span> <span
+								ng-class="basketValuePercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="'PKRs ' + todayBasketValue"></h2>
+							<h4
+								ng-class="basketValuePercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="basketValuePercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="basketValuePercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + basketValuePercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerBasketValue"></div>
+						</div>
+
+					</div>
+					<div class="col-md-3">
+						<div class="well" style="height: 345px; background: white">
+							<Span>BASKET SIZE</Span> <span
+								ng-class="basketSizePercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
+							<h2 ng-bind="' ' + todayBasketSize"></h2>
+							<h4
+								ng-class="basketSizePercentage > 0 ? 'text-success':'text-danger'">
+								<span
+									ng-class="basketSizePercentage > 0 ? 'label label-success':'label label-danger'">
+									<i
+									ng-class="basketSizePercentage > 0 ? 'glyphicon glyphicon-hand-up':'glyphicon glyphicon-hand-down'"
+									ng-bind="' ' + basketSizePercentage +'%'"></i>
+								</span>
+							</h4>
+							<h4 class="text-success">Previous Day</h4>
+							<div id="chartContainerBasketSize"></div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</section>
+</div>
+
+
+
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+

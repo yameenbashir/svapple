@@ -1,0 +1,82 @@
+<style>
+#container1 {
+	background-color: #e2dada;
+}
+
+.centered-form {
+	margin-top: 30px;
+	margin-bottom: 0px;
+}
+
+.centered-form .panel {
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+}
+
+</style>
+<div class="container header-shadow" Style="background-color: #3D7CA0;">
+<div class="lockScreen-new">
+ <div class="lockscreen-wrapper">
+      <div class="lockscreen-logo" style="font-family: Radikal w01 light;">
+       <a href="">{{manage}}<b>{{worker}}</b></a>
+      </div>
+      <!-- User name -->
+      <div class="lockscreen-name">{{signIn}}</div>
+	 <div class="alert alert-success alert-sm" ng-show="success">
+		{{errorMessage}}</div>
+	 <div class="alert alert-danger alert-sm" ng-show="error">
+		{{errorMessage}}</div>
+      <!-- START LOCK SCREEN ITEM -->
+      <div class="lockscreen-item">
+        <!-- lockscreen image -->
+        <!-- /.lockscreen-image -->
+		
+        <div class="lockscreen-image">
+          <img src="resources/dist/img/avatar5.png" alt="User Image">
+        </div>
+        
+        <!-- lockscreen credentials (contains the form) -->
+        <form class="lockscreen-credentials"  >
+          <div class="input-group">
+           <input type="email" class="form-control" name ="userEmail" placeholder="{{emailPlaceholder}}"
+									 data-ng-model="userBean.email"  />
+           <input type="password" class="form-control" name = "userPassword" placeholder="{{PasswordPlaceholder}}"
+									data-ng-model="userBean.password"  />
+            <div class="input-group-btn">
+              <button style="background: rgba(227, 215, 215, 0.5); border-radius: 3px; box-shadow: 0 0 5px rgba(0,0,0,0.2);" ng-show="!loading" class="btn" ng-disabled="(!userBean.email || !userBean.password) || isDisabled"
+								value="{{LoginButtonText}}"
+								ng-click="doLogin(userBean)"><i class="fa fa-arrow-right text-muted" ></i></button>
+			    <button  style="background: rgba(227, 215, 215, 0.5); border-radius: 3px; box-shadow: 0 0 5px rgba(0,0,0,0.2);" ng-show="loading" class="btn btn-success">
+			    <i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+       			 </button>
+            </div>
+          </div>
+        </form><!-- /.lockscreen credentials -->
+
+      </div><!-- /.lockscreen-item -->
+      <div class="lockscreen-name text-center">
+        {{enterYourDetailToStartYourSession}}
+      </div>
+      <div class="text-center">
+        <a href="#login" ng-click="clearFields()">{{signInAsaDifferentUser}}</a>
+      </div>
+     
+    </div><!-- /.center -->
+    </div>
+</div>
+
+<!-- /.center
+<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+	 -->
+ <script>
+
+ 
+ 
+ 
+ 
+    </script>

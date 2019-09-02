@@ -1,0 +1,166 @@
+<div class="container">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>Purchase Order</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#stockControl">Stock Control</a></li>
+				<li class="active">Purchase Order</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="box">
+						<div class="box-header">
+							<i class="fi-page text-blue" style="font-size: 3em;"></i>
+							<h3 class="box-title"> Details</h3>
+							<div class="alert alert-success alert-sm" ng-show="success"
+								ng-bind="successMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="error"
+								ng-bind="errorMessage" ng-cloak></div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<div class="box box-primary">
+								<div class="row">
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+												
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Name / Reference</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="Name" placeholder="Name / Stock Reference No..."
+															data-ng-model="stockOrderBean.stockRefNo" ng-maxlength="100"
+															ng-pattern='/^[-@:./#&+\w\s]*$/' required>
+															<span ng-show="!stockOrderBean.stockRefNo" style="color:red;">* Enter Name/ Reference</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="Supplier" class="col-sm-4 control-label">Order from</label>														
+														<div class="col-sm-8">
+															<select class="form-control " data-native-menu="false"
+																data-role="listview"
+																data-ng-model="stockOrderBean.supplierId" ng-init="stockOrderBean.supplierId='-1'">
+																<option value="-1" >Select Supplier</option>
+																<option ng-repeat="supplier in supplierList"
+																	value="{{supplier.supplierId}}">{{supplier.supplierName}}</option>
+															</select> <span ng-show="stockOrderBean.supplierId==-1"
+																style="color: red;">* Select supplier</span>
+														</div>
+												</div>
+												<div class="form-group">
+													<label for="outlet" class="col-sm-4 control-label">Deliver to</label>
+													<div class="col-sm-8">
+															<select class="form-control " data-native-menu="false" ng-disabled = "true"
+																data-role="listview"
+																data-ng-model="stockOrderBean.outletId">
+																<option value="-1" >Select Outlet</option>
+																<option ng-repeat="outlet in outletList"
+																	value="{{outlet.outletId}}">{{outlet.outletName}}</option>
+															</select> <span ng-show="stockOrderBean.outletId==-1"
+																style="color: red;">* Select outlet</span>
+														</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Auto fill</label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;"
+														data-ng-model="stockOrderBean.autofillReorder" ng-init="stockOrderBean.autofillReorder='true'">
+															<option value="true">Auto fill from re-order point</option>
+															<option value="false">Don't auto-fill </option>
+															
+														</select>
+													</div>
+												</div>
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form class="form-horizontal">
+											<div class="box-body">
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Delivery due</label>
+													<div class="col-sm-8">
+														<input type="date" class="form-control"
+															id="inputstoreName" placeholder="Delivery due..."
+															data-ng-model="stockOrderBean.diliveryDueDate" maxlength="25" required>
+													<span ng-show="!stockOrderBean.diliveryDueDate" style="color:red;">* Select Delivery due date</span>
+													</div>
+											</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Order No.</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="inputstoreName" placeholder="Order No..."
+															data-ng-model="stockOrderBean.orderNo" maxlength="100" ng-pattern='/^[-@:./#&+\w\s]*$/' required>
+															<!-- ng-pattern='/^[a-zA-Z0-9\s]+$/' -->
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Supplier invoice</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control"
+															id="inputstoreName" placeholder="Supplier invoice..."
+															data-ng-model="stockOrderBean.supplierInvoiceNo" maxlength="100"
+															ng-pattern='/^[-@./#&+\w\s]*$/' >
+													</div>
+												</div>												
+												  
+											</div>
+										</form>
+
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- /.box -->
+							<div class="box-footer text-right">
+								<button class="btn btn-primary btn  "
+									ng-click="addStockOrder()" ng-disabled="!stockOrderBean.stockRefNo || !stockOrderBean.diliveryDueDate
+									 || !stockOrderBean.outletId || !stockOrderBean.supplierId || stockOrderBean.outletId=='-1' || stockOrderBean.supplierId=='-1'"  ng-show="!loading">Save</button>
+								<button  ng-show="loading" class="btn btn-primary btn">
+							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+				       	    </button>
+								<a href="#stockControl"><button class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
+
+							</div>
+					</div>
+					
+					<!-- /.box-body -->
+					
+				</div>
+				<!-- /.box -->
+
+			</div>
+		</section>
+		<div class="col-md-1"></div>
+	</div>
+</div>
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,245 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>Ticket Details</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<li><a href="#support"><i class="fa fa-flag"></i> Support</a></li>
+					<li class="active">Ticket Details</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-3">
+
+						<!-- Profile Image -->
+						<div class="box box-primary newFont">
+							<div class="box-body box-profile">
+								<h3 class="profile-username text-center" ng-bind="ticketInfo"></h3>
+								<hr>
+
+								<div class="form-group">
+									<i class="fa fa-fw  fa-circle-o text-blue"></i> <label
+										for="ticketId">Ticket Id</label> <input type="text"
+										class="form-control" id="ticketId"
+										ng-model="ticketBean.ticketId" ng-disabled="true" ng-cloak />
+								</div>
+								<div class="form-group">
+									<i
+										ng-class="ticketBean.ticketStatus=='Closed' ? 'fa fa-fw  fa-circle-o text-green' : 'fa fa-fw  fa-circle-o text-red' "></i>
+									<label for="ticketStatus">Ticket Status</label> <input
+										type="text" class="form-control" id="ticketStatus"
+										ng-model="ticketBean.ticketStatus" ng-disabled="true" ng-cloak />
+								</div>
+								<div class="form-group">
+									<i
+										ng-class="ticketBean.ticketStatus=='Closed' ? 'fa fa-fw  fa-circle-o text-green' : 'fa fa-fw  fa-circle-o text-red' "></i>
+									<label for="ticketSeverity">Ticket Severity</label> <input
+										type="text" class="form-control" id="ticketSeverity"
+										ng-model="ticketBean.severityDescription" ng-disabled="true"
+										ng-cloak />
+								</div>
+								<div class="form-group">
+									<i class="fa fa-fw  fa-circle-o text-blue"></i> <label
+										for="ticketDescription">Ticket Description</label> <input
+										type="text" class="form-control" id="ticketDescription"
+										ng-model="ticketBean.description" ng-disabled="true" ng-cloak />
+								</div>
+								<div class="form-group">
+									<i class="fa fa-fw  fa-circle-o text-blue"></i> <label
+										for="createdBy">Ticket Detail</label>
+									<textarea row=6 class="form-control" id="createdBy"
+										ng-model="ticketBean.ticketDetail" ng-disabled="true" ng-cloak></textarea>
+								</div>
+								<div ng-show="ticketBean.ticketStatus=='Open'" ng-cloak>
+									<input type="submit" class="btn btn-primary btn-block"
+										value="{{ticketButtonText}}"
+										ng-click="closeTicketConfirmation()" />
+								</div>
+								<div ng-show="ticketBean.ticketStatus=='Closed'" ng-cloak>
+									<input type="submit" class="btn btn-primary btn-block"
+										value="{{ticketReOpenButtonText}}"
+										ng-click="reOpenTicketConformation()" />
+								</div>
+
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+
+						<!-- About Me Box -->
+
+					</div>
+					<!-- /.col -->
+					<div class="col-md-7">
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span> Ticket resolution comments, actions and details. </span>
+
+							</div>
+						</div>
+						</vd-section>
+						<div class="box box-primary">
+							<div class="nav-tabs-custom">
+
+								<section id="directives-calendar">
+									<div class="row-fluid">
+										<div class="span4">
+
+											<ul class="">
+												<li>
+													<form class='form-horizontal'>
+														<div class='form-group margin'>
+															<div class='col-sm-9'>
+																<textarea row=3 class="form-control input-sm"
+																	placeholder="Reply..." ng-model="description" maxlength="200"></textarea>
+															</div>
+															<div class='col-sm-3'>
+																<input type="sbumit" value="Reply"
+																	class='btn btn-danger pull-right btn-block btn-sm margin'
+																	ng-click="addTicketActivity(description)"
+																	ng-disabled="!description" ng-cloak />
+															</div>
+														</div>
+													</form>
+
+												</li>
+											</ul>
+										</div>
+									</div>
+
+									<div class="row-fluid newFont">
+
+										<div class="span4">
+
+
+											<div class="" id="timeline">
+
+
+
+												<div ng-repeat="ticketActivity in ticketActivities">
+													<!-- ng-repeat="employeeWorkSchedule in employeeWorkSchedules" -->
+													<!-- The timeline -->
+
+													<ul class="timeline timeline-inverse margin">
+
+														<!-- timeline time label -->
+														<li class="time-label"><span
+															ng-class="ticketActivity.userReply!='System' ? 'bg-teal' : 'bg-red'"
+															ng-bind="ticketActivity.userReply"> <i
+																class="fa fa-user"></i>
+														</span></li>
+														<!-- /.timeline-label -->
+														<!-- timeline item -->
+														<li><i class="fa fa-envelope bg-blue"></i>
+															<div class="timeline-item">
+																<span class="time" ng-bind="ticketActivity.createdDate"><i
+																	class="fa fa-fw  fa-calendar"></i></span>
+
+																<h3 class="timeline-header">
+																	<a
+																		ng-bind="'Ticket Activity ('+(ticketActivity.oldStatus)+' to '+(ticketActivity.newStatus)+')'">
+																	</a>
+																</h3>
+																<div class="timeline-body"
+																	ng-bind="ticketActivity.description"></div>
+															</div></li>
+														<li class="time-label"><span class="bg-blue"
+															ng-bind="ticketActivity.updatedTime"> <i
+																class="fa fa-clock-o"></i>
+														</span></li>
+
+													</ul>
+												</div>
+											</div>
+											<!-- /.tab-pane -->
+										</div>
+
+
+									</div>
+
+
+								</section>
+							</div>
+							<!-- /.nav-tabs-custom -->
+						</div>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</section>
+			<!-- /.content -->
+
+			<!-- /.content-wrapper -->
+		</div>
+	</div>
+</div>
+
+<div class="modal fade ng-scope" id="alertBox" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;" ng-cloak>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="alert alert-success">
+				<h4 class="" id="myModalLabel">Ticket closure Action</h4>
+			</div>
+			<div class="modal-body ng-binding" ng-bind="alertMessage"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-default " data-dismiss="modal"
+					ng-click="closeTicket()">Yes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade ng-scope" id="reOpenAlertBox" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;" ng-cloak>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="alert alert-danger">
+				<h4 class="" id="myModalLabel">Ticket closure Action</h4>
+			</div>
+			<div class="modal-body ng-binding" ng-bind="alertMessage"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+					ng-click="reOpenTicket()">Yes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade ng-scope" id="myAlertBox" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;" ng-cloak>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="alert alert-danger">
+				<h4 class="" id="myModalLabel">Alert!</h4>
+			</div>
+			<div class="modal-body ng-binding" ng-bind="alertMessage"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

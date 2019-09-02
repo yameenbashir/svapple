@@ -1,0 +1,17 @@
+-- Step 1: Transfer all Stocks 
+-- Step 2:
+update product set CURRENT_INVENTORY = 0 where OUTLET_ASSOCICATION_ID  = 2;
+update product_variant set CURRENT_INVENTORY = 0 where OUTLET_ASSOCICATION_ID  = 2;
+
+delete from stock_order_detail where STOCK_ORDER_ASSOCICATION_ID in (
+select STOCK_ORDER_ID from stock_order where OUTLET_ASSOCICATION_ID  = 2 and STOCK_ORDER_TYPE_ASSOCICATION_ID = 3); 
+
+delete from stock_order where OUTLET_ASSOCICATION_ID  = 2 and STOCK_ORDER_TYPE_ASSOCICATION_ID = 3;
+
+update contact set CONTACT_BALANCE = 0  where CONTACT_OUTLET_ID = 2
+
+-- Step 3: Transfer Stock from warehouse to outlet
+delete from stock_order_detail where STOCK_ORDER_ASSOCICATION_ID in (
+select STOCK_ORDER_ID from stock_order where SOURCE_OUTLET_ASSOCICATION_ID  = 2 and STOCK_ORDER_TYPE_ASSOCICATION_ID = 4); 
+
+delete from stock_order where SOURCE_OUTLET_ASSOCICATION_ID  = 2 and STOCK_ORDER_TYPE_ASSOCICATION_ID = 4;

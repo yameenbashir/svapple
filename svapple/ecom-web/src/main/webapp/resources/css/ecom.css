@@ -1,0 +1,375 @@
+
+/*stylesheet 1/4 | inline*/
+
+
+.vd-flex { display: flex; flex: 1 1 0%; }
+.vd-flex--row { flex-direction: row; }
+.vd-flex--justify-between { justify-content: space-between; }
+.vd-flex--align-center { align-items: center; }
+.vd-section { display: block; position: relative; padding: 20px 48px; font-size: 15px; color:white}
+.vd-section .vd-section-wrap { display: block; margin: 0px auto; max-width: 1100px; }
+.vd-section--secondary { background-color: rgb(96, 92, 168); }
+a:active,a:hover { outline: 0px; }
+.vd-flex--forced-row { flex-direction: row !important; }
+
+
+
+/*stylesheet 1/5 | inline*/
+
+/*stylesheet 2/5 | https://hadiafashions.vendhq.com/css/combined-global-sidenav.039be2bc8823977c841d603828799888.min.css*/
+.line::after { content: "."; display: block; height: 0px; clear: both; }
+.unit { float: left; }
+.size2of5 { width: 40%; }
+.size4of5 { width: 80%; }
+#setup .box-2 { border-radius: 5px; padding: 15px; }
+
+.box-2 { border-radius: 5px; padding: 19px; background: #f6f6f6; border: 1px solid #dfdfdf; }
+
+.help { color: #666; padding: 5px 0px; line-height: 16px; }
+.input-row { margin-bottom: 10px; min-height: 24px; }
+.input-row.contains-checkbox .field { margin-top: 3px; }
+.input-row.contains-checkbox .field input { margin-right: 8px; margin-top: 4px; }
+.input-row label { display: inline-block; width: 140px; margin-right: 10px; height: 24px; line-height: 24px; }
+.input-row input[type="checkbox"] { float: left; width: auto; }
+.input-row input[type="checkbox"] + .help { display: inline-block; font-size: 14px; padding: 0px; color: #333; }
+.input-row input { width: 150px; }
+.input-row .small { width: 75px; }
+.input-row input[readonly] { background-color: #eee; border: 2px inset; color: #333; }
+.em { color: #666; }
+.text-center { text-align: center; }
+.clear { clear: both; }
+.text-right { text-align: right; }
+.block-center { margin-left: auto; margin-right: auto; }
+.disabled { opacity: 0.5; }
+.padded-20 { padding: 20px; }
+.font-12 { font-size: 12px; }
+.font-large { font-size: 14px; line-height: 20px; }
+.font-large-xl { font-size: 16px; line-height: 20px; }
+.strong { font-weight: 700; }
+hr { height: 1px; }
+.pts { padding-top: 5px !important; }
+.ptm { padding-top: 10px !important; }
+.phl { padding-right: 20px !important; }
+.pbm { padding-bottom: 10px !important; }
+.pbl { padding-bottom: 20px !important; }
+.pls { padding-left: 5px !important; }
+.phl { padding-left: 20px !important; }
+.mtm { margin-top: 10px !important; }
+.mtl,.mvl { margin-top: 20px !important; }
+.mrs { margin-right: 5px !important; }
+.mbl,.mvl { margin-bottom: 20px !important; }
+.mll { margin-left: 20px !important; }
+
+/*stylesheet 4/5 | https://hadiafashions.vendhq.com/js/vendor/tinymce/skins/lightgray/skin.min.css*/
+
+/*stylesheet 5/5 | inline*/
+
+.box-gradient-4 {
+    background-size: 100%;
+    background-image: linear-gradient(rgb(60, 141, 188), #ececee);
+    background-size: 100%;
+    color: white;
+}
+.mlm {
+    margin-left: 10px !important;
+}
+
+/*stylesheet 1/1 | https://hadiafashions.vendhq.com/users/css/user-permissions-f15e867057.css*/
+a:link { text-decoration: none; }
+.vd-tabs { display: block; padding: 0px; margin: 0px; box-shadow: #d7d7d7 0px -1px inset; }
+.vd-tab { display: inline-block; }
+.vd-tab + .vd-tab { margin-left: 30px; }
+.vd-tab.vd-tab--active .vd-tab-button,.vd-tab:hover .vd-tab-button { border-bottom-color: #41af4b; color: #41af4b; }
+.vd-tab:hover:not(.vd-tab--active) .vd-tab-button { cursor: pointer; }
+.vd-tab-button { display: flex; box-sizing: border-box; align-items: center; border-top: none; border-right: none; border-left: none; border-image: initial; background-color: transparent; height: 48px; padding: 0px; border-bottom: 4px solid transparent; color: #959595; font-family: lato, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 15px; font-weight: 400; outline: 0px; transition: background 0.2s; }
+.vd-tabs--no-border { box-shadow: none; }
+.vd-tabs--large .vd-tab .vd-tab-button { font-size: 18px; border-bottom-width: 5px; }
+
+
+
+
+/*stylesheet 1/1 | https://hadiafashions.vendhq.com/users/css/user-permissions-f15e867057.css*/
+.vd-checkbox-input { position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; opacity: 0; margin: 0px; z-index: 101; cursor: pointer; }
+.vd-g-col { flex: 1 1 0px; min-width: 0px; box-sizing: border-box; }
+.vd-checkbox { display: inline-block; position: relative; margin: 0px 8px; }
+.vd-checkbox:first-child { margin-left: 0px; }
+.vd-checkbox:last-child { margin-right: 0px; }
+.vd-checkbox-container { cursor: pointer; display: flex; align-items: flex-start; margin-bottom: 12px; }
+.vd-checkbox-container:last-child { margin-bottom: 0px; }
+.vd-checkbox-label { margin-left: 12px; }
+.vd-checkbox-description { color: #959595; margin-top: 8px; }
+.vd-checkbox-tick { flex-shrink: 0; position: relative; height: 20px; width: 20px; background-color: #fff; border: 1px solid #ebebeb; border-radius: 3px; box-sizing: border-box; }
+.vd-checkbox-tick::after { content: ""; display: block; position: absolute; border-right: 3px solid #ebebeb; border-top: 3px solid #ebebeb; border-bottom-color: #ebebeb; border-left-color: #ebebeb; transform: scaleX(-1) rotate(135deg); transform-origin: left top 0px; height: 8px; width: 3px; left: 3px; top: 10px; opacity: 0; transition: opacity 0.2s; }
+.vd-checkbox-input:hover + .vd-checkbox-tick::after { opacity: 1; }
+.vd-flex { display: flex; flex: 1 1 0%; }
+.vd-col-3 { flex-basis: 275px; }
+.vd-col-9 { flex-basis: 825px; }
+.vd-header { display: block; font-family: lato, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-weight: 700; color: #000; margin: 0px; }
+.vd-header--section { font-size: 18px; margin-bottom: 5px; }
+.vd-hr { margin: 20px auto; width: 100%; max-width: 1100px; border-top: 1px solid #d7d7d7; border-left: none; border-right: none; border-bottom: none; }
+.vd-section { display: block; position: relative; padding: 20px 48px; font-size: 15px; }
+.vd-section .vd-section-wrap { display: block; margin: 0px auto; max-width: 1100px; }
+.vd-section .vd-section { padding: 20px 0px; }
+.vd-pls { padding-left: 5px !important; }
+
+.ckbox {
+	position: relative;
+}
+.ckbox input[type="checkbox"] {
+	opacity: 0;
+}
+.ckbox label {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.ckbox label:before {
+	content: '';
+	top: 1px;
+	left: 0;
+	width: 18px;
+	height: 18px;
+	display: block;
+	position: absolute;
+	border-radius: 2px;
+	border: 1px solid #bbb;
+	background-color: #fff;
+}
+.ckbox input[type="checkbox"]:checked + label:before {
+	border-color: #2BBCDE;
+	background-color: #2BBCDE;
+}
+.ckbox input[type="checkbox"]:checked + label:after {
+	top: 3px;
+	left: 3.5px;
+	content: '\e013';
+	color: #fff;
+	font-size: 11px;
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+}
+.table-filter .star {
+	color: #ccc;
+	text-align: center;
+	display: block;
+}
+.table-filter .star.star-checked {
+	color: #F0AD4E;
+}
+.table-filter .star:hover {
+	color: #ccc;
+}
+.table-filter .star.star-checked:hover {
+	color: #F0AD4E;
+}
+.table-filter .media-photo {
+	width: 35px;
+}
+.table-filter .media-body {
+    display: block;
+    /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
+}
+.table-filter .media-meta {
+	font-size: 11px;
+	color: #999;
+}
+.table-filter .media .title {
+	color: #2BBCDE;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: normal;
+	margin: 0;
+}
+.table-filter .media .title span {
+	font-size: .8em;
+	margin-right: 20px;
+}
+.table-filter .media .title span.pagado {
+	color: #5cb85c;
+}
+.table-filter .media .title span.pendiente {
+	color: #f0ad4e;
+}
+.table-filter .media .title span.cancelado {
+	color: #d9534f;
+}
+.table-filter .media .summary {
+	font-size: 14px;
+}
+
+/*stylesheet 1/8 | https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css*/
+
+/*stylesheet 2/8 | https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css*/
+* { box-sizing: border-box; }
+label { display: inline-block; max-width: 100%; margin-bottom: 5px; font-weight: 700; }
+.btn {
+	position: relative;
+    cursor: pointer;
+    font-size: 15px;
+    text-align: center;
+    display: inline-block;
+    font-weight: 700;
+    border-radius: 3px;
+    padding: 12px 20px;
+    margin: 0px 4px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    border-image: initial;
+    transition: background 0.2s, color, border;
+    outline: 0px;
+}	
+.btn:hover { color: #333; text-decoration: none; }
+.btn:active { background-image: none; outline: 0px; box-shadow: rgba(0, 0, 0, 0.121569) 0px 3px 5px inset; }
+.btn-primary { color: #fff; background-color: #428bca; border-color: #357ebd; }
+.btn-primary:hover,.btn-primary:active { color: #fff; background-color: #3071a9; border-color: #285e8e; }
+.btn-primary:active { background-image: none; }
+
+/*stylesheet 3/8 | https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css*/
+
+/*stylesheet 4/8 | http://www.bootstraptoggle.com/css/bootstrap-toggle.css*/
+.toggle-on { position: absolute; top: 0px; bottom: 0px; left: 0px; right: 50%; margin: 0px; border: 0px; border-radius: 0px; }
+.toggle-on.btn { padding-right: 24px; }
+
+/*stylesheet 5/8 | http://www.bootstraptoggle.com/doc/stylesheet.css*/
+
+/*stylesheet 6/8 | inline*/
+
+/*stylesheet 7/8 | inline*/
+
+/*stylesheet 8/8 | inline*/
+
+
+
+
+/*stylesheet 1/5 | inline*/
+
+/*stylesheet 2/5 | https://hadiafashions.vendhq.com/css/combined-global-v2.67944cec2d0721b90278bf97417ff51c.min.css*/
+a:link { text-decoration: none; }
+a:active,a:hover { outline: 0px; }
+.icon-general-arrow-blue-up { background-image:  url("../images/icons-sec49f36d03.png"); background-repeat: no-repeat; }
+[class^="icon-"] { display: inline-block; vertical-align: middle; width: 16px; height: 16px; line-height: 16px; }
+a [class^="icon-"] { cursor: pointer; }
+.icon-general-arrow-blue-up { background-position: 0px -5px; height: 5px; width: 8px; }
+.text-center { text-align: center; }
+.font-large { font-size: 14px; line-height: 20px; }
+a.no-decoration { text-decoration: none; }
+.mvl { margin-top: 20px !important; }
+.mvl { margin-bottom: 20px !important; }
+.mls { margin-left: 5px !important; }
+
+
+/*stylesheet 1/5 | inline*/
+
+/*stylesheet 2/5 | https://hadiafashions.vendhq.com/css/combined-global-v2.67944cec2d0721b90278bf97417ff51c.min.css*/
+.icon-general-arrow-blue-down { background-image: url("../images/icons-sec49f36d03.png"); background-repeat: no-repeat; }
+.icon-general-arrow-blue-down { background-position: 0px 0px; height: 5px; width: 8px; }
+
+
+
+
+/*stylesheet 1/5 | inline*/
+
+/*stylesheet 2/5 | https://hadiafashions.vendhq.com/css/combined-global-v2.67944cec2d0721b90278bf97417ff51c.min.css*/
+.vd-hr { border-bottom: none; border-right: none; }
+.vd-hr { margin: 20px auto; width: 100%; max-width: 1100px; border-top: 1px solid #d7d7d7; border-left: none; }
+hr { height: 1px; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*stylesheet 1/5 | inline*/
+
+/*stylesheet 2/5 | https://hadiafashions.vendhq.com/css/combined-global-v2.67944cec2d0721b90278bf97417ff51c.min.css*/
+.line::after { content: "."; display: block; height: 0px; clear: both; visibility: hidden; }
+.size1of4 { width: 25%; }
+.product-form .box-2 { margin: 0px -10px -10px; }
+#product_search_product_sku { width: 225px; }
+#product_search_quantity { border-radius: 5px; font-size: 16px; max-width: 65px; margin: 2px 0px 0px; text-align: right; padding: 0px 3px; }
+#composite-items { font-size: 12px; }
+.search-toolbar { padding: 5px 0px; }
+.search-toolbar #product_search_quantity { width: 65px; margin-top: 2px; margin-right: 5px; }
+.search-toolbar label { padding: 3px 0px 8px; }
+.search-toolbar .unit-product { width: 225px; }
+.search-toolbar .unit-quantity { width: 75px; }
+.search-toolbar .unit:first-child .unit { margin-right: 10px; }
+.search-toolbar .help { margin-left: 10px; }
+.search-toolbar .btn--pill,.search-toolbar .help { margin-top: 18px; }
+.hr { background: url("https://hadiafashions.vendhq.com/images/dotted_line.png") left top repeat-x; border: 0px; margin: 20px 0px; }
+div.hr { padding-top: 10px; margin-bottom: 10px; margin-top: 10px; }
+
+
+
+
+/*stylesheet 4/5 | https://hadiafashions.vendhq.com/js/vendor/tinymce/skins/lightgray/skin.min.css*/
+
+/*stylesheet 5/5 | inline*/
+
+
+
+/*stylesheet 1/4 | inline*/
+
+a:link { text-decoration: none; }
+p { color: #333; }
+p { margin: 0px; }
+a:active,a:hover { outline: 0px; }
+a { color: #06c; }
+.clearer { height: 0px; clear: both; float: none; }
+.box.split .subhead { border-left: 1px solid #ccc; }
+.box.light .subhead { border: 1px solid #ccc; }
+.box.light .subhead { border-top: 0px; }
+.box.light .subhead.info_bar { padding: 9px 19px 7px; border-bottom: 1px solid #eaeaea; }
+.box.light .subhead.info_bar p { color: #666; margin: 0px; padding: 0px; font-size: 12px; line-height: 18px; }
+.box .subhead { border-width: 0px 1px 1px; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-color: #ccc; border-bottom-color: #ccc; border-left-color: #ccc; border-image: initial; border-top-style: initial; border-top-color: initial; }
+.box.split .split-right .subhead { border-right: 0px; border-left: 1px solid #eaeaea; margin-left: -1px; }
+.box .subhead { background: #f6f6f6; padding: 8px 9px; line-height: 12px; }
+.subhead { background: #f6f6f6; }
+
+
+
+/*stylesheet 1/4 | inline*/
+
+/*stylesheet 2/4 | https://vendappcdn.global.ssl.fastly.net/webregister/css/vendor-e015a50c7f.css*/
+
+/*stylesheet 3/4 | https://vendappcdn.global.ssl.fastly.net/webregister/css/app-7eb5d45afb.css*/
+* { box-sizing: border-box; }
+.wr-input { border: 1px solid #ebebeb; background-color: #fff; border-radius: 3px; padding: 12px; }
+.wr-input--amount-tendered { max-width: 100%; width: 200px; height: 60px; text-align: right; font-size: 35px; font-weight: 300; }
+
+/*stylesheet 4/4 | inline*/
+.disabled_ecom {
+	cursor: not-allowed;
+    opacity: .75;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+.all-test-main{
+	overflow-y: auto; height: 532px;
+}
+.all-test-main-div{
+	border-style: dashed;
+	border-color: rgba(0, 0, 0, 0.04); 
+	margin-left: 5px; 
+	height:120px; width: 10%;
+}
+
+

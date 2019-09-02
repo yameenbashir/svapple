@@ -1,0 +1,200 @@
+<div class="container">
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>Manage Company Images</h1>
+			<ol class="breadcrumb">
+				<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li class="active">Company Images</li>
+			</ol>
+		</section>
+		<section class="content-header"></section>
+		<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+			<div class="loader"></div>
+		</div>
+
+		<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+							<span>Update Company Images
+							</span>
+							<div class="vd-button-group">
+								<button class="btn btn-primary btn-lg"
+									ng-click="addUser()" 
+									ng-disabled="!userBean.firstName||!userBean.email||!userBean.lastName||
+									!userBean.password||userBean.password!=userBean.confirmPassword||!userBean.outletId||!userBean.roleId||
+									!rolesList||!outletsList" ng-show="!loading" >Update</button>
+								<button  ng-show="loading" class="btn btn-primary btn-lg">
+							    	Update Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+				       			 </button>
+								
+							</div>
+							
+
+						</div>
+					</div>
+					</vd-section>
+					<div class="box">
+						<div class="box-header">
+						<div class="alert alert-success alert-sm"
+								ng-show="userSuccess" ng-bind="userSuccessMessage"
+								ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="userError"
+								ng-bind="userErrorMessage" ng-cloak></div>
+							<div class="form-group">
+													<label for="configurationId" class="col-sm-4 control-label"></label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;" id="configurationId"
+															data-ng-model="productBean.supplierId"
+															ng-change="showImage(configuration.configurationId)"
+															ng-init="configuration.configurationId='-1'" >
+															<option value="-1" >Please select an Image</option>
+															<option ng-repeat="companyImage in companyImpagesList" 
+															value="{{companyImage.configurationId}}">{{companyImage.propertyName}}</option>
+
+														</select>
+														
+														
+													</div>
+												</div>
+							
+						</div>
+						
+					</div>
+					
+					<!-- /.box -->
+			<div class="box" ng-show="true" ng-cloak>
+						<div class="row">
+
+							<div class="col-md-10">
+								<div class="box-header">
+									<i class="fa fa-file-image-o text-purple"
+										style="font-size: 4em;"></i>
+									<h3 class="box-title">Selected Photo</h3>
+								</div>
+								<!-- /.box-header -->
+							</div>
+							<div class="col-md-2">
+								<div class="box-header">
+								<img ng-src="{{configuration.propertyValue || '//:0'}}" class="profile-user-img img-responsive img-circle">
+									
+								</div>
+							</div>
+							<!-- /.box-header -->
+						</div>
+						<div class="box-body no-padding">
+
+							<div class="row">
+								<div class="col-md-9">
+
+									<div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+										class="drop-box">
+										Drop your images here to upload
+										<img-crop image="picFile  | ngfDataUrl"
+											style=" margin-botton: 10%;" result-image="croppedDataUrl"
+											ng-init="croppedDataUrl=''"> </img-crop>
+									</div>
+
+									<div></div>
+									<button ngf-select ng-model="picFile" class="btn btn-primary"
+										accept="image/*">Choose Picture</button>
+								</div>
+								<div class="col-md-3">
+									<div class="cropArea_new">
+										<img style="margin-top: 10%; margin-left: 14%;"
+											ng-src="{{croppedDataUrl}}" />
+									</div>
+									<div class="top-buffer-div" />
+								</div>
+							</div>
+
+
+						</div>
+						<!-- /.box-body -->
+					</div>
+					
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+	</div>
+	</section>
+	<div class="col-md-1"></div>
+</div>
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+<script>
+	$(function() {
+		//  document.body.style.overflow = 'hidden';
+
+		setTimeout(function() {
+			$('#myTable').DataTable({
+				responsive : true
+			});
+			$('#myTable1').DataTable({
+				responsive : true
+			});
+		}, 1);
+
+	});
+</script>
+<style>
+.cropArea_new {
+	padding-top: 25px;
+	background: #E4E4E4;
+	overflow: hidden;
+	width: 100%;
+	height: 250px;
+	margin-top: 10px;
+}
+
+form .progress {
+	line-height: 15px;
+}
+
+.user-block img {
+	width: 40px;
+	height: 40px;
+}
+
+.button {
+	-moz-appearance: button;
+	/* Firefox */
+	-webkit-appearance: button;
+	/* Safari and Chrome */
+	padding: 10px;
+	margin: 10px;
+	width: 70px;
+}
+
+.drop-box {
+	background: #F8F8F8;
+	border: 5px dashed #DDD;
+	width: 100%;
+	height: 250px;
+	text-align: center;
+	padding-top: 25px;
+	margin: 10px;
+}
+
+.dragover {
+	border: 5px dashed blue;
+}
+</style>

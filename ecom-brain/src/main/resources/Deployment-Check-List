@@ -1,0 +1,22 @@
+Make sure following steps are followed before going to create war file
+
+1- app-config.xml file must have following property enable
+	
+	<bean id="DataSource" 
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://127.6.65.130:3306/MANAGEWORKER" />
+		<property name="username" value="admingeZeZsY" />
+		<property name="password" value="123456" />
+	</bean> 
+	
+2- Following model classes must have named queries(You may pick named queries form their respective DAOImpl classes)
+	EmployeeWorkSchedule
+	MonthlyInvoice
+	Notification
+	Schedule
+	TimeLogging
+	
+3- Make sure all model classes has catalog (catalog.txt) info
+	

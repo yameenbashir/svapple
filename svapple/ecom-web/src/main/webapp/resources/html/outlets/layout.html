@@ -1,0 +1,195 @@
+
+<div class="content-wrapper">
+  <section class="content-header">
+          <h1>
+          Outlets and Registers
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Outlets</li>
+          </ol>
+        </section>
+	     <section class="content-header">
+   
+    </section>
+ 
+	 <div class="top-buffer-contact"> </div>
+	 <div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+  			 <div class="row">
+	  <div class="col-md-1">
+	   </div>
+	   <div class="col-md-10">
+	   <vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						 <div class="btn-toolbar">
+<!--                                 <div class=" "> -->
+<!--                                   <button class="btn  btn-success btn-lg pull-right" ng-click="addOutlet()">Add Outlet</button> -->
+<!--                                 </div> -->
+                              </div>	
+					</div>
+					</vd-section>
+	    	
+	    <div class="box newFont">
+	    
+                <div class="box-header">     
+               
+                </div><!-- /.box-header --> 
+                <div class="box-body no-padding">
+                <div class="items-table">
+									<div class="row header">
+										<div class="col-xs-3">Outlet Name</div>
+										<div class="col-xs-3">Default Tax</div>
+										<div class="col-xs-3">Status</div>
+										<div class="col-xs-3"></div>
+									</div>
+									<div class="row invoice-item " ng-animate="'slide-down'" ng-repeat="outlet in outletsList">
+										<div class="row items-sub-noMargin"  >
+											<div class="col-xs-3">
+											<a href="" ng-bind="outlet.outletName" ng-click="showDetails(outlet)"></a>
+											</div>
+											<div class="col-xs-3 input-container">
+												<span ng-bind="outlet.salesTaxName+' %'"></span>
+											</div>
+											
+											<div class="col-xs-3 input-container">
+												<span
+													ng-bind="outlet.status">
+													
+													</span>
+											</div>
+											<div class="col-xs-3 input-container">
+											       <button  class="btn fa fa-edit btn-primary btn-sm " ng-click="editOutlet(outlet)" > Edit Outlet</button>
+	                 		  				<button  class="btn  btn-success btn-sm " ng-click="addRegister(outlet)" > Add Register</button>
+	                 
+											</div>
+										</div>
+										<div class="row items-sub-table" >
+											<div class="col-md-3"></div>
+											<div class="col-md-6">
+												<div class="row header">
+													<div class="col-xs-1"></div>
+													<div class="col-xs-4">Register Name</div>
+													<div class="col-xs-7">Actions</div>
+													
+												</div>
+												
+												<div class="row" ng-repeat="register in outlet.registerBeanList">
+													<div class="col-xs-1"></div>
+													<div class="col-xs-4" ng-bind="register.registerName"></div>
+													<div class="col-xs-7"> <i class="btn fa fa-edit btn-primary btn-sm"
+															ng-click="updateRegister(register)" ng-cloak> Edit Register</i></div>
+													
+												</div>
+											</div>
+											<div class="col-md-3"></div>
+										</div>
+
+
+									</div>
+
+
+							
+								
+
+
+
+								</div>
+                
+                 
+                </div><!-- /.box-body -->
+                 </div><!-- /.box -->
+                 <div class="top-buffer-contact"> </div>
+                 
+                         </div>
+               <div class="col-md-2">
+	   </div>
+	</div>
+	</section>
+	</div>
+	 <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	
+	
+	<!-- Modal end -->
+  
+<style>
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc,
+	table.dataTable thead .sorting_desc {
+	background: none;
+}
+
+.items-sub-noMargin {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.items-sub-table {
+	margin-left: 15px;
+	margin-right: 15px;
+	background: white;
+}
+
+.items-table {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.items-table .row {
+	border-bottom: 1px solid #ddd;
+	line-height: 4em;
+}
+
+.items-table .row:last-child {
+	border-bottom: none;
+	line-height: 3em;
+}
+
+.items-table .row:nth-child(even) {
+	background: #f9f9f9;
+}
+
+.items-table input {
+	line-height: 2.5em;
+}
+
+.actions {
+	padding-top: 1em;
+}
+
+input:focus {
+	outline: 0;
+}
+
+.header.row {
+	font-weight: bold;
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+}
+
+input, textarea {
+	border: 1px solid #FFF;
+}
+
+.container input:hover, .container textarea:hover, .table-striped>tbody>tr:nth-child(2n+1)>td input:hover,
+	.container input:focus, .container textarea:focus, .table-striped>tbody>tr:nth-child(2n+1)>td input:focus
+	{
+	border: 1px solid #CCC;
+}
+
+.table-striped>tbody>tr:nth-child(2n+1)>td input {
+	background-color: #F9F9F9;
+	border: 1px solid #F9F9F9;
+}
+</style>

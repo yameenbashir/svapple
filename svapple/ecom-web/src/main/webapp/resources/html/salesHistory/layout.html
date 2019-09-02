@@ -1,0 +1,617 @@
+<div class="container"  id="hirearchyPage">
+	<div class="row">
+	  <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+          Sales History
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+            <!-- <li><a href="#empView">Managed Services</a></li> -->
+             <li><a href="#sell">Sell</a></li>
+            <li class="active"> Sales History</li>
+          </ol>
+        </section>
+	     <section class="content-header">
+   
+    </section>
+		 <div class="top-buffer-contact"> </div>
+	 <div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+  			 <div class="row">
+	  <div class="col-md-1">
+	   </div>
+	   <div class="col-md-10">
+	   
+	   <vd-tabs modifier="no-border large" class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
+			 
+			<vd-tab type="anchor" active="this.activeTab == 'users'" class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active" link="'#roles'">
+			<a  class="vd-tab-button ng-scope" ng-href="#salesHistory"  href="/users/"><span class="ng-scope">
+			     Sales Detail </span></a>
+			</vd-tab>
+			<!-- <vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
+			     Process returns
+			    </span></a>
+			</vd-tab>
+			<vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
+			      All sales
+			    </span></a>
+			</vd-tab> -->
+			  </vd-tabs>
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+
+								<span> Find all sales for a customer or product. </span>
+								
+								<div class="vd-button-group" ng-show="dataLoading">
+							 <button class="btn  btn-primary btn-lg" ng-click="LoadAllSales()" >Load All Sales</button>
+                                
+							</div>
+							<div class="vd-button-group" ng-show="!dataLoading">
+							 <button class="btn  btn-primary btn-lg" ng-disabled="true" >Loading All Sales<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i></button>
+                                
+							</div>
+
+							</div>
+						</div>
+						</vd-section>
+
+
+						<div class="box box-primary newFont">
+                <div class="box-header">
+               
+				 </div><!-- /.box-header -->
+				 
+							<div class="box-body">
+								<table id="example" class="display" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th></th>
+											<th>ID</th>
+											<th>Date</th>
+											<th>Receipt</th>
+											<th>Sold by</th>
+											<th>Customer</th>
+											<th>Note</th>
+											<th>Sale Total</th>
+											<th>Status</th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+
+								</table>
+							</div>
+							<div class="top-buffer-contact"> </div>
+                 
+                         </div>
+               <div class="col-md-2">
+	   </div>
+	</div>
+	</section>
+			</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+        
+
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals
+					2017</div>
+			</div>
+		</div>
+	</div>
+    <style>
+.center {
+    margin-top:50px;   
+}
+
+.modal-header {
+    padding-bottom: 5px;
+}
+
+.modal-footer {
+        padding: 0;
+}
+    
+.modal-footer .btn-group button {
+    height:40px;
+    border-top-left-radius : 0;
+    border-top-right-radius : 0;
+    border: none;
+}
+    
+.modal-footer .btn-group:last-child > button {
+    border-right: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    width: 65%;
+    margin-left: 25%;
+}
+</style>
+    <!-- DataTables -->
+     <script src="resources/js/jquery.dataTables.min.js"></script>
+    
+     <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script>
+     
+  
+ <modal visible="printReceiptModal" title="Print Receipt">
+
+ <div class="box box-primary newFont">
+
+							<div class="box-body box-profile ">
+								<h3 class="profile-username text-center">Sale Summary</h3>
+
+								<div class="box-body" style="height: 900px;">
+									<div class="container">
+										<div class="" id="printThisElement" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+											<div class="">
+												<div class="col-xs-2 "></div>
+												<div class="col-xs-8 text-center" style="font-size:10px">
+													<!-- Kites  -->
+													<img class="text-center" style="margin-top: 0px;height:50px !important;"
+														 src="{{companyImagePath}}"></img><br> 
+													<!-- Style & Style 	 
+													<img class="text-center" style="margin-top: 0px;height:50px !important;" 
+														src="{{companyImagePath}}"></img><br> -->
+													 <!-- Xpressions 
+													 <img class="text-left" style="margin-top: 0px;height:120px !important;;  width: 350px !important;" 
+														src="{{companyImagePath}}"></img><br> -->
+													
+													{{InvoiceMainBeans.companyAddress}}
+													<br>
+													<span ng-bind="' Ph:'+ InvoiceMainBeans.phoneNumber"></span>
+													<br>
+													 <!-- <span>Facebook: Xpressions.monas<span> --> 
+												</div>
+												<div class="col-xs-2"></div>
+
+											</div>
+											<hr class="dash" />
+											
+											<div class="" style="font-size: 10px">
+												<div class="col-md-12"
+													ng-bind="'Receipt #: '+ InvoiceMainBean.receipt"></div>
+											</div>
+											<br>
+											<hr class="vd-hr no-print">
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="col-md-12"
+													ng-bind="'Date: '+InvoiceMainBean.date"></div>
+											</div>
+											<br>
+											<hr class="vd-hr no-print">
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="text-center col-md-12"
+													ng-bind="'Cashier: ' + userName"></div>
+											</div>
+											<hr class="vd-hr no-print">
+											<br>
+											<hr class="dash" />
+											<div style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="items-table">
+													<div class="header">
+														<div class="col-xs-7 input-container">
+															<span>PARTICULARS</span>
+														</div>
+														<div class="col-xs-2 input-container">
+															<span>QTY</span>
+														</div>
+														<div class="col-xs-3 input-container">
+															<span class="text-right">AMT</span>
+														</div>
+
+													</div>
+													<hr class="dash" />
+													<div ng-if="InvoiceMainBean.products.length>0"
+														ng-repeat="invoiceDetails in InvoiceMainBean.products"
+														ng-animate="'slide-down'" class="row" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+														<hr class="vd-hr no-print">
+														<div class="col-xs-7 input-container" style="margin-top:-20px !important;">
+
+															<span class="text"
+																ng-bind="invoiceDetails.productName"></span>
+																
+														<div class="row">
+															<small>
+															Was: <span class="text" ng-bind="invoiceDetails.itemRetailPrice" > </span>
+															Disc: <span class="text" ng-bind="invoiceDetails.itemDiscountPrct"></span> % :
+															<span class="text" >{{invoiceDetails.itemRetailPrice * (invoiceDetails.itemDiscountPrct/100) | number:2}}</span>
+															</small>
+															</div>	
+															
+														</div>
+
+
+
+														<div class="col-xs-2 input-container" style="margin-top:-20px !important; margin-left: 8px !important;">
+															<span ng-bind="invoiceDetails.quantity"></span>
+														</div>
+														<!-- Standard -->
+														<div class="col-xs-3 input-container" style="margin-top:-20px !important;   margin-left: 40px !important;">
+															<span class="text-right"
+																ng-bind="invoiceDetails.pricewithTax"></span>
+														</div>  
+														<!-- Xpressions  
+														<div class="col-xs-3 input-container" style="margin-top:-20px !important;   margin-left: 70px !important;">
+															<span class="text-right"
+																ng-bind="invoiceDetails.pricewithTax"></span>
+														</div> -->
+														<br>
+
+													</div>
+														<div class="col-xs-7 input-container" >
+
+															<span class="text">Items Count :</span>
+															
+																														
+														</div>
+
+														<div class="col-xs-2 input-container" style="margin-left: 8px !important;">
+															<span ng-bind="InvoiceMainBean.itemsCount" ></span>
+														</div>
+
+														<div class="col-xs-3 input-container" >
+															<span class="text-right"></span>
+														</div>
+													<hr class="dash" style="margin-top:-20px !important;" />
+													
+													<hr class="vd-hr no-print">
+													<div style="font-size: 10px">
+														<div class="col-xs-8 text-right">
+														Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> <br> Tax Amount <br>
+															Total:
+														</div>
+														<div class="col-xs-4 text-center">
+														<span ng-bind="(InvoiceMainBean.subtotal)"></span>
+															<span ng-show="InvoiceMainBean.invoiceDiscountAmt>0"><br></span> <span class="text-center" ng-show="InvoiceMainBean.invoiceDiscountAmt>0"
+																ng-bind="(InvoiceMainBean.discount)"></span> <span><br></span>
+															<span class="text-center"
+																ng-bind="(InvoiceMainBean.totalTax)"></span> <span><br></span>
+															<span class="text-center"
+																ng-bind="(InvoiceMainBean.total)"></span>
+														</div>
+													</div>
+													<hr class="dash" />
+													<div style="font-size: 12px">
+														<div class="col-xs-8 text-right">Balance</div>
+														<div class="col-xs-4 text-center">{{InvoiceMainBean.balance}}</div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-xs-12 text-center">
+														<!--<barcode style="margin-top: 15px;" food="barcodeValues"></barcode>  -->
+														<svg class="barcode" jsbarcode-format="CODE128"
+															jsbarcode-value={{InvoiceMainBean.receipt}}
+															jsbarcode-fontSize="10" jsbarcode-height="35"
+															jsbarcode-width="1.9" jsbarcode-marginLeft=""
+															jsbarcode-textmargin="0" jsbarcode-fontoptions="">
+																</svg>
+													</div>
+
+												</div>
+
+												<div class="top-buffer-contact no-print"></div>
+												<!-- Kites -->
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size: 9px">
+														Thank you for your Shopping.<br> No Exchange without
+														orignal Invoice.<br> No return, only exchange within
+														5 days <br>SALE ITEMS NO RETURN, NO CHANGE<br>NO
+														EXHANGE, AFTER ALTERATION <br> <br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div> 
+												
+												<!-- Xpressions 
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size: 8px">
+														Exchange can be furnished within 3 days if product is not user or altered/<b>No Replaced</b>.
+														<br> Once the dress is sold on "<B>SALE PRICE</B>" can not be exchanged or returned.<br>
+														All claims are subject to the approval of Head office as per the organizational policies.<br>
+														Exchange is not accepted on the product purchased dureing sale period of promotion.<br>
+														Dry Clean Only.<br> 
+														Cliam for defects because of faulty wahsing & improper care are not accepted.<br>
+														Cash not refundable in any case.<br>
+														<br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+												</div> -->
+												
+												<!-- Style & Style 
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size:10px; font-family: monospaced; font-weight: bolder;">
+														Shoes used in water can't be claimed.
+														<br>
+														Used Item can't be replaced.
+														<br>"<B>Imported /Sale Item</B>"No guarntee, can not be exchanged or returned.<br>
+														Free Reparing can be done within two months of purchase.<br>
+														15 days will be required for reparing.<br>
+														Exchange is possible within 15 days.<br> 
+														No exchange without receipt.<br>
+														<br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div> -->
+												
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+
+
+							</div>
+							<!-- /.box-body -->
+															<div class="row">
+									<div class="col-md-3"></div>
+									<div class="col-md-6">
+										<button class="btn btn-primary btn-block" ng-print
+											print-element-id="printThisElement"
+											ng-click="printReceipt = !printReceipt">
+											<i class="fa fa-print"></i> Print Receipt
+										</button>
+
+									</div>
+								</div>
+						</div>
+
+   <style> 
+   .center {
+	margin-top: 50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+	padding: 0;
+}
+
+.modal-footer .btn-group button {
+	height: 40px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: none;
+}
+
+.modal-footer .btn-group:last-child>button {
+	border-right: 0;
+}
+
+
+.newFont_receipt {
+	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial,
+		sans-serif;
+	font-weight: 800;
+	font-size: xx-small;
+}
+
+   @media print{
+   body *{display:none}
+   #printSection,#printSection *{display:inline}
+   #printSection{position:absolute;left:5;top:5}
+   }
+   </style>
+ </modal>  
+   
+ <script>
+ function format ( d ) {
+	    // `d` is the original data object for the row
+	    var rows="";
+	    var cashRows = "";
+	 	 if(d.receipts.length >= 1){
+	    	 for (i = 0; i < d.receipts.length; i++) { 
+	  		  	
+	  		  		cashRows = cashRows + '<hr class="vd-hr">'
+	 	    		+'<div class="row">'
+	 	    	    +'<div class="col-md-6"></div>'
+	 	    	    +'<div class="col-md-2">Cash :    '+d.receipts[i].receiptAmount+'</div>'
+	 	    		+'<div class="col-md-2">'+d.receipts[i].receiptDate+'</div>'
+	 	    		;
+	 	    	if(i != d.products.length){
+	  				rows = rows +'<hr class="vd-hr">';
+	  			}
+	  			
+	  		 }
+	    }else if(d.status!="LayBy"){
+	    	
+	    	 if(d.cashReturn==="0.00"){
+	 	        cashRows = '<hr class="vd-hr">'
+	 	    		+'<div class="row">'
+	 	    	    +'<div class="col-md-6"></div>'
+	 	    	    +'<div class="col-md-2">Cash :    '+d.cashGivenDate+'</div>'
+	 	    		+'<div class="col-md-2">'+d.cashGiven+'</div>'
+	 	    		;
+	 	    	
+	 	    }else{
+	 	    	 cashRows = '<hr class="vd-hr">'
+	 		    		+'<div class="row">'
+	 		    	    +'<div class="col-md-6"></div>'
+	 		    	    +'<div class="col-md-2">Cash :    '+d.cashGivenDate+'</div>'
+	 		    		+'<div class="col-md-2">'+d.cashGiven+'</div>'
+	 		    		+'</div>'
+	 		    		+'<div class="row">'
+	 		    	    +'<div class="col-md-6"></div>'
+	 		    		+'<div class="col-md-2">Cash  :  '+d.cashReturnDate+'</div>'
+	 		    		+'<div class="col-md-2">'+d.cashReturn+'</div>'
+	 		    		+'</div>';
+	 	    	
+	 	    }
+	    	
+	    }
+	  
+	   
+	    for (i = 0; i < d.products.length; i++) { 
+		  	rows = rows +'<div class="row">'
+		  	
+		  	+'<div class="col-md-1"></div>'
+		  	+'<div class="col-md-1">'+d.products[i].quantity+'</div>'
+			+'<div class="col-md-4">'+d.products[i].productName+' <div class="row"> Was:'+d.products[i].itemRetailPrice +' Disc: '+ d.products[i].itemDiscountPrct +'% : '+ d.products[i].itemRetailPrice *(d.products[i].itemDiscountPrct/100) +'  </div>  </div>'
+			+'<div class="col-md-2">'+d.products[i].pricewithoutTax+'</div>'
+			+'<div class="col-md-2">'+d.products[i].pricewithTax+'</div>'
+			+'<div class="col-md-2"></div>'
+			+'</div>';
+			if(i != d.products.length){
+				rows = rows +'<hr class="vd-hr">';
+			}
+			
+		 }
+	   
+	 
+		    return rows
+		    +'<div class="row">'
+		    +'<div class="col-md-6"></div>'
+			+'<div class="col-md-2">Sub Total</div>'
+			+'<div class="col-md-2">'+d.subtotal+'</div>'
+			+'</div>'
+			+'<div class="row">'
+		    +'<div class="col-md-6"></div>'
+			+'<div class="col-md-2">Discount</div>'
+			+'<div class="col-md-2">'+d.discount+'</div>'
+			+'</div>'
+			+'<div class="row">'
+		    +'<div class="col-md-6"></div>'
+			+'<div class="col-md-2">Total tax (No Tax)</div>'
+			+'<div class="col-md-2">'+d.totalTax+'</div>'
+			+'</div>'
+			+'<hr class="vd-hr">'
+			+'<div class="row">'
+		    +'<div class="col-md-6"></div>'
+			+'<div class="col-md-2"><b>Total</b></div>'
+			+'<div class="col-md-2"><b>'+d.total+'</b></div>'
+			+'</div>'+
+			cashRows
+			
+			+'<hr class="vd-hr">'
+			+'<div class="row">'
+		    +'<div class="col-md-6"></div>'
+			+'<div class="col-md-2"><b>Balance</b></div>'
+			+'<div class="col-md-1"><b>'+d.balance+'</b></div>'
+			+'</div>';
+	}
+	 
+	$(document).ready(function() {
+		var sessionId = Cookies.get('_s_tk_com',{ path: '/app' });
+		var sales = JSON.parse(localStorage.getItem('salesHistory'));
+		var table = $('#example').DataTable( {
+	       // "ajax": "../app/resources/files/objects.txt"
+	       // 	"ajax": {
+	       // 	    "url": "/app/salesHistory/getData/"+sessionId,
+	       // 	    "type": "GET"
+	       //	  }
+	       "data":sales.data,
+	        "columns": [
+	            {
+	                "className":      'details-control',
+	                "orderable":      true,
+	                "data":           null,
+	                "defaultContent": ''
+	            },
+	            { "data": "invoiceId" },
+	            { "data": "date" },
+	            { "data": "receipt" },
+	            { "data": "soldby" },
+	            { "data": "customerName" },
+	            { "data": "note" },
+	            { "data": "saleTotal" },
+	            { "data": "status" },
+	            { "data": "html" },
+	            { "data": "print" }
+	            
+	        ],
+	        "order": [[1, 'desc']],
+	  	    "initComplete": function(settings, json) {
+	  	             Cookies.set('salesHostoryLoaded', true,{ path: '/app' });
+	  	          },
+	  	   "fnDrawCallback": function( oSettings ) {
+	  	        Cookies.set('salesHostoryLoaded', true,{ path: '/app' });
+	  	        }
+	  	   
+	    } );
+	     
+	    // Add event listener for opening and closing details
+	    $('#example tbody').on('click', 'td.details-control', function () {
+	        var tr = $(this).closest('tr');
+	        var row = table.row( tr );
+	 
+	        if ( row.child.isShown() ) {
+	            // This row is already open - close it
+	            row.child.hide();
+	            tr.removeClass('shown');
+	        }
+	        else {
+	            // Open this row
+	            row.child( format(row.data()) ).show();
+	            tr.addClass('shown');
+	          
+	         }
+	    } );
+	} );
+    </script>
+<style>
+ .user-block {
+    white-space: nowrap;
+}
+
+@media (min-width: 768px)
+.user-block {
+    width: inherit;
+}
+.avatar {
+    display: inline-block;
+    position: relative;
+}
+ .user-block .user-info {
+    display: inline-block;
+    width: 55%;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.user-block img {
+    width: 40px;
+    height: 40px;
+    float: left;
+    border-radius: 50%;
+}
+
+td.details-control {
+    background: url('../app/resources/images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../app/resources/images/details_close.png') no-repeat center center;
+}
+</style>

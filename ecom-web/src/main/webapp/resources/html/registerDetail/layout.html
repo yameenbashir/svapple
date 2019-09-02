@@ -1,0 +1,334 @@
+<div class="content-wrapper">
+	<section class="content-header">
+		<h1>Register Detail</h1>
+		<ol class="breadcrumb">
+			<li><a href="#registerReport"><i class="fa fa-book"></i>Register Reports</a></li>
+			<li class="active">Register Detail</li>
+		</ol>
+	</section>
+	<section class="content-header"></section>
+
+	<div class="top-buffer-contact"></div>
+	<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+	<!-- Main content -->
+	<section class="content" ng-show="!globalPageLoader" ng-cloak>
+		<div class="row">
+
+			<div class="col-md-1"></div>
+
+			<div class="col-md-10" >
+				<div class="alert alert-success alert-sm" ng-show="successOpen"
+					ng-bind="successMessage" ng-cloak></div>
+				<div class="alert alert-danger alert-sm" ng-show="error"
+					ng-bind="errorMessage" ng-cloak></div>
+				
+				
+				<vd-section sticky="" type="secondary"
+					class="cv-action-bar vd-section vd-section--secondary"
+					role="region">
+				<div class="vd-section-wrap">
+					<div
+						class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+						<div class="vd-button-group">
+							<span><h4>Register details</h4></span>
+						</div>
+
+					</div>
+				</div>
+				</vd-section>
+				<div class="top-buffer-contact"></div>
+				<div class="top-buffer-contact"></div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<span>Outlet</span>
+						<h4 ng-bind="controllerBean.outletName"></h4>
+					</div>
+					<div class="col-md-3">
+						<span>Register</span>
+						<h4 ng-bind="dailyRegisterBean.outletName"></h4>
+					</div>
+					<div class="col-md-3">
+						<span>Closure #</span>
+						<h4 ng-bind="dailyRegisterBean.dailyRegisterId"></h4>
+					</div>
+					<div class="col-md-3">
+						<span>Opening time</span>
+						<h4 ng-bind="dailyRegisterBean.createdDate"></h4>
+					</div>
+
+				</div>
+
+				<div class="top-buffer-contact"></div>
+				<div class="top-buffer-contact"></div>
+				<div class="top-buffer-contact"></div>
+
+				<div class="box newFont" id="printThisElement">
+
+					<div class="box-header">
+						<h3>Payment Summary</h3>
+
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body no-padding">
+						<div class="alert alert-success alert-sm" ng-show="success"
+							ng-bind="successMessage" ng-cloak></div>
+						<div class="alert alert-danger alert-sm" ng-show="error"
+							ng-bind="errorMessage" ng-cloak></div>
+						<div class="row">
+
+							<div class="col-md-12">
+								<div class="items-table">
+									<div class="row header">
+										<div class="col-xs-3">Payment Types</div>
+										<div class="col-xs-3">Expected (PKRS)</div>
+										<div class="col-xs-3">Counted (PKRS)</div>
+										<div class="col-xs-3">Differences (PKRS)</div>
+									</div>
+									<div class="row invoice-item " ng-animate="'slide-down'">
+										<div class="row items-sub-noMargin">
+											<div class="col-xs-3 remove-item-container">Cash</div>
+											<div class="col-xs-3 input-container">
+												<span ng-bind="dailyRegisterBean.cashAmtExpected"></span>
+											</div>
+											<div class="col-xs-3 input-container">
+												<input ng-show="!lastDayilyRegisterExist" ng-model="dailyRegisterBean.cashAmtActual" value="1"
+													size="15" required ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/' ng-disabled="true"/>
+												<span  ng-show="lastDayilyRegisterExist" ng-bind="dailyRegisterBean.cashAmtActual" ></span>
+											</div>
+											<div class="col-xs-3 input-container">
+												<span
+													ng-bind="dailyRegisterBean.cashAmtExpected-dailyRegisterBean.cashAmtActual"></span>
+											</div>
+										</div>
+										<div class="row items-sub-table">
+											<div class="col-md-3"></div>
+											<div class="col-md-6">
+												<div class="row header">
+													<div class="col-xs-1"></div>
+													<div class="col-xs-4">Time</div>
+													<div class="col-xs-2">User</div>
+													<div class="col-xs-2">Amount</div>
+													<div class="col-xs-3">Reason</div>
+												</div>
+												<div class="row invoice-item"
+													ng-repeat="cash in cashManagmenBeans" style="font-size: 12px;">
+													<div class="col-xs-1"></div>
+													<div class="col-xs-4" ng-bind="cash.time"></div>
+													<div class="col-xs-2" ng-bind="cash.createdBy"></div>
+													<div class="col-xs-2" ng-bind="cash.cashAmount"></div>
+													<div class="col-xs-3" ng-bind="cash.notes"></div>
+												</div>
+												<div class="row header">
+													<div class="col-xs-1"></div>
+													<div class="col-xs-4">Cash Payment Received</div>
+													<div class="col-xs-2"></div>
+													<div class="col-xs-2"
+														ng-bind="dailyRegisterBean.paymentReceived"></div>
+													<div class="col-xs-3"></div>
+												</div>
+											</div>
+											<div class="col-md-3"></div>
+										</div>
+
+
+									</div>
+
+
+									<div class="row invoice-item" ng-animate="'slide-down'">
+										<div class="col-xs-3 remove-item-container">Credit Card
+										</div>
+										<div class="col-xs-3 input-container">
+											<span ng-bind="dailyRegisterBean.creditCardAmtExpected"></span>
+										</div>
+										<div class="col-xs-3 input-container">
+											<input ng-model="dailyRegisterBean.creditCardAmtActual"
+												value="1" size="15" ng-required ng-validate="integer" ng-show="!lastDayilyRegisterExist" ng-disabled="true"/>
+												<span  ng-show="lastDayilyRegisterExist" ng-bind="dailyRegisterBean.creditCardAmtActual" ></span>
+										</div>
+										<div class="col-xs-3 input-container">
+											<span
+												ng-bind="dailyRegisterBean.creditCardAmtExpected-dailyRegisterBean.creditCardAmtActual"></span>
+										</div>
+
+									</div>
+									<div class="row invoice-item" ng-animate="'slide-down'">
+										<div class="col-xs-3 remove-item-container">Store Credit</div>
+										<div class="col-xs-3 input-container">
+											<span ng-bind="dailyRegisterBean.storeCreditAmtExpected"></span>
+										</div>
+										<div class="col-xs-3 input-container">
+											<span>-</span>
+										</div>
+										<div class="col-xs-3 input-container">
+											<span>- </span>
+										</div>
+
+									</div>
+
+
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+				<div class="top-buffer-contact"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<textArea type="text" class="form-control" id="inputstoreName"
+							data-ng-model="dailyRegisterBean.registerClosingNotes"
+							maxlength="25" ng-pattern='/^[A-Za-z\s]+$/' required rows="4"
+							placeholder="Type to add a register closure note" ng-disabled="true"></textArea>
+					</div>
+
+				</div>
+				<div class="top-buffer-contact"></div>
+				<div class="row">
+					<button class="btn btn-primary pull-right" ng-print  
+											print-element-id="printThisElement"
+											style="margin-right: 5px;"
+											ng-click="printReceipt = !printReceipt">
+											<i class="fa fa-print"></i> Print Receipt
+										</button>
+					
+
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</section>
+</div>
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+
+<modal title="Set opening cash drawer amount" visible="showCashModal"
+	ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+				<div class="alert alert-danger alert-sm"
+					ng-show="paymentTypeAddError" ng-bind="paymentTypeAddErrorMessage"
+					ng-cloak></div>
+
+
+				<div class="form-group">
+					<div class="col-sm-12">
+						<input type="text" class="form-control"
+							placeholder="Amount e.g, 50.00" name="tag"
+							data-ng-model="cashManagmentBean.cashAmount"
+							ng-pattern='/^[0-9]+$/' required maxlength="100">
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-sm-12">
+						<textarea class="form-control" placeholder="Type to add a note"
+							name="tag" data-ng-model="cashManagmentBean.notes"
+							ng-pattern='/^[a-zA-Z0-9\s]+$/' maxlength="200"></textarea>
+
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="box-footer">
+			<button class="btn btn-success btn-lg pull-right"
+				ng-show="!addCashProcessingButton" ng-click="cashInOut()">Save
+				Amount</button>
+			<button class="btn btn-success btn-lg pull-right"
+				ng-show="addCashProcessingButton">
+				<i class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+				Processing
+			</button>
+
+
+		</div>
+	</li>
+</div>
+
+</modal>
+<style>
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc,
+	table.dataTable thead .sorting_desc {
+	background: none;
+}
+
+.items-sub-noMargin {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.items-sub-table {
+	margin-left: 15px;
+	margin-right: 15px;
+	background: white;
+}
+
+.items-table {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.items-table .row {
+	border-bottom: 1px solid #ddd;
+	line-height: 4em;
+}
+
+.items-table .row:last-child {
+	border-bottom: none;
+	line-height: 3em;
+}
+
+.items-table .row:nth-child(even) {
+	background: #f9f9f9;
+}
+
+.items-table input {
+	line-height: 2.5em;
+}
+
+.actions {
+	padding-top: 1em;
+}
+
+input:focus {
+	outline: 0;
+}
+
+.header.row {
+	font-weight: bold;
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+}
+
+input, textarea {
+	border: 1px solid #FFF;
+}
+
+.container input:hover, .container textarea:hover, .table-striped>tbody>tr:nth-child(2n+1)>td input:hover,
+	.container input:focus, .container textarea:focus, .table-striped>tbody>tr:nth-child(2n+1)>td input:focus
+	{
+	border: 1px solid #CCC;
+}
+
+.table-striped>tbody>tr:nth-child(2n+1)>td input {
+	background-color: #F9F9F9;
+	border: 1px solid #F9F9F9;
+}
+</style>

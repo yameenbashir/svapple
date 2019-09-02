@@ -1,0 +1,289 @@
+<div class="container">
+	<div class="row">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<h1>Customer Details</h1>
+				<ol class="breadcrumb">
+					<li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+					<!--  <li><a href="#empView">Managed Services</a></li> -->
+					<li><a href="#customers">Customers</a></li>
+					<li class="active">Customer Details</li>
+				</ol>
+			</section>
+			<section class="content-header"></section>
+			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+				<div class="loader"></div>
+			</div>
+
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+								<div class="vd-button-group">
+									<button class="btn btn-success btn-lg"
+										ng-click="updateCustomer()">Edit Customer</button>
+
+								</div>
+
+							</div>
+						</div>
+						</vd-section>
+						<div class="box">
+
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-4">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-6 control-label">Group</label>
+														<div class="col-sm-6">
+															<span class="unit control-label"
+																ng-bind="customerBean.customerGroup"></span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-6 control-label">Contact
+															name</label>
+														<div class="col-sm-6">
+															<span class="unit control-label"
+																ng-bind="customerBean.contactName"></span>
+														</div>
+													</div>
+													<hr class="vd-hr">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Total
+															earned</label>
+														<div class="col-sm-8">
+															<span class="unit control-label"
+																ng-bind="customerBean.totalEarned"></span>
+														</div>
+													</div>
+													<!-- <div class="form-group">												
+													 <label for="inputEmail3" class="col-sm-6 control-label">Physical address</label>
+													<div class="col-sm-6">
+												    <table id="phyAddressTable"  class="display" cellspacing="0" width="100%"  ng-clock>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[0].street"></td>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[0].suburb"></td>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[0].city"></td>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[0].state"></td>
+														</tr>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[0].postalCode"></td>
+														</tr>
+														</table>
+													</div>
+												</div> -->
+													<!-- <div class="form-group">
+													<label for="inputEmail3" class="col-sm-6 control-label">Postal address</label>
+													<div class="col-sm-6">
+														 <table id="phyAddressTable"  class="display" cellspacing="0" width="100%"  ng-clock>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[1].street"></td>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[1].suburb"></td>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[1].city"></td>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[1].state"></td>
+														</tr>
+														</tr>
+														<tr>
+														<td class="unit control-label" ng-bind="customerBean.addressBeanList[1].postalCode"></td>
+														</tr>
+														</table>
+													</div>
+												</div> -->
+
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-4">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label"><b>Balance</b></label>
+														<div class="col-sm-6">
+															<span class="unit control-label"
+																ng-bind="customerBean.balance"></span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label"><b>Store
+																Credit</b></label>
+														<div class="col-sm-8">
+															<span class="unit control-label"
+																ng-bind="customerBean.storeCredit"></span>
+														</div>
+													</div>
+													<hr class="vd-hr">
+
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Total
+															spent</label>
+														<div class="col-sm-6">
+															<span class="unit control-label"
+																ng-bind="customerBean.totalSpent"></span>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-2">
+											<div class="box-header with-border"></div>
+											<div class="box-body">
+												<img src="resources/images/User.png"
+													class="img-responsive img-rounded" alt="Cinque Terre"
+													style="width: 204px; height: auto;">
+											</div>
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.box -->
+						</div>
+
+						<vd-section sticky="" type="secondary"
+							class="cv-action-bar vd-section vd-section--secondary"
+							role="region">
+						<div class="vd-section-wrap">
+							<div
+								class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+
+								<h2>Sales History</h2>
+
+							</div>
+						</div>
+						</vd-section>
+						<div class="box">
+
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-primary">
+									<div class="row">
+										<div class="col-md-12">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<div class="box-body">
+												<table id="myTable" class="display" cellspacing="0"
+													width="100%" ng-clock>
+													<thead>
+														<tr>
+															<th>Date</th>
+															<th>User</th>
+															<th ng-hide="true">Register</th>
+															<th>Receipt</th>
+															<th>Note</th>
+															<th ng-hide="true">Status</th>
+															<th>Total</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															ng-repeat="payment in customerBean.customerPaymentsBeans">
+															<td ng-bind="payment.date"></td>
+															<td ng-bind="payment.user"></td>
+															<td ng-bind="payment.register" ng-hide="true"></td>
+															<td ng-bind="payment.receipt"></td>
+															<td ng-bind="payment.note"></td>
+															<td ng-bind="payment.status" ng-hide="true"></td>
+															<td ng-bind="payment.total"></td>
+
+														</tr>
+													</tbody>
+												</table>
+
+											</div>
+
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+						</div>
+
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+			</section>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+
+</div>
+
+<div class="container">
+	<div class="row footer-row">
+		<div class="col-lg-12 text-center">
+			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
+				ShopVitals 2018</div>
+		</div>
+	</div>
+</div>
+<script src="resources/js/jquery.dataTables.min.js"></script>
+
+<script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script>
+
+
+<!-- <script>
+	$(function() {
+		//  document.body.style.overflow = 'hidden';
+
+		setTimeout(function() {
+			$('#myTable').DataTable({
+				responsive : true
+			});
+			$('#myTable1').DataTable({
+				responsive : true
+			});
+		}, 1);
+
+	});
+</script> -->
