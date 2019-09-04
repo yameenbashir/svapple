@@ -22,4 +22,5 @@ public interface PriceBookDetailDAO {
 	List<PriceBookDetail> getPriceBookDetailsByPriceBookId(int pricebookId);
 	List<PriceBookDetail> getPriceBookDetailsByPriceBookIdGroupByUuidCompanyId(int pricebookId,String uUId,int companyId);
 	void addPriceBookDetail(List<PriceBookDetail> priceBookDetails);
+	List<PriceBookDetail> getAllActivePriceBookDetailsByPriceBookIdCompanyId(int pricebookId,int companyId);
 }

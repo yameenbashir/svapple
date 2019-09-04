@@ -246,4 +246,23 @@ public class PriceBookDetailDAOImpl implements PriceBookDetailDAO{
 
 	}
 
+	@Override
+	public List<PriceBookDetail> getAllActivePriceBookDetailsByPriceBookIdCompanyId(
+			int pricebookId, int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			@SuppressWarnings("unchecked")
+			List<PriceBookDetail> list = getSessionFactory().getCurrentSession()
+					.createQuery("from PriceBookDetail where PRICE_BOOK_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ? AND ACTIVE_INDICATOR = 1 ")
+					.setParameter(0, pricebookId)
+					.setParameter(1, companyId).list();
+			if(list!=null&& list.size()>0){
+				return list;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
 }

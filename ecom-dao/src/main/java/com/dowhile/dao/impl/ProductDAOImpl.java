@@ -500,4 +500,41 @@ public class ProductDAOImpl implements ProductDAO{
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> getAllActiveProducts() {
+		try{
+			List<Product> list = getSessionFactory().getCurrentSession()
+					.createQuery("from Product where ACTIVE_INDICATOR = 1")
+					.list();
+			if(list!=null&& list.size()>0){
+
+				return list;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> getAllActiveProductsByOutletIdCompanyId(int outletId,
+			int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			List<Product> list = getSessionFactory().getCurrentSession()
+					.createQuery("from Product where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
+			if(list!=null&& list.size()>0){
+
+				return list;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
 }

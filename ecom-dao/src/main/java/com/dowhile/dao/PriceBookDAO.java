@@ -22,4 +22,5 @@ public interface PriceBookDAO {
 	List<PriceBook> getAllInActivePriceBooksByCompanyId(int companyId);
 	List<PriceBook> getAllValidPriceBooks(int companyId, int outletId, int contactgroupId);
 	List<PriceBook> getPriceBooksByDateRangeCompanyIdOutletIdGroupId(Date validFrom,Date validTo,int companyId,int outletId,int contactgroupId);
+	List<PriceBook> getActivePriceBooksByDateRangeCompanyId(Date validFrom,Date validTo,int companyId);
 }

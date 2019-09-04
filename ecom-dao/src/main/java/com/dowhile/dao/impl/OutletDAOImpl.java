@@ -133,5 +133,23 @@ public class OutletDAOImpl implements OutletDAO{
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Outlet> getAllActiveOutletsByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			List<Outlet> list = getSessionFactory().getCurrentSession()
+			.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ? AND ACTIVE_INDICATOR = 1")
+			.setParameter(0, companyId).list();
+			if(list!=null&& list.size()>0){
+
+				return list;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
 
 }

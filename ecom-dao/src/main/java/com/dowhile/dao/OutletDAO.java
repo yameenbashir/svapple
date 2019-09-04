@@ -18,5 +18,6 @@ public interface OutletDAO {
 	public List<Outlet> getOutlets( int companyId);
 	Outlet getOuletByOutletId(int outletId, int companyId);
 	Outlet getHeadOfficeOutlet(int companyId);
+	List<Outlet> getAllActiveOutletsByCompanyId( int companyId);
 
 }

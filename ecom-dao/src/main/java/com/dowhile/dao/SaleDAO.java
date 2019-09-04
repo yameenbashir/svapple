@@ -26,14 +26,14 @@ public interface SaleDAO  {
 	InvoiceDetail getInvoiceDetailByDetailID(int invoiceDetail_ID,int companyId);
 	InvoiceDetail getInvoiceDetailByMainID(int invoiceMain_ID,int companyId);
 	List<InvoiceDetail> addInvoiceDetails(List<InvoiceDetail> invoiceDetail,int companyId);
-	List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId, int limit, String invoiceRefNum, String status, Date fromDate, Date toDate  );
+	List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId, int limit, String invoiceRefNum, String status, Date fromDate, Date toDate,Integer customerId  );
 	Map<Integer, List<InvoiceDetailCustom>> getAllInvoicesDetailsByInvoiceIdRange(int outletId, int CopmayId, int fromInvoiceId, int toInvoiceId);
 	List<InvoiceDetail> getAllInvoicesDeailById(int outletId, int CopmayId, int invoiceMainId);
 	InvoiceMain updateInvoice(InvoiceMain invoice,int companyId);
 
 	InvoiceDetail updateInvoiceDetailByDetailID(InvoiceDetail paramInvoiceDetl);
 
-	double getTodaysRevenue(int outletId, int companyId);
+	double getTodaysRevenue(int outletId, int companyId,int dailyRegisterId);
 	@SuppressWarnings("rawtypes")
 	List getGrossProfit(int outletId, int copmayId, Date startDate, Date endDate) ;
 	@SuppressWarnings("rawtypes")

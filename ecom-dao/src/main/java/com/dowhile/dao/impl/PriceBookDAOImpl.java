@@ -193,4 +193,30 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PriceBook> getActivePriceBooksByDateRangeCompanyId(
+			Date validFrom, Date validTo, int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			List<PriceBook> list = getSessionFactory().getCurrentSession()
+			.createQuery("from PriceBook where COMPANY_ASSOCIATION_ID = ? "
+					+ "AND (VALID_FROM BETWEEN ? AND  ? OR VALID_TO BETWEEN ? AND ?) AND ACTIVE_INDICATOR = 1")
+					.setParameter(0, companyId)
+					
+					.setParameter(1, validFrom)
+					.setParameter(2, validTo)
+					.setParameter(3, validFrom)
+					.setParameter(4, validTo)
+					.list();
+			
+			if(list!=null&& list.size()>0){
+				return list;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
 }

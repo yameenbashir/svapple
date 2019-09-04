@@ -22,6 +22,7 @@ public interface ResourceDAO {
 	int getCountOfWorkersByCompanyId(int companyId);
 	List<User> getAllEmployeesByManagerId(int userId,int companyId);
 	List<User> getAllUsers(int companyId);
+	List<User> getAllUsersByCompanyIdOutletId(int companyId,int outletId);
 	
 	
 }

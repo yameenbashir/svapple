@@ -10,6 +10,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
 import com.dowhile.CompositeProduct;
+import com.dowhile.CompositeProductHistory;
+import com.dowhile.Product;
 import com.dowhile.ProductHistory;
 import com.dowhile.ProductVariant;
 import com.dowhile.constant.Actions;
@@ -114,7 +116,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 			productHistory.setUser(compositeProduct.getUserByCreatedBy());
 			productHistory.setProductHistoryUuid(compositeProduct.getCompositeProductUuid());
 			productHistory.setCompany(compositeProduct.getCompany());
-			getSessionFactory().getCurrentSession().save(productHistory);
+			//getSessionFactory().getCurrentSession().save(productHistory);
 			return true;
 
 		}catch(HibernateException ex){
@@ -162,7 +164,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 	}
 
 	@Override
-	public List<CompositeProduct> getAllCompositeProductsByProductIdOultetId(
+	public List<CompositeProduct> getAllCompositeProductsByProductIdOultetIdCompanyId(
 			int productId,int outletId,int companyId) {
 		// TODO Auto-generated method stub
 		try{
@@ -258,6 +260,48 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 			ex.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public boolean addCompositeProductList(
+			List<CompositeProduct> compositeProductList) {
+		// TODO Auto-generated method stub
+		try{
+			for(CompositeProduct compositeProduct: compositeProductList){
+				getSessionFactory().getCurrentSession().save(compositeProduct);	
+				/*CompositeProductHistory compositeProductHistory = new CompositeProductHistory();
+				if(compositeProduct.getCompositeQuantity()==0){
+					compositeProductHistory.setActionType(Actions.CREATE.getActionName());
+				}else {
+					compositeProductHistory.setActionType(Actions.INVENTORY_SUBTRACT.getActionName());
+				}
+				compositeProductHistory.setActiveIndicator(true);
+				compositeProductHistory.setCompany(compositeProduct.getCompany());
+				compositeProductHistory.setCompositeProduct(compositeProduct);
+				compositeProductHistory.setCompositeProductUuid(compositeProduct.getCompositeProductUuid());
+				compositeProductHistory.setUnitQuantity(compositeProduct.getUnitQuantity());
+				compositeProductHistory.setCompositeQuantity(compositeProduct.getCompositeQuantity());
+				compositeProductHistory.setCreatedDate(new Date());
+				compositeProductHistory.setLastUpdated(new Date());
+				compositeProductHistory.setOutlet(compositeProduct.getOutlet());
+				compositeProductHistory.setProductByProductAssocicationId(compositeProduct.getProductByProductAssocicationId());
+				compositeProductHistory.setProductBySelectiveProductAssociationId(compositeProduct.getProductBySelectiveProductAssociationId());
+				compositeProductHistory.setProductUuid(compositeProduct.getProductUuid());
+				if(compositeProduct.getProductVariant()!=null){
+					compositeProductHistory.setProductVariant(compositeProduct.getProductVariant());
+				}
+				compositeProductHistory.setUserByCreatedBy(compositeProduct.getUserByCreatedBy());
+				compositeProductHistory.setUserByUpdatedBy(compositeProduct.getUserByUpdatedBy());
+				
+				
+				getSessionFactory().getCurrentSession().save(compositeProductHistory);*/
+			}
+			return true;
+		}
+		catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return false;
 	}
 
 }

@@ -79,14 +79,18 @@ public class RegisterDAOImpl implements RegisterDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Register> getRegistersByOutletId(int outletId, int companyId) {
+	public List<Register> getRegistersByOutletId(int outletId, int companyId,int userId) {
 		// TODO Auto-generated method stub
 
 		try{
 			List<Register> list = getSessionFactory().getCurrentSession()
-					.createQuery("from Register where OUTLET_ASSOCICATION_ID =? AND COMPANY_ASSOCIATION_ID = ?")
+					.createQuery("from Register where OUTLET_ASSOCICATION_ID =? AND COMPANY_ASSOCIATION_ID = ? ")
 					.setParameter(0, outletId)
-					.setParameter(1, companyId).list();
+					.setParameter(1, companyId)
+					//.setParameter(2, userId)
+					.list();
+			//.setParameter(2, userId)
+			//from Register where OUTLET_ASSOCICATION_ID =? AND COMPANY_ASSOCIATION_ID = ? AND CREATED_BY = ?
 			if(list!=null&& list.size()>0){
 
 				return list;

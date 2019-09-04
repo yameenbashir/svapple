@@ -69,13 +69,14 @@ public class DailyRegisterDAOImpl implements DailyRegisterDAO{
 
 
 	@Override
-	public DailyRegister getOpenDailyRegister(int companyId, int OutletId) {
+	public DailyRegister getOpenDailyRegister(int companyId, int OutletId,int userId) {
 		try{
 			@SuppressWarnings("unchecked")
 			List<DailyRegister> list = getSessionFactory().getCurrentSession()
-			.createQuery("from DailyRegister where STATUS_ASSOCICATION_ID = 7  AND COMPANY_ASSOCIATION_ID = ? AND OUTLET_ASSOCICATION_ID = ?")
+			.createQuery("from DailyRegister where STATUS_ASSOCICATION_ID = 7  AND COMPANY_ASSOCIATION_ID = ? AND OUTLET_ASSOCICATION_ID = ? AND CREATED_BY = ? ")
 			.setParameter(0, companyId).
-			setParameter(1, OutletId).list();
+			setParameter(1, OutletId).
+			setParameter(2, userId).list();
 			if(list!=null&& list.size()>0){
 
 				return list.get(0);

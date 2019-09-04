@@ -227,6 +227,22 @@ public class ResourceDAOImpl implements ResourceDAO{
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getAllUsersByCompanyIdOutletId(int companyId, int outletId) {
+		// TODO Auto-generated method stub
+		try{
+			return getSessionFactory().getCurrentSession()
+					.createQuery("from User where COMPANY_ASSOCIATION_ID=? AND OUTLET_ASSOCICATION_ID=?")
+					.setParameter(0, companyId)
+					.setParameter(1, outletId)
+					.list();
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
 	
 
 }

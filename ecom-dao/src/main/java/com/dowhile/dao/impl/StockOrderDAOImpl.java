@@ -157,6 +157,30 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<StockOrder> getStockOrderByOutletIdNotComp(int outletID,int companyId) {
+		// TODO Auto-generated method stub
+		List<StockOrder> list = new ArrayList<>(); 
+		try{
+			list = getSessionFactory().getCurrentSession()
+					.createQuery("from StockOrder where (OUTLET_ASSOCICATION_ID =? OR SOURCE_OUTLET_ASSOCICATION_ID = ?)AND COMPANY_ASSOCIATION_ID=? AND STATUS_ASSOCICATION_ID not in (3,8,10) ORDER BY STOCK_ORDER_ID DESC")
+			.setParameter(0, outletID)
+			.setParameter(1, outletID)
+			.setParameter(2, companyId).list();
+			if (list != null && list.size() > 0) {
+
+				return list;
+			}
+
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+
+
+		return list;
+	}	
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<StockOrder> getStockOrderCompletedByOutletId(int outletID,int companyId) {
 		// TODO Auto-generated method stub
 		List<StockOrder> listStockTransfer = new ArrayList<>();
