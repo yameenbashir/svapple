@@ -34,7 +34,7 @@
 
 
 								<span
-									ng-bind="'Sales with errors - '+(invoiceMainBeanList.length)+' of your sales couldnot be saved to our servers.'">
+									ng-bind="'Sales with errors - '+(invoiceMainBeanStatusList.length)+' of your sales couldnot be saved to our servers.'">
 								</span>
 
 							</div>
@@ -46,7 +46,7 @@
 						<div class="box box-primary newFont">
 							<div class="box-header">
 								<div class="top-buffer-contact"></div>
-								<span ng-if="invoiceMainBeanList.length>0">We've had a
+								<span ng-if="invoiceMainBeanStatusList.length>0">We've had a
 									problem trying to save your sales to our servers. Don't worry,
 									these sales have been saved in your browser. It's important not
 									to clear your browser cache or reset data, as your sales will
@@ -69,7 +69,7 @@
 										</div>
 
 										<div class="row invoice-item" ng-animate="'slide-down'"
-											ng-repeat="invoiceMain in invoiceMainBeanList">
+											ng-repeat="invoiceMain in invoiceMainBeanStatusList">
 											<div class="col-xs-2 remove-item-container">
 												<span ng-bind="invoiceMain.invoiceGenerationDte"></span>
 											</div>
@@ -121,7 +121,7 @@
 	<div class="row footer-row">
 		<div class="col-lg-12 text-center">
 			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
-				ShopVitals 2018</div>
+				ShopVitals 2019</div>
 		</div>
 	</div>
 </div>

@@ -129,8 +129,10 @@ public class ManageProductController {
 	private Configuration configurationReturnStock;
 	private List<StockOrderDetailBean> stockOrderDetialBeansList;
 	private Double grandTotal;
+	private Double itemCount;
 	private List<StockOrderDetailBean> stockReturnDetialBeansList;
 	private Double grandTotalReturn;
+	private Double itemCountReturn;
 	private int headOfficeId;
 	//finish
 
@@ -155,8 +157,10 @@ public class ManageProductController {
 				//added by Zafar for autoStockOrder
 				stockOrderDetialBeansList = new ArrayList<>();
 				grandTotal = 0.0;
+				itemCount = 0.0;
 				stockReturnDetialBeansList = new ArrayList<>();
 				grandTotalReturn = 0.0;
+				itemCountReturn = 0.0;
 				headOfficeId = 0;			
 				configurationStockOrder = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_ORDER_NEW_PRODUCT",currentUser.getCompany().getCompanyId());
 				configurationReturnStock = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_RETURN_MANAGE_PRODUCT",currentUser.getCompany().getCompanyId());
@@ -296,6 +300,51 @@ public class ManageProductController {
 						if(productBean.getImageData()!=null){
 							processImage(productBean.getImageData(), product, request);
 						}
+						
+						if(productBean.getProductVariantValuesCollectionOne()!=null){
+							String attribut1 = "";
+							for(VarientAttributeValueBean attributeValue : productBean.getProductVariantValuesCollectionOne()){
+								VariantAttributeValues variantAttributeValues = new VariantAttributeValues();
+								variantAttributeValues.setAttributeValue(attributeValue.getValue());
+								if(attribut1.equalsIgnoreCase("")){
+									attribut1= attributeValue.getValue();
+								}else{
+									attribut1 =attribut1+","+attributeValue.getValue();
+								}
+								
+							}
+							product.setAttribute1(attribut1);
+						}
+						if(productBean.getProductVariantValuesCollectionTwo()!=null){
+							String attribut2 = "";
+							for(VarientAttributeValueBean attributeValue : productBean.getProductVariantValuesCollectionTwo()){
+								VariantAttributeValues variantAttributeValues = new VariantAttributeValues();
+								variantAttributeValues.setAttributeValue(attributeValue.getValue());
+								if(attribut2.equalsIgnoreCase("")){
+									attribut2= attributeValue.getValue();
+								}else{
+									attribut2 =attribut2+","+attributeValue.getValue();
+								}
+								
+							}
+							product.setAttribute2(attribut2);
+						}
+						if(productBean.getProductVariantValuesCollectionThree()!=null){
+							String attribut3 = "";
+							for(VarientAttributeValueBean attributeValue : productBean.getProductVariantValuesCollectionThree()){
+								VariantAttributeValues variantAttributeValues = new VariantAttributeValues();
+								variantAttributeValues.setAttributeValue(attributeValue.getValue());
+								if(attribut3.equalsIgnoreCase("")){
+									attribut3= attributeValue.getValue();
+								}else{
+									attribut3 =attribut3+","+attributeValue.getValue();
+								}
+								
+							}
+							product.setAttribute3(attribut3);
+						}
+						
+						
 						if(productBean.getVarientProducts().equalsIgnoreCase("false")){
 							if(productBean.getCurrentInventory() !=null){
 								if(productBean.getOldInventory() != null){
@@ -309,6 +358,7 @@ public class ManageProductController {
 												stockOrderDetailBean.setOrderProdQty(String.valueOf(quantity));
 												stockOrderDetailBean.setOrdrSupplyPrice(String.valueOf(productBean.getSupplyPriceExclTax()));
 												grandTotal = grandTotal + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice()));					
+												itemCount = itemCount + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 												stockOrderDetailBean.setIsProduct("true");
 												stockOrderDetialBeansList.add(stockOrderDetailBean);
 												product.setCurrentInventory(Integer.parseInt(productBean.getOldInventory())); //quantity will be added by StockOrder
@@ -332,6 +382,7 @@ public class ManageProductController {
 												stockOrderDetailBean.setOrderProdQty(String.valueOf(quantity));
 												stockOrderDetailBean.setOrdrSupplyPrice(String.valueOf(productBean.getSupplyPriceExclTax()));
 												grandTotalReturn = grandTotalReturn + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice()));					
+												itemCountReturn = itemCountReturn + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 												stockOrderDetailBean.setIsProduct("true");
 												stockReturnDetialBeansList.add(stockOrderDetailBean);
 												product.setCurrentInventory(Integer.parseInt(productBean.getOldInventory())); //quantity will be subtracted by StockReturn
@@ -433,6 +484,7 @@ public class ManageProductController {
 																stockOrderDetailBean.setOrderProdQty(varientValueBean.getVarientsOutletList().get(0).getCurrentInventory());
 																stockOrderDetailBean.setOrdrSupplyPrice(varientValueBean.getVarientsOutletList().get(0).getSupplyPriceExclTax());
 																grandTotal = grandTotal + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice())); 
+																itemCount = itemCount + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 																stockOrderDetailBean.setIsProduct("false");
 																stockOrderDetialBeansList.add(stockOrderDetailBean);
 															}
@@ -497,6 +549,7 @@ public class ManageProductController {
 													stockOrderDetailBean.setOrderProdQty(String.valueOf(quantity));
 													stockOrderDetailBean.setOrdrSupplyPrice(String.valueOf(productVariantBean.getSupplyPriceExclTax()));
 													grandTotal = grandTotal + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice()));					
+													itemCount = itemCount + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 													stockOrderDetailBean.setIsProduct("false");
 													stockOrderDetialBeansList.add(stockOrderDetailBean);
 													productVariant.setCurrentInventory(Integer.parseInt(productVariantBean.getOldInventory())); //quantity will be added by StockOrder
@@ -522,6 +575,7 @@ public class ManageProductController {
 													stockOrderDetailBean.setOrderProdQty(String.valueOf(quantity));
 													stockOrderDetailBean.setOrdrSupplyPrice(String.valueOf(productVariantBean.getSupplyPriceExclTax()));
 													grandTotalReturn = grandTotalReturn + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice()));					
+													itemCountReturn = itemCountReturn + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 													stockOrderDetailBean.setIsProduct("false");
 													stockReturnDetialBeansList.add(stockOrderDetailBean);
 													productVariant.setCurrentInventory(Integer.parseInt(productVariantBean.getOldInventory())); //quantity will be subtracted by StockReturn
@@ -553,13 +607,13 @@ public class ManageProductController {
 						StockOrderBean stockOrderBean = new StockOrderBean();
 						stockOrderBean.setOutlet(String.valueOf(headOfficeId));
 						stockOrderBean.setSupplierId(productBean.getSupplierId());
-						AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, request);
+						AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, request);
 					}
 					if(stockReturnDetialBeansList!=null && stockReturnDetialBeansList.size()>0){
 						StockOrderBean stockOrderBean = new StockOrderBean();
 						stockOrderBean.setOutlet(String.valueOf(headOfficeId));
 						stockOrderBean.setSupplierId(productBean.getSupplierId());
-						AddStockReturn(sessionId, stockOrderBean, stockReturnDetialBeansList, grandTotalReturn, request);
+						AddStockReturn(sessionId, stockOrderBean, stockReturnDetialBeansList, grandTotalReturn, itemCountReturn, request);
 					}
 					util.AuditTrail(request, currentUser, "ManageProductController.updateProduct", 
 							"User "+ currentUser.getUserEmail()+"Product updated +"+productBean.getProductName()+" successfully ",false);
@@ -726,6 +780,7 @@ public class ManageProductController {
 			User currentUser = (User) session.getAttribute("user");
 			stockReturnDetialBeansList = new ArrayList<>();
 			grandTotalReturn = 0.0;
+			itemCountReturn = 0.0;
 			configurationReturnStock = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_RETURN_MANAGE_PRODUCT",currentUser.getCompany().getCompanyId());
 
 			try{
@@ -743,6 +798,7 @@ public class ManageProductController {
 						stockOrderDetailBean.setOrderProdQty(String.valueOf(quantity));
 						stockOrderDetailBean.setOrdrSupplyPrice(String.valueOf(productVariant.getSupplyPriceExclTax()));
 						grandTotalReturn = grandTotalReturn + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice()));					
+						itemCountReturn = itemCountReturn + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 						stockOrderDetailBean.setIsProduct("false");
 						stockReturnDetialBeansList.add(stockOrderDetailBean);
 					}
@@ -751,9 +807,10 @@ public class ManageProductController {
 					StockOrderBean stockOrderBean = new StockOrderBean();
 					stockOrderBean.setOutlet(String.valueOf(productVariant.getOutlet().getOutletId()));
 					stockOrderBean.setSupplierId(String.valueOf(product.getContact().getContactId()));
-					AddStockReturn(sessionId, stockOrderBean, stockReturnDetialBeansList, grandTotalReturn, request);
+					AddStockReturn(sessionId, stockOrderBean, stockReturnDetialBeansList, grandTotalReturn, itemCountReturn, request);
 					stockReturnDetialBeansList = new ArrayList<>();
 					grandTotalReturn = 0.0;
+					itemCountReturn = 0.0;
 				}
 
 				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveProductVariant", 
@@ -864,7 +921,7 @@ public class ManageProductController {
 
 
 	@SuppressWarnings("rawtypes")
-	private boolean AddStockOrder(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, HttpServletRequest request)
+	private boolean AddStockOrder(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, Double itemCount, HttpServletRequest request)
 	{
 		boolean added = false;
 		if(stockOrderDetailBeanList.size() > 0){				
@@ -902,7 +959,8 @@ public class ManageProductController {
 			}
 			//PurchaseOrderDetailsController purchaseOrderDetailsController = new PurchaseOrderDetailsController();
 			String total = grandTotal.toString();
-			purchaseOrderDetailsController.updateAndReceiveStockOrderDetails(sessionId, total, stockOrderDetailBeanList, request);
+			String items = itemCount.toString();
+			purchaseOrderDetailsController.updateAndReceiveStockOrderDetails(sessionId, total, items, stockOrderDetailBeanList, request);
 			//StockOrderDetail Finish
 			added = true;
 		}
@@ -911,7 +969,7 @@ public class ManageProductController {
 
 
 	@SuppressWarnings("rawtypes")
-	private boolean AddStockReturn(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, HttpServletRequest request)
+	private boolean AddStockReturn(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, Double itemCount, HttpServletRequest request)
 	{
 		boolean added = false;
 		if(stockOrderDetailBeanList.size() > 0){				
@@ -950,7 +1008,8 @@ public class ManageProductController {
 			}
 			//PurchaseOrderDetailsController purchaseOrderDetailsController = new PurchaseOrderDetailsController();
 			String total = grandTotal.toString();
-			purchaseOrderDetailsController.updateAndReturnStockOrderDetails(sessionId, total, stockOrderDetailBeanList, request);
+			String items = itemCount.toString();
+			purchaseOrderDetailsController.updateAndReturnStockOrderDetails(sessionId, total, items, stockOrderDetailBeanList, request);
 			//StockOrderDetail Finish
 			added = true;
 		}

@@ -169,33 +169,34 @@ App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeo
 	$rootScope.synchsales = function() {
 		$rootScope.successSynchsales = false;
 		$rootScope.errorSynchsales = false;
-		$rootScope.loadingSynchsales = true;
+		
 
-		localforage.getItem('InvoiceMainBeanList').then(function(value) {
+		localforage.getItem('invoiceMainBeanNewList').then(function(value) {
 			// This code runs once the value has been loaded
 			// from the offline store.
 
 			if(value!=null && $cookieStore.get('_s_tk_com')!=null && typeof $cookieStore.get('_s_tk_com') != 'undefined'){
-				$rootScope.InvoiceMainBeanList = value;
-
-				$http.post('sell/synchsales/' + $cookieStore.get('_s_tk_com'),$rootScope.InvoiceMainBeanList).success(function(Response) {
+				$rootScope.invoiceMainBeanNewRootList = value;
+				$rootScope.loadingSynchsales = true;
+				$http.post('sell/synchsales/' + $cookieStore.get('_s_tk_com'),$rootScope.invoiceMainBeanNewRootList).success(function(Response) {
 
 					if (Response.status == 'SUCCESSFUL') {
 
-						if($rootScope.InvoiceMainBeanList != null)
+						if($rootScope.invoiceMainBeanNewRootList != null)
 						{
 
-							$rootScope.InvoiceMainBeanList = _.filter($rootScope.InvoiceMainBeanList, function(val) {
+							/*$rootScope.invoiceMainBeanNewRootList = _.filter($rootScope.invoiceMainBeanNewRootList, function(val) {
 								return val.synchedInd == 'true'
 
-							});
+							});*/
 
 							//updating the sale data in index DB
-							localforage.setItem('InvoiceMainBeanList', $rootScope.InvoiceMainBeanList);
+							localforage.setItem('invoiceMainBeanNewList', null);
+							localforage.setItem('InvoiceMainBeanList', null);
 						}
 
 						$rootScope.successSynchsales = true;
-						$rootScope.successMessageSynchsales = Response.data;
+						$rootScope.successMessageSynchsales = 'Request Processed successfully.';
 						$rootScope.loadingSynchsales = false;
 						$timeout(function() {
 							$rootScope.successSynchsales = false;
@@ -273,7 +274,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 	$routeProvider.when('/home', {
 		templateUrl: 'resources/html/home/layout.html',
-		controller: HomeController,
+		controller:HomeController,
 		resolve: {
 			"HomeControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
 				var myDefer = $q.defer();
@@ -782,7 +783,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["printLabels"]==true){
 					$rootScope.roleDetailsLoadedFully = true;
-					controllerData = $http.get('sell/getAllProductsOnly/'+$cookieStore.get('_s_tk_com')).success(function(Response) {
+					controllerData = $http.get('sell/getAllProductsPrintLableOnly/'+$cookieStore.get('_s_tk_com')).success(function(Response) {
 						controllerData = Response;
 						$timeout(function(){
 							myDefer.resolve({
@@ -937,6 +938,55 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 
 	}); 
+	
+	$routeProvider.when('/downloadProducts', {
+		templateUrl: 'resources/html/downloadProducts/layout.html',
+		controller: DownloadProductsController,
+
+		resolve: {
+			"DownloadProductsControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["products"]==true){
+					$timeout(function(){
+						myDefer.resolve({
+							loadControllerData: function() {
+								return 	controllerData;  
+							}
+						});
+					},10);
+//					controllerData = $http.post('products/getAllProducts/'+$cookieStore.get('_s_tk_com')).success(function(Response) {
+//						controllerData = Response.data;
+//						$timeout(function(){
+//							myDefer.resolve({
+//								loadControllerData: function() {
+//									return 	controllerData;  
+//								}
+//							});
+//						},10);
+//					}).error(function() {
+//						$window.location = '/app/#/login';
+//					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    		    					
+				}
+				return myDefer.promise;
+			}
+		}
+
+	}); 
 
 	$routeProvider.when('/manageProduct', {
 		templateUrl: 'resources/html/manageProduct/layout.html',
@@ -981,6 +1031,51 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 
 	}); 
+	
+	$routeProvider.when('/manageCompositeProduct', {
+		templateUrl: 'resources/html/manageCompositeProduct/layout.html',
+		controller: ManageCompositeProductController,
+
+		resolve: {
+			"ManageCompositeProductControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["manageCompositeProduct"]==true){
+					$rootScope.manageProductLoadedFully = true;
+
+					controllerData = $http.post('newCompositeProduct/getNewCompositeProductControllerData/'+$cookieStore.get('_s_tk_com')+'/'+$cookieStore.get('_e_cPi_gra')+'/'+$cookieStore.get('_e_cOi_gra')).success(function(Response) {
+						controllerData = Response.data;
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    	 					
+				}
+				return myDefer.promise;
+			}
+		}
+
+	}); 
+
 
 	$routeProvider.when('/stockControl', {
 		templateUrl: 'resources/html/stockControl/layout.html',
@@ -993,7 +1088,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["stockControl"]==true){
 					$rootScope.stockControlLoadedFully = true;
-					controllerData = $http.post('stockControl/getAllStockOrders/'+$cookieStore.get('_s_tk_com')).success(function(Response) {
+					controllerData = $http.post('stockControl/getAllStockOrders/'+$cookieStore.get('_s_tk_com')+'/'+"false").success(function(Response) {
 						controllerData = Response.data;
 						$timeout(function(){
 							myDefer.resolve({
@@ -1523,6 +1618,49 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 			}
 		}
 	}); 
+	
+	$routeProvider.when('/newCompositeProduct', {
+		templateUrl: 'resources/html/newCompositeProduct/layout.html',
+		controller: NewCompositeProductController,
+		resolve: {
+			"NewCompositeProductControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var productId = "DEFAULT";//Handle edit product scenario, because in case of edit we are sending productId for same method
+				var myDefer = $q.defer();
+				var controllerData ='';
+				var success =false;
+				$rootScope.globalPageLoader = true;
+				$rootScope.newProductLoadedFully = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["newCompositeProduct"]==true){
+					controllerData = $http.post('newCompositeProduct/getNewCompositeProductControllerData/'+$cookieStore.get('_s_tk_com')+'/'+productId+'/'+productId).success(function(Response) {
+						controllerData = Response.data;
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    	  					
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
 
 	$routeProvider.when('/productDetails', {
 		templateUrl: 'resources/html/productDetails/layout.html',
@@ -1995,7 +2133,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 				if($rootScope.limit === undefined)
 				{$rootScope.limit = 10;}
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesHistory"]==true){
-					controllerData = $http.get('salesHistory/getData/'+$cookieStore.get('_s_tk_com') + '/' + $rootScope.limit).success(function(Response) {
+					controllerData = $http.get('salesHistory/getData/'+$cookieStore.get('_s_tk_com') + '/' + $rootScope.limit+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate+'/'+$rootScope.applyDateRange).success(function(Response) {
 						controllerData = Response;
 						//$rootScope.InvoiceMainBeansBindedCopy = controllerData;
 						localStorage.setItem("salesHistory", JSON.stringify(controllerData));
@@ -2263,6 +2401,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 					$rootScope.customerGroupLoadedFully = true;
 					controllerData = $http.post('customerDetails/loadCustomerDetails/'+$cookieStore.get('_s_tk_com')+'/'+$cookieStore.get('_cD_cDt_gra')).success(function(Response) {
 						controllerData = Response.data;
+						localStorage.setItem("salesHistory", JSON.stringify(controllerData.salesHistory));
 						$timeout(function(){
 							myDefer.resolve({
 								loadControllerData: function() {
@@ -2379,12 +2518,13 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["status"]==true){
 
+					
 					localforage.getItem('InvoiceMainBeanList').then(function(value) {
-						$rootScope.InvoiceMainBeanList = value;
+						$rootScope.invoiceMainBeanStatusList = value;
 						$timeout(function(){
 							myDefer.resolve({
 								loadControllerData: function() {
-									controllerData = $rootScope.InvoiceMainBeanList;
+									controllerData = $rootScope.invoiceMainBeanStatusList;
 									return 	controllerData;  
 								}
 							});
@@ -3894,6 +4034,94 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	}); 
 	
+	$routeProvider.when('/creditCardSalesReport', {
+		templateUrl: 'resources/html/creditCardSalesReport/layout.html',
+		controller: CreditCardSalesReportController,
+		resolve: {
+			"CreditCardSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('creditCardSalesReport/getCreditCardSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
+	$routeProvider.when('/cashSalesReport', {
+		templateUrl: 'resources/html/cashSalesReport/layout.html',
+		controller: CashSalesReportController,
+		resolve: {
+			"CashSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('cashSalesReport/getCashSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/outletSalesReport', {
 		templateUrl: 'resources/html/outletSalesReport/layout.html',
 		controller: OutletSalesReportController,
@@ -5059,6 +5287,10 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 	$routeProvider.when('/backup', {
 		templateUrl: 'resources/html/backup/layout.html',
 		controller: BackupController
+	});
+	$routeProvider.when('/undefined', {
+		templateUrl: 'resources/html/login/layout.html',
+		controller: LoginController
 	});
 	$routeProvider.otherwise({redirectTo: '/home'});
 

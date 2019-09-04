@@ -21,12 +21,8 @@ var StockSupplierTransferActionsController = ['$scope', '$http', '$window', '$ti
 			$scope.userOutletId = $cookieStore.get('_s_tk_oId');
 			$scope.headOffice = $cookieStore.get('_s_tk_iho');
 			$scope.stockOrderBean = $cookieStore.get('_ct_bl_ost');
-			if($scope.stockOrderBean.retailPriceBill == "true"){
-				$scope.stockOrderBean.retailPriceBill = true;
-			}
-			else{
-				$scope.stockOrderBean.retailPriceBill = false;
-			}
+			
+			$scope.stockOrderBean.retailPriceBill = true;
 			$scope.isAdmin();
 			$scope.data = StockSupplierTransferActionsControllerPreLoad.loadControllerData();
 			$scope.fetchData();
@@ -109,8 +105,8 @@ var StockSupplierTransferActionsController = ['$scope', '$http', '$window', '$ti
 					+'</div>'
 					+'<div class="row">'
 					+'<div class="col-md-2"></div> '
-					+'<div class="col-md-2"><h4><label> Address: </label> </h4></div>'
-					+'<div class="col-md-2"><h4>'+$scope.stockOrderBean.outletAddress+' </h4></div> '
+					+'<div class="col-md-2"><h4><label> Remarks: </label> </h4></div>'
+					+'<div class="col-md-2"><h4>'+$scope.stockOrderBean.remarks+' </h4></div> '
 					+'<div class="col-md-6"></div> '
 					+'</div> <div>';
 				setTimeout(
@@ -265,6 +261,7 @@ var StockSupplierTransferActionsController = ['$scope', '$http', '$window', '$ti
 		$scope.error = false;
 		$scope.loading = true;
 		$scope.stockOrderBean.statusId = "8"; // Closed Status
+		$scope.stockOrderBean.diliveryDueDate = new Date($scope.stockOrderBean.diliveryDueDate);
 		$http.post('purchaseOrder/updateStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
 		.success(function(Response) {
 			$scope.loading = false;

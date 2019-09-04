@@ -131,6 +131,8 @@ public class ProductsController {
 						productBean.setImagePath(productSummmary.getId().getImagePath());
 						productBean.setNetPrice(String.valueOf(productSummmary.getId().getNetPrice().setScale(2, RoundingMode.HALF_EVEN)));
 						productBean.setVarinatsCount(String.valueOf(productSummmary.getId().getVariantCount()));
+						productBean.setIsComposite(productSummmary.getId().getIsComposite());
+						
 						if(productSummmary.getId().getVariantProducts().equalsIgnoreCase(ControllersConstants.TRUE) && productSummmary.getId().getStandardProduct().equalsIgnoreCase(ControllersConstants.TRUE)){
 							productBean.setInventoryCount(String.valueOf(productSummmary.getId().getVariantInventoryCount()));
 						}

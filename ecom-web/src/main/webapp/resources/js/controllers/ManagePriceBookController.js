@@ -477,7 +477,7 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 			}
 		}else{
 			$scope.loading = true;
-			$http.post('managePriceBook/markInActiveProductOrVariantInPriceBookDetail/'+$scope._s_tk_com, $scope.deleteProdcut)
+			$http.post('managePriceBook/deleteProductOrVariantInPriceBookDetail/'+$scope._s_tk_com, $scope.deleteProdcut)
 			.success(function(Response) {
 				$scope.loading = false;
 				$scope.responseStatus = Response.status;
@@ -546,6 +546,7 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 					result = result-result*(discount/100);
 				}
 				$scope.productList[i].retailPrice = (result.toFixed(2)).toString();
+				$scope.productList[i].indivisualUpdate = true;
 			}
 		}
 	};
@@ -561,6 +562,7 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 					var result = supplyPrice*(markUp/100)+supplyPrice;
 					result = result-result*(discount/100);
 					$scope.productList[i].retailPrice = (result.toFixed(2)).toString();
+					$scope.productList[i].indivisualUpdate = true;
 				}
 
 			}
@@ -581,6 +583,7 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 						$scope.productList[i].discount = discount;
 					}
 					$scope.productList[i].retailPrice = (result.toFixed(2)).toString();
+					$scope.productList[i].indivisualUpdate = true;
 				}
 				//return;
 			}
@@ -600,6 +603,7 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 						result = result-result*(discount/100);
 					}
 					$scope.productList[i].retailPrice = (result.toFixed(2)).toString();
+					//$scope.productList[i].indivisualUpdate = true;
 				}
 			
 		}
@@ -640,6 +644,8 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 			$scope.priceBookErrorMessage = $scope.systemBusy;
 		});
 	};
+	
+	
 	
 	
 	

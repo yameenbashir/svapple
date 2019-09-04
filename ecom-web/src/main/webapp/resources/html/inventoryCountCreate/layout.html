@@ -26,6 +26,8 @@
 								ng-bind="successMessage" ng-cloak></div>
 							<div class="alert alert-danger alert-sm" ng-show="error"
 								ng-bind="errorMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="warning"
+								bind-html-unsafe="warningMessage" ng-cloak></div>
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body no-padding">
@@ -108,7 +110,7 @@
 						<!-- /.box -->
 							<div class="box-footer text-right">
 								<button class="btn btn-primary btn  "
-									ng-click="addInventoryCount()" ng-disabled="!inventoryCountBean.inventoryCountRefNo || inventoryCountBean.outletId == -1 || inventoryCountBean.inventoryCountTypeId ==-1 || !inventoryCountBean.remarks"  ng-show="!loading">Save</button>
+									ng-click="addInventoryCount()" ng-disabled="warning ||!inventoryCountBean.inventoryCountRefNo || inventoryCountBean.outletId == -1 || inventoryCountBean.inventoryCountTypeId ==-1 || !inventoryCountBean.remarks"  ng-show="!loading">Save</button>
 								<button  ng-show="loading" class="btn btn-primary btn">
 							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
 				       	    </button>
@@ -130,7 +132,7 @@
  <div class="container">
 		<div class="row footer-row">
 			<div class="col-lg-12 text-center">
-				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2019</div>
 			</div>
 		</div>
 	</div>

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dowhile.Configuration;
 import com.dowhile.Contact;
 import com.dowhile.Outlet;
 import com.dowhile.Product;
@@ -35,6 +36,7 @@ import com.dowhile.StockOrderDetail;
 import com.dowhile.StockOrderType;
 import com.dowhile.User;
 import com.dowhile.constant.Actions;
+import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
@@ -47,6 +49,7 @@ import com.dowhile.frontend.mapping.bean.StockOrderBean;
 import com.dowhile.frontend.mapping.bean.StockOrderDetailBean;
 import com.dowhile.frontend.mapping.bean.StockOrderTypeBean;
 import com.dowhile.frontend.mapping.bean.SupplierBean;
+import com.dowhile.service.ConfigurationService;
 import com.dowhile.service.ContactService;
 import com.dowhile.service.OutletService;
 import com.dowhile.service.ProductService;
@@ -92,6 +95,13 @@ public class PurchaseOrderDetailsController {
 	@Resource
 	private ProductService productService;
 
+	@Resource
+	private ConfigurationService configurationService;
+	
+	
+	private Map productVariantMap = new HashMap<>();
+	private Map productMap = new HashMap<>();
+	
 	@RequestMapping("/layout")
 	public String getPurchaseOrderDetialsControllerPartialPage(ModelMap modelMap) {
 		return "purchaseOrderDetails/layout";
@@ -120,6 +130,8 @@ public class PurchaseOrderDetailsController {
 				PurchaseOrderControllerBean purchaseOrderControllerBean = new PurchaseOrderControllerBean();
 				purchaseOrderControllerBean.setProductBeansList(productBeansList);
 				purchaseOrderControllerBean.setProductVariantBeansList(productVariantBeansList);
+				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
+				purchaseOrderControllerBean.setProductMap(productMap);
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -170,6 +182,8 @@ public class PurchaseOrderDetailsController {
 				purchaseOrderControllerBean.setProductBeansList(productBeansList);
 				purchaseOrderControllerBean.setProductVariantBeansList(productVariantBeansList);
 				purchaseOrderControllerBean.setStockTransferOrderBeansList(stockTransferOrderBeansList);
+				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
+				purchaseOrderControllerBean.setProductMap(productMap);
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -214,6 +228,8 @@ public class PurchaseOrderDetailsController {
 				PurchaseOrderControllerBean purchaseOrderControllerBean = new PurchaseOrderControllerBean();
 				purchaseOrderControllerBean.setProductBeansList(productBeansList);
 				purchaseOrderControllerBean.setProductVariantBeansList(productVariantBeansList);
+				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
+				purchaseOrderControllerBean.setProductMap(productMap);
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -338,8 +354,10 @@ public class PurchaseOrderDetailsController {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/updateStockOrderDetail/{sessionId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateStockOrderDetail/{sessionId}/{itemCountTotal}/{itemCount}", method = RequestMethod.POST)
 	public @ResponseBody Response updateStockOrderDetail(@PathVariable("sessionId") String sessionId,
+			@PathVariable("itemCountTotal") String itemCountTotal,
+			@PathVariable("itemCount") String itemCount,
 			@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
@@ -491,6 +509,8 @@ public class PurchaseOrderDetailsController {
 					stockOrder.setStatus(statusService.getStatusByStatusId(2));  //in Progress status
 					stockOrder.setOrdrRecvDate(new Date());
 					stockOrder.setLastUpdated(new Date());
+					stockOrder.setTotalAmount(new BigDecimal(itemCountTotal));
+					stockOrder.setTotalItems(new BigDecimal(itemCount));					
 					stockOrder.setUpdatedBy(currentUser.getUserId());				
 					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
 					String layOutPath = LayOutPageConstants.STOCKCONTROL;
@@ -531,9 +551,10 @@ public class PurchaseOrderDetailsController {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/updateAndReceiveStockOrderDetails/{sessionId}/{grandTotal}", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateAndReceiveStockOrderDetails/{sessionId}/{grandTotal}/{recItemCount}", method = RequestMethod.POST)
 	public @ResponseBody Response updateAndReceiveStockOrderDetails(@PathVariable("sessionId") String sessionId,
 			@PathVariable("grandTotal") String grandTotal,
+			@PathVariable("recItemCount") String recItemCount,
 			@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
@@ -674,6 +695,9 @@ public class PurchaseOrderDetailsController {
 										newProduct.setUserByUpdatedBy(currentUser);
 										newProduct.setCompany(currentUser.getCompany());
 										newProduct.setContact(contact);
+										newProduct.setAttribute1(parentProduct.getAttribute1());
+										newProduct.setAttribute2(parentProduct.getAttribute2());
+										newProduct.setAttribute3(parentProduct.getAttribute3());
 										newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getRecvProdQty(),currentUser.getCompany());
 										outletProductList.add(newProduct);
 									}
@@ -724,6 +748,9 @@ public class PurchaseOrderDetailsController {
 									newProduct.setUserByUpdatedBy(currentUser);
 									newProduct.setCompany(currentUser.getCompany());
 									newProduct.setContact(contact);
+									newProduct.setAttribute1(product.getAttribute1());
+									newProduct.setAttribute2(product.getAttribute2());
+									newProduct.setAttribute3(product.getAttribute3());
 									newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getRecvProdQty(),currentUser.getCompany());
 									outletProductList.add(newProduct);
 									stockOrderDetail.setProduct(newProduct);
@@ -801,6 +828,9 @@ public class PurchaseOrderDetailsController {
 										newProduct.setUserByUpdatedBy(currentUser);
 										newProduct.setCompany(currentUser.getCompany());
 										newProduct.setContact(contact);
+										newProduct.setAttribute1(parentProduct.getAttribute1());
+										newProduct.setAttribute2(parentProduct.getAttribute2());
+										newProduct.setAttribute3(parentProduct.getAttribute3());
 										newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getRecvProdQty(),currentUser.getCompany());
 										outletProductList.add(newProduct);
 									}
@@ -851,6 +881,9 @@ public class PurchaseOrderDetailsController {
 									newProduct.setUserByUpdatedBy(currentUser);
 									newProduct.setCompany(currentUser.getCompany());
 									newProduct.setContact(contact);
+									newProduct.setAttribute1(product.getAttribute1());
+									newProduct.setAttribute2(product.getAttribute2());
+									newProduct.setAttribute3(product.getAttribute3());
 									newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getRecvProdQty(),currentUser.getCompany());
 									outletProductList.add(newProduct);
 									stockOrderDetail.setProduct(newProduct);
@@ -898,6 +931,8 @@ public class PurchaseOrderDetailsController {
 					stockOrder.setStatus(statusService.getStatusByStatusId(3));  //completed status
 					stockOrder.setOrdrRecvDate(new Date());
 					stockOrder.setLastUpdated(new Date());
+					stockOrder.setTotalAmount(new BigDecimal(grandTotal));
+					stockOrder.setTotalItems(new BigDecimal(recItemCount));
 					stockOrder.setUpdatedBy(currentUser.getUserId());				
 					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
@@ -933,9 +968,10 @@ public class PurchaseOrderDetailsController {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/updateAndReturnStockOrderDetails/{sessionId}/{grandTotal}", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateAndReturnStockOrderDetails/{sessionId}/{grandTotal}/{itemCount}", method = RequestMethod.POST)
 	public @ResponseBody Response updateAndReturnStockOrderDetails(@PathVariable("sessionId") String sessionId,
 			@PathVariable("grandTotal") String grandTotal,
+			@PathVariable("itemCount") String itemCount,
 			@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList, HttpServletRequest request){
 
 		if(SessionValidator.isSessionValid(sessionId, request)){
@@ -1118,6 +1154,8 @@ public class PurchaseOrderDetailsController {
 					}
 					//StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());				
 					stockOrder.setStatus(statusService.getStatusByStatusId(3)); //completed status
+					stockOrder.setTotalAmount(new BigDecimal(grandTotal));
+					stockOrder.setTotalItems(new BigDecimal(itemCount));
 					stockOrder.setOrdrRecvDate(new Date());
 					stockOrder.setLastUpdated(new Date());
 					stockOrder.setUpdatedBy(currentUser.getUserId());
@@ -1155,9 +1193,10 @@ public class PurchaseOrderDetailsController {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/updateAndTransferStockOrderDetails/{sessionId}/{grandTotal}", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateAndTransferStockOrderDetails/{sessionId}/{grandTotal}/{itemCount}", method = RequestMethod.POST)
 	public @ResponseBody Response updateAndTransferStockOrderDetails(@PathVariable("sessionId") String sessionId,
 			@PathVariable("grandTotal") String grandTotal,
+			@PathVariable("itemCount") String itemCount,
 			@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
@@ -1331,6 +1370,9 @@ public class PurchaseOrderDetailsController {
 										newProduct.setUserByUpdatedBy(currentUser);
 										newProduct.setCompany(currentUser.getCompany());
 										newProduct.setActiveIndicator(parentProduct.isActiveIndicator());
+										newProduct.setAttribute1(parentProduct.getAttribute1());
+										newProduct.setAttribute2(parentProduct.getAttribute2());
+										newProduct.setAttribute3(parentProduct.getAttribute3());
 										if(parentProduct.getBrand() != null){
 											newProduct.setBrand(parentProduct.getBrand());
 										}
@@ -1397,6 +1439,7 @@ public class PurchaseOrderDetailsController {
 										if(parentProduct.getVariantProducts() != null){
 											newProduct.setVariantProducts(parentProduct.getVariantProducts());
 										}
+										
 										newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 										recvProductList.put(newProduct.getProductUuid(), newProduct);
 										productsMap.put(newProduct.getProductId(), newProduct);
@@ -1497,6 +1540,9 @@ public class PurchaseOrderDetailsController {
 									recvProduct.setUserByCreatedBy(currentUser);
 									recvProduct.setUserByUpdatedBy(currentUser);
 									recvProduct.setCompany(currentUser.getCompany());
+									recvProduct.setAttribute1(product.getAttribute1());
+									recvProduct.setAttribute2(product.getAttribute2());
+									recvProduct.setAttribute3(product.getAttribute3());
 									recvProduct = productService.addProduct(recvProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 									recvProductList.put(recvProduct.getProductUuid(), recvProduct);
 									productsMap.put(recvProduct.getProductId(), recProduct);
@@ -1677,6 +1723,9 @@ public class PurchaseOrderDetailsController {
 										if(parentProduct.getVariantProducts() != null){
 											newProduct.setVariantProducts(parentProduct.getVariantProducts());
 										}
+										newProduct.setAttribute1(parentProduct.getAttribute1());
+										newProduct.setAttribute2(parentProduct.getAttribute2());
+										newProduct.setAttribute3(parentProduct.getAttribute3());
 										newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 										recvProductList.put(newProduct.getProductUuid(), newProduct);
 										productsMap.put(newProduct.getProductId(), newProduct);
@@ -1845,6 +1894,9 @@ public class PurchaseOrderDetailsController {
 									if(product.getVariantProducts() != null){
 										recvProduct.setVariantProducts(product.getVariantProducts());
 									}
+									recvProduct.setAttribute1(product.getAttribute1());
+									recvProduct.setAttribute2(product.getAttribute2());
+									recvProduct.setAttribute3(product.getAttribute3());
 									recvProduct = productService.addProduct(recvProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 									recvProductList.put(recvProduct.getProductUuid(), recvProduct);
 									productsMap.put(recvProduct.getProductId(), recvProduct);
@@ -1889,6 +1941,8 @@ public class PurchaseOrderDetailsController {
 						productVariantService.updateProductVariantList(productVariantUpdateList, currentUser.getCompany());
 					}
 					stockOrder.setStatus(statusService.getStatusByStatusId(3)); //completed status
+					stockOrder.setTotalAmount(new BigDecimal(grandTotal));
+					stockOrder.setTotalItems(new BigDecimal(itemCount));
 					stockOrder.setOrdrRecvDate(new Date());
 					stockOrder.setLastUpdated(new Date());
 					stockOrder.setUpdatedBy(currentUser.getUserId());
@@ -2385,9 +2439,10 @@ public class PurchaseOrderDetailsController {
 	}*/
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/updateAndReturntoHeadOffice/{sessionId}/{grandTotal}", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateAndReturntoHeadOffice/{sessionId}/{grandTotal}/{itemCount}", method = RequestMethod.POST)
 	public @ResponseBody Response updateAndReturntoHeadOffice(@PathVariable("sessionId") String sessionId,
 			@PathVariable("grandTotal") String grandTotal,
+			@PathVariable("itemCount") String itemCount,
 			@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList, HttpServletRequest request){		
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
@@ -2400,6 +2455,10 @@ public class PurchaseOrderDetailsController {
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					Map<Integer, Product> productsMap = new HashMap<>();
 					List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					Configuration configurationStockOrderComplTable = configurationService.getConfigurationByPropertyNameByCompanyId("STOCK_ORDER_COMPL_TABLE",currentUser.getCompany().getCompanyId());			
+					if(configurationStockOrderComplTable == null){
+						configurationStockOrderComplTable = new Configuration(currentUser, currentUser, currentUser.getCompany(), "STOCK_ORDER_COMPL_TABLE", "false", true, new Date(), new Date());
+					}
 					List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
 					List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
 					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
@@ -2638,6 +2697,9 @@ public class PurchaseOrderDetailsController {
 										if(parentProduct.getVariantProducts() != null){
 											newProduct.setVariantProducts(parentProduct.getVariantProducts());
 										}
+										newProduct.setAttribute1(parentProduct.getAttribute1());
+										newProduct.setAttribute2(parentProduct.getAttribute2());
+										newProduct.setAttribute3(parentProduct.getAttribute3());
 										newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 										recvProductList.put(newProduct.getProductUuid(), newProduct);
 										productsMap.put(newProduct.getProductId(), newProduct);
@@ -2738,6 +2800,9 @@ public class PurchaseOrderDetailsController {
 									recvProduct.setUserByCreatedBy(currentUser);
 									recvProduct.setUserByUpdatedBy(currentUser);
 									recvProduct.setCompany(currentUser.getCompany());
+									recvProduct.setAttribute1(product.getAttribute1());
+									recvProduct.setAttribute2(product.getAttribute2());
+									recvProduct.setAttribute3(product.getAttribute3());
 									recvProduct = productService.addProduct(recvProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 									recvProductList.put(recvProduct.getProductUuid(), recvProduct);
 									productsMap.put(recvProduct.getProductId(), recProduct);
@@ -2923,6 +2988,9 @@ public class PurchaseOrderDetailsController {
 										if(parentProduct.getVariantProducts() != null){
 											newProduct.setVariantProducts(parentProduct.getVariantProducts());
 										}
+										newProduct.setAttribute1(parentProduct.getAttribute1());
+										newProduct.setAttribute2(parentProduct.getAttribute2());
+										newProduct.setAttribute3(parentProduct.getAttribute3());
 										newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 										recvProductList.put(newProduct.getProductUuid(), newProduct);
 										productsMap.put(newProduct.getProductId(), newProduct);
@@ -3091,6 +3159,9 @@ public class PurchaseOrderDetailsController {
 									if(product.getVariantProducts() != null){
 										recvProduct.setVariantProducts(product.getVariantProducts());
 									}
+									recvProduct.setAttribute1(product.getAttribute1());
+									recvProduct.setAttribute2(product.getAttribute2());
+									recvProduct.setAttribute3(product.getAttribute3());
 									recvProduct = productService.addProduct(recvProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
 									recvProductList.put(recvProduct.getProductUuid(), recvProduct);
 									productsMap.put(recvProduct.getProductId(), recvProduct);
@@ -3135,9 +3206,15 @@ public class PurchaseOrderDetailsController {
 						productVariantService.updateProductVariantList(productVariantUpdateList, currentUser.getCompany());
 					}
 					stockOrder.setStatus(statusService.getStatusByStatusId(3)); //completed status
+					stockOrder.setTotalAmount(new BigDecimal(grandTotal));
+					stockOrder.setTotalItems(new BigDecimal(itemCount));
 					stockOrder.setOrdrRecvDate(new Date());
 					stockOrder.setLastUpdated(new Date());
 					stockOrder.setUpdatedBy(currentUser.getUserId());
+					if(configurationStockOrderComplTable.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						stockOrder.setTotalAmount(new BigDecimal(grandTotal));
+						//stockOrder.setTotalItems(new BigDecimal(grandTotal));
+					}
 					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
 
 					Contact supplier = supplierService.getContactByContactOutletID(stockOrder.getOutletBySourceOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
@@ -3173,8 +3250,238 @@ public class PurchaseOrderDetailsController {
 		}		
 	}
 
-	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/updateAndTransferToSupplierStockOrderDetails/{sessionId}/{grandTotal}/{itemCount}", method = RequestMethod.POST)
+	public @ResponseBody Response updateAndTransferToSupplierStockOrderDetails(@PathVariable("sessionId") String sessionId,
+			@PathVariable("grandTotal") String grandTotal,
+			@PathVariable("itemCount") String itemCount,
+			@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList, HttpServletRequest request){
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");	
+			try {			
+				if (stockOrderDetailBeansList.size() > 0) {	
+					Map<Integer, Product> productsMap = new HashMap<>();
+					List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
+					List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
+					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
+					List<Product> productUpdateList = new ArrayList<>();
+					List<ProductVariant> productVariantUpdateList = new ArrayList<>();
+					if(products!=null){
+						for(Product product:products){
+							productsMap.put(product.getProductId(), product);
+						}
+					}
+					Map<Integer, ProductVariant> productVariantsMap = new HashMap<>();
+					List<ProductVariant> productVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+					if(productVariants!=null){
+						for(ProductVariant productVariant:productVariants){
+							productVariantsMap.put(productVariant.getProductVariantId(), productVariant);
+						}
+					}
+					//Stock Order Map Region
+					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
+					Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
+					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();
+					stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
+					if(stockOrderDetails!=null){
+						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
+							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
+							if(addedstockOrderDetails!=null){
+								addedstockOrderDetails.add(stockOrderDetail);
+								stockOrderDetailsMap.put(stockOrderDetail.getStockOrder().getStockOrderId(), addedstockOrderDetails);
+							}else{
+								addedstockOrderDetails = new ArrayList<>();
+								addedstockOrderDetails.add(stockOrderDetail);
+								stockOrderDetailsMap.put(stockOrderDetail.getStockOrder().getStockOrderId(), addedstockOrderDetails);
+							}
+							stockOrderDetailsByDetailIDMap.put(stockOrderDetail.getStockOrderDetailId(), stockOrderDetail);
+						}
+					}
+					//End Region
+					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
+					List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
+					for(StockOrderDetailBean stockOrderDetailBean : stockOrderDetailBeansList)
+					{
+						if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
+							StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
+							if(preStockOrderDetailList != null){
+								int i = 0;
+								int index = -1;
+								for (StockOrderDetail preStockOrderDetail : preStockOrderDetailList){
+									int stockOrderDetailId = stockOrderDetail.getStockOrderDetailId();
+									int preStockOrderDetailId = preStockOrderDetail.getStockOrderDetailId();
+									if(stockOrderDetailId == preStockOrderDetailId)
+									{
+										index = i;
+										break;
+									}
+									i++;
+								}
+								if(index != -1){
+									preStockOrderDetailList.remove(index);
+								}
+							}
+							stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
+							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));
+							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
+								ProductVariant productVariant = productVariantsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+								stockOrderDetail.setProductVariant(productVariant);
+								stockOrderDetail.setIsProduct(false);
+								int preQuantity = productVariant.getCurrentInventory();
+								productVariant.setCurrentInventory(preQuantity - stockOrderDetail.getOrderProdQty());
+								productVariant.setLastUpdated(new Date());
+								productVariant.setUserByUpdatedBy(currentUser);
+								//productVariantService.updateProductVariant(productVariant, Actions.UPDATE, productVariant.getCurrentInventory(),currentUser.getCompany());
+								productVariantUpdateList.add(productVariant);
+							}
+							else{
+								Product product = productsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+								stockOrderDetail.setProduct(product);
+								stockOrderDetail.setIsProduct(true);
+								int preQuantity = product.getCurrentInventory();
+								product.setCurrentInventory(preQuantity - stockOrderDetail.getOrderProdQty());
+								product.setLastUpdated(new Date());
+								product.setUserByUpdatedBy(currentUser);
+								//productService.updateProduct(product, Actions.INVENTORY_SUBTRACT, product.getCurrentInventory(),currentUser.getCompany());
+								productUpdateList.add(product);
+							}
+							if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
+								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
+							}
+							if(stockOrderDetailBean.getRecvSupplyPrice() != null && !stockOrderDetailBean.getRecvSupplyPrice().equalsIgnoreCase("")){
+								stockOrderDetail.setRecvSupplyPrice(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));
+							}
+							if(stockOrderDetailBean.getRetailPrice() != null && !stockOrderDetailBean.getRetailPrice().equalsIgnoreCase("")){
+								stockOrderDetail.setRetailPrice(new BigDecimal(stockOrderDetailBean.getRetailPrice()));
+							}
+							stockOrderDetail.setStockOrder(stockOrder);
+							stockOrderDetail.setActiveIndicator(true);					
+							stockOrderDetail.setLastUpdated(new Date());
+							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
+							stockOrderDetailsUpdateList.add(stockOrderDetail);
+							/*stockOrderDetailService.updateStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
+							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateStockOrderDetail", 
+									"User "+ currentUser.getUserEmail()+" Update StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
+						}
+						else
+						{
+							StockOrderDetail stockOrderDetail = new StockOrderDetail();
+							//stockOrderDetail.setStockOrderDetailId(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
+							stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
+							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));
+							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
+								ProductVariant productVariant = productVariantsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));								
+								stockOrderDetail.setProductVariant(productVariant);
+								stockOrderDetail.setIsProduct(false);
+								int preQuantity = productVariant.getCurrentInventory();
+								productVariant.setCurrentInventory(preQuantity - stockOrderDetail.getOrderProdQty());
+								productVariant.setLastUpdated(new Date());
+								productVariant.setUserByUpdatedBy(currentUser);
+								//productVariantService.updateProductVariant(productVariant, Actions.UPDATE, productVariant.getCurrentInventory(),currentUser.getCompany());
+								productVariantUpdateList.add(productVariant);
+							}
+							else{
+								Product product = productsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+								stockOrderDetail.setProduct(product);
+								stockOrderDetail.setIsProduct(true);
+								int preQuantity = product.getCurrentInventory();
+								product.setCurrentInventory(preQuantity - stockOrderDetail.getOrderProdQty());
+								product.setLastUpdated(new Date());
+								product.setUserByUpdatedBy(currentUser);
+								//productService.updateProduct(product, Actions.UPDATE, product.getCurrentInventory(),currentUser.getCompany());
+								productUpdateList.add(product);
+							}
+							if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
+								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
+							}
+							if(stockOrderDetailBean.getRecvSupplyPrice() != null && !stockOrderDetailBean.getRecvSupplyPrice().equalsIgnoreCase("")){
+								stockOrderDetail.setRecvSupplyPrice(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));
+							}					
+							if(stockOrderDetailBean.getRetailPrice() != null && !stockOrderDetailBean.getRetailPrice().equalsIgnoreCase("")){
+								stockOrderDetail.setRetailPrice(new BigDecimal(stockOrderDetailBean.getRetailPrice()));
+							}
+							stockOrderDetail.setStockOrder(stockOrder);
+							stockOrderDetail.setActiveIndicator(true);			
+							stockOrderDetail.setCreatedDate(new Date());				
+							stockOrderDetail.setLastUpdated(new Date());
+							stockOrderDetail.setCreatedBy(currentUser.getUserId());
+							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
+							stockOrderDetail.setCompany(currentUser.getCompany());
+							stockOrderDetailsAddList.add(stockOrderDetail);
+							/*stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
+							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.addStockOrderDetail", 
+									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
+						}
+					}
+					if(preStockOrderDetailList != null){
+						if(preStockOrderDetailList.size() > 0)
+						{
+							for(StockOrderDetail stockOrderDetail : preStockOrderDetailList)
+							{
+								stockOrderDetailsDeleteList.add(stockOrderDetail);
+								//stockOrderDetailService.deleteStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
+							}
+						}	
+					}
+					if(stockOrderDetailsUpdateList.size() > 0){
+						stockOrderDetailService.updateStockOrderDetailsList(stockOrderDetailsUpdateList, currentUser.getCompany().getCompanyId());
+					}
+					if(stockOrderDetailsAddList.size() > 0){
+						stockOrderDetailService.addStockOrderDetailsList(stockOrderDetailsAddList, currentUser.getCompany().getCompanyId());
+					}
+					if(stockOrderDetailsDeleteList.size() > 0){
+						stockOrderDetailService.deleteStockOrderDetailsList(stockOrderDetailsDeleteList, currentUser.getCompany().getCompanyId());
+					}
+					if(productUpdateList.size()>0){
+						productService.updateProductList(productUpdateList, currentUser.getCompany());
+					}
+					if(productVariantUpdateList.size()>0){
+						productVariantService.updateProductVariantList(productVariantUpdateList, currentUser.getCompany());
+					}
+					//StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());				
+					stockOrder.setStatus(statusService.getStatusByStatusId(3)); //completed status
+					stockOrder.setTotalAmount(new BigDecimal(grandTotal));
+					stockOrder.setTotalItems(new BigDecimal(itemCount));
+					stockOrder.setOrdrRecvDate(new Date());
+					stockOrder.setLastUpdated(new Date());
+					stockOrder.setUpdatedBy(currentUser.getUserId());
+					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
+					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
+							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+stockOrder.getStockOrderId()+" successfully ",false);
+					/*Contact supplier = supplierService.getContactByID(stockOrder.getContactId(), currentUser.getCompany().getCompanyId());
+					if(supplier.getContactBalance() == null){
+						supplier.setContactBalance(BigDecimal.ZERO);
+					}
+					supplier.setContactBalance(supplier.getContactBalance().subtract(new BigDecimal(grandTotal)));
+					supplier.setLastUpdated(new Date());
+					supplier.setUpdatedBy(currentUser.getUserId());
+					supplierService.updateContact(supplier, currentUser.getCompany().getCompanyId());
+					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandTransferToSupplier", 
+							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+supplier.getContactId()+" successfully ",false);*/
+					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.STOCKCONTROL);
+				}else{
+					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandTransferToSupplier", "User "+ 
+							currentUser.getUserEmail()+" Unable to add StockOrderDetail+"+ stockOrderDetailBeansList.get(0).getStockOrderDetailId(),false);
+					return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+				}
 
+			}catch(Exception e){
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "PurchaseOrderController.updateandTransferToSupplier",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}		
+	}
+
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/deleteStockOrderDetail/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response deleteStockOrderDetail(@PathVariable("sessionId") String sessionId,
@@ -3271,6 +3578,7 @@ public class PurchaseOrderDetailsController {
 			Map recvProductVariantMap = new HashMap<>();
 			Map recvProductMap = new HashMap<>();
 			Map productMap = new HashMap<>();
+			productVariantMap = new HashMap<>();
 			int outletId = Integer.parseInt(stockOrderBean.getOutletId());
 			if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase(""))
 			{
@@ -3356,6 +3664,7 @@ public class PurchaseOrderDetailsController {
 							}
 						}
 						productVariantBeansList.add(productVariantBean);
+						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProductVariants", "User "+ 
 							currentUser.getUserEmail()+" Get Products and ProductVariants",false);
@@ -3394,6 +3703,7 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<Product> productList = null;
+			productMap = new HashMap<>();
 			try {			
 				productList = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
 				if(productList != null){
@@ -3433,6 +3743,7 @@ public class PurchaseOrderDetailsController {
 
 							}
 							productVariantBeansList.add(productVariantBean);
+							productMap.put(product.getSku().toLowerCase(), productVariantBean);
 						}						
 					}				
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
@@ -3474,6 +3785,7 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
+			productVariantMap = new HashMap<>();
 			try {			
 				productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
 				Map<Integer, Product> productsMap = new HashMap<>();
@@ -3515,6 +3827,7 @@ public class PurchaseOrderDetailsController {
 
 						}
 						productVariantBeansList.add(productVariantBean);
+						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
 							currentUser.getUserEmail()+" Get ProductVariants",false);
@@ -3557,6 +3870,7 @@ public class PurchaseOrderDetailsController {
 			List<Product> productList = null;
 			List<Product> recvProductList = null;
 			Map recvProductMap = new HashMap<>();
+			productMap = new HashMap<>();
 			try {			
 				productList = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
 				if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
@@ -3611,6 +3925,7 @@ public class PurchaseOrderDetailsController {
 								}
 							}
 							productVariantBeansList.add(productVariantBean);
+							productMap.put(product.getSku().toLowerCase(), productVariantBean);
 						}
 						
 					}
@@ -3655,6 +3970,7 @@ public class PurchaseOrderDetailsController {
 			List<ProductVariant> productVariantList = null;
 			List<ProductVariant> recvProductVariantList = null;
 			Map recvProductVariantMap = new HashMap<>();
+			productVariantMap = new HashMap<>();
 			try {			
 				productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
 				Map<Integer, Product> productsMap = new HashMap<>();
@@ -3719,6 +4035,7 @@ public class PurchaseOrderDetailsController {
 							}
 						}
 						productVariantBeansList.add(productVariantBean);
+						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
 							currentUser.getUserEmail()+" Get ProductVariants",false);
@@ -3758,6 +4075,7 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<Product> productList = null;
+			productMap = new HashMap<>();
 			try {			
 				productList = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
 				if(productList != null){
@@ -3796,6 +4114,7 @@ public class PurchaseOrderDetailsController {
 								productVariantBean.setRetailPriceExclTax(retailPrice.toString());
 							}
 							productVariantBeansList.add(productVariantBean);
+							productMap.put(product.getSku().toLowerCase(), productVariantBean);
 						}						
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
@@ -3837,6 +4156,7 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
+			productVariantMap = new HashMap<>();
 			try {			
 				productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
 				Map<Integer, Product> productsMap = new HashMap<>();
@@ -3877,6 +4197,7 @@ public class PurchaseOrderDetailsController {
 							productVariantBean.setRetailPriceExclTax(retailPrice.toString());
 						}
 						productVariantBeansList.add(productVariantBean);
+						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
 							currentUser.getUserEmail()+" Get ProductVariants",false);
@@ -3906,6 +4227,22 @@ public class PurchaseOrderDetailsController {
 		else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}	
+	}
+
+	public Map getProductVariantMap() {
+		return productVariantMap;
+	}
+
+	public void setProductVariantMap(HashMap productVariantMap) {
+		this.productVariantMap = productVariantMap;
+	}
+
+	public Map getProductMap() {
+		return productMap;
+	}
+
+	public void setProductMap(HashMap productMap) {
+		this.productMap = productMap;
 	}
 
 }

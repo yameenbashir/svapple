@@ -39,6 +39,8 @@ public class NewProductControllerBean {
 	private String showProductTag;
 	private ProductConfigurationBean productConfigurationBean;
 	private String showDutyCalculator;
+	List<ProductVariantBean> productBeansList;
+	private boolean consumeCompositeQunatity;
 	
 	/**
 	 * 
@@ -64,6 +66,8 @@ public class NewProductControllerBean {
 	 * @param showProductTag
 	 * @param productConfigurationBean
 	 * @param showDutyCalculator
+	 * @param productBeansList
+	 * @param consumeCompositeQunatity
 	 */
 	public NewProductControllerBean(List<SupplierBean> supplierBeans,
 			List<ProductTypeBean> productTypeBeanList,
@@ -76,7 +80,9 @@ public class NewProductControllerBean {
 			Map<String, Boolean> productVariantBarCodeMap,
 			List<TagBean> tagBeanList, String showProductTag,
 			ProductConfigurationBean productConfigurationBean,
-			String showDutyCalculator) {
+			String showDutyCalculator,
+			List<ProductVariantBean> productBeansList,
+			boolean consumeCompositeQunatity) {
 		this.supplierBeans = supplierBeans;
 		this.productTypeBeanList = productTypeBeanList;
 		this.brandBeanList = brandBeanList;
@@ -94,6 +100,8 @@ public class NewProductControllerBean {
 		this.showProductTag = showProductTag;
 		this.productConfigurationBean = productConfigurationBean;
 		this.showDutyCalculator = showDutyCalculator;
+		this.productBeansList = productBeansList;
+		this.consumeCompositeQunatity = consumeCompositeQunatity;
 	}
 
 	/**
@@ -336,5 +344,33 @@ public class NewProductControllerBean {
 	 */
 	public void setShowDutyCalculator(String showDutyCalculator) {
 		this.showDutyCalculator = showDutyCalculator;
+	}
+
+	/**
+	 * @return the productBeansList
+	 */
+	public List<ProductVariantBean> getProductBeansList() {
+		return productBeansList;
+	}
+
+	/**
+	 * @param productBeansList the productBeansList to set
+	 */
+	public void setProductBeansList(List<ProductVariantBean> productBeansList) {
+		this.productBeansList = productBeansList;
+	}
+
+	/**
+	 * @return the consumeCompositeQunatity
+	 */
+	public boolean isConsumeCompositeQunatity() {
+		return consumeCompositeQunatity;
+	}
+
+	/**
+	 * @param consumeCompositeQunatity the consumeCompositeQunatity to set
+	 */
+	public void setConsumeCompositeQunatity(boolean consumeCompositeQunatity) {
+		this.consumeCompositeQunatity = consumeCompositeQunatity;
 	}
 }

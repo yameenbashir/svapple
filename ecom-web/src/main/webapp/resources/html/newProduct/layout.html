@@ -47,7 +47,7 @@
 													<div class="col-sm-8">
 														<input type="text" class="form-control"
 															id="productName" placeholder="name..." ng-blur="checkSkuExist()"
-															data-ng-model="productBean.productName" maxlength="15"
+															data-ng-model="productBean.productName" maxlength="200"
 															 required ng-change="changeHandler(productBean)">
 															<span ng-show="!productBean.productName" style="color:red;">* Add Product name</span>
 															<span ng-show="barCode && !productConfigurationBean.sku" style="color:red;">* Product/ Barcode already exist</span>

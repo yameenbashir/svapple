@@ -93,6 +93,7 @@ public class InventoryCountController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 			Map<Integer, Outlet> outletsMap = new HashMap<>();
 			List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 			if(outlets!=null){
@@ -131,13 +132,13 @@ public class InventoryCountController {
 					countryMap.put(country.getCountryId(), country);
 				}
 			}
-			Map<Integer, Address> addressMap = new HashMap<>();
+			/*Map<Integer, Address> addressMap = new HashMap<>();
 			List<Address> addresses = addressService.getAllAddress(currentUser.getCompany().getCompanyId());
 			if(addressMap!=null){
 				for(Address address:addresses){					
 					addressMap.put(address.getAddressId(), address);
 				}
-			}
+			}*/
 			Configuration configuration = configurationMap.get("AUTO_AUDIT_TRANSFER");
 			boolean autoTransfer = false;
 			if(configuration != null ){
@@ -165,7 +166,10 @@ public class InventoryCountController {
 						inventoryCountBean.setAuditTransfer(String.valueOf(autoTransfer));
 						int inventoryCountId = 0;
 						if(inventoryCount.getCreatedDate() != null){
-							inventoryCountBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(inventoryCount.getCreatedDate()).toString());
+							inventoryCountBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(inventoryCount.getCreatedDate()));
+						}
+						if(inventoryCount.getLastUpdated() != null){
+							inventoryCountBean.setLastUpdated(DateTimeUtil.convertDBDateTimeToGuiFormat(inventoryCount.getLastUpdated()));
 						}
 						if(inventoryCount.getCreatedBy() != null){
 							inventoryCountBean.setCreatedBy(String.valueOf(inventoryCount.getCreatedBy()));
@@ -181,7 +185,7 @@ public class InventoryCountController {
 						if(outlet != null){
 							inventoryCountBean.setOutletId(outlet.getOutletId().toString());
 							inventoryCountBean.setOutletName(outlet.getOutletName());
-							if(outlet.getAddress() != null){
+							/*if(outlet.getAddress() != null){
 								Address address = addressMap.get(outlet.getAddress().getAddressId());					
 								if(address.getStreet() != null){
 									inventoryCountBean.setOutletAddress(address.getStreet());
@@ -199,7 +203,7 @@ public class InventoryCountController {
 									Country country = countryMap.get(address.getCountry().getCountryId());
 									inventoryCountBean.setOutletAddress(inventoryCountBean.getOutletAddress() + " " + country.getCountryName());							
 								}
-							}
+							}*/
 						}
 						if(inventoryCount.getRemarks() != null){
 							inventoryCountBean.setRemarks(inventoryCount.getRemarks());

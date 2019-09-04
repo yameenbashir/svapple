@@ -16,6 +16,9 @@ var ProductsController = ['$scope', '$http','$sce', '$window','$cookieStore','$r
 	$scope.addProduct = function() {
 		$window.location = "/app/#/newProduct";
 	};
+	$scope.addCompositeProduct = function() {
+		$window.location = "/app/#/newCompositeProduct";
+	};
 	$scope.showProduct = function(product) {
 		
 		$cookieStore.put('_d_cPi_gra',product.productId) ;
@@ -26,7 +29,11 @@ var ProductsController = ['$scope', '$http','$sce', '$window','$cookieStore','$r
 		
 		$cookieStore.put('_e_cPi_gra',product.productId) ;
 		$cookieStore.put('_e_cOi_gra',product.outletId) ;
-		$window.location = "/app/#/manageProduct";
+		if(product.isComposite=="true"){
+			$window.location = "/app/#/manageCompositeProduct";
+		}else{
+			$window.location = "/app/#/manageProduct";
+		}
 	};
 	
 	$scope.showProductPriceHistory = function(product){

@@ -285,7 +285,7 @@ public class ProductDetailsController {
 							}
 						}
 					}else{
-						List<CompositeProduct> compositeProducts = compositeProductService.getAllCompositeProductsByProductIdOultetId(product.getProductId(),product.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+						List<CompositeProduct> compositeProducts = compositeProductService.getAllCompositeProductsByProductIdOultetIdCompanyId(product.getProductId(),product.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
 						if(compositeProducts!=null){
 							for(CompositeProduct compositeProduct :compositeProducts){
 								ProductVariant productVariant = productVariantService.getProductVariantByProductVariantId(compositeProduct.getProductVariant().getProductVariantId(),currentUser.getCompany().getCompanyId());

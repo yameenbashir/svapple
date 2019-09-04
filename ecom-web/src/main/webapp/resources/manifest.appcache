@@ -16,7 +16,8 @@ CACHE:
 	bower_components/fullcalendar/dist/fullcalendar.js
 	bower_components/fullcalendar/dist/gcal.js
 
-	js/controllers/merged/output.js
+
+	js/controllers/merged/output.js?v=2.3.0
 	js/OrgHierarchyController.js
 
 	js/bootstrap.js
@@ -33,6 +34,7 @@ CACHE:
 		
 	css/merged.css
 	
+	
 	fonts/foundation-icons.css
 	dist/css/AdminLTE.css
 	dist/css/skins/_all-skins.min.css
@@ -41,8 +43,7 @@ CACHE:
 	plugins/jvectormap/jquery-jvectormap-1.2.2.css
 	plugins/daterangepicker/daterangepicker-bs3.css
 	plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css
-	
-	
+		
 	fonts/fontawesome-webfont.woff2?v=4.6.3
 	fonts/fontawesome-webfont.woff?v=4.6.3
 	fonts/fontawesome-webfont.ttf?v=4.6.3
@@ -65,7 +66,6 @@ CACHE:
 	
 
 	html/login/layout.html
-	html/home/layout.html
 	html/sell/layout.html
 	html/status/layout.html
 NETWORK:

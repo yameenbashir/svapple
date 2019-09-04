@@ -123,7 +123,7 @@ public class CashManagementController {
 				
 				cashManagment.setExpenseType(expenseType);
 				
-				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
+				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),currentUser.getUserId());
 				if(dailyRegister==null){
 					util.AuditTrail(request, currentUser, "CashManagementController.cashInOut", 
 							"User "+ currentUser.getUserEmail()+"No Open Register ",false);
@@ -178,7 +178,7 @@ public class CashManagementController {
 			User currentUser = (User) session.getAttribute("user");
 			
 			try{
-				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
+				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),currentUser.getUserId());
 				if(dailyRegister==null){
 					util.AuditTrail(request, currentUser, "CashManagementController.getCashInOut", 
 							"User "+ currentUser.getUserEmail()+"No Open Register ",false);
@@ -244,7 +244,7 @@ public class CashManagementController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			List<Register> regiserList = registerService.getRegestersByOutletId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+			List<Register> regiserList = registerService.getRegestersByOutletId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId(),currentUser.getUserId());
 			RegisterBean regiseBean = new RegisterBean();
 			
 			try{
@@ -298,7 +298,7 @@ public class CashManagementController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			List<Register> regiserList = registerService.getRegestersByOutletId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+			List<Register> regiserList = registerService.getRegestersByOutletId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId(),currentUser.getUserId());
 			RegisterBean regiseBean = new RegisterBean();
 			
 			try{

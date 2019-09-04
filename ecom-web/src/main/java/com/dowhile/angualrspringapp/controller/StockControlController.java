@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dowhile.Address;
+import com.dowhile.Company;
 import com.dowhile.Configuration;
 import com.dowhile.Contact;
 import com.dowhile.Country;
@@ -32,6 +34,7 @@ import com.dowhile.Status;
 import com.dowhile.StockOrder;
 import com.dowhile.StockOrderDetail;
 import com.dowhile.StockOrderType;
+import com.dowhile.StockOrderV;
 import com.dowhile.User;
 import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
@@ -49,6 +52,7 @@ import com.dowhile.service.StatusService;
 import com.dowhile.service.StockOrderDetailService;
 import com.dowhile.service.StockOrderService;
 import com.dowhile.service.StockOrderTypeService;
+import com.dowhile.service.StockOrderVService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
@@ -61,6 +65,9 @@ import com.dowhile.util.SessionValidator;
 public class StockControlController {
 	@Resource
 	private StockOrderService stockOrderService;
+
+	@Resource
+	private StockOrderVService stockOrderVService;
 
 	@Resource
 	private OutletService outletService;
@@ -76,7 +83,7 @@ public class StockControlController {
 
 	@Resource
 	private CountryService countryService;
-	
+
 	@Resource
 	private ContactService supplierService;
 	@Resource
@@ -91,10 +98,10 @@ public class StockControlController {
 		return "stockControl/layout";
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getAllStockOrders/{sessionId}", method = RequestMethod.POST)
+	/* @SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getAllStockOrders/{sessionId}/{loadAll}", method = RequestMethod.POST)
 	public @ResponseBody
-	Response getAllStockOrders(@PathVariable("sessionId") String sessionId,
+	Response getAllStockOrders(@PathVariable("sessionId") String sessionId, @PathVariable("loadAll") String loadAll,
 			HttpServletRequest request) {
 
 		List<StockOrderBean> stockOrderBeansList = new ArrayList<>();
@@ -103,6 +110,11 @@ public class StockControlController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+			Configuration configurationStockOrderComplTable = configurationService.getConfigurationByPropertyNameByCompanyId("STOCK_ORDER_COMPL_TABLE",currentUser.getCompany().getCompanyId());			
+			if(configurationStockOrderComplTable == null){
+				configurationStockOrderComplTable = new Configuration(currentUser, currentUser, currentUser.getCompany(), "STOCK_ORDER_COMPL_TABLE", "false", true, new Date(), new Date());
+			}
+			Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
 			Map<Integer, Outlet> outletsMap = new HashMap<>();
 			List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 			if(outlets!=null){
@@ -132,66 +144,73 @@ public class StockControlController {
 						suppliersMap.put(contact.getContactId(), contact);
 					}
 				}
-			}
-			Map<Integer, Country> countryMap = new HashMap<>();
-			List<Country> countrys = countryService.GetAllCountry();
-			if(countryMap!=null){
-				for(Country country:countrys){					
-						countryMap.put(country.getCountryId(), country);
-				}
-			}
-			Map<Integer, Address> addressMap = new HashMap<>();
-			List<Address> addresses = addressService.getAllAddress(currentUser.getCompany().getCompanyId());
-			if(addressMap!=null){
-				for(Address address:addresses){					
-						addressMap.put(address.getAddressId(), address);
-				}
-			}
-			//Stock Order Map Region
-			List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
-			Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
-			stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
-			if(stockOrderDetails!=null){
-				for(StockOrderDetail stockOrderDetail:stockOrderDetails){
-					List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
-					if(addedstockOrderDetails!=null){
-						addedstockOrderDetails.add(stockOrderDetail);
-						stockOrderDetailsMap.put(stockOrderDetail.getStockOrder().getStockOrderId(), addedstockOrderDetails);
-					}else{
-						addedstockOrderDetails = new ArrayList<>();
-						addedstockOrderDetails.add(stockOrderDetail);
-						stockOrderDetailsMap.put(stockOrderDetail.getStockOrder().getStockOrderId(), addedstockOrderDetails);
-					}
+			}	
+			if(!configurationStockOrderComplTable.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+				{//Stock Order Map Region
+					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
+					stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
+					if(stockOrderDetails!=null){
+						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
+							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
+							if(addedstockOrderDetails!=null){
+								addedstockOrderDetails.add(stockOrderDetail);
+								stockOrderDetailsMap.put(stockOrderDetail.getStockOrder().getStockOrderId(), addedstockOrderDetails);
+							}else{
+								addedstockOrderDetails = new ArrayList<>();
+								addedstockOrderDetails.add(stockOrderDetail);
+								stockOrderDetailsMap.put(stockOrderDetail.getStockOrder().getStockOrderId(), addedstockOrderDetails);
+							}
 
+						}
+					}
+					//End Region
 				}
 			}
-			//End Region
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 			try {
 				Outlet userOutlet = outletsMap.get(currentUser.getOutlet().getOutletId());
 				if(userOutlet.getIsHeadOffice()!=null && userOutlet.getIsHeadOffice() == true){
-					stockOrderList = stockOrderService.GetAllStockOrder(currentUser.getCompany().getCompanyId());
+					if(loadAll.equalsIgnoreCase("true")){
+						stockOrderList = stockOrderService.GetAllStockOrder(currentUser.getCompany().getCompanyId());
+					}else{
+						stockOrderList = stockOrderService.GetTenStockOrder(currentUser.getCompany().getCompanyId());
+					}
 				}
 				else{
 					if(configurationService.getConfigurationByPropertyNameByCompanyId("TRANSFER_STOCK_OUTLET_ACCESS",currentUser.getCompany().getCompanyId()) != null ){
 						Configuration configuration = configurationService.getConfigurationByPropertyNameByCompanyId("TRANSFER_STOCK_OUTLET_ACCESS",currentUser.getCompany().getCompanyId());
 						if(configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
-							stockOrderList = stockOrderService.getStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							if(loadAll.equalsIgnoreCase("true")){
+								stockOrderList = stockOrderService.getStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}else{
+								stockOrderList = stockOrderService.getTenStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}							
 						}
 						else{
-							stockOrderList = stockOrderService.getStockOrderCompletedByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							if(loadAll.equalsIgnoreCase("true")){
+								stockOrderList = stockOrderService.getStockOrderCompletedByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}else{
+								stockOrderList = stockOrderService.getTenStockOrderCompletedByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}							
 						}
 					}
 					else{
-						stockOrderList = stockOrderService.getStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+						if(loadAll.equalsIgnoreCase("true")){
+							stockOrderList = stockOrderService.getStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+						}else{
+							stockOrderList = stockOrderService.getTenStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+						}
 					}
 				}
 				if (stockOrderList != null) {
 					for (StockOrder stockOrder : stockOrderList) {
 						StockOrderBean stockOrderBean = new StockOrderBean();					
 						stockOrderBean.setAutofillReorder(Boolean.toString(stockOrder.isAutofillReorder()));
-						if(stockOrder.getCreatedDate() != null){
-							stockOrderBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(stockOrder.getCreatedDate()).toString());
+						if(stockOrder.getCreatedDate() != null){							
+							stockOrderBean.setCreatedDate(simpleDateFormat.format(stockOrder.getCreatedDate()).toString());
+						}
+						if(stockOrder.getLastUpdated() != null){							
+							stockOrderBean.setLastUpdated(simpleDateFormat.format(stockOrder.getLastUpdated()).toString());
 						}
 						if(stockOrder.getCreatedBy() != null){
 							stockOrderBean.setCreatedBy(String.valueOf(stockOrder.getCreatedBy()));
@@ -207,25 +226,6 @@ public class StockControlController {
 						if(outlet != null){
 							stockOrderBean.setOutlet(outlet.getOutletId().toString());
 							stockOrderBean.setOutletName(outlet.getOutletName());
-							if(outlet.getAddress() != null){
-								Address address = addressMap.get(outlet.getAddress().getAddressId());					
-								if(address.getStreet() != null){
-									stockOrderBean.setOutletAddress(address.getStreet());
-								}
-								if(address.getCity()!= null){
-									stockOrderBean.setOutletAddress(stockOrderBean.getOutletAddress() + " " + address.getCity());		
-								}
-								if(address.getPostalCode() != null){
-									stockOrderBean.setOutletAddress(stockOrderBean.getOutletAddress() + " " + address.getPostalCode());
-								}
-								if(address.getState() != null){
-									stockOrderBean.setOutletAddress(stockOrderBean.getOutletAddress() + " " + address.getState());
-								}
-								if(address.getCountry() != null){
-									Country country = countryMap.get(address.getCountry().getCountryId());
-									stockOrderBean.setOutletAddress(stockOrderBean.getOutletAddress() + " " + country.getCountryName());							
-								}
-							}
 						}
 						if(stockOrder.getOutletBySourceOutletAssocicationId() != null)
 						{
@@ -233,25 +233,6 @@ public class StockControlController {
 							if(outletSource != null){
 								stockOrderBean.setSourceOutletId(outletSource.getOutletId().toString());
 								stockOrderBean.setSourceOutletName(outletSource.getOutletName());
-								if(outletSource.getAddress() != null){								
-									Address address = addressMap.get(outletSource.getAddress().getAddressId());
-									if(address.getStreet() != null){
-										stockOrderBean.setSourceOutletAddress(address.getStreet());
-									}
-									if(address.getCity()!= null){
-										stockOrderBean.setSourceOutletAddress(stockOrderBean.getSourceOutletAddress() + " " + address.getCity());		
-									}
-									if(address.getPostalCode() != null){
-										stockOrderBean.setSourceOutletAddress(stockOrderBean.getSourceOutletAddress() + " " + address.getPostalCode());
-									}
-									if(address.getState() != null){
-										stockOrderBean.setSourceOutletAddress(stockOrderBean.getSourceOutletAddress() + " " + address.getState());
-									}
-									if(address.getCountry() != null){
-										Country country = countryMap.get(address.getCountry().getCountryId());
-										stockOrderBean.setOutletAddress(stockOrderBean.getOutletAddress() + " " + country.getCountryName());							
-									}
-								}
 							}
 						}
 						if(stockOrder.isRetailPriceBill()){
@@ -285,46 +266,206 @@ public class StockControlController {
 						}
 						stockOrderBean.setSupplierInvoiceNo(stockOrder.getContactInvoiceNo());
 						int stockOrderId = stockOrder.getStockOrderId();
-						List<StockOrderDetail> stockOrderDetailList = stockOrderDetailsMap.get(stockOrderId);
-						int itemCount = 0;
-						Double totalCost = 0.0;
-						if(stockOrderDetailList != null){
-							for(StockOrderDetail stockOrderDetail : stockOrderDetailList){
-								if(stockOrderDetail.getRecvProdQty()!= null){
-									itemCount = itemCount + stockOrderDetail.getRecvProdQty();
-								}
-								else{
-									itemCount = itemCount + stockOrderDetail.getOrderProdQty();
-								}
-								if(stockOrder.getStockOrderType().getStockOrderTypeId() == 1){ //Supplier Order
-									if(stockOrderDetail.getRecvSupplyPrice() != null && stockOrderDetail.getRecvProdQty()!= null){
-										totalCost = totalCost + (stockOrderDetail.getRecvSupplyPrice().doubleValue() * stockOrderDetail.getRecvProdQty());
+
+						//Incomplete Table Region
+							if(!configurationStockOrderComplTable.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+								List<StockOrderDetail> stockOrderDetailList = stockOrderDetailsMap.get(stockOrderId);
+								int itemCount = 0;
+								Double totalCost = 0.0;
+								if(stockOrderDetailList != null){
+									for(StockOrderDetail stockOrderDetail : stockOrderDetailList){
+										if(stockOrderDetail.getRecvProdQty()!= null){
+											itemCount = itemCount + stockOrderDetail.getRecvProdQty();
+										}
+										else{
+											itemCount = itemCount + stockOrderDetail.getOrderProdQty();
+										}
+										if(stockOrder.getStockOrderType().getStockOrderTypeId() == 1){ //Supplier Order
+											if(stockOrderDetail.getRecvSupplyPrice() != null && stockOrderDetail.getRecvProdQty()!= null){
+												totalCost = totalCost + (stockOrderDetail.getRecvSupplyPrice().doubleValue() * stockOrderDetail.getRecvProdQty());
+											}
+											else{
+												totalCost = totalCost + (stockOrderDetail.getOrdrSupplyPrice().doubleValue() * stockOrderDetail.getOrderProdQty());
+											}
+										}
+										else
+										{
+											if(stockOrder.isRetailPriceBill()){
+												totalCost = totalCost + (stockOrderDetail.getRetailPrice().doubleValue() * stockOrderDetail.getOrderProdQty());
+											}
+											else{
+												totalCost = totalCost + (stockOrderDetail.getOrdrSupplyPrice().doubleValue() * stockOrderDetail.getOrderProdQty());
+											}
+										}
 									}
-									else{
-										totalCost = totalCost + (stockOrderDetail.getOrdrSupplyPrice().doubleValue() * stockOrderDetail.getOrderProdQty());
-									}
 								}
-								else
-								{
-									if(stockOrder.isRetailPriceBill()){
-										totalCost = totalCost + (stockOrderDetail.getRetailPrice().doubleValue() * stockOrderDetail.getOrderProdQty());
-									}
-									else{
-										totalCost = totalCost + (stockOrderDetail.getOrdrSupplyPrice().doubleValue() * stockOrderDetail.getOrderProdQty());
-									}
-								}
+								stockOrderBean.setStockOrderId(Integer.toString(stockOrderId));
+								stockOrderBean.setItemCount(Integer.toString(itemCount));
+								NumberFormat formatter = new DecimalFormat("###.##");  
+								String total = formatter.format(totalCost);
+								stockOrderBean.setTotalCost(total);
+								//Region end
 							}
+						else{
+							stockOrderBean.setStockOrderId(Integer.toString(stockOrderId));
+							Double totalItems = stockOrder.getTotalItems().doubleValue();
+							NumberFormat formatter = new DecimalFormat("#####");  
+							String totalItem = formatter.format(totalItems);
+							stockOrderBean.setItemCount(totalItem);
+							Double totalCost = stockOrder.getTotalAmount().doubleValue();							
+							formatter = new DecimalFormat("###.##");  
+							String total = formatter.format(totalCost);
+							stockOrderBean.setTotalCost(total);
 						}
+						stockOrderBeansList.add(stockOrderBean);
+					}
+
+
+
+					StockControlControllerBean stockControlControllerBean =  new StockControlControllerBean();
+					stockControlControllerBean.setStockOrderBeansList(stockOrderBeansList);
+					Configuration configurationStockTransferToSupplier = configurationMap.get("STOCK_TRANSFER_TO_SUPPLIER");
+					if(configurationStockTransferToSupplier!=null && configurationStockTransferToSupplier.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						stockControlControllerBean.setStockTransferToSupplier(true);
+					}else{
+						stockControlControllerBean.setStockTransferToSupplier(false);
+					}
+
+					util.AuditTrail(request, currentUser, "StockControlController.getAllStockOrders", 
+							"User "+ currentUser.getUserEmail()+" fetched all stock orders successfully ",false);
+					return new Response(stockControlControllerBean,StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
+				}else{
+					util.AuditTrail(request, currentUser, "StockControlController.getAllStockOrders", 
+							"User "+ currentUser.getUserEmail()+" unbale to retrived stock orders ",false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
+				}
+
+			}catch(Exception e){
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "StockControlController.getAllStockOrders",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+	} */
+
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getAllStockOrders/{sessionId}/{loadAll}", method = RequestMethod.POST)
+	public @ResponseBody
+	Response getAllStockOrders(@PathVariable("sessionId") String sessionId, @PathVariable("loadAll") String loadAll,
+			HttpServletRequest request) {
+		List<StockOrderBean> stockOrderBeansList = new ArrayList<>();
+		List<StockOrderV> stockOrderVList = null;
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+			try {
+				Outlet userOutlet = outletService.getOuletByOutletId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				if(userOutlet.getIsHeadOffice()!=null && userOutlet.getIsHeadOffice() == true){
+					if(loadAll.equalsIgnoreCase("true")){
+						stockOrderVList = stockOrderVService.getAllStockOrder(currentUser.getCompany().getCompanyId());
+					}else{
+						stockOrderVList = stockOrderVService.getTenStockOrder(currentUser.getCompany().getCompanyId());
+					}
+				}
+				else{
+					if(configurationMap.get("TRANSFER_STOCK_OUTLET_ACCESS") != null ){
+						Configuration configuration = configurationMap.get("TRANSFER_STOCK_OUTLET_ACCESS");
+						if(configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+							if(loadAll.equalsIgnoreCase("true")){
+								stockOrderVList = stockOrderVService.getAllStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}else{
+								stockOrderVList = stockOrderVService.getTenStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}							
+						}
+						else{
+							if(loadAll.equalsIgnoreCase("true")){
+								stockOrderVList = stockOrderVService.getAllStockOrderCompletedByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}else{
+								stockOrderVList = stockOrderVService.getTenStockOrderCompletedByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+							}							
+						}
+					}
+					else{
+						if(loadAll.equalsIgnoreCase("true")){
+							stockOrderVList = stockOrderVService.getAllStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+						}else{
+							stockOrderVList = stockOrderVService.getTenStockOrderByOutletId(userOutlet.getOutletId(), currentUser.getCompany().getCompanyId());
+						}
+					}
+				}
+				if (stockOrderVList != null) {
+					for (StockOrderV stockOrderV : stockOrderVList) {
+						StockOrderBean stockOrderBean = new StockOrderBean();
+						if(stockOrderV.getId() != null){
+						stockOrderBean.setAutofillReorder(Boolean.toString(stockOrderV.getId().isAutofillReorder()));
+						}
+						if(stockOrderV.getId().getCreatedDate() != null){							
+							stockOrderBean.setCreatedDate(simpleDateFormat.format(stockOrderV.getId().getCreatedDate()).toString());
+						}
+						if(stockOrderV.getId().getLastUpdated() != null){							
+							stockOrderBean.setLastUpdated(simpleDateFormat.format(stockOrderV.getId().getLastUpdated()).toString());
+						}
+						if(stockOrderV.getId().getCreatedBy() != null){
+							stockOrderBean.setCreatedBy(String.valueOf(stockOrderV.getId().getCreatedBy()));
+						}
+						if(stockOrderV.getId().getDiliveryDueDate() != null){
+							stockOrderBean.setDiliveryDueDate(simpleDateFormat.format(stockOrderV.getId().getDiliveryDueDate()).toString());
+						}
+						stockOrderBean.setOrderNo(stockOrderV.getId().getOrderNo());
+						if(stockOrderV.getId().getOrdrRecvDate() != null){
+							stockOrderBean.setOrdrRecvDate(simpleDateFormat.format(stockOrderV.getId().getOrdrRecvDate()).toString());
+						}
+
+						stockOrderBean.setOutlet(Integer.toString(stockOrderV.getId().getOutletAssocicationId()));
+						stockOrderBean.setOutletName(stockOrderV.getId().getOutlet());
+						stockOrderBean.setSourceOutletId(Integer.toString(stockOrderV.getId().getSourceOutletAssocicationId()));
+						stockOrderBean.setSourceOutletName(stockOrderV.getId().getSource());
+
+						if(stockOrderV.getId().isRetailPriceBill()){
+							stockOrderBean.setRetailPriceBill(String.valueOf(stockOrderV.getId().isRetailPriceBill()));
+						}
+						stockOrderBean.setRemarks(stockOrderV.getId().getRemarks());
+						stockOrderBean.setReturnNo(stockOrderV.getId().getReturnNo());
+						stockOrderBean.setStatusId(String.valueOf(stockOrderV.getId().getStatusAssocicationId()));
+						stockOrderBean.setStatus(stockOrderV.getId().getStatusDesc());
+
+						if(stockOrderV.getId().getStockOrderDate() != null){
+							stockOrderBean.setStockOrderDate(simpleDateFormat.format(stockOrderV.getId().getStockOrderDate()).toString());
+						}
+						if(stockOrderV.getId().getStockOrderTypeAssocicationId() != 0){
+							stockOrderBean.setStockOrderTypeId(String.valueOf(stockOrderV.getId().getStockOrderTypeAssocicationId()));
+						}
+						stockOrderBean.setStockOrderTypeDesc(stockOrderV.getId().getStockOrderTypeDesc().toString());
+
+						stockOrderBean.setStockRefNo(stockOrderV.getId().getStockRefNo());
+						if(stockOrderV.getId().getContactId() != 0){
+							stockOrderBean.setSupplierId(String.valueOf(stockOrderV.getId().getContactId()));
+							stockOrderBean.setSupplierName(stockOrderV.getId().getSupplier());
+						}
+						else{
+							stockOrderBean.setSupplierName(stockOrderBean.getSourceOutletName());
+						}
+						stockOrderBean.setSupplierInvoiceNo(stockOrderV.getId().getContactInvoiceNo());
+						int stockOrderId = stockOrderV.getId().getStockOrderId();						
 						stockOrderBean.setStockOrderId(Integer.toString(stockOrderId));
-						stockOrderBean.setItemCount(Integer.toString(itemCount));
-						NumberFormat formatter = new DecimalFormat("###.##");  
+						Double totalItems = stockOrderV.getId().getTotalItems().doubleValue();
+						NumberFormat formatter = new DecimalFormat("#####");  
+						String totalItem = formatter.format(totalItems);
+						stockOrderBean.setItemCount(totalItem);
+						Double totalCost = stockOrderV.getId().getTotalAmount().doubleValue();							
+						formatter = new DecimalFormat("###.##");  
 						String total = formatter.format(totalCost);
 						stockOrderBean.setTotalCost(total);
 						stockOrderBeansList.add(stockOrderBean);
 					}
-					
-					
-					
 					StockControlControllerBean stockControlControllerBean =  new StockControlControllerBean();
 					stockControlControllerBean.setStockOrderBeansList(stockOrderBeansList);
 					Configuration configurationStockTransferToSupplier = configurationMap.get("STOCK_TRANSFER_TO_SUPPLIER");

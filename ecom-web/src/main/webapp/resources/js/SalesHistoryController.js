@@ -8,12 +8,14 @@ var SalesHistoryController = ['$scope', '$http', '$window','$cookieStore','$root
 	
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
+	$rootScope.applyDateRange = false;
 	
 	
 	$scope.sesssionValidation = function(){
 			if(SessionService.validate()){
 			$scope._s_tk_com =  $cookieStore.get('_s_tk_com') ;
 			$scope.companyImagePath = $cookieStore.get('companyImagePath');
+			$scope.termsAndConditions = $cookieStore.get('termsAndConditions');
 			SalesHistoryControllerPreLoad.loadControllerData();
 			$rootScope.globalPageLoader = false;
 			$scope.InvoiceMainBeans = localStorage.getItem('salesHistory');
@@ -107,6 +109,28 @@ var SalesHistoryController = ['$scope', '$http', '$window','$cookieStore','$root
 	
 		return false;
 	}
+	
+	$("#reportrange").on("change", function(event){
+		var innerText = document.getElementById("reportrange").innerText;
+		//alert(innerText);
+		$scope.dateRange = "";
+		$scope.dateRange = innerText;
+		$scope.$apply();
+		$scope.fetchSalesReportByDateRange();
+	});
+	
+	$scope.fetchSalesReportByDateRange = function() {
+		$scope.salesReportSuccess = false;
+		$scope.salesReportError = false;
+		$scope.loading = true;
+		var dateRang = $scope.dateRange.split("-");
+		$rootScope.salesReportStartDate = dateRang[0].trim(); 
+		$rootScope.salesReportEndDate = dateRang[1].trim(); 
+		$rootScope.limit = 0;
+		$rootScope.applyDateRange = true;
+		$route.reload();
+
+	};
 	
 	
 }];

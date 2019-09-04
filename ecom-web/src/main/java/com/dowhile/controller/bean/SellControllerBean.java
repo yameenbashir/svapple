@@ -35,7 +35,11 @@ public class SellControllerBean implements Serializable{
 	private String phoneNumber ;
 	private String isReturnEnableonSell = "false"; 
 	private String isInvoiceLevelDiscountEnable = "true";
+	private String isInvoiceDetailLevelDiscountEnable = "true";
 	private String companyImagePath;
+	private String autoCreateStandardVariant;
+	private String defaultVariantName;
+	private String termsAndConditions;
 	public List<ProductBean> getProductsBean() {
 		return productsBean;
 	}
@@ -133,6 +137,37 @@ public class SellControllerBean implements Serializable{
 	 */
 	public void setCompanyImagePath(String companyImagePath) {
 		this.companyImagePath = companyImagePath;
+	}
+	public String getAutoCreateStandardVariant() {
+		return autoCreateStandardVariant;
+	}
+	public void setAutoCreateStandardVariant(String autoCreateStandardVariant) {
+		this.autoCreateStandardVariant = autoCreateStandardVariant;
+	}
+	public String getDefaultVariantName() {
+		return defaultVariantName;
+	}
+	public void setDefaultVariantName(String defaultVariantName) {
+		this.defaultVariantName = defaultVariantName;
+	}
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+	public void setTermsAndConditions(String termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
+	}
+	/**
+	 * @return the isInvoiceDetailLevelDiscountEnable
+	 */
+	public String getIsInvoiceDetailLevelDiscountEnable() {
+		return isInvoiceDetailLevelDiscountEnable;
+	}
+	/**
+	 * @param isInvoiceDetailLevelDiscountEnable the isInvoiceDetailLevelDiscountEnable to set
+	 */
+	public void setIsInvoiceDetailLevelDiscountEnable(
+			String isInvoiceDetailLevelDiscountEnable) {
+		this.isInvoiceDetailLevelDiscountEnable = isInvoiceDetailLevelDiscountEnable;
 	}
 
 }

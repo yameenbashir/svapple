@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +80,9 @@ public class SalesDetailReportController {
 					 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
 					
 				}
-				configuration = configurationService.getConfigurationByPropertyNameByCompanyId("HIDE_ORIGNAL_PRICE_INFO_REPORTS",currentUser.getCompany().getCompanyId());
+				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+				configuration = configurationMap.get("HIDE_ORIGNAL_PRICE_INFO_REPORTS");
+				//configuration = configurationService.getConfigurationByPropertyNameByCompanyId("HIDE_ORIGNAL_PRICE_INFO_REPORTS",currentUser.getCompany().getCompanyId());
 
 				int outletId = 0;
 				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
@@ -129,8 +132,8 @@ public class SalesDetailReportController {
 					}
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
+					reportParams.setGroupBy("SKU");
+					reportParams.setMainBaseColumn("SKU");
 					reportParams.setOrderBy("Product");
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);
@@ -150,8 +153,8 @@ public class SalesDetailReportController {
 					reportParams.setBaseColumn("sum(Cost_of_Goods) as Cost,Product,sum(Revenue) as Revenue,sum(Gross_Profit) as Profit,ROUND(AVG(Margin) ,2) as Margin,Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
+					reportParams.setGroupBy("SKU");
+					reportParams.setMainBaseColumn("SKU");
 					reportParams.setOrderBy("Product");
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setPrintColumns( reportType+", Product,"+"Revenue,Gross Profit,Margin,Tax");
@@ -171,8 +174,8 @@ public class SalesDetailReportController {
 					reportParams.setBaseColumn("sum(Gross_Profit) as Profit,Product,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,ROUND(AVG(Margin) ,2) as Margin,Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
+					reportParams.setGroupBy("SKU");
+					reportParams.setMainBaseColumn("SKU");
 					reportParams.setOrderBy("Product");
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setPrintColumns( reportType+", Product,"+ "Revenue,Cost of Goods,Margin,Tax");
@@ -189,14 +192,21 @@ public class SalesDetailReportController {
 
 				}else if(reportType.equals("Items Sold")){
 					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("sum(Items_Sold) ,Product,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,ROUND(AVG(Margin) ,2) as Margin ,Tax");
+					if(!isHeadOffice && configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						reportParams.setBaseColumn("sum(Items_Sold) as Items_Sold,Tax");
+						reportParams.setPrintColumns( reportType+","+ "Tax");
+					}else{
+						reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
+						reportParams.setPrintColumns( reportType+","+ "Cost of Goods,Gross Profit,Margin,Tax");
+					}
+					//reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
-					reportParams.setOrderBy("Product");
+					reportParams.setGroupBy("Product");
+					reportParams.setMainBaseColumn("Product");
+					reportParams.setOrderBy("");
 					reportParams.setPivotColumn( "CREATED_DATE");
-					reportParams.setPrintColumns( reportType+", Product,"+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
+					//reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
 					reportParams.setTableName("Sale_Details");
@@ -213,8 +223,8 @@ public class SalesDetailReportController {
 					reportParams.setBaseColumn("ROUND(AVG(Margin) ,2) as Margin,Product,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
+					reportParams.setGroupBy("SKU");
+					reportParams.setMainBaseColumn("SKU");
 					reportParams.setOrderBy("Product");
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setPrintColumns( reportType+", Product,"+ "Revenue,Cost of Goods,Gross Profit,Tax");
@@ -241,8 +251,8 @@ public class SalesDetailReportController {
 					}
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
+					reportParams.setGroupBy("SKU");
+					reportParams.setMainBaseColumn("SKU");
 					reportParams.setOrderBy("Product");
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);
@@ -268,8 +278,8 @@ public class SalesDetailReportController {
 					}
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
+					reportParams.setGroupBy("SKU");
+					reportParams.setMainBaseColumn("SKU");
 					reportParams.setOrderBy("Product");
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);
@@ -295,8 +305,8 @@ public class SalesDetailReportController {
 					}
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Product,Variant");
-					reportParams.setMainBaseColumn("Variant");
+					reportParams.setGroupBy("SKU");
+					reportParams.setMainBaseColumn("SKU");
 					reportParams.setOrderBy("Product");
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);

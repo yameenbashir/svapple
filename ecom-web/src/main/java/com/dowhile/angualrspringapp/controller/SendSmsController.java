@@ -108,7 +108,14 @@ public class SendSmsController {
 				}
 				sellControllerBean.setSmsRemained(String.valueOf(messageObj.getMessageBundleCount()-messageObj.getMessageTextLimit()));
 				sellControllerBean.setSmsUsedCount(String.valueOf(messageObj.getMessageTextLimit()));
-				List<ContactsSummmary> contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());;
+				List<ContactsSummmary> contacts = null;
+				if(currentUser.getOutlet().getIsHeadOffice()){
+					contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyId(currentUser.getCompany().getCompanyId());
+					
+				}else{
+					contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());;
+	
+				}
 				if (contacts != null) {
 					for (ContactsSummmary customer : contacts) {
 						if(customer.getId().getContactType()!=null && customer.getId().getContactType().contains("CUSTOMER")){
@@ -162,8 +169,14 @@ public class SendSmsController {
 			    smsCount= messageObj.getMessageTextLimit();		
 				
 				if(sendSMSBean.getSendAllSms()!=null && sendSMSBean.getSendAllSms().equals("true")){
-					List<ContactsSummmary> contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());;
-					
+					List<ContactsSummmary> contacts = null;
+					if(currentUser.getOutlet().getIsHeadOffice()){
+						contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyId(currentUser.getCompany().getCompanyId());
+						
+					}else{
+						contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());;
+		
+					}
 					if(messageObj!=null && contacts!=null && messageObj.getMessageBundleCount()>=messageObj.getMessageTextLimit()+contacts.size() && new Date().before(messageObj.getPackageRenewDate())){
 						String phoneNum = "";	
 						String receiverId = "";

@@ -23,9 +23,45 @@
 			<!-- Main content -->
 			<section class="content" ng-show="!globalPageLoader" ng-cloak>
   			 <div class="row">
+  			 
 	  <div class="col-md-1">
 	   </div>
 	   <div class="col-md-10">
+	   	<div class="box" >
+						<div class="row">
+							<div class="col-md-1">
+	   						</div>
+							
+								<div class="form-group">
+								
+								<div class="box-header">
+								
+									<label for="productName" class="col-sm-2 control-label">Select Date Range
+										</label>
+									<div class="col-md-3">
+									
+										<div id="reportrange"
+											style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+											<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+											<span></span> <b class="caret"></b>
+										</div>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="col-md-4">
+								
+							</div>
+							
+							<div class="col-md-1">
+								
+							</div>
+							<!-- /.box-header -->
+						</div>
+						
+						<!-- /.box-body -->
+						</div>
 	   
 	   <vd-tabs modifier="no-border large" class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
 			 
@@ -111,7 +147,7 @@
 		<div class="row footer-row">
 			<div class="col-lg-12 text-center">
 				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals
-					2017</div>
+					2019</div>
 			</div>
 		</div>
 	</div>
@@ -317,18 +353,48 @@
 												</div>
 
 												<div class="top-buffer-contact no-print"></div>
+												
 												<!-- Kites -->
 												<div class="">
-													<div class="col-xs-12 text-center" style="font-size: 9px">
-														Thank you for your Shopping.<br> No Exchange without
-														orignal Invoice.<br> No return, only exchange within
-														5 days <br>SALE ITEMS NO RETURN, NO CHANGE<br>NO
-														EXHANGE, AFTER ALTERATION <br> <br>Powered By<br>
+													<div class="col-xs-12 text-center" style="font-size: 9px"
+													 bind-html-unsafe="termsAndConditions">
+													
+														
+														
+													</div>
+													<div class="col-xs-12 text-center" style="font-size: 9px"
+													 >
+													
+														
+														<!-- <br> +92-322-6000087 -->  <br>Powered By<br>
 														---------------------------------------------------- <br>
 														<b style="font-size: 12px"> www.shopvitals.com</b>
 													</div>
 
-												</div> 
+												</div>   
+												<!-- loom care -->
+												<!-- <div class="">
+													<div class="col-xs-12 text-center" style="font-size: 9px">
+														1- To have maximum life of products you are advised
+														not to grind the products yourself. Send us back for
+														checking if there is any problem in fitting.<br>
+														2- Products can be returned / replaced within 7 days.<br>
+														3- Rusted and deshaped parts are irretrunable<br>
+														 +923226000087 <br> <br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div>   -->
+												<!-- Mart Inn -->
+												<!-- <div class="">
+													<div class="col-xs-12 text-center" style="font-size: 9px">
+														Thank you for your Shopping.<br> +923226000087 <br> <br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div>  --> 
 												
 												<!-- Xpressions 
 												<div class="">
@@ -615,3 +681,138 @@ tr.shown td.details-control {
     background: url('../app/resources/images/details_close.png') no-repeat center center;
 }
 </style>
+<script>
+	$(function() {
+
+  	  setTimeout(
+  			  function() 
+  			  {
+  				$('#myTable').DataTable(
+						{
+							responsive : true,
+							 
+							dom : 'Bfrtip',
+							caption : "Mike Smith",
+							buttons : {
+								buttons : [
+										{
+											extend : 'print',
+											text : '<i class="fa fa-print"></i> Print',
+											title : $('h1').text(),
+											key : {
+												key : 'p',
+												altkey : true
+											},
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true,
+											message : '<b> Sales Summary for for Dates</b>',
+											autoPrint : false,
+											customize : function(win) {
+												$(win.document.body)
+														.css('font-size',
+																'10pt')
+														.prepend(
+																'<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />');
+
+												$(win.document.body).find(
+														'table').addClass(
+														'compact').css(
+														'font-size', 'inherit');
+											}
+										},
+										{
+											extend : 'pdf',
+											text : '<i class="fa fa-file-pdf-o"></i> PDF',
+											title : $('h1').text(),
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true
+										},
+										{
+											extend : 'excel',
+											text : '<i class="fa fa-book"></i> Excel',
+											title : $('h1').text(),
+											key : {
+												key : 'p',
+												altkey : true
+											},
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true,
+											autoPrint : false
+										}],
+								dom : {
+									container : {
+										className : 'dt-buttons'
+									},
+									button : {
+										className : 'btn btn-default'
+									}
+								}
+							}
+						});
+  				 
+  			  }, 10);
+		
+//		$("div.header").html('Charges list');
+//		$("div.footer").html('Total');
+//		$('#myTable caption').text('Sales Report');
+
+		var start = moment().subtract(6, 'days');
+		var end = moment();
+		
+		function cb(start, end) {
+			if(!localStorage.getItem('startSalesDate') || !localStorage.getItem('endSalesDate')){
+				$('#reportrange span').html(
+						start.format('MMMM D, YYYY') + ' - '
+								+ end.format('MMMM D, YYYY'));
+			}else{
+				$('#reportrange span').html(
+						localStorage.getItem('startSalesDate')  + ' - '
+								+ localStorage.getItem('endSalesDate'));
+				
+			}
+			
+		}
+		
+		$('#reportrange').daterangepicker(
+				{
+					ranges : {
+						'Today' : [ moment(), moment() ],
+						'Yesterday' : [ moment().subtract('days', 1),
+								moment().subtract('days', 1) ],
+						'Last 7 Days' : [ moment().subtract('days', 6),
+								moment() ],
+						'Last 30 Days' : [ moment().subtract('days', 29),
+								moment() ],
+						'This Month' : [ moment().startOf('month'),
+								moment().endOf('month') ],
+						'Last Month' : [
+								moment().subtract('month', 1).startOf('month'),
+								moment().subtract('month', 1).endOf('month') ]
+					},
+					startDate : start,
+					endDate : end
+				},
+				function(start, end) {
+					localStorage.setItem('startSalesDate',start.format('MMMM D, YYYY'));
+					localStorage.setItem('endSalesDate',end.format('MMMM D, YYYY'));
+					$('#reportrange span').html(
+							start.format('MMMM D, YYYY') + ' - '
+									+ end.format('MMMM D, YYYY'));
+					$("#reportrange").trigger("change");
+				});
+
+		cb(start, end);
+		$('.ckbox label').on('click', function() {
+			$(this).parents('tr').toggleClass('selected');
+		});
+		
+
+
+	});
+</script>

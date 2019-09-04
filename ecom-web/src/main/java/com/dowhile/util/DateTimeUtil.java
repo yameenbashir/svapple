@@ -58,7 +58,27 @@ public class DateTimeUtil {
 	public static void main(String args[]){
 		
 		try{
+			String clientImageName = "brand_shopvitals.jpg";
 			
+			
+			String clientId = "1brand_kites.jpg";
+			Date date = new Date();
+			Calendar calendar = new GregorianCalendar();
+			calendar.setTime(date);
+			int year = calendar.get(Calendar.YEAR);
+			//System.out.println("Year: "+year);
+			
+			//Add one to month {0 - 11}
+			int month = calendar.get(Calendar.MONTH) + 1;
+			//System.out.println("month: "+month);
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			//System.out.println("day: "+day);
+			String str = year+""+month+""+day+""+clientId+"";
+			System.out.println("str: "+str);
+			String encoded = StringUtils.encode(str);
+			System.out.println("encoded: "+encoded);
+			String decoded = StringUtils.decode(encoded);
+			System.out.println("decoded: "+decoded);
 //			String start_dt = "February 14, 2017";
 //			DateFormat parser = new SimpleDateFormat("MMM dd, yyyy"); 
 //			Date date = (Date) parser.parse(start_dt);
@@ -68,14 +88,14 @@ public class DateTimeUtil {
 
 			String original = "2016-05-19 13:43:05.0";//2016-05-19 03:18:11.0
 			original = original.substring(0, original.lastIndexOf("."));
-			System.out.println(original);
+			//System.out.println(original);
 			
 			String input = "2016-05-19 12:43:05";
 			DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			//DateFormat outputFormat = new SimpleDateFormat("KK:mm a");
 			DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 			
-			System.out.println(outputFormat.format(inputFormat.parse(original)));
+			//System.out.println(outputFormat.format(inputFormat.parse(original)));
 			
 		}catch(Exception ex){
 			ex.printStackTrace();

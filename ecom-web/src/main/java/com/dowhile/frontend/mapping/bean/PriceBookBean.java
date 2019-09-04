@@ -28,7 +28,9 @@ public class PriceBookBean {
 	private String flatSale;
     private String flatDiscount; 
     private String active;
+    private String outeletsGroup; 
 	private List<PriceBookDetailBean> PriceBookDetailBeans;
+	private List<OutletBean> outletBeans;
 	/**
 	 * 
 	 */
@@ -51,15 +53,18 @@ public class PriceBookBean {
 	 * @param flatSale
 	 * @param flatDiscount
 	 * @param active
+	 * @param outeletsGroup
 	 * @param priceBookDetailBeans
+	 * @param outletBeans
 	 */
 	public PriceBookBean(String priceBookId, String companyId,
 			String companyName, String contactGroupId, String contactGroupName,
 			String outletId, String outletName, String priceBookName,
 			String validFrom, String validTo, String isValidOnStore,
 			String isValidOnEcom, String createdDate, String flatSale,
-			String flatDiscount, String active,
-			List<PriceBookDetailBean> priceBookDetailBeans) {
+			String flatDiscount, String active, String outeletsGroup,
+			List<PriceBookDetailBean> priceBookDetailBeans,
+			List<OutletBean> outletBeans) {
 		this.priceBookId = priceBookId;
 		this.companyId = companyId;
 		this.companyName = companyName;
@@ -76,7 +81,9 @@ public class PriceBookBean {
 		this.flatSale = flatSale;
 		this.flatDiscount = flatDiscount;
 		this.active = active;
+		this.outeletsGroup = outeletsGroup;
 		PriceBookDetailBeans = priceBookDetailBeans;
+		this.outletBeans = outletBeans;
 	}
 	/**
 	 * @return the priceBookId
@@ -271,6 +278,18 @@ public class PriceBookBean {
 		this.active = active;
 	}
 	/**
+	 * @return the outeletsGroup
+	 */
+	public String getOuteletsGroup() {
+		return outeletsGroup;
+	}
+	/**
+	 * @param outeletsGroup the outeletsGroup to set
+	 */
+	public void setOuteletsGroup(String outeletsGroup) {
+		this.outeletsGroup = outeletsGroup;
+	}
+	/**
 	 * @return the priceBookDetailBeans
 	 */
 	public List<PriceBookDetailBean> getPriceBookDetailBeans() {
@@ -282,5 +301,17 @@ public class PriceBookBean {
 	public void setPriceBookDetailBeans(
 			List<PriceBookDetailBean> priceBookDetailBeans) {
 		PriceBookDetailBeans = priceBookDetailBeans;
+	}
+	/**
+	 * @return the outletBeans
+	 */
+	public List<OutletBean> getOutletBeans() {
+		return outletBeans;
+	}
+	/**
+	 * @param outletBeans the outletBeans to set
+	 */
+	public void setOutletBeans(List<OutletBean> outletBeans) {
+		this.outletBeans = outletBeans;
 	}
 }

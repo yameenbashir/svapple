@@ -295,7 +295,7 @@ var InventoryCountActionsController = ['$scope', '$http', '$window', '$timeout',
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
-		$scope.inventoryCountBean.statusId = "8"; // Initiated status at Stock Order Creation page
+		$scope.inventoryCountBean.statusId = "8"; // Initiated status at Inventory Count page
 		$scope.inventoryCountBean.diliveryDueDate = new Date($scope.inventoryCountBean.diliveryDueDate);
 		$http.post('inventoryCount/updateInventoryCount/'+$scope._s_tk_com, $scope.inventoryCountBean)
 		.success(function(Response) {

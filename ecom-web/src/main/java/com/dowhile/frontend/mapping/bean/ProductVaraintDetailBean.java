@@ -7,9 +7,9 @@ public class ProductVaraintDetailBean {
 	private String arrtibute1;
 	private String arrtibute2;
 	private String arrtibute3;
-	private List<String> arrtibute1Values;
-	private List<String> arrtibute2Values;
-	private List<String> arrtibute3Values;
+	private String arrtibute1Values[];
+	private String arrtibute2Values[];
+	private String arrtibute3Values[];
 	public String getArrtibute1() {
 		return arrtibute1;
 	}
@@ -28,23 +28,24 @@ public class ProductVaraintDetailBean {
 	public void setArrtibute3(String arrtibute3) {
 		this.arrtibute3 = arrtibute3;
 	}
-	public List<String> getArrtibute1Values() {
+	public String[] getArrtibute1Values() {
 		return arrtibute1Values;
 	}
-	public void setArrtibute1Values(List<String> arrtibute1Values) {
+	public void setArrtibute1Values(String[] arrtibute1Values) {
 		this.arrtibute1Values = arrtibute1Values;
 	}
-	public List<String> getArrtibute2Values() {
+	public String[] getArrtibute2Values() {
 		return arrtibute2Values;
 	}
-	public void setArrtibute2Values(List<String> arrtibute2Values) {
+	public void setArrtibute2Values(String[] arrtibute2Values) {
 		this.arrtibute2Values = arrtibute2Values;
 	}
-	public List<String> getArrtibute3Values() {
+	public String[] getArrtibute3Values() {
 		return arrtibute3Values;
 	}
-	public void setArrtibute3Values(List<String> arrtibute3Values) {
+	public void setArrtibute3Values(String[] arrtibute3Values) {
 		this.arrtibute3Values = arrtibute3Values;
 	}
+	
 
 }

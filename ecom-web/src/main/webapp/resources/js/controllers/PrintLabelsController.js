@@ -47,35 +47,35 @@ var PrintLabelsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 			data : function(term) {
 				term = term.toLowerCase();
 				$scope.productVariantsBeans = [];
-				var productResults = _.filter($scope.allProducts, function(val) {
+				/*var productResults = _.filter($scope.allProducts, function(val) {
 					return val.productName.toLowerCase().includes(term) || val.sku.toLowerCase().includes(term);
 
-				});
+				});*/
 		
 				var productVariantResults = _.filter($scope.productVaraintDetailBeanList, function(val) {
-					var skuLowercase =  val.sku.toLowerCase();
-					return skuLowercase == term;
+					return val.variantAttributeName.toLowerCase().includes(term)|| val.sku.toLowerCase().includes(term);
+					//var skuLowercase =  val.sku.toLowerCase();
+//					return skuLowercase == term;
 
 				});
-				if(productVariantResults && productVariantResults.length>0){
+				/*if(productVariantResults && productVariantResults.length>0){
 					$scope.printLabelsFunc(productVariantResults[0]);
 					$scope.selectedItem = {};
 					$scope.selectedItem.item = productVariantResults[0];
 //					$scope.variantSkuFound =  true;
 //					$scope.airportName = [];
-				}
-				return productResults;
+				}*/
+				return productVariantResults;
 			},
 			renderItem : function(item) {
 				if (typeof item.firstName == 'undefined') {
 					if(!$scope.variantSkuFound){
 					var result = {
-							value : item.productName,
+							value : item.variantAttributeName,
 							label : $sce.trustAsHtml("<table class='auto-complete'>"
-									+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
-									+ item.productName + "</td>"
-									+ "<td style='width: 10%'>"
-									+ item.retailPriceExclTax + "</td>" + "</tr>"
+									+ "<tbody>" + "<tr>" + "<td style='width: 100%'>"
+									+ item.variantAttributeName + "</td>"
+									+ "</tr>"
 									+ "</tbody>" + "</table>")
 					};}
 					else{
@@ -132,7 +132,7 @@ var PrintLabelsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 	};
 	$scope.printCountChange = function(){
 		
-		$scope.layoutproducts = [];
+		//$scope.layoutproducts = [];
 		var product = $scope.selectedItem.item
 		$scope.printCount =  $scope.printCounting;
 		
@@ -140,9 +140,16 @@ var PrintLabelsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 			$scope.printLabelsProduct = {};
 			$scope.printLabelsProduct.sku = product.sku;
 			
-			$scope.printLabelsProduct.productName = product.productName;
 			if(product.variantAttributeName){
-				$scope.printLabelsProduct.productName = "" + $scope.printLabelsProduct.productName  +" " + product.variantAttributeName.replaceAll("/","-");
+				//$scope.printLabelsProduct.productName = "" + $scope.printLabelsProduct.productName  +" " + product.variantAttributeName.replaceAll("/","-");
+				var productInfo = product.variantAttributeName.split("/");
+				$scope.printLabelsProduct.productName = "" +  product.variantAttributeName.replaceAll("/","-");
+				$scope.printLabelsProduct.productNameOnly=product.productName;
+				$scope.printLabelsProduct.variantAttributeValue1= productInfo[1];
+				$scope.printLabelsProduct.variantAttributeValue2= productInfo[2];
+				$scope.printLabelsProduct.productDesc = product.productDesc;
+			}else{
+				$scope.printLabelsProduct.productName = product.productName;
 			}
 			$scope.printLabelsProduct.price = product.netPrice;
 			$scope.printLabelsProduct.id=index;
@@ -153,7 +160,7 @@ var PrintLabelsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 			$scope.printLabels =  false;
 			$scope.printCounting = "";
 		    }, 1500);
-	}
+	};
 	$scope.layoutproducts = [];
 	$scope.layoutproduct = {};
 	$scope.printLoading = false;
@@ -164,13 +171,17 @@ var PrintLabelsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 		$scope.printLoading = true;
 		$scope.printLabelsProduct.sku = product.sku;
 		
-		$scope.printLabelsProduct.productName = product.productName;
+		
 		if(product.variantAttributeName){
 			//$scope.printLabelsProduct.productName = "" + $scope.printLabelsProduct.productName  +" " + product.variantAttributeName.replaceAll("/","-");
 			var productInfo = product.variantAttributeName.split("/");
-			$scope.printLabelsProduct.variantAttributeValue1= productInfo[0];
-			$scope.printLabelsProduct.variantAttributeValue2= productInfo[1];
-			$scope.printLabelsProduct.productDesc = product.productDesc
+			$scope.printLabelsProduct.productName = "" +  product.variantAttributeName.replaceAll("/","-");
+			$scope.printLabelsProduct.productNameOnly=product.productName;
+			$scope.printLabelsProduct.variantAttributeValue1= productInfo[1];
+			$scope.printLabelsProduct.variantAttributeValue2= productInfo[2];
+			$scope.printLabelsProduct.productDesc = product.productDesc;
+		}else{
+			$scope.printLabelsProduct.productName = product.productName;
 		}
 		$scope.printLabelsProduct.price = product.netPrice;
 //		$rootScope.productId = angular.copy($scope.product.productId);
@@ -216,38 +227,56 @@ var PrintLabelsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 			$scope.printOptionsContinous = false;
 			$scope.printOptionsContinousLarge = false;
 			$scope.printOptionsContinousNew = false;
+			$scope.printOptionsContinousNewZebra = false;
 			$scope.printThisElementA4 = "printThisElement";
 			$scope.printThisElementContinous = "";
 			$scope.printThisElementContinousLarge = "";
 			$scope.printThisElementContinousNew = "";
+			$scope.printThisElementContinousNewZebra = "";
 		}else if($scope.printOptions=="Continous"){
 			$scope.printOptionsA4 = false;
 			$scope.printOptionsContinous = true;
 			$scope.printOptionsContinousLarge = false;
 			$scope.printOptionsContinousNew = false;
+			$scope.printOptionsContinousNewZebra = false;
 			$scope.printThisElementA4 = "";
 			$scope.printThisElementContinous = "printThisElement";
 			$scope.printThisElementContinousLarge = "";
 			$scope.printThisElementContinousNew = "";
+			$scope.printThisElementContinousNewZebra = "";
 		}else if($scope.printOptions=="ContinousNew"){
 			$scope.printOptionsA4 = false;
 			$scope.printOptionsContinous = false;
 			$scope.printOptionsContinousLarge = false;
 			$scope.printOptionsContinousNew = true;
+			$scope.printOptionsContinousNewZebra = false;
 			$scope.printThisElementA4 = "";
 			$scope.printThisElementContinousNew = "printThisElement";
 			$scope.printThisElementContinousLarge = "";
 			$scope.printThisElementContinous = "";
+			$scope.printThisElementContinousNewZebra = "";
 		}else if($scope.printOptions=="ContinousLarge"){
 			$scope.printOptionsA4 = false;
 			$scope.printOptionsContinous = false;
 			$scope.printOptionsContinousLarge = true;
 			$scope.printOptionsContinousNew = false;
+			$scope.printOptionsContinousNewZebra = false;
 			$scope.printThisElementA4 = "";
 			$scope.printThisElementContinous = "";
 			$scope.printThisElementContinousLarge = "printThisElement";
 			$scope.printThisElementContinousNew = "";
-			
+			$scope.printThisElementContinousNewZebra = "";
+		}else if($scope.printOptions=="ContinousNewZebra"){
+			$scope.printOptionsA4 = false;
+			$scope.printOptionsContinous = false;
+			$scope.printOptionsContinousLarge = false;
+			$scope.printOptionsContinousNew = false;
+			$scope.printOptionsContinousNewZebra = true;
+			$scope.printThisElementA4 = "";
+			$scope.printThisElementContinousNew = "";
+			$scope.printThisElementContinousLarge = "";
+			$scope.printThisElementContinous = "";
+			$scope.printThisElementContinousNewZebra = "printThisElement";
 		}
 		
 		

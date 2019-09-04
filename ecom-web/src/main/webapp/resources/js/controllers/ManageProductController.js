@@ -101,7 +101,7 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 
 	$scope.changeHandler  = function(productBean){
-		$scope.productBean.sku = productBean.productName;
+		//$scope.productBean.sku = productBean.productName;
 		$scope.productBean.productHandler = productBean.productName;
 	};
 	$scope.removeFromOne = function(value){

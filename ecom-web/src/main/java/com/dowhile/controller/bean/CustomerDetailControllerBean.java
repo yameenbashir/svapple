@@ -2,6 +2,7 @@ package com.dowhile.controller.bean;
 
 import java.util.List;
 
+import com.dowhile.angualrspringapp.beans.SalesHistory;
 import com.dowhile.frontend.mapping.bean.CustomerPaymentsBean;
 
 public class CustomerDetailControllerBean {
@@ -12,8 +13,39 @@ public class CustomerDetailControllerBean {
 	private String totalSpent;
 	private String storeCredit;
 	private String totalEarned;
+	private SalesHistory salesHistory;
 	
 	private List<CustomerPaymentsBean> customerPaymentsBeans;
+
+	/**
+	 * 
+	 */
+	public CustomerDetailControllerBean() {
+	}
+
+	/**
+	 * @param customerGroup
+	 * @param contactName
+	 * @param balance
+	 * @param totalSpent
+	 * @param storeCredit
+	 * @param totalEarned
+	 * @param salesHistory
+	 * @param customerPaymentsBeans
+	 */
+	public CustomerDetailControllerBean(String customerGroup,
+			String contactName, String balance, String totalSpent,
+			String storeCredit, String totalEarned, SalesHistory salesHistory,
+			List<CustomerPaymentsBean> customerPaymentsBeans) {
+		this.customerGroup = customerGroup;
+		this.contactName = contactName;
+		this.balance = balance;
+		this.totalSpent = totalSpent;
+		this.storeCredit = storeCredit;
+		this.totalEarned = totalEarned;
+		this.salesHistory = salesHistory;
+		this.customerPaymentsBeans = customerPaymentsBeans;
+	}
 
 	public String getCustomerGroup() {
 		return customerGroup;
@@ -63,6 +95,14 @@ public class CustomerDetailControllerBean {
 		this.totalEarned = totalEarned;
 	}
 
+	public SalesHistory getSalesHistory() {
+		return salesHistory;
+	}
+
+	public void setSalesHistory(SalesHistory salesHistory) {
+		this.salesHistory = salesHistory;
+	}
+
 	public List<CustomerPaymentsBean> getCustomerPaymentsBeans() {
 		return customerPaymentsBeans;
 	}
@@ -71,6 +111,4 @@ public class CustomerDetailControllerBean {
 			List<CustomerPaymentsBean> customerPaymentsBeans) {
 		this.customerPaymentsBeans = customerPaymentsBeans;
 	}
-
-
 }

@@ -14,7 +14,14 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 	$scope.stockOrderDetailBean = {};
 	$scope.delStockOrderDetailBean = {};
 	$scope.stockOrderDetailBeansList = [];
+	$scope.itemCountTotal = 0;
 	$scope.counter = 1;
+	$scope.hideRefValues = false;
+	$scope.productVariantMap = [];
+	$scope.productMap = [];
+	$scope.productSKU = '';
+	$scope.skudisable = false;
+	$scope.inputTypeScan = true;
 
 	$scope.sessionValidation = function(){
 
@@ -23,6 +30,7 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 			$scope.stockOrderBean = $cookieStore.get('_e_cOt_pio');
 			$scope.roleId = $cookieStore.get('_s_tk_rId');
 			$scope.headOffice = $cookieStore.get('_s_tk_iho');
+			$scope.stockOrderBean.itemCount = 0;
 			$scope.data = StockReturnDetailsControllerPreLoad.loadControllerData();
 			$scope.fetchData();			
 			$scope.isAdmin();
@@ -76,6 +84,12 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 						$scope.productBeansList.push($scope.productVariantBeansList[i]);
 					}
 				}
+				if($scope.data.productVariantMap!=null){
+					$scope.productVariantMap = $scope.data.productVariantMap;
+				}
+				if($scope.data.productMap!=null){
+					$scope.productMap = $scope.data.productMap;
+				}
 			}
 		}
 		$rootScope.globalPageLoader = false;
@@ -125,6 +139,7 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 	$scope.addProduct  = function() {
 		$scope.dualEntry = false;
 		var obj = $scope.productVariantBean;		
+		var productVariantBeantoReplace = {};
 		if($scope.stockOrderDetailBeansList.length > 0){
 			if(obj.isProduct != "true"){
 				angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
@@ -148,6 +163,11 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 						else{
 							value.total = "0";
 						}
+						productVariantBeantoReplace =angular.copy(value);;
+						var index = $scope.stockOrderDetailBeansList.indexOf(value);
+						$scope.stockOrderDetailBeansList.splice(index, 1);
+						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
+						$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -176,7 +196,7 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 					$scope.stockOrderDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
-					$scope.stockOrderDetailBeansList.push($scope.stockOrderDetailBean);
+					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 					$scope.dualEntry = false;
 				}
 			}
@@ -202,6 +222,11 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 						else{
 							value.total = "0";
 						}
+						productVariantBeantoReplace =angular.copy(value);;
+						var index = $scope.stockOrderDetailBeansList.indexOf(value);
+						$scope.stockOrderDetailBeansList.splice(index, 1);
+						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
+						$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -230,7 +255,7 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 					$scope.stockOrderDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
-					$scope.stockOrderDetailBeansList.push($scope.stockOrderDetailBean);
+					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 					$scope.dualEntry = false;
 				}
 			}
@@ -257,7 +282,7 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 			$scope.stockOrderDetailBean.order = $scope.counter;
 			$scope.counter++;
 			$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
-			$scope.stockOrderDetailBeansList.push($scope.stockOrderDetailBean);
+			$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 		}
 		$scope.calculateTotal(obj.productVariantId);
 		$scope.stockOrderDetailBean = {};
@@ -274,18 +299,45 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 	};
 
 	$scope.delStockOrderDetail = function(){
+		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
+			$scope.error = false;
+			$scope.loading = true;
+			$http.post('purchaseOrderDetails/deleteStockOrderDetail/'+$scope._s_tk_com, $scope.delStockOrderDetailBean)
+			.success(function(Response) {
+				$scope.loading = false;					
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {		
+					$scope.loading = false;
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
 			if(value.productVariantId == $scope.delStockOrderDetailBean.productVariantId && value.isProduct == $scope.delStockOrderDetailBean.isProduct){
 				var index = $scope.stockOrderDetailBeansList.indexOf(value);
 				$scope.stockOrderDetailBeansList.splice(index, 1);
 			}
-		});	
-
+		});
 		$scope.showConfirmDeletePopup = false; 
 		$scope.delStockOrderDetailBean = {};
 		$scope.arrangeOrder();
-		$scope.calculateGrandTotal();	
+		$scope.calculateGrandTotal();
 		$scope.calculateItemCount();
+		$scope.calculateRecItemCount();
 	};
 
 	$scope.arrangeOrder = function(){
@@ -374,7 +426,7 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;
-			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;					
 				$scope.responseStatus = Response.status;
@@ -417,7 +469,7 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 			$scope.error = false;
 			$scope.loading = true;
 			$scope.stockOrderBean.statusId = "3"; // Completed status
-			$http.post('purchaseOrderDetails/updateAndReturnStockOrderDetails/'+$scope._s_tk_com+'/'+$scope.grandTotal, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateAndReturnStockOrderDetails/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;
 
@@ -454,11 +506,17 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 
 	$scope.autoCompleteOptions = {
 			minimumChars : 1,
-			dropdownHeight : '200px',
+			dropdownHeight : '105px',
 			data : function(term) {
 				term = term.toLowerCase();
+				if(term.length>15){
+					$scope.airportName = [];
+					document.getElementById("lov").disabled = false;
+					document.getElementById("lov").focus();
+					return
+				}
 				$scope.productVariantsBeans = [];
-
+				document.getElementById("lov").disabled = true;
 				var customerResults = _.filter($scope.productBeansList, function(val) {
 					return val.variantAttributeName.toLowerCase().includes(term) || val.sku.toLowerCase().includes(term);
 				});				
@@ -467,20 +525,44 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 					return skuLowercase == term;
 
 				});
+				if(customerResults.length == 0){
+					customerResults = _.filter($scope.allProductBeansList, function(val) {
+						return val.variantAttributeName.toLowerCase().includes(term) || val.sku.toLowerCase().includes(term);
+					});				
+					customerVariantResults = _.filter($scope.allProductBeansList, function(val) {
+						var skuLowercase =  val.sku.toLowerCase();
+						return skuLowercase == term;
+
+					});	
+				}
 				if(customerVariantResults && customerVariantResults.length>0){
+					$scope.hideRefValues = true;
 					$scope.stockOrderDetailBean.orderProdQty = 1;
 					$scope.productVariantBean = customerVariantResults[0];
 					$scope.checkProductStatus();
+					//document.getElementById("lov").disabled = false;
 					$scope.selectedItem = {};
 					$scope.selectedItem.item = customerVariantResults[0];
 //					$scope.variantSkuFound =  true;
-//					$scope.airportName = [];
+					$scope.airportName = [];
+					document.getElementById("lov").disabled = false;
+					document.getElementById("lov").focus();
+				}else{
+					if(term.length>15){
+						$scope.airportName = [];
+					}
+					//$scope.airportName = [];
+					document.getElementById("lov").disabled = false;
+					document.getElementById("lov").focus();
+					$scope.hideRefValues = false;
 				}
+				////document.getElementById("lov").disabled = false;
 				return customerResults;
 			},
 			renderItem : function(item) {
-
-				var result = {
+				var result = [];
+				if($scope.hideRefValues == false){
+				result = {
 						value : item.variantAttributeName,
 						label : $sce.trustAsHtml("<table class='auto-complete'>"
 								+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
@@ -488,16 +570,39 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 								+ "<td style='width: 10%'>" + "</td>"
 								+ "</tr>" + "</tbody>" + "</table>")
 				};
+				}
+				else{
 
+					result = null;
+				}
 				return result;
 			},
 			itemSelected : function(item) {
-
+				//document.getElementById("lov").disabled = false;
 				$scope.productVariantBean = item.item;
 				//	$scope.airportName = [];
 
 			}
 	};
 
+	$scope.skuinput = function(){
+		if($scope.productSKU.includes('-')||$scope.productSKU.length>6){
+			if($scope.productVariantMap[$scope.productSKU.toLowerCase()] != null){
+				$scope.skudisable = true;
+				$scope.stockOrderDetailBean.orderProdQty = 1;
+				$scope.productVariantBean = $scope.productVariantMap[$scope.productSKU.toLowerCase()];
+				//console.log($scope.productVariantMap[$scope.productSKU]);			
+				$scope.checkProductStatus();
+				$scope.productSKU = '';
+				$scope.skudisable = false;
+			}else{
+				if($scope.productSKU.length>15){
+					$scope.productSKU = '';
+					$scope.skudisable = false;
+				}
+			}
+		}
+	};
+	
 	$scope.sessionValidation();
 }];

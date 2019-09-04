@@ -5,25 +5,40 @@
  * 
  * @constructor
  */
-var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope', '$timeout', '$route', 'SessionService', 'StatusControllerPreLoad',function($scope, $http, $window, $cookieStore,$rootScope, $timeout, $route, SessionService, StatusControllerPreLoad) {
+var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope', '$timeout', '$route', 'SessionService','StatusControllerPreLoad', function($scope, $http, $window, $cookieStore,$rootScope, $timeout, $route, SessionService,StatusControllerPreLoad) {
 
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
 	$scope.brandSuccess = false;
 	$scope.brandError = false;
 	$scope.brandBean = {};
-
+	
 	$scope.sessionValidation = function() {
-
-		$scope._s_tk_com = $cookieStore.get('_s_tk_com');
+		/* $rootScope.newflag = false;
+		
+		 localforage.getItem('invoiceMainBeanNewList').then(function(value) {
+			 $scope.invoiceMainBeanStatusList = value;
+			 localforage.setItem('InvoiceMainBeanList', $scope.invoiceMainBeanStatusList);
+			
+		 });*/
 		$scope.fetchData();
 	};
 
 	$scope.fetchData = function() {
 		
-		$scope.invoiceMainBeanList = StatusControllerPreLoad.loadControllerData();
-		if(typeof ($scope.invoiceMainBeanList) == "undefined" || $scope.invoiceMainBeanList==null){
-			$scope.invoiceMainBeanList = [];
+		$scope._s_tk_com = $cookieStore.get('_s_tk_com');
+		$scope.invoiceMainBeanStatusList = StatusControllerPreLoad.loadControllerData();
+		if($scope.invoiceMainBeanStatusList==null){
+			localforage.getItem('invoiceMainBeanNewList').then(function(value) {
+				 $scope.invoiceMainBeanStatusList = value;
+				 
+				 localforage.setItem('InvoiceMainBeanList', $scope.invoiceMainBeanStatusList);
+				 if(value!=null){
+					//alert("new has data so $route.reload();");
+					 $route.reload();
+				 }
+				
+			 });
 		}
 		$rootScope.globalPageLoader = false;
 		

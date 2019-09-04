@@ -80,6 +80,40 @@ var StockSupplierTransferController = ['$scope', '$http','$filter', '$window','$
 			if($scope.data.supplierBeansList!=null){
 				$scope.supplierList = $scope.data.supplierBeansList;
 			}
+			$scope.stockOrderBean.stockOrderTypeId = "5"; // Supplier Stock Transfer
+			$http.post('purchaseOrder/stockSupplierTransferRetailPrice/'+$scope._s_tk_com, $scope.stockOrderBean)
+			.success(function(Response) {				
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {
+					if(Response.data !=null){
+						if(Response.data == "true"){
+							$scope.stockOrderBean.retailPriceBill = true;
+						}
+						else{
+							$scope.stockOrderBean.retailPriceBill = false;
+						}
+					}
+					else{
+						$scope.stockOrderBean.retailPriceBill = false;
+					}
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
+
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
 		}
 		$rootScope.globalPageLoader = false;
 	};

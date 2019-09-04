@@ -18,6 +18,11 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 	$scope.stockOrderDetailBeansList = [];
 	$scope.counter = 1;
 	$scope.hideRefValues = false;
+	$scope.productVariantMap = [];
+	$scope.productMap = [];
+	$scope.productSKU = '';
+	$scope.skudisable = false;
+	$scope.inputTypeScan = true;
 
 	$scope.sessionValidation = function(){
 
@@ -28,6 +33,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			$scope.stockOrderBean = $cookieStore.get('_ct_bl_ost');
 			$scope.stockOrderBean.diliveryDueDate = new Date($scope.stockOrderBean.diliveryDueDate);
 			$scope.stockOrderBean.itemCount = 0;
+			$scope.itemCountTotal = 0;
 			$scope.stockOrderBean.recItemCount = 0;
 			$scope.calculateItemCount();
 			$scope.calculateRecItemCount();
@@ -61,6 +67,12 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 				for (var i = 0; i < $scope.productVariantBeansList.length; i++) {
 					$scope.productBeansList.push($scope.productVariantBeansList[i]);
 				}
+			}
+			if($scope.data.productVariantMap!=null){
+				$scope.productVariantMap = $scope.data.productVariantMap;
+			}
+			if($scope.data.productMap!=null){
+				$scope.productMap = $scope.data.productMap;
 			}
 			if($scope.data.outletBeansList!=null){
 				$scope.outletList = $scope.data.outletBeansList;
@@ -405,13 +417,39 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 	};
 
 	$scope.delStockOrderDetail = function(){
+		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
+			$scope.error = false;
+			$scope.loading = true;
+			$http.post('purchaseOrderDetails/deleteStockOrderDetail/'+$scope._s_tk_com, $scope.delStockOrderDetailBean)
+			.success(function(Response) {
+				$scope.loading = false;					
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {		
+					$scope.loading = false;
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
 			if(value.productVariantId == $scope.delStockOrderDetailBean.productVariantId && value.isProduct == $scope.delStockOrderDetailBean.isProduct){
 				var index = $scope.stockOrderDetailBeansList.indexOf(value);
 				$scope.stockOrderDetailBeansList.splice(index, 1);
 			}
-		});	
-
+		});
 		$scope.showConfirmDeletePopup = false; 
 		$scope.delStockOrderDetailBean = {};
 		$scope.arrangeOrder();
@@ -445,11 +483,19 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 
 	$scope.calculateItemCount = function(){
 		$scope.stockOrderBean.itemCount = 0;
+		$scope.itemCountTotal = "0";
 		if($scope.stockOrderDetailBeansList != null){
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
 				$scope.stockOrderBean.itemCount = parseInt($scope.stockOrderBean.itemCount) + parseInt($scope.stockOrderDetailBeansList[i].orderProdQty);
 				if(isNaN($scope.stockOrderBean.itemCount)){
 					$scope.stockOrderBean.itemCount = "0";
+				}
+				if(isNaN($scope.stockOrderDetailBeansList[i].total)){
+					$scope.stockOrderDetailBeansList[i].total = "0";
+				}
+				$scope.itemCountTotal = parseFloat($scope.itemCountTotal) + parseFloat($scope.stockOrderDetailBeansList[i].total);
+				if(isNaN($scope.itemCountTotal)){
+					$scope.itemCountTotal = "0";
 				}
 			}
 		}
@@ -557,7 +603,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;
-			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com+'/'+$scope.itemCountTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;					
 				$scope.responseStatus = Response.status;
@@ -600,7 +646,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;
-			$http.post('purchaseOrderDetails/updateAndReceiveStockOrderDetails/'+$scope._s_tk_com+'/'+$scope.grandTotal, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateAndReceiveStockOrderDetails/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.recItemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;					
 				$scope.responseStatus = Response.status;
@@ -655,7 +701,16 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 					return skuLowercase == term;
 
 				});
-				
+				if(customerResults.length == 0){
+					customerResults = _.filter($scope.allProductBeansList, function(val) {
+						return val.variantAttributeName.toLowerCase().includes(term) || val.sku.toLowerCase().includes(term);
+					});				
+					customerVariantResults = _.filter($scope.allProductBeansList, function(val) {
+						var skuLowercase =  val.sku.toLowerCase();
+						return skuLowercase == term;
+
+					});	
+				}
 				if(customerVariantResults && customerVariantResults.length>0){
 					$scope.hideRefValues = true;
 					$scope.stockOrderDetailBean.orderProdQty = 1;
@@ -683,14 +738,14 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			renderItem : function(item) {
 				var result = [];
 				if($scope.hideRefValues == false){
-				result = {
-						value : item.variantAttributeName,
-						label : $sce.trustAsHtml("<table class='auto-complete'>"
-								+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
-								+ item.variantAttributeName + "</td>"
-								+ "<td style='width: 10%'>" + "</td>"
-								+ "</tr>" + "</tbody>" + "</table>")
-				};
+					result = {
+							value : item.variantAttributeName,
+							label : $sce.trustAsHtml("<table class='auto-complete'>"
+									+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
+									+ item.variantAttributeName + "</td>"
+									+ "<td style='width: 10%'>" + "</td>"
+									+ "</tr>" + "</tbody>" + "</table>")
+					};
 				}
 				else{
 
@@ -706,5 +761,23 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			}
 	};
 
+	$scope.skuinput = function(){
+		if($scope.productSKU.includes('-')||$scope.productSKU.length>6){
+			if($scope.productVariantMap[$scope.productSKU.toLowerCase()] != null){
+				$scope.skudisable = true;
+				$scope.stockOrderDetailBean.orderProdQty = 1;
+				$scope.productVariantBean = $scope.productVariantMap[$scope.productSKU.toLowerCase()];
+				//console.log($scope.productVariantMap[$scope.productSKU]);			
+				$scope.checkProductStatus();
+				$scope.productSKU = '';
+				$scope.skudisable = false;
+			}else{
+				if($scope.productSKU.length>15){
+					$scope.productSKU = '';
+					$scope.skudisable = false;
+				}
+			}
+		}
+	};
 	$scope.sessionValidation();
 }];

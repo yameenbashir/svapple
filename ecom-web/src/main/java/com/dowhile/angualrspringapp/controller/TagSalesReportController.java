@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dowhile.Configuration;
 import com.dowhile.Outlet;
 import com.dowhile.User;
 import com.dowhile.beans.ReportParams;
 import com.dowhile.beans.TableData;
+import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
@@ -54,7 +57,7 @@ public class TagSalesReportController {
 	private OutletService outletService;
 	
 	private static List<OutletBean> outletBeans;
-
+	private Configuration configuration =null;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getTagSalesReportByDateRange/{sessionId}/{startDate}/{endDate}/{reportType}/{reportDateType}/{outletName}", method = RequestMethod.POST)
@@ -69,6 +72,13 @@ public class TagSalesReportController {
 			User currentUser = (User) session.getAttribute("user");
 			try {
 				boolean completeReport = false;
+				boolean isHeadOffice = false;
+				if(currentUser.getOutlet().getIsHeadOffice()!=null){
+					 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
+					
+				}
+				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+				configuration = configurationMap.get("HIDE_ORIGNAL_PRICE_INFO_REPORTS");
 				int outletId = 0;
 				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
 					Response response = getOutlets(sessionId, request);
@@ -172,14 +182,21 @@ public class TagSalesReportController {
 							
 				}else if(reportType.equals("Items Sold")){
 					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Margin,Tax");
+					if(!isHeadOffice && configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						reportParams.setBaseColumn("sum(Items_Sold) as Items_Sold,Tax");
+						reportParams.setPrintColumns( reportType+","+ "Tax");
+					}else{
+						reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
+						reportParams.setPrintColumns( reportType+","+ "Cost of Goods,Gross Profit,Margin,Tax");
+					}
+					//reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Tag");
-					reportParams.setMainBaseColumn("Tag");
+					reportParams.setGroupBy("Product");
+					reportParams.setMainBaseColumn("Product");
 					reportParams.setOrderBy("");
 					reportParams.setPivotColumn( "CREATED_DATE");
-					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
+					//reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
 					reportParams.setTableName("tag_sales_report");
@@ -190,7 +207,7 @@ public class TagSalesReportController {
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
 					}
 					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
-							
+
 				}else if(reportType.equals("Margin")){
 					ReportParams reportParams = new ReportParams();
 					reportParams.setBaseColumn("Margin,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Tax");

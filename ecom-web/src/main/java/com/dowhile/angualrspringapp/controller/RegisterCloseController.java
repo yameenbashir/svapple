@@ -98,7 +98,7 @@ public class RegisterCloseController {
 			DailyRegisterBean dailyRegisterBean = new DailyRegisterBean();
 			List<CashManagmenBean> cashManagmenBeans = new ArrayList<CashManagmenBean>();
 			try {
-				dailyRegister= dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
+				dailyRegister= dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),currentUser.getUserId());
 				double cashAmtExpected = 0;
 				double cashAmtReceived = 0;
 				double creditAmtExpected = 0; 
@@ -128,7 +128,7 @@ public class RegisterCloseController {
 						}
 						dailyRegisterBean.setPaymentReceived(String.valueOf(cashAmtExpected));*/
 
-					cashAmtReceived = saleService.getTodaysRevenue(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+					cashAmtReceived = saleService.getTodaysRevenue(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(),dailyRegister.getDailyRegisterId());
 
 					dailyRegisterBean.setPaymentReceived(String.valueOf(cashAmtReceived));
 

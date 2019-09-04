@@ -8,6 +8,7 @@ var HomeController = ['$scope', '$http', '$window','$cookieStore','$rootScope','
 	
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
+	$scope.globalPageLoader = false;
 	//SessionService.validate();	
 	$scope.sessionValidation = function(){
 

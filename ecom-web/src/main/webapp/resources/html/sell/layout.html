@@ -118,7 +118,7 @@
 												<span   class="text" style="color: gray; margin-right: 15px;"
 												ng-bind="invoiceDetail.productQuantity"></span> <span
 												class="text" ng-if="invoiceDetail.productVarientName"
-												ng-bind="invoiceDetail.productName +  ' - '+ invoiceDetail.productVarientName"></span>
+												ng-bind="invoiceDetail.productName +  '  '+ invoiceDetail.productVarientName"></span>
 												<span   class="text" ng-if="!invoiceDetail.productVarientName"
 												ng-bind="invoiceDetail.productName"></span>
 
@@ -152,7 +152,7 @@
 												</div>
 												<div class="col-md-6">
 													<input ng-blur="calculateBill(false,invoiceDetail,'add')"
-														ng-readonly="itemDetailDisable"
+														ng-readonly="isInvoiceDetailLevelDiscountEnable"
 														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
 														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
 														name="tenderedAmount"
@@ -162,7 +162,7 @@
 												</div>
 												<div class="col-md-3">
 													<input ng-blur="calculateBill(true,invoiceDetail,'add')"
-														ng-readonly="itemDetailDisable"
+														ng-readonly="isInvoiceDetailLevelDiscountEnable"
 														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
 														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
 														name="tenderedAmount"
@@ -421,7 +421,7 @@
 
 															<span class="text"
 																ng-if="invoiceDetails.productVarientName"
-																ng-bind="invoiceDetails.productName +  ' - '+ invoiceDetails.productVarientName"></span>
+																ng-bind="invoiceDetails.productName +  '  '+ invoiceDetails.productVarientName"></span>
 															<span class="text"
 																ng-if="!invoiceDetails.productVarientName"
 																ng-bind="invoiceDetails.productName"></span>
@@ -521,8 +521,8 @@
 												</div>
 
 												<div class="top-buffer-contact no-print"></div>
-												<!-- Kites  -->
-												<div class="">
+												<!-- Kites -->
+												<!-- <div class="">
 													<div class="col-xs-12 text-center" style="font-size: 9px">
 														Thank you for your Shopping.<br> No Exchange without
 														orignal Invoice.<br> No return, only exchange within
@@ -532,9 +532,27 @@
 														<b style="font-size: 12px"> www.shopvitals.com</b>
 													</div>
 
-												</div>  
+												</div>  -->
+												<!-- loom care -->
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size: 9px"
+													 bind-html-unsafe="sellControllerBean.termsAndConditions">
+													
+														
+														
+													</div>
+													<div class="col-xs-12 text-center" style="font-size: 9px"
+													 >
+													
+														
+														<!-- <br> +92-322-6000087 -->  <br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div>   
 												
-												<!-- Xpressions 
+												<!-- Xpressions  
 												<div class="">
 													<div class="col-xs-12 text-center" style="font-size: 8px">
 														Exchange can be furnished within 3 days if product is not user or altered/<b>No Replaced</b>.
@@ -549,7 +567,7 @@
 														<b style="font-size: 12px"> www.shopvitals.com</b>
 													</div>
 
-												</div>  -->
+												</div> -->
 												<!-- Style & Style  
 												<div class="">
 													<div class="col-xs-12 text-center" style="font-size:10px; font-family: monospaced; font-weight: bolder;">
@@ -761,6 +779,10 @@
 										<hr class="vd-hr">
 										<a href=""><i class="fa fa-user"></i>
 											{{selectCustomerName}}</a>
+										<hr class="vd-hr">
+										<a href="" 
+											ng-click="deleteCustomerOrCreate()"><i class="fa fa-remove" ></i>
+											Click Here to Remove Customer</a>
 									</div>
 								</div>
 									<div class="row" >
@@ -827,7 +849,7 @@
 	<div class="row footer-row">
 		<div class="col-lg-12 text-center">
 			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
-				ShopVitals 2018</div>
+				ShopVitals 2019</div>
 		</div>
 	</div>
 </div>

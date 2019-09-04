@@ -151,4 +151,26 @@ public class SendSMS {
 
 		
 	}
+	
+	public static void main (String args[]){
+		try{
+			StringBuffer response = new StringBuffer();
+			String url = "https://pk.eocean.us/APIManagement/API/RequestAPI?user=eoceantest&pwd=APjmG4FwuMXoDDgdGzyBI%2brF%2boDpuQAxjmFSrAISmVDk0Z6wKREJfDpcfod9VnRQcA%3d%3d&sender=Eocean%20Test&reciever=03046664547,03214179684,03214823566,03211660055&msg-data=Welcome%20SV%20Testing%20on%20Eocen&response=string";
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			con.setRequestMethod("GET");
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			System.out.println(response.toString());
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
 }

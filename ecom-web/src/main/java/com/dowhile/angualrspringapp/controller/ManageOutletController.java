@@ -425,8 +425,8 @@ public class ManageOutletController {
 						outletBean.setAddressbean(addressBean);
 						
 						try {
-							if(registerService.getRegestersByOutletId(outlet.getOutletId(),currentUser.getCompany().getCompanyId())!=null){
-								List<Register> regiserList = registerService.getRegestersByOutletId(outlet.getOutletId(),currentUser.getCompany().getCompanyId());
+							if(registerService.getRegestersByOutletId(outlet.getOutletId(),currentUser.getCompany().getCompanyId(),currentUser.getUserId())!=null){
+								List<Register> regiserList = registerService.getRegestersByOutletId(outlet.getOutletId(),currentUser.getCompany().getCompanyId(),currentUser.getUserId());
 								if(regiserList!=null && regiserList.size()>0){
 									for(Register register:regiserList){
 										RegisterBean regiseBean = new RegisterBean();

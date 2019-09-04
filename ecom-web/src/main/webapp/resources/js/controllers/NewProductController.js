@@ -100,6 +100,9 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 	
 
 	$scope.changeHandler  = function(productBean){
+		/*if(productBean.productName){
+			
+		}*/
 		$scope.productBean.sku = productBean.productName;
 		$scope.productBean.productHandler = productBean.productName;
 	};

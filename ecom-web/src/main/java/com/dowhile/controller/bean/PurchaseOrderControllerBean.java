@@ -3,9 +3,12 @@
  */
 package com.dowhile.controller.bean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dowhile.frontend.mapping.bean.OutletBean;
+import com.dowhile.frontend.mapping.bean.ProductBean;
 import com.dowhile.frontend.mapping.bean.ProductVariantBean;
 import com.dowhile.frontend.mapping.bean.StockOrderBean;
 import com.dowhile.frontend.mapping.bean.StockOrderTypeBean;
@@ -24,6 +27,8 @@ public class PurchaseOrderControllerBean {
 	private List<ProductVariantBean> productVariantBeansList;
 	private String retailPriceBill;
 	private List<StockOrderBean> stockTransferOrderBeansList;
+	private Map<String, ProductVariantBean> productVariantMap = new HashMap<>();
+	private Map<String, ProductBean> productMap = new HashMap<>();
 	
 	/**
 	 * 
@@ -155,5 +160,21 @@ public class PurchaseOrderControllerBean {
 	public void setStockTransferOrderBeansList(
 			List<StockOrderBean> stockTransferOrderBeansList) {
 		this.stockTransferOrderBeansList = stockTransferOrderBeansList;
+	}
+
+	public Map<String, ProductVariantBean> getProductVariantMap() {
+		return productVariantMap;
+	}
+
+	public void setProductVariantMap(Map<String, ProductVariantBean> productVariantMap) {
+		this.productVariantMap = productVariantMap;
+	}
+
+	public Map<String, ProductBean> getProductMap() {
+		return productMap;
+	}
+
+	public void setProductMap(Map<String, ProductBean> productMap) {
+		this.productMap = productMap;
 	}
 }

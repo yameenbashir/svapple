@@ -361,7 +361,7 @@ public class ManagePriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-
+				List<OutletBean> outletBeans =  new ArrayList<>();
 
 				PriceBook priceBook = priceBookService.getPriceBookByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
 				if(priceBook!=null){
@@ -386,8 +386,19 @@ public class ManagePriceBookController {
 					priceBookBean.setFlatSale(priceBook.getFlatSale());
 					priceBookBean.setFlatDiscount(priceBook.getFlatDiscount().toString());
 					priceBookBean.setActive(priceBook.isActiveIndicator()==true?ControllersConstants.TRUE:ControllersConstants.FALSE);
+					priceBookBean.setOuteletsGroup(priceBook.getOuteletsGroup());
+					
+					String [] outletGroup = priceBook.getOuteletsGroup().split(",");
+					for(String outletId:outletGroup){
+						Outlet outlet = (Outlet) outletMap.get(Integer.valueOf(outletId));
+						OutletBean outletBean = new OutletBean();
+						outletBean.setOutletId(outlet.getOutletId().toString());
+						outletBean.setOutletName(outlet.getOutletName());
 
-
+						outletBeans.add(outletBean);
+					}
+					priceBookBean.setOutletBeans(outletBeans);
+					
 					util.AuditTrail(request, currentUser, "ManagePriceBookController.getPriceBookByPriceBookId", 
 							"User "+ currentUser.getUserEmail()+" retrive PriceBook successfully ",false);
 					return new Response(priceBookBean, StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
@@ -437,6 +448,8 @@ public class ManagePriceBookController {
 						productVariantBean.setPriceBookDetailId(String.valueOf(priceBookDetailSummary.getId().getPriceBookDetailId()));
 						productVariantBean.setPriceBookId(String.valueOf(priceBookDetailSummary.getId().getPriceBookAssocicationId()));
 						productVariantBean.setProductVariantUuid(priceBookDetailSummary.getId().getUuid());
+						productVariantBean.setIndivisualUpdate(false);
+						productVariantBean.setAllUpdate(false);
 						productVariantBeansList.add(productVariantBean);
 					}
 
@@ -472,12 +485,14 @@ public class ManagePriceBookController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
-			try {		
-				if(outletId.equalsIgnoreCase("-1")||outletId.equalsIgnoreCase("")||outletId.isEmpty()){
+			try {	
+				//New rule implemented whatever the case we only bring warehouse product variants for pricebook
+				productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
+				/*if(outletId.equalsIgnoreCase("-1")||outletId.equalsIgnoreCase("")||outletId.isEmpty()){
 					productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
 				}else{
 					productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.valueOf(outletId),currentUser.getCompany().getCompanyId());
-				}
+				}*/
 				
 				if(productVariantList != null){
 					for(ProductVariant productVariant:productVariantList){
@@ -495,6 +510,8 @@ public class ManagePriceBookController {
 						}
 						productVariantBean.setProductVariantUuid(productVariant.getProductVariantUuid());
 						productVariantBean.setProductUuid(product.getProductUuid());
+						productVariantBean.setIndivisualUpdate(false);
+						productVariantBean.setAllUpdate(false);
 						productVariantBeansList.add(productVariantBean);
 					}
 					util.AuditTrail(request, currentUser, "ManagePriceBookController.getProductVariants", "User "+ 
@@ -536,12 +553,14 @@ public class ManagePriceBookController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<Product> productList = null;
-			try {		
-				if(outletId.equalsIgnoreCase("-1")||outletId.equalsIgnoreCase("")||outletId.isEmpty()){
+			try {	
+				//New rule implemented so whatever the case we only bring warehouse products for pricebook
+				productList = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
+				/*if(outletId.equalsIgnoreCase("-1")||outletId.equalsIgnoreCase("")||outletId.isEmpty()){
 					productList = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
 				}else{
 					productList = productService.getAllProductsByOutletId(Integer.valueOf(outletId));
-				}
+				}*/
 				
 				if(productList != null){
 					for(Product product:productList){
@@ -568,6 +587,8 @@ public class ManagePriceBookController {
 						}
 						productVariantBean.setProductUuid(product.getProductUuid());
 						productVariantBean.setProductVariantUuid(product.getProductUuid());
+						productVariantBean.setIndivisualUpdate(false);
+						productVariantBean.setAllUpdate(false);
 						productVariantBeansList.add(productVariantBean);
 					}
 					util.AuditTrail(request, currentUser, "ManagePriceBookController.getAllProducts", "User "+ 
@@ -600,7 +621,7 @@ public class ManagePriceBookController {
 		}	
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/*@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/manageProductsInPriceBook/{sessionId}/{priceBookId}", method = RequestMethod.POST)
 	public @ResponseBody Response manageProductsInPriceBook(@PathVariable("sessionId") String sessionId,
 			@PathVariable("priceBookId") String priceBookId,
@@ -746,10 +767,10 @@ public class ManagePriceBookController {
 											}
 										}
 									}
-								}/*else{
+								}else{
 									//priceBookDetailService.addPriceBookDetail(priceBookDetail);
 									bookDetailsNewAdd.add(priceBookDetail);
-								}*/
+								}
 								//All Outlet Case end here
 								//	priceBookDetailService.updatePriceBookDetail(priceBookDetail);
 							}else{
@@ -885,6 +906,113 @@ public class ManagePriceBookController {
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}
+	}*/
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/manageProductsInPriceBook/{sessionId}/{priceBookId}", method = RequestMethod.POST)
+	public @ResponseBody Response manageProductsInPriceBook(@PathVariable("sessionId") String sessionId,
+			@PathVariable("priceBookId") String priceBookId,
+			@RequestBody List<ProductVariantBean> productVariantBeansList,HttpServletRequest request) {
+
+		List<PriceBookDetail> bookDetailsNewAdd = new ArrayList<>();
+		List<PriceBookDetail> priceBookDetailsUpdateList = new ArrayList<>();
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			Map<Integer, Product> productMap = productService.getAllActiveProductsMapByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+			Map<Integer, ProductVariant> productVariantMap = productVariantService.getAllActiveProductsVariantMapByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+			Map<Integer, PriceBookDetail> priceBookDetailMap =	priceBookDetailService.getAllActivePriceBookDetailsMapByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
+			int skippedUpdatesCount = 0;
+			try {
+				PriceBook priceBook = priceBookService.getPriceBookByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
+				if(priceBook!=null && productVariantBeansList!=null){
+					for(ProductVariantBean productVariantBean:productVariantBeansList){
+						 if(productVariantBean.getPriceBookDetailId()==null||productVariantBean.getPriceBookDetailId().equalsIgnoreCase("")){
+							//New entries in pricebookDetail
+							PriceBookDetail priceBookDetail = new PriceBookDetail();
+							priceBookDetail.setActiveIndicator(true);
+							priceBookDetail.setCompany(currentUser.getCompany());
+							priceBookDetail.setLastUpdated(new Date());
+							if(productVariantBean.getDiscount()!=null && !productVariantBean.getDiscount().equalsIgnoreCase("")){
+								priceBookDetail.setDiscount(new BigDecimal(productVariantBean.getDiscount()));
+							}else{
+								priceBookDetail.setDiscount(new BigDecimal(0));
+							}
+							if(productVariantBean.getMarkupPrct()!=null && !productVariantBean.getMarkupPrct().equalsIgnoreCase("")){
+								priceBookDetail.setMarkup(new BigDecimal(productVariantBean.getMarkupPrct()));
+							}else{
+								priceBookDetail.setMarkup(new BigDecimal(0));
+							}
+							priceBookDetail.setPriceBook(priceBook);
+							priceBookDetail.setUserByUpdatedBy(currentUser);
+							priceBookDetail.setCreatedDate(new Date());
+							
+							Product product =  productMap.get(Integer.valueOf(productVariantBean.getProductId()));
+							priceBookDetail.setProduct(product);
+							if(product.getVariantProducts().equalsIgnoreCase("true")){
+								ProductVariant productVariant = productVariantMap.get(Integer.valueOf(productVariantBean.getProductVariantId()));
+								priceBookDetail.setProductVariant(productVariant);
+								priceBookDetail.setSalesTax(productVariant.getSalesTax());
+								priceBookDetail.setSupplyPrice(productVariant.getSupplyPriceExclTax());
+								priceBookDetail.setUuid(productVariant.getProductVariantUuid());
+							}else{
+								priceBookDetail.setSalesTax(product.getSalesTax());
+								priceBookDetail.setSupplyPrice(product.getSupplyPriceExclTax());
+								priceBookDetail.setUuid(product.getProductUuid());
+							}
+							priceBookDetail.setUserByCreatedBy(currentUser);
+							bookDetailsNewAdd.add(priceBookDetail);
+						}else if(productVariantBean.getPriceBookDetailId()!=null && !productVariantBean.getPriceBookDetailId().equalsIgnoreCase("")){
+							//update entries in pricebookDetail
+							//We only update those entries in pricebookDetail whose isIndivisualUpdate flag is true rest will be skipped
+							if(productVariantBean.isIndivisualUpdate()){
+								PriceBookDetail priceBookDetail = priceBookDetailMap.get(Integer.valueOf(productVariantBean.getPriceBookDetailId()));
+								
+								priceBookDetail.setLastUpdated(new Date());
+								priceBookDetail.setActiveIndicator(true);
+								if(productVariantBean.getDiscount()!=null && !productVariantBean.getDiscount().equalsIgnoreCase("")){
+									priceBookDetail.setDiscount(new BigDecimal(productVariantBean.getDiscount()));
+								}else{
+									priceBookDetail.setDiscount(new BigDecimal(0));
+								}
+								if(productVariantBean.getMarkupPrct()!=null && !productVariantBean.getMarkupPrct().equalsIgnoreCase("")){
+									priceBookDetail.setMarkup(new BigDecimal(productVariantBean.getMarkupPrct()));
+								}else{
+									priceBookDetail.setMarkup(new BigDecimal(0));
+								}
+								priceBookDetail.setPriceBook(priceBook);
+								priceBookDetail.setUserByUpdatedBy(currentUser);
+								priceBookDetailsUpdateList.add(priceBookDetail);
+							}else{
+								skippedUpdatesCount++;
+							}
+						}else{
+							System.out.println("====Case missed==== productVariantBean.getPriceBookDetailId():  "+productVariantBean.getPriceBookDetailId());
+						}
+					}
+					System.out.println("skippedUpdatesCount: "+skippedUpdatesCount+" while productVariantBeansList size is: "+productVariantBeansList.size());
+					priceBookDetailService.addPriceBookDetail(bookDetailsNewAdd);
+					priceBookDetailService.updatePriceBookDetailList(priceBookDetailsUpdateList);
+					util.AuditTrail(request, currentUser, "ManagePriceBookController.manageProductsInPriceBook", 
+							"User "+ currentUser.getUserEmail()+" added products in pricebook successfully ",false);
+					return new Response(MessageConstants.REQUREST_PROCESSED, StatusConstants.SUCCESS,LayOutPageConstants.PRICEBOOK);
+				}else{
+					util.AuditTrail(request, currentUser, "ManagePriceBookController.manageProductsInPriceBook", 
+							"PriceBook not found requested by User "+currentUser.getUserEmail(),false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "ManagePriceBookController.manageProductsInPriceBook",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -896,8 +1024,43 @@ public class ManagePriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
+				String outletGroups = "";
+				List<OutletBean> outletBeans = priceBookBean.getOutletBeans();
+				Map<String,OutletBean> outletgroupsIdsMap = new HashMap<>();
+				for(OutletBean outletBean:outletBeans){
+					if(outletGroups.equalsIgnoreCase("")){
+						outletGroups = outletBean.getOutletId();
+						outletgroupsIdsMap.put(outletBean.getOutletId(), outletBean);
+					}else{
+						outletgroupsIdsMap.put(outletBean.getOutletId(), outletBean);
+						outletGroups = outletGroups+","+outletBean.getOutletId();
+					}
+				}
+				
+				List<PriceBook> priceBookList = priceBookService.getActivePriceBooksByDateRangeCompanyId(DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidFrom()), DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidTo()), currentUser.getCompany().getCompanyId());
+				boolean duplicateOutletsExist = false;
+				if(priceBookList!=null && priceBookList.size()>0){
+					for(PriceBook priceBook:priceBookList){
+						if(priceBook.getPriceBookId()==Integer.valueOf(priceBookBean.getPriceBookId())){
+							continue;
+						}
+						String [] outletgroups = priceBook.getOuteletsGroup().split(",");
+						String  outletgroupsName = "";
+						for(String outletId:outletgroups){
+							if(outletgroupsIdsMap.get(outletId)!=null){
+								duplicateOutletsExist = true;
+								outletgroupsName = outletgroupsName+","+outletgroupsIdsMap.get(outletId).getOutletName();
+							}
+						}
+						if(duplicateOutletsExist){
+							util.AuditTrail(request, currentUser, "ManagePriceBookController.updatePriceBook", 
+									"User "+ currentUser.getUserEmail()+MessageConstants.PRICEBOOK_ALREADY_EXIST+outletgroupsName,false);
+							return new Response(MessageConstants.PRICEBOOK_ALREADY_EXIST+outletgroupsName, StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
+						}
+					}
+				}
 
-				int outletId = !priceBookBean.getOutletId().equalsIgnoreCase("-1") && !priceBookBean.getOutletId().equalsIgnoreCase("") ?Integer.valueOf(priceBookBean.getOutletId()): currentUser.getOutlet().getOutletId();
+				/*int outletId = !priceBookBean.getOutletId().equalsIgnoreCase("-1") && !priceBookBean.getOutletId().equalsIgnoreCase("") ?Integer.valueOf(priceBookBean.getOutletId()): currentUser.getOutlet().getOutletId();
 				List<PriceBook> priceBookList= priceBookService.getPriceBooksByDateRangeCompanyIdOutletIdGroupId(DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidFrom()),
 						DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidTo()), currentUser.getCompany().getCompanyId(), outletId, Integer.valueOf(priceBookBean.getContactGroupId()));
 				if(priceBookList!=null && priceBookList.size()>0){
@@ -906,7 +1069,7 @@ public class ManagePriceBookController {
 								"User "+ currentUser.getUserEmail()+" unable to update price book because pricebook already exist with date range. ",false);
 						return new Response(MessageConstants.PRICEBOOK_ALREADY_EXIST, StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
 					}
-				}
+				}*/
 				PriceBook priceBook = priceBookService.getPriceBookByPriceBookIdCompanyId(Integer.valueOf(priceBookBean.getPriceBookId()), currentUser.getCompany().getCompanyId());
 				if(priceBook!=null){
 					ContactGroup contactGroup = customerGroupService.getContactGroupByContactGroupId(Integer.valueOf(priceBookBean.getContactGroupId()), currentUser.getCompany().getCompanyId());
@@ -966,9 +1129,9 @@ public class ManagePriceBookController {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/markInActiveProductOrVariantInPriceBookDetail/{sessionId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteProductOrVariantInPriceBookDetail/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody
-	Response markInActiveProductOrVariantInPriceBookDetail(@PathVariable("sessionId") String sessionId,
+	Response deleteProductOrVariantInPriceBookDetail(@PathVariable("sessionId") String sessionId,
 			@RequestBody ProductVariantBean productVariantBean,
 			HttpServletRequest request) {
 
@@ -981,16 +1144,16 @@ public class ManagePriceBookController {
 				priceBookDetail.setActiveIndicator(false);
 				priceBookDetail.setLastUpdated(new Date());
 				priceBookDetail.setUserByUpdatedBy(currentUser);
-				priceBookDetailService.updatePriceBookDetail(priceBookDetail);
+				priceBookDetailService.deletePriceBookDetail(priceBookDetail);
 
-				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveProductOrVariantInPriceBookDetail", 
-						"User "+ currentUser.getUserEmail()+" marked inactive product or variant in pricebook detail  successfully ",false);
+				util.AuditTrail(request, currentUser, "ManageProductController.deleteProductOrVariantInPriceBookDetail", 
+						"User "+ currentUser.getUserEmail()+" deleted product or variant in pricebook detail  successfully ",false);
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.PRODUCTS);
 			}catch(Exception e){
 				e.printStackTrace();
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveProductOrVariantInPriceBookDetail",
+				util.AuditTrail(request, currentUser, "ManageProductController.deleteProductOrVariantInPriceBookDetail",
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
 			}

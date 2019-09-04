@@ -26,6 +26,7 @@ import com.dowhile.Contact;
 import com.dowhile.Outlet;
 import com.dowhile.InventoryCount;
 import com.dowhile.InventoryCountType;
+import com.dowhile.StockOrder;
 import com.dowhile.User;
 import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
@@ -45,6 +46,7 @@ import com.dowhile.service.OutletService;
 import com.dowhile.service.StatusService;
 import com.dowhile.service.InventoryCountService;
 import com.dowhile.service.InventoryCountTypeService;
+import com.dowhile.service.StockOrderService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
 
@@ -56,6 +58,9 @@ import com.dowhile.util.SessionValidator;
 public class InventoryCountCreateController {
 	@Resource
 	private ServiceUtil util;
+
+	@Resource
+	private StockOrderService stockOrderService;
 
 	@Resource
 	private OutletService outletService;
@@ -286,36 +291,59 @@ public class InventoryCountCreateController {
 			@RequestBody InventoryCountBean inventoryCountBean, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");			
+			User currentUser = (User) session.getAttribute("user");	
+			String stockDetails = "<p> Please Close/Complete following Stock Orders before iniating an Audit";
+			List<StockOrder> stockOrderList = null;
 			try {			
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				if (inventoryCountBean != null) {				
-					InventoryCount inventoryCount = new InventoryCount();
-					inventoryCount.setActiveIndicator(true);
-					inventoryCount.setCreatedBy(currentUser.getUserId());
-					inventoryCount.setCreatedDate(new Date());
-					inventoryCount.setLastUpdated(new Date());
-					inventoryCount.setStatus(statusService.getStatusByStatusId(Integer.parseInt(inventoryCountBean.getStatusId().trim()))); 				
-					inventoryCount.setInventoryCountType(inventoryCountTypeService.getInventoryCountTypeByInventoryCountTypeId(Integer.parseInt(inventoryCountBean.getInventoryCountTypeId()))); 
-					inventoryCount.setInventoryCountRefNo(inventoryCountBean.getInventoryCountRefNo());
-					inventoryCount.setOutlet(outletService.getOuletByOutletId(Integer.parseInt(inventoryCountBean.getOutletId()),currentUser.getCompany().getCompanyId()));					
-					inventoryCount.setUpdatedBy(currentUser.getUserId());
-					inventoryCount.setCompany(currentUser.getCompany());
-					if(inventoryCountBean.getRemarks() != null){
-						inventoryCount.setRemarks(inventoryCountBean.getRemarks());
-					}					
-					inventoryCountService.addInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
-					String path = LayOutPageConstants.INVENTORY_COUNT_DETAILS;
-					util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", 
-							"User "+ currentUser.getUserEmail()+" Added InventoryCount+"+inventoryCountBean.getInventoryCountId()+" successfully ",false);
-					return new Response(inventoryCount.getInventoryCountId(),StatusConstants.SUCCESS,path);
-				}else{
+				DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+				stockOrderList = stockOrderService.getStockOrderByOutletIdNotComp(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				for(StockOrder stockOrder:stockOrderList){
+					String status = "";
+					if(stockOrder.getStatus() != null){
+						if(stockOrder.getStatus().getStatusId() == 1){
+							status = "Initiated";
+						}
+						else if (stockOrder.getStatus().getStatusId() == 2){
+							status = "In progress";
+						}
+					}
+					stockDetails = stockDetails + "<br>" + stockOrder.getStockRefNo() + " - " + status + " - Last Updated =" + dateFormat.format(stockOrder.getLastUpdated());
+				}
+				stockDetails = stockDetails + "</p>";
+				if(stockOrderList.size() < 1){
+					if (inventoryCountBean != null) {				
+						InventoryCount inventoryCount = new InventoryCount();
+						inventoryCount.setActiveIndicator(true);
+						inventoryCount.setCreatedBy(currentUser.getUserId());
+						inventoryCount.setCreatedDate(new Date());
+						inventoryCount.setLastUpdated(new Date());
+						inventoryCount.setStatus(statusService.getStatusByStatusId(Integer.parseInt(inventoryCountBean.getStatusId().trim()))); 				
+						inventoryCount.setInventoryCountType(inventoryCountTypeService.getInventoryCountTypeByInventoryCountTypeId(Integer.parseInt(inventoryCountBean.getInventoryCountTypeId()))); 
+						inventoryCount.setInventoryCountRefNo(inventoryCountBean.getInventoryCountRefNo());
+						inventoryCount.setOutlet(outletService.getOuletByOutletId(Integer.parseInt(inventoryCountBean.getOutletId()),currentUser.getCompany().getCompanyId()));					
+						inventoryCount.setUpdatedBy(currentUser.getUserId());
+						inventoryCount.setCompany(currentUser.getCompany());
+						if(inventoryCountBean.getRemarks() != null){
+							inventoryCount.setRemarks(inventoryCountBean.getRemarks());
+						}					
+						inventoryCountService.addInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
+						String path = LayOutPageConstants.INVENTORY_COUNT_DETAILS;
+						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", 
+								"User "+ currentUser.getUserEmail()+" Added InventoryCount+"+inventoryCountBean.getInventoryCountId()+" successfully ",false);
+						return new Response(inventoryCount.getInventoryCountId(),StatusConstants.SUCCESS,path);
+					}else{
+						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
+								currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountRefNo(),false);
+						return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+					}
+				}			
+				else{
 					util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
 							currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
-					return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+					return new Response(stockDetails,StatusConstants.WARNING,LayOutPageConstants.STAY_ON_PAGE);
 				}
-
-			}catch(Exception e){
+			}
+			catch(Exception e){
 				e.printStackTrace();
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));

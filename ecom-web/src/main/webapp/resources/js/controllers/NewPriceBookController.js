@@ -13,6 +13,7 @@ var NewPriceBookController = ['$scope', '$http', '$window','$cookieStore','$root
 	$scope.priceBookBean = {};
 	$scope.priceBookBean.flatDiscount = "0.00";
 	$scope.gui = {};
+	$scope.displayOutletsList = [];
 	$scope.gui.flatSale = false;
 	$scope.gui.activePriceBook = true;
 	$scope.validOn = {
@@ -60,7 +61,8 @@ var NewPriceBookController = ['$scope', '$http', '$window','$cookieStore','$root
 			if($scope.data!=null){
 				
 				if($scope.data.outletBeans!=null){
-					$scope.outletsList = $scope.data.outletBeans;
+					$scope.outletsList = angular.copy($scope.data.outletBeans);
+					//$scope.displayOutletsList = angular.copy($scope.data.outletBeans);
 				}
 				if($scope.data.customerGroupBeansList!=null){
 					$scope.customerGroupList = $scope.data.customerGroupBeansList;
@@ -157,7 +159,7 @@ var NewPriceBookController = ['$scope', '$http', '$window','$cookieStore','$root
 		}else{
 			$scope.priceBookBean.active = "false";
 		}
-		
+		$scope.priceBookBean.outletBeans = angular.copy($scope.displayOutletsList);
 		$scope.loading = true;
 		$http.post('newPriceBook/addPriceBook/'+$scope._s_tk_com, $scope.priceBookBean)
 		.success(function(Response) {
@@ -197,6 +199,35 @@ var NewPriceBookController = ['$scope', '$http', '$window','$cookieStore','$root
 			$scope.priceBookError = true;
 			$scope.priceBookErrorMessage = $scope.systemBusy;
 		});
+		
+	};
+	
+	$scope.removeOutletFromDisplayOutletList = function(outlet){
+		for(var i=0;i<$scope.displayOutletsList.length;i++){
+			if($scope.displayOutletsList[i].outletId==outlet.outletId){
+				$scope.displayOutletsList.splice(i,1);
+				break;
+			}
+		}
+	};
+	
+	$scope.addOutletToDisplayOutletList = function(outletId){
+		if(outletId=="-1"){
+			$scope.displayOutletsList = [];
+			$scope.displayOutletsList = angular.copy($scope.outletsList);
+			return;
+		}
+		for(var i=0;i<$scope.outletsList.length;i++){
+			if($scope.outletsList[i].outletId==outletId){
+				for(var j=0;j<$scope.displayOutletsList.length;j++){
+					if($scope.displayOutletsList[j].outletId==outletId){
+						return;
+					}
+				}
+				$scope.displayOutletsList.push($scope.outletsList[i]);
+				break;
+			}
+		}
 		
 	};
 	

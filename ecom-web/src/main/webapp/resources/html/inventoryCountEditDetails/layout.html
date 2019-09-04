@@ -27,6 +27,8 @@
 								ng-bind="successMessage" ng-cloak></div>
 							<div class="alert alert-danger alert-sm" ng-show="error"
 								ng-bind="errorMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="warning"
+								bind-html-unsafe="warningMessage" ng-cloak></div>
 							<div class="box box-primary">
 							
 								<div class="row">								
@@ -85,7 +87,16 @@
 													<div class="col-sm-6">
 														<span class="unit control-label"  ng-bind="inventoryCountBean.retailPriceCounted"></span>
 													</div>
-												</div>										
+												</div>	
+												<div class="form-group">
+												<label for="inputEmail3" class="col-sm-6 control-label"><b>Scanner Input</b></label>
+															<div class="col-sm-6" ng-click="inputTypeChk()">
+													<span class="media-meta pull-right"> </span> <input
+														type="checkbox" id="checkbox1"
+														data-ng-model="inputTypeScan"> <label
+														for="checkbox1"> </label>
+													</div>
+												</div>									
 											</div>
 										</form>
 
@@ -119,7 +130,7 @@
 								</div>
 								
 								<div class="row">
-									<div class="col-md-5">
+									<div class="col-md-5" ng-hide = "inputTypeScan">
 										<div class="inner-addon right-addon">
 
 											<i class="glyphicon glyphicon-search"></i> <input id="lov" type="text"
@@ -129,6 +140,18 @@
 												auto-complete="autoCompleteOptions" />
 										</div>
 									</div>
+									<div class="col-md-5" ng-hide = "!inputTypeScan">
+									<input type="text"
+											data-ng-model="productSKU"
+											ng-disabled = "skudisable"
+											name="productSKUtxt"
+											class=" form-control click-to-select unit"
+											id="product_sku" ng-maxlength="50" ng-disabled = "false"
+											placeholder="Start scanning only..."
+											ng-change = "skuinput()"
+											style="height: 50px; width: 300px;">
+									</div>
+
 									<div class="col-md-1">
 										<input type="text"
 											data-ng-model="inventoryCountDetailBean.countedProdQty"
@@ -237,12 +260,12 @@
 										</div>
 					<div class="box-footer text-right">
 								<button class="btn btn-primary btn  "
-									ng-click="addInventoryCountDetail()" ng-disabled="!checkInventoryCountDetailList()" ng-show="!loading">Save</button>
+									ng-click="addInventoryCountDetail()" ng-disabled="warning || !checkInventoryCountDetailList()" ng-show="!loading">Save</button>
 								<button  ng-show="loading" class="btn btn-primary btn">
 							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
 				       	    </button>
 				       	    <button class="btn btn-primary btn  "
-									ng-click="addAndUpdateInventoryCountDetail()" ng-disabled="!checkInventoryCountDetailList()" ng-show="!loading">Complete</button>
+									ng-click="addAndUpdateInventoryCountDetail()" ng-disabled="warning || !checkInventoryCountDetailList()" ng-show="!loading">Complete</button>
 								<button  ng-show="loading" class="btn btn-primary btn">
 							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
 				       	    </button>
@@ -272,7 +295,7 @@
  <div class="container">
 		<div class="row footer-row">
 			<div class="col-lg-12 text-center">
-				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2018</div>
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals 2019</div>
 			</div>
 		</div>
 	</div>

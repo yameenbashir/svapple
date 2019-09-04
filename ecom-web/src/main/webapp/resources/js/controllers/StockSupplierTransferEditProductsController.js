@@ -13,8 +13,13 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 	$scope.stockOrderDetailBean = {};
 	$scope.delStockOrderDetailBean = {};
 	$scope.stockOrderDetailBeansList = [];	
-	$scope.counter = 1;
+	$scope.counter = 1;	
 	$scope.hideRefValues = false;
+	$scope.productVariantMap = [];
+	$scope.productMap = [];
+	$scope.productSKU = '';
+	$scope.skudisable = false;
+	$scope.inputTypeScan = true;
 	
 	$scope.sessionValidation = function(){
 
@@ -73,6 +78,12 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 				for (var i = 0; i < $scope.productVariantBeansList.length; i++) {
 					$scope.productBeansList.push($scope.productVariantBeansList[i]);
 				}
+			}
+			if($scope.data.productVariantMap!=null){
+				$scope.productVariantMap = $scope.data.productVariantMap;
+			}
+			if($scope.data.productMap!=null){
+				$scope.productMap = $scope.data.productMap;
 			}
 			$scope.calculateTotalAll();
 		}
@@ -276,18 +287,45 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 	};
 
 	$scope.delStockOrderDetail = function(){
+		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
+			$scope.error = false;
+			$scope.loading = true;
+			$http.post('purchaseOrderDetails/deleteStockOrderDetail/'+$scope._s_tk_com, $scope.delStockOrderDetailBean)
+			.success(function(Response) {
+				$scope.loading = false;					
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {		
+					$scope.loading = false;
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
 			if(value.productVariantId == $scope.delStockOrderDetailBean.productVariantId && value.isProduct == $scope.delStockOrderDetailBean.isProduct){
 				var index = $scope.stockOrderDetailBeansList.indexOf(value);
 				$scope.stockOrderDetailBeansList.splice(index, 1);
 			}
-		});	
-
+		});
 		$scope.showConfirmDeletePopup = false; 
 		$scope.delStockOrderDetailBean = {};
 		$scope.arrangeOrder();
 		$scope.calculateGrandTotal();
 		$scope.calculateItemCount();
+		$scope.calculateRecItemCount();
 	};
 
 	$scope.arrangeOrder = function(){
@@ -389,7 +427,7 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;
-			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;					
 				$scope.responseStatus = Response.status;
@@ -430,7 +468,7 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 		$scope.error = false;
 		$scope.loading = true;
 		$scope.stockOrderBean.statusId = "3"; // Completed status
-		$http.post('purchaseOrderDetails/updateAndTransferStockOrderDetails/'+$scope._s_tk_com, $scope.stockOrderDetailBeansList, parseInt($scope.grandTotal))
+		$http.post('purchaseOrderDetails/updateAndTransferToSupplierStockOrderDetails/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 		.success(function(Response) {
 			$scope.loading = false;
 
@@ -473,7 +511,7 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 			$scope.error = false;
 			$scope.loading = true;
 			$scope.stockOrderBean.statusId = "3"; // Completed status
-			$http.post('purchaseOrderDetails/updateAndReturnStockOrderDetails/'+$scope._s_tk_com+'/'+$scope.grandTotal, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateAndTransferToSupplierStockOrderDetails/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;
 
@@ -529,7 +567,16 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 					return skuLowercase == term;
 
 				});
-				
+				if(customerResults.length == 0){
+					customerResults = _.filter($scope.allProductBeansList, function(val) {
+						return val.variantAttributeName.toLowerCase().includes(term) || val.sku.toLowerCase().includes(term);
+					});				
+					customerVariantResults = _.filter($scope.allProductBeansList, function(val) {
+						var skuLowercase =  val.sku.toLowerCase();
+						return skuLowercase == term;
+
+					});	
+				}
 				if(customerVariantResults && customerVariantResults.length>0){
 					$scope.hideRefValues = true;
 					$scope.stockOrderDetailBean.orderProdQty = 1;
@@ -580,5 +627,24 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 			}
 	};
 
+	$scope.skuinput = function(){
+		if($scope.productSKU.includes('-')||$scope.productSKU.length>6){
+			if($scope.productVariantMap[$scope.productSKU.toLowerCase()] != null){
+				$scope.skudisable = true;
+				$scope.stockOrderDetailBean.orderProdQty = 1;
+				$scope.productVariantBean = $scope.productVariantMap[$scope.productSKU.toLowerCase()];
+				//console.log($scope.productVariantMap[$scope.productSKU]);			
+				$scope.checkProductStatus();
+				$scope.productSKU = '';
+				$scope.skudisable = false;
+			}else{
+				if($scope.productSKU.length>15){
+					$scope.productSKU = '';
+					$scope.skudisable = false;
+				}
+			}
+		}
+	};
+	
 	$scope.sessionValidation();
 }];

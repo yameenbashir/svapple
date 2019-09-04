@@ -3,10 +3,13 @@
  */
 package com.dowhile.controller.bean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dowhile.ProductVariant;
 import com.dowhile.frontend.mapping.bean.OutletBean;
+import com.dowhile.frontend.mapping.bean.ProductBean;
 import com.dowhile.frontend.mapping.bean.ProductVariantBean;
 import com.dowhile.frontend.mapping.bean.StockOrderDetailBean;
 import com.dowhile.frontend.mapping.bean.StockOrderTypeBean;
@@ -24,6 +27,8 @@ public class POCreateandReceiveControllerBean {
 	private List<ProductVariantBean> productBeansList;
 	private List<ProductVariantBean> productVariantBeansList;
 	private List<StockOrderDetailBean> stockOrderDetailBeansList ;
+	private Map<String, ProductVariantBean> productVariantMap = new HashMap<>();
+	private Map<String, ProductBean> productMap = new HashMap<>();
 	/**
 	 * 
 	 */
@@ -118,5 +123,17 @@ public class POCreateandReceiveControllerBean {
 	public void setStockOrderDetailBeansList(
 			List<StockOrderDetailBean> stockOrderDetailBeansList) {
 		this.stockOrderDetailBeansList = stockOrderDetailBeansList;
+	}
+	public Map<String, ProductBean> getProductMap() {
+		return productMap;
+	}
+	public void setProductMap(Map<String, ProductBean> productMap) {
+		this.productMap = productMap;
+	}
+	public Map<String, ProductVariantBean> getProductVariantMap() {
+		return productVariantMap;
+	}
+	public void setProductVariantMap(Map<String, ProductVariantBean> productVariantMap) {
+		this.productVariantMap = productVariantMap;
 	}
 }

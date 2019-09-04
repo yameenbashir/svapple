@@ -40,9 +40,12 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	$scope.isReturnEnableonSell = true;
 	$scope.totallineItemDiscount = parseFloat(0);
 	$scope.isInvoiceLevelDiscountEnable = false;
+	$scope.isInvoiceDetailLevelDiscountEnable = true;
 //$scope.totalDiscount = parseFloat(0);
 	$scope.InvoiceMainBean.itemsCount = parseFloat(0);
 	$scope.isValidInvoice = true;
+	$scope.outletId = $cookieStore.get('_s_tk_oId');
+	console.log('$scope.outletId'+$scope.outletId);
 	Number.prototype.padLeft = function(base,chr){
 		var  len = (String(base || 10).length - String(this).length)+1;
 		return len > 0? new Array(len).join(chr || '0')+this : this;
@@ -75,6 +78,10 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		{$scope.isInvoiceLevelDiscountEnable = true;}
 		else
 		{$scope.isInvoiceLevelDiscountEnable = false;}
+		if($scope.sellControllerBean.isInvoiceDetailLevelDiscountEnable == 'true')
+		{$scope.isInvoiceDetailLevelDiscountEnable = true;}
+		else
+		{$scope.isInvoiceDetailLevelDiscountEnable = false;}
 		
 		if($scope.sellControllerBean.priceBookBean != null && $scope.sellControllerBean.priceBookBean.length > 0)
 			{
@@ -186,7 +193,9 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			
 	};
 	$scope.loadSalesProductDataOnlyAjax = function() {
-		$scope.loadingSalePageComplete = true;
+		console.log("$scope.loadSalesProductDataOnlyAjax");
+		//$scope.loadingSalePageComplete = true;
+		//** Sales Speed Test **//
 		if($rootScope.online){
 			$http.get('sell/getAllProductsOnly/' + $scope._s_tk_com).success(function(Response) {
 				$scope.sellControllerBean = Response;
@@ -329,7 +338,15 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			$scope.invoiceDetail.itemNetPrice = $scope.invoiceDetail.itemSalePrice;
 			$scope.invoiceDetail.orignalPrice = productVarient.orignalPrice;
 
-			$scope.applyPriceBook($scope.invoiceDetail,productVarient );
+			/*if($scope.outletId==27){
+				console.log('50% flat sale is on outlet id: '+$scope.outletId);
+				$scope.invoiceDetail.itemDiscountPrct = parseFloat(50.00).toFixed(2);
+			}else{
+				$scope.applyPriceBook($scope.invoiceDetail,productVarient );
+			}*/
+			
+			$scope.applyPriceBook($scope.invoiceDetail,productVarient);
+			
 			//$scope.itemsCount = $scope.itemsCount + 1;
 			for (var i = 0; i < $scope.InvoiceMainBean.invoiceDetails.length; i++) {
 				if (productVarient.varientProducts == 'false' && 
@@ -376,7 +393,18 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		if($scope.pricebook != null && $scope.pricebook.priceBookDetailBeans !=null && $scope.pricebook.priceBookDetailBeans.length > 0)
 		{	
 			$scope.productBookDetail = {};
-			$scope.productBookDetail = getBookDetailsByProduct($scope.pricebook.priceBookDetailBeans, paramProductVarient);
+			$scope.productBookDetail = null;
+			for(var i=0;i<$scope.pricebook.priceBookDetailBeans.length;i++){
+				if($scope.pricebook.priceBookDetailBeans[i].productVariantId!=null && $scope.pricebook.priceBookDetailBeans[i].productVariantId!=''
+					&& $scope.pricebook.priceBookDetailBeans[i].uuId==paramProductVarient.productVariantUuid){
+					$scope.productBookDetail = $scope.pricebook.priceBookDetailBeans[i];
+					break;
+				}else if($scope.pricebook.priceBookDetailBeans[i].uuId==paramProductVarient.productUuid){
+					$scope.productBookDetail = $scope.pricebook.priceBookDetailBeans[i];
+					break;
+				}
+			}
+			//$scope.productBookDetail = getBookDetailsByProduct($scope.pricebook.priceBookDetailBeans, paramProductVarient);
 			if($scope.productBookDetail != null)
 			{
 				$scope.invoiceDetail.itemDiscountPrct = parseFloat($scope.productBookDetail.discount).toFixed(2);
@@ -858,11 +886,13 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 					$scope.InvoiceMainBeanList = [];
 					$scope.InvoiceMainBeanList.push($scope.InvoiceMainBean);
 					localforage.setItem('InvoiceMainBeanList', $scope.InvoiceMainBeanList);
+					localforage.setItem('invoiceMainBeanNewList', $scope.InvoiceMainBeanList);
 
 				}else{
 					$scope.InvoiceMainBeanList = value;
 					$scope.InvoiceMainBeanList.push($scope.InvoiceMainBean);
 					localforage.setItem('InvoiceMainBeanList', $scope.InvoiceMainBeanList);
+					localforage.setItem('invoiceMainBeanNewList', $scope.InvoiceMainBeanList);
 
 				}
 				$rootScope.InvoiceMainBeanList = value;
@@ -979,6 +1009,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			if($rootScope.online){
 				$scope.InvoiceMainBeanList.push($scope.InvoiceMainBean);
 				localforage.setItem('InvoiceMainBeanList', $scope.InvoiceMainBeanList);
+				localforage.setItem('invoiceMainBeanNewList', $scope.InvoiceMainBeanList);
 				$scope.salenoncashSuccess(Response);
 			}
 			$scope.loading = false;
@@ -1076,6 +1107,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			if($rootScope.online){
 				$scope.InvoiceMainBeanList.push($scope.InvoiceMainBean);
 				localforage.setItem('InvoiceMainBeanList', $scope.InvoiceMainBeanList);
+				localforage.setItem('invoiceMainBeanNewList', $scope.InvoiceMainBeanList);
 				$scope.success = true;
 				$scope.successMessage = Response.data;
 				// $scope.salesComplete = true;
@@ -1129,6 +1161,10 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	$scope.registerOpen = false;
 	$scope.dailyRegesterId = "";
 	$scope.getAllProducts = function() {
+		/*if(!$rootScope.online){
+			$scope.registerOpen = true;
+			return;
+		}*/
 		if (typeof $scope.sellControllerBean.registerStatus != 'undefined') {
 			if ($scope.sellControllerBean.registerStatus == 'true') {
 				$scope.dailyRegesterId = $scope.sellControllerBean.dailyRegisterId;
@@ -1329,7 +1365,14 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 							}
 						}
 					}else{
-						$scope.selectProduct = true;
+						
+						if($scope.sellControllerBean.autoCreateStandardVariant=='true'
+							&& $scope.productVaraintDetailBean.arrtibute1Values[0]==$scope.sellControllerBean.defaultVariantName){
+							$scope.addProduct($scope.productVariantsBeans[0]);
+						}else{
+							$scope.selectProduct = true;
+						}
+						
 					}
 
 				} else {
@@ -1692,6 +1735,13 @@ $scope.ValidateInvoiceItems = function() {
 					});
 		}
 		
+	};
+	
+	$scope.deleteCustomerOrCreate = function() {
+		//$scope.selectCustomer = true;
+		$scope.selectCustomer = false;
+		$scope.CustomerName = [];
+		$scope.selectCustomerName = "";
 	};
 
 }];

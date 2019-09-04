@@ -13,6 +13,14 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 	$scope.inventoryCountDetailBean = {};
 	$scope.delInventoryCountDetailBean = {};
 	$scope.inventoryCountDetailBeansList = [];
+	$scope.productVariantMap = [];
+	$scope.productMap = [];
+	$scope.productMap = [];
+	$scope.allProductMap = [];
+	$scope.allProductVariantMap = [];
+	$scope.productSKU = '';
+	$scope.skudisable = false;
+	$scope.inputTypeScan = true;
 
 	$scope.counter = 1;
 
@@ -31,7 +39,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 			$scope.inventoryCountBean.itemCountCounted = 0;
 			$scope.data = InventoryCountEditDetailsControllerPreLoad.loadControllerData();
 			$scope.fetchData();
-			if($scope.inventoryCountBean.inventoryCountTypeDesc.toString() == "FULL"){
+			if($scope.inventoryCountBean.inventoryCountTypeDesc.toString().toLowerCase() == "full"){
 				$scope.isFull = true;
 			}
 			else{
@@ -70,6 +78,18 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 				}
 				if($scope.data.allProductVariantBeansList!=null){
 					$scope.allProductVariantBeansList = $scope.data.allProductVariantBeansList;
+				}
+				if($scope.data.productVariantMap!=null){
+					$scope.productVariantMap = $scope.data.productVariantMap;
+				}
+				if($scope.data.productMap!=null){
+					$scope.productMap = $scope.data.productMap;
+				}
+				if($scope.data.allProductVariantMap!=null){
+					$scope.allProductVariantMap = $scope.data.allProductVariantMap;
+				}
+				if($scope.data.allProductMap!=null){
+					$scope.allPproductMap = $scope.data.allProductMap;
 				}
 				if($scope.data.allProductBeansList != null){
 					$scope.allProductBeansList = $scope.data.allProductBeansList;
@@ -197,7 +217,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 						else{
 							value.supplyPriceCounted = "0";
 						}
-						if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+						if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
 							if(parseInt(value.countedProdQty) > parseInt(value.expProdQty)){
 								value.auditTransfer = true;
 							}
@@ -245,7 +265,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 					$scope.inventoryCountDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.inventoryCountDetailBean.inventoryCountId = $scope.inventoryCountBean.inventoryCountId;
-					if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+					if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
 						if(parseInt($scope.inventoryCountDetailBean.countedProdQty) > parseInt($scope.inventoryCountDetailBean.expProdQty)){
 							$scope.inventoryCountDetailBean.auditTransfer = true;
 						}
@@ -284,7 +304,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 						else{
 							value.supplyPriceCounted = "0";
 						}
-						if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+						if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
 							if(parseInt(value.countedProdQty) > parseInt(value.expProdQty)){
 								value.auditTransfer = true;
 							}
@@ -332,7 +352,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 					$scope.inventoryCountDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.inventoryCountDetailBean.inventoryCountId = $scope.inventoryCountBean.inventoryCountId;
-					if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+					if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
 						if(parseInt($scope.inventoryCountDetailBean.countedProdQty) > parseInt($scope.inventoryCountDetailBean.expProdQty)){
 							$scope.inventoryCountDetailBean.auditTransfer = true;
 						}
@@ -377,7 +397,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 			$scope.inventoryCountDetailBean.order = $scope.counter;
 			$scope.counter++;
 			$scope.inventoryCountDetailBean.inventoryCountId = $scope.inventoryCountBean.inventoryCountId;
-			if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+			if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
 				if(parseInt($scope.inventoryCountDetailBean.countedProdQty) > parseInt($scope.inventoryCountDetailBean.expProdQty)){
 					$scope.inventoryCountDetailBean.auditTransfer = true;
 				}
@@ -471,7 +491,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 						value.supplyPriceCounted = "0";
 					}
 				}
-				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
 					if(parseInt(value.countedProdQty) > parseInt(value.expProdQty)){
 						value.auditTransfer = true;
 					}
@@ -528,7 +548,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 				if(isNaN($scope.inventoryCountBean.supplyPriceCounted)){
 					$scope.inventoryCountBean.supplyPriceCounted = "0";
 				}
-				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
 					if(parseInt($scope.inventoryCountDetailBeansList[i].countedProdQty) > parseInt($scope.inventoryCountDetailBeansList[i].expProdQty)){
 						$scope.inventoryCountDetailBeansList[i].auditTransfer = true;
 					}
@@ -549,16 +569,42 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 	};
 
 	$scope.delInventoryCountDetail = function(){
+		if (typeof $scope.delInventoryCountDetailBean.inventoryCountDetailId != 'undefined') {
+			$scope.error = false;
+			$scope.loading = true;
+			$http.post('inventoryCountDetails/deleteInventoryCountDetail/'+$scope._s_tk_com, $scope.delInventoryCountDetailBean)
+			.success(function(Response) {
+				$scope.loading = false;					
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {		
+					$scope.loading = false;
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}
 		angular.forEach($scope.inventoryCountDetailBeansList, function(value,key){
 			if(value.productVariantId == $scope.delInventoryCountDetailBean.productVariantId && value.isProduct == $scope.delInventoryCountDetailBean.isProduct){
 				var index = $scope.inventoryCountDetailBeansList.indexOf(value);
 				$scope.inventoryCountDetailBeansList.splice(index, 1);
 			}
 		});	
-
 		$scope.showConfirmDeletePopup = false; 
 		$scope.delInventoryCountDetailBean = {};
-		$scope.arrangeOrder();	
+		$scope.arrangeOrder();
 	};
 
 	$scope.arrangeOrder = function(){
@@ -611,7 +657,13 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
 					$window.location = Response.layOutPath;
-				} else {
+				}
+				else if($scope.responseStatus == 'WARNING'){
+				$scope.warning = true;
+				$scope.warningMessage = Response.data;
+				//$window.location = Response.layOutPath;
+			} 
+				else {
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
 				}
@@ -651,7 +703,13 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
 					$window.location = Response.layOutPath;
-				} else {
+				} 
+				else if($scope.responseStatus == 'WARNING'){
+				$scope.warning = true;
+				$scope.warningMessage = Response.data;
+				//$window.location = Response.layOutPath;
+				} 
+				else {
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
 				}
@@ -746,7 +804,36 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 
 			}
 	};
-
+	
+	$scope.skuinput = function(){
+		if($scope.productSKU.includes('-')||$scope.productSKU.length>6){
+			if($scope.productVariantMap[$scope.productSKU.toLowerCase()] != null){
+				$scope.skudisable = true;
+				$scope.inventoryCountDetailBean.countedProdQty = 1;
+				$scope.productVariantBean = $scope.productVariantMap[$scope.productSKU.toLowerCase()];
+				//console.log($scope.productVariantMap[$scope.productSKU]);			
+				$scope.checkProductStatus();
+				$scope.productSKU = '';
+				$scope.skudisable = false;
+			}
+			else if($scope.allProductVariantMap[$scope.productSKU.toLowerCase()] != null){
+				$scope.skudisable = true;
+				$scope.inventoryCountDetailBean.countedProdQty = 1;
+				$scope.productVariantBean = $scope.allProductVariantMap[$scope.productSKU.toLowerCase()];
+				//console.log($scope.productVariantMap[$scope.productSKU]);			
+				$scope.checkProductStatus();
+				$scope.productSKU = '';
+				$scope.skudisable = false;				
+			}
+			else{
+				if($scope.productSKU.length>15){
+					$scope.productSKU = '';
+					$scope.skudisable = false;
+				}
+			}
+		}
+	};
+	
 	
 	$scope.sessionValidation();
 }];

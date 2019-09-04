@@ -19,7 +19,7 @@ public class MessageConstants {
 	public static final String DELETE_RESTRICTED = "Delete is not allowed";
 	public static final String PARKED_SALE = "Sale has been Parked Successfully!";
 	public static final String REGISTER_CLOSED = "Please open Register.If you want to check Cash Management.";
-	public static final String PRICEBOOK_ALREADY_EXIST = "Pricebook already exist with selected date range.";
+	public static final String PRICEBOOK_ALREADY_EXIST = " Pricebook already exist with selected date range.Here outlets from other PriceBooks: ";
 	public static final String USER_ALREADY_EXIST = "User already exits with given email address !";
 	public static final String SMS_EXPIRED = "SMS Package Expired!";
 	public static final String DUPLICATE_PRODCUT_BAR_CODE = "Duplicate product bar code found, please change the product barcode!";

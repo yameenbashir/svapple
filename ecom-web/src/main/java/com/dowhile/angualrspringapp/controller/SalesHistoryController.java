@@ -3,6 +3,9 @@ package com.dowhile.angualrspringapp.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -257,8 +260,9 @@ public class SalesHistoryController {
 
 
 	}
-	@RequestMapping(value = "/getData/{sessionId}/{limit}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getData/{sessionId}/{limit}/{startDate}/{endDate}/{applyDateRange}", method = RequestMethod.GET)
 	public @ResponseBody SalesHistory getData(@PathVariable("sessionId") String sessionId,@PathVariable("limit") int limit,
+			@PathVariable("startDate") String startDate,@PathVariable("endDate") String endDate,@PathVariable("applyDateRange") String applyDateRange,
 			HttpServletRequest request) {
 		List<InvoiceMainCustom> invoiceMains = new ArrayList<InvoiceMainCustom>();
 		List<SalesHistoryBean> data = new ArrayList<SalesHistoryBean>();
@@ -275,8 +279,29 @@ public class SalesHistoryController {
 			String status = null;
 			Date fromDate = null;
 			Date toDate = null;
+			Integer customerId = null;
+			if(limit==0 && applyDateRange!=null && applyDateRange.equalsIgnoreCase("true")){
+				SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date startDat =  null;
+				Date endDat =  null;
+				DateFormat parser = new SimpleDateFormat("MMM dd, yyyy");
+				try {
+					fromDate = (Date) parser.parse(startDate.trim());
+					toDate = (Date) parser.parse(endDate);
+					dt1.format(fromDate);
+					dt1.format(toDate);
+					invoiceMains  = saleService.getAllInvoicesMainById(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(), limit,invoiceRefNo, status, fromDate,toDate,customerId);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}else{
+				invoiceMains  = saleService.getAllInvoicesMainById(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(), limit,invoiceRefNo, status, fromDate,toDate,customerId);
+			}
 			
-			invoiceMains  = saleService.getAllInvoicesMainById(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(), limit,invoiceRefNo, status, fromDate,toDate);
+			
 			Map<Integer, Contact> customerMap = customerService.getContactsByOutletIDMap(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 			Map<Integer, User> userMap = resourceService.getAllUsersMap( currentUser.getCompany().getCompanyId());
 			int fromInvoiceId =1;

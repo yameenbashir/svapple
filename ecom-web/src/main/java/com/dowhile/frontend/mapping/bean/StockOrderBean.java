@@ -36,6 +36,7 @@ public class StockOrderBean {
 	private String retailPriceBill;
 	private String itemCount;
 	private String recItemCount;
+	private String itemCountRecv;
 	private String totalCost;
 	private String activeIndicator;
 	private String createdDate;
@@ -506,5 +507,13 @@ public class StockOrderBean {
 	 */
 	public void setSourceOutletAddress(String sourceOutletAddress) {
 		this.sourceOutletAddress = sourceOutletAddress;
+	}
+
+	public String getItemCountRecv() {
+		return itemCountRecv;
+	}
+
+	public void setItemCountRecv(String itemCountRecv) {
+		this.itemCountRecv = itemCountRecv;
 	}
 }

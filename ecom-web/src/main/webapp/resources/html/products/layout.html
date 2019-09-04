@@ -10,8 +10,8 @@
 					<li class="active">Products</li>
 				</ol>
 			</section>
-			<section class="content-header"></section>
-			<div class="top-buffer-contact"></div>
+			<!-- <section class="content-header"></section> -->
+			<!-- <div class="top-buffer-contact"></div> -->
 			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
 				<div class="loader"></div>
 			</div>
@@ -20,24 +20,24 @@
 				<div class="row">
 					<div class="col-md-7">
 
-						<!-- <vd-tabs modifier="no-border large" class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
+						<vd-tabs modifier="no-border large" class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
 			 
-			<vd-tab type="anchor" active="this.activeTab == 'users'" class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active" link="'#roles'">
-			<a  class="vd-tab-button ng-scope" ng-href="#roles"  href="/users/"><span class="ng-scope">
-			      Active({{productsList.length}})
+			<vd-tab type="anchor" active="this.activeTab == 'products'" class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active" link="'#products'">
+			<a  class="vd-tab-button ng-scope" ng-href="#products"  href=""><span class="ng-scope">
+			     Products
 			    </span></a>
 			</vd-tab>
-			<vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
-				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
-			      Inactive(0)
+			<vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'downloadProducts'" link="'#downloadProducts'">
+				<a  class="vd-tab-button ng-scope" ng-href="#downloadProducts" href="/products/downloadProducts"><span class="ng-scope">
+			      Download Products
 			    </span></a>
 			</vd-tab>
-			<vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+			<!-- <vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
 				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
 			      All({{productsList.length}})
 			    </span></a>
-			</vd-tab>
-			  </vd-tabs> -->
+			</vd-tab> -->
+			  </vd-tabs>
 						<vd-section sticky="" type="primary"
 							class="cv-action-bar vd-section vd-section--secondary"
 							role="region">
@@ -52,6 +52,8 @@
 								<div class="vd-button-group">
 									<button class="btn  btn-success btn-lg" ng-click="addProduct()"
 										ng-show="roledId=='1'">Add Product</button>
+									<button class="btn  btn-info btn-lg" ng-click="addCompositeProduct()"
+										ng-show="roledId=='1'">+ Add Composite Product</button>
 
 								</div>
 							</div>
@@ -128,6 +130,24 @@
 
 
 					<div class="col-md-5">
+						<vd-tabs modifier="no-border large" class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
+			 
+			<vd-tab type="anchor" active="this.activeTab == 'products'" class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active" link="'#products'">
+			<a  class="vd-tab-button ng-scope" ng-href="#products"  href=""><span class="ng-scope">
+			     <!-- Products -->
+			    </span></a>
+			</vd-tab>
+			<vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
+			      <!-- Download Products -->
+			    </span></a>
+			</vd-tab>
+			<!-- <vd-tab  class="po-users-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'roles'" link="'#users'">
+				<a  class="vd-tab-button ng-scope" ng-href="#users" href="/users/roles"><span class="ng-scope">
+			      All({{productsList.length}})
+			    </span></a>
+			</vd-tab> -->
+			  </vd-tabs>
 						<vd-section sticky="" type="primary"
 							class="cv-action-bar vd-section vd-section--secondary"
 							role="region">
@@ -212,7 +232,7 @@
 	<div class="row footer-row">
 		<div class="col-lg-12 text-center">
 			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
-				ShopVitals 2018</div>
+				ShopVitals 2019</div>
 		</div>
 	</div>
 </div>
@@ -285,15 +305,15 @@
 <!-- DataTables -->
 <script src="resources/js/jquery.dataTables.min.js"></script>
 
-<script src="resources/js/dataTables.responsive.min.js"></script>
-<script src="resources/js/dataTables.buttons.min.js"></script>
+<!-- <script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.buttons.min.js"></script> -->
 
 
-<script src="resources/js/buttons.flash.min.js"></script>
+<!-- <script src="resources/js/buttons.flash.min.js"></script>
 <script src="resources/js/jszip.min.js"></script>
 <script src="resources/js/pdfmake.min.js"></script>
 
 <script src="resources/js/vfs_fonts.js"></script>
 <script src="resources/js/buttons.html5.min.js"></script>
-<script src="resources/js/buttons.print.min.js"></script>
+<script src="resources/js/buttons.print.min.js"></script> -->
 

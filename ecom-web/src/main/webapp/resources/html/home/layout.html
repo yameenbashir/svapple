@@ -21,12 +21,12 @@
 			<div class="col-md-1"></div>
 			<div class="col-md-10">
 				<div class="row">
-					<div class="col-md-3">
-						<div class="well" style="height: 345px; background: white">
+			 		<div class="col-md-3" >
+						<div class="well" style="height: 345px; background: white" >
 							<Span>REVENUE</Span> <span
 								ng-class="revenuePercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="'PKRs ' + todayRevenue"></h2>
-							<h4
+							<h2 ng-bind="'PKRs ' + todayRevenue" ng-show="homeBean.revenue"></h2>
+							<h4 ng-show="homeBean.revenue"
 								ng-class="revenuePercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="revenuePercentage > 0 ? 'label label-success':'label label-danger'">
@@ -36,16 +36,16 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerRevenue"></div>
+							<div id="chartContainerRevenue" ng-show="homeBean.revenue"></div>
 						</div>
 
-					</div>
+					</div> 
 					<div class="col-md-3">
 						<div class="well" style="height: 345px; background: white">
 							<Span>SALE COUNT</Span> <span
 								ng-class="salesCountPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="' ' + todaySalesCount"></h2>
-							<h4
+							<h2 ng-bind="' ' + todaySalesCount" ng-show="homeBean.saleCount"></h2>
+							<h4 ng-show="homeBean.saleCount"
 								ng-class="revenuePercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="salesCountPercentage > 0 ? 'label label-success':'label label-danger'">
@@ -55,7 +55,7 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerSaleCount"></div>
+							<div id="chartContainerSaleCount" ng-show="homeBean.saleCount"></div>
 						</div>
 
 
@@ -64,8 +64,8 @@
 						<div class="well" style="height: 345px; background: white">
 							<Span>CUSTOMER COUNT</Span> <span
 								ng-class="customerCountPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="' ' + todayCustomerCount"></h2>
-							<h4
+							<h2 ng-bind="' ' + todayCustomerCount" ng-show="homeBean.customerCount"></h2>
+							<h4 ng-show="homeBean.customerCount"
 								ng-class="customerCountPercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="customerCountPercentage > 0 ? 'label label-success':'label label-danger'">
@@ -75,7 +75,7 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerCustomerCount"></div>
+							<div id="chartContainerCustomerCount" ng-show="homeBean.customerCount"></div>
 						</div>
 
 
@@ -84,8 +84,8 @@
 						<div class="well" style="height: 345px; background: white">
 							<Span>GROSS PROFIT</Span> <span
 								ng-class="grossProfitPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="'PKRs ' + todayGrossProfit"  ng-hide="hideSalesDetails"></h2>
-							<h4  ng-hide="hideSalesDetails"
+							<h2 ng-bind="'PKRs ' + todayGrossProfit"  ng-show="homeBean.grossProfit"></h2>
+							<h4  ng-show="homeBean.grossProfit"
 								ng-class="grossProfitPercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="grossProfitPercentage > 0 ? 'label label-success':'label label-danger'">
@@ -95,7 +95,7 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerGrossProfit"  ng-hide="hideSalesDetails"></div>
+							<div id="chartContainerGrossProfit" ng-show="homeBean.grossProfit"></div>
 						</div>
 
 
@@ -114,8 +114,8 @@
 						<div class="well" style="height: 345px; background: white">
 							<Span>DISCOUNT</Span> <span
 								ng-class="discountPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="'PKRs ' + todayDiscount"></h2>
-							<h4
+							<h2 ng-bind="'PKRs ' + todayDiscount" ng-show="homeBean.discount"></h2>
+							<h4 ng-show="homeBean.discount"
 								ng-class="discountPercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="discountPercentage > 0 ? 'label label-success':'label label-danger'">
@@ -125,7 +125,7 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerDiscount"></div>
+							<div id="chartContainerDiscount" ng-show="homeBean.discount"></div>
 						</div>
 
 
@@ -134,8 +134,8 @@
 						<div class="well" style="height: 345px; background: white">
 							<Span>DISCOUNT PERCENT</Span> <span
 								ng-class="discountPecPercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="'' + todayDiscountPec"></h2>
-							<h4
+							<h2 ng-bind="'' + todayDiscountPec" ng-show="homeBean.discountPercent"></h2>
+							<h4 ng-show="homeBean.discountPercent"
 								ng-class="discountPecPercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="discountPecPercentage > 0 ? 'label label-success':'label label-danger'">
@@ -145,15 +145,15 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerDiscountPercent"></div>
+							<div id="chartContainerDiscountPercent" ng-show="homeBean.discountPercent"></div>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="well" style="height: 345px; background: white">
 							<Span>BASKET VALUE</Span> <span
 								ng-class="basketValuePercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="'PKRs ' + todayBasketValue"></h2>
-							<h4
+							<h2 ng-bind="'PKRs ' + todayBasketValue" ng-show="homeBean.basketValue"></h2>
+							<h4 ng-show="homeBean.basketValue"
 								ng-class="basketValuePercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="basketValuePercentage > 0 ? 'label label-success':'label label-danger'">
@@ -163,7 +163,7 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerBasketValue"></div>
+							<div id="chartContainerBasketValue" ng-show="homeBean.basketValue"></div>
 						</div>
 
 					</div>
@@ -171,8 +171,8 @@
 						<div class="well" style="height: 345px; background: white">
 							<Span>BASKET SIZE</Span> <span
 								ng-class="basketSizePercentage > 0 ? 'label label-success pull-right':'label label-danger pull-right'" ng-bind="outletName"></span>
-							<h2 ng-bind="' ' + todayBasketSize"></h2>
-							<h4
+							<h2 ng-bind="' ' + todayBasketSize" ng-show="homeBean.basketSize"></h2>
+							<h4 ng-show="homeBean.basketSize"
 								ng-class="basketSizePercentage > 0 ? 'text-success':'text-danger'">
 								<span
 									ng-class="basketSizePercentage > 0 ? 'label label-success':'label label-danger'">
@@ -182,7 +182,7 @@
 								</span>
 							</h4>
 							<h4 class="text-success">Previous Day</h4>
-							<div id="chartContainerBasketSize"></div>
+							<div id="chartContainerBasketSize" ng-show="homeBean.basketSize"></div>
 						</div>
 
 
@@ -201,7 +201,7 @@
 	<div class="row footer-row">
 		<div class="col-lg-12 text-center">
 			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
-				ShopVitals 2018</div>
+				ShopVitals 2019</div>
 		</div>
 	</div>
 </div>

@@ -43,8 +43,6 @@ import com.dowhile.ProductTag;
 import com.dowhile.ProductType;
 import com.dowhile.ProductVariant;
 import com.dowhile.SalesTax;
-import com.dowhile.StockOrder;
-import com.dowhile.StockOrderDetail;
 import com.dowhile.Tag;
 import com.dowhile.User;
 import com.dowhile.VariantAttribute;
@@ -420,12 +418,25 @@ public class NewProductController {
 					for(Outlet outlet:outlets){
 						outletMap.put(outlet.getOutletId(), outlet);
 					}
+					
+					UUID uuidProd = UUID.randomUUID();
+					String randomUUIDProduct = uuidProd.toString();
+					
+					if(!productBean.getVarientProducts().equalsIgnoreCase("true")){
+						Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+						Configuration configurationAutoCreateSV = configurationMap.get("AUTO_CREATE_STANDARD_VARIANT");
+						if(configurationAutoCreateSV!=null && configurationAutoCreateSV.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+							productBean.setVarientProducts(ControllersConstants.TRUE);
+							productBean.setProductUuid(randomUUIDProduct);
+							addVariantValueBeanInProductBean(productBean,currentUser,configurationMap);
+						}
+					}
+					
 
 					if(productBean.getTrackingProduct().equalsIgnoreCase("true") && !productBean.getVarientProducts().equalsIgnoreCase("true")){
 						totalQunatity = ControllerUtil.getTotlalQuantityForAllOutlets(outletsist);
 					}
-					UUID uuidProd = UUID.randomUUID();
-					String randomUUIDProduct = uuidProd.toString();
+					
 
 					Configuration configuration = configurationService.getConfigurationByPropertyNameByCompanyId("PRODCUT_TEMPLATE_FOR_ALL_OUTLETS",currentUser.getCompany().getCompanyId());
 					if(configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
@@ -460,6 +471,49 @@ public class NewProductController {
 			}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+	}
+	
+	public void addVariantValueBeanInProductBean( ProductBean productBean,User currentUser,Map<String ,Configuration> configurationMap){
+		try{
+			Configuration configurationDefaultVN = configurationMap.get("DEFAULT_VARIANT_NAME");
+			String variantName = "";
+			if(configurationDefaultVN!=null ){
+				variantName = configurationDefaultVN.getPropertyValue().toString();
+			}
+			List<VarientValueBean> productVariantValuesCollection = new ArrayList<>();
+			List<OutletBean> varientsOutletList = new ArrayList<>();
+			VarientValueBean varientValueBean = new VarientValueBean();
+			varientValueBean.setVarientName(variantName);
+			varientValueBean.setuUid(productBean.getProductUuid());
+			
+			OutletBean OutletBean  = new OutletBean();
+			
+			if(productBean.getOutletList().get(0).getCurrentInventory()!=null && !productBean.getOutletList().get(0).getCurrentInventory().equalsIgnoreCase("")){
+				OutletBean.setCurrentInventory(productBean.getOutletList().get(0).getCurrentInventory());
+			}
+			OutletBean.setMarkupPrct(productBean.getMarkupPrct());
+			OutletBean.setSupplyPriceExclTax(productBean.getSupplyPriceExclTax());
+			OutletBean.setOutletId(String.valueOf(currentUser.getOutlet().getOutletId()));
+			OutletBean.setSku(productBean.getSku());
+			varientsOutletList.add(OutletBean);
+			varientValueBean.setVarientsOutletList(varientsOutletList);
+			productVariantValuesCollection.add(varientValueBean);
+			productBean.setProductVariantValuesCollection(productVariantValuesCollection);
+			VarientAttributeBean varientAttributeBean = new VarientAttributeBean();
+			String attributeId = "1";
+			varientAttributeBean.setVarientAttributeId(attributeId);
+			List<VarientAttributeBean> productVariantAttributeCollection =  new ArrayList<>();
+			productVariantAttributeCollection.add(varientAttributeBean);
+			productBean.setProductVariantAttributeCollection(productVariantAttributeCollection);
+			List<VarientAttributeValueBean> productVariantValuesCollectionOne = new ArrayList<>();
+			VarientAttributeValueBean varientAttributeValueBean =  new VarientAttributeValueBean();
+			varientAttributeValueBean.setValue(variantName);
+			productVariantValuesCollectionOne.add(varientAttributeValueBean);
+			productBean.setProductVariantValuesCollectionOne(productVariantValuesCollectionOne);
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 
@@ -542,7 +596,49 @@ public class NewProductController {
 		product.setCompany(currentUser.getCompany());
 		if(productBean.getImageData()!=null ){
 			processImage(productBean.getImageData(), product, request);
-		}		
+		}	
+		if(productBean.getProductVariantValuesCollectionOne()!=null){
+			String attribut1 = "";
+			for(VarientAttributeValueBean attributeValue : productBean.getProductVariantValuesCollectionOne()){
+				VariantAttributeValues variantAttributeValues = new VariantAttributeValues();
+				variantAttributeValues.setAttributeValue(attributeValue.getValue());
+				if(attribut1.equalsIgnoreCase("")){
+					attribut1= attributeValue.getValue();
+				}else{
+					attribut1 =attribut1+","+attributeValue.getValue();
+				}
+				
+			}
+			product.setAttribute1(attribut1);
+		}
+		if(productBean.getProductVariantValuesCollectionTwo()!=null){
+			String attribut2 = "";
+			for(VarientAttributeValueBean attributeValue : productBean.getProductVariantValuesCollectionTwo()){
+				VariantAttributeValues variantAttributeValues = new VariantAttributeValues();
+				variantAttributeValues.setAttributeValue(attributeValue.getValue());
+				if(attribut2.equalsIgnoreCase("")){
+					attribut2= attributeValue.getValue();
+				}else{
+					attribut2 =attribut2+","+attributeValue.getValue();
+				}
+				
+			}
+			product.setAttribute2(attribut2);
+		}
+		if(productBean.getProductVariantValuesCollectionThree()!=null){
+			String attribut3 = "";
+			for(VarientAttributeValueBean attributeValue : productBean.getProductVariantValuesCollectionThree()){
+				VariantAttributeValues variantAttributeValues = new VariantAttributeValues();
+				variantAttributeValues.setAttributeValue(attributeValue.getValue());
+				if(attribut3.equalsIgnoreCase("")){
+					attribut3= attributeValue.getValue();
+				}else{
+					attribut3 =attribut3+","+attributeValue.getValue();
+				}
+				
+			}
+			product.setAttribute3(attribut3);
+		}
 		Product newProduct = new Product();
 		//inventory will be updated through stock order
 		if(configurationStockOrder!=null && configurationStockOrder.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
@@ -591,6 +687,7 @@ public class NewProductController {
 			}
 			List<StockOrderDetailBean> stockOrderDetialBeansList = new ArrayList<>();
 			Double grandTotal = 0.0;
+			Double itemCount = 0.0;
 			if(productBean.getStandardProduct().equalsIgnoreCase("true")){
 				//Standard scenario
 				if(productBean.getVarientProducts().equalsIgnoreCase("true")){
@@ -623,6 +720,7 @@ public class NewProductController {
 										stockOrderDetailBean.setOrderProdQty(varientValueBean.getVarientsOutletList().get(0).getCurrentInventory());
 										stockOrderDetailBean.setOrdrSupplyPrice(varientValueBean.getVarientsOutletList().get(0).getSupplyPriceExclTax());
 										grandTotal = grandTotal + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice())); 
+										itemCount = itemCount + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 										stockOrderDetailBean.setIsProduct("false");
 										stockOrderDetialBeansList.add(stockOrderDetailBean);
 									}
@@ -641,6 +739,7 @@ public class NewProductController {
 							stockOrderDetailBean.setOrderProdQty(String.valueOf(newProduct.getCurrentInventory()));
 							stockOrderDetailBean.setOrdrSupplyPrice(String.valueOf(newProduct.getSupplyPriceExclTax()));
 							grandTotal = grandTotal + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice()));					
+							itemCount = itemCount + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 							stockOrderDetailBean.setIsProduct("true");
 							stockOrderDetialBeansList.add(stockOrderDetailBean);
 						}
@@ -651,7 +750,7 @@ public class NewProductController {
 					StockOrderBean stockOrderBean = new StockOrderBean();
 					stockOrderBean.setOutlet(outletbean.getOutletId());
 					stockOrderBean.setSupplierId(productBean.getSupplierId());
-					AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, request);
+					AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, request);
 				}
 
 			}else{
@@ -1007,7 +1106,7 @@ public class NewProductController {
 					productBean.setImagePath(product.getImagePath());
 					productBean.setCurrentInventory(product.getCurrentInventory().toString());
 					productBean.setOldInventory(product.getCurrentInventory().toString());
-
+					
 					if(product.getStandardProduct().equalsIgnoreCase("true")){
 						List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 						Map outletMap = new HashMap<>();
@@ -1105,7 +1204,7 @@ public class NewProductController {
 
 
 					}else{
-						List<CompositeProduct> compositeProducts = compositeProductService.getAllCompositeProductsByProductIdOultetId(product.getProductId(),Integer.valueOf(outletId),currentUser.getCompany().getCompanyId());
+						List<CompositeProduct> compositeProducts = compositeProductService.getAllCompositeProductsByProductIdOultetIdCompanyId(product.getProductId(),Integer.valueOf(outletId),currentUser.getCompany().getCompanyId());
 						if(compositeProducts!=null){
 							//int id= 0;
 							for(CompositeProduct compositeProduct :compositeProducts){
@@ -1145,13 +1244,13 @@ public class NewProductController {
 					productBean.setProductTagBeanList(productTagBeanList);
 					productBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(product.getCreatedDate()));
 
-					util.AuditTrail(request, currentUser, "NewProductController.getAllProductsDetail", 
-							"User "+ currentUser.getUserEmail()+" retrived all Products successfully ",false);
+					util.AuditTrail(request, currentUser, "NewProductController.getProductDetailByProductId", 
+							"User "+ currentUser.getUserEmail()+" retrived Product detail successfully ",false);
 					return new Response(productBean, StatusConstants.SUCCESS,
 							LayOutPageConstants.STAY_ON_PAGE);
 				} else {
-					util.AuditTrail(request, currentUser, "NewProductController.getAllProductsDetail", 
-							" Products are not found requested by User "+currentUser.getUserEmail(),false);
+					util.AuditTrail(request, currentUser, "NewProductController.getProductDetailByProductId", 
+							" Products detail not found requested by User "+currentUser.getUserEmail(),false);
 					return new Response(MessageConstants.RECORD_NOT_FOUND,
 							StatusConstants.RECORD_NOT_FOUND,
 							LayOutPageConstants.STAY_ON_PAGE);
@@ -1160,7 +1259,7 @@ public class NewProductController {
 				e.printStackTrace();
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "NewProductController.getAllProductsDetail",
+				util.AuditTrail(request, currentUser, "NewProductController.getProductDetailByProductId",
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,
 						StatusConstants.RECORD_NOT_FOUND,
@@ -1610,7 +1709,7 @@ public class NewProductController {
 	}*/
 
 	@SuppressWarnings("rawtypes")
-	private boolean AddStockOrder(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, HttpServletRequest request)
+	private boolean AddStockOrder(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, Double itemCount, HttpServletRequest request)
 	{
 		boolean added = false;
 		if(stockOrderDetailBeanList.size() > 0){				
@@ -1648,7 +1747,8 @@ public class NewProductController {
 			}
 			//PurchaseOrderDetailsController purchaseOrderDetailsController = new PurchaseOrderDetailsController();
 			String total = grandTotal.toString();
-			purchaseOrderDetailsController.updateAndReceiveStockOrderDetails(sessionId, total, stockOrderDetailBeanList, request);
+			String items = itemCount.toString();
+			purchaseOrderDetailsController.updateAndReceiveStockOrderDetails(sessionId, total, items, stockOrderDetailBeanList, request);
 			//StockOrderDetail Finish
 			added = true;
 		}

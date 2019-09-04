@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.mapping.Array;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -210,6 +211,7 @@ public class SellController  {
 			"#708090", "#FF9800", "#87CEEB", "#C0C0C0", "#A0522D", "#2E8B57",
 			"#F4A460", "#FA8072" };
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/getAllProducts/{sessionId}", method = RequestMethod.GET)
 	public @ResponseBody
 	SellControllerBean getAllProducts(
@@ -220,8 +222,14 @@ public class SellController  {
 		if (SessionValidator.isSessionValid(sessionId, request)) {
 			HttpSession session = request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
+			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			try {
-				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
+				Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS");
+				if(configurationTermsAndContitions!=null){
+					String termsAndContitions = configurationTermsAndContitions.getPropertyValue();
+					sellControllerBean.setTermsAndConditions(termsAndContitions);
+				}
+				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),currentUser.getUserId());
 				sellControllerBean.setRegisterStatus("false");
 				if (dailyRegister != null) {
 					sellControllerBean.setDailyRegisterId(dailyRegister
@@ -229,6 +237,14 @@ public class SellController  {
 					sellControllerBean.setRegisterStatus("true");
 				}
 				sellControllerBean.setDisplayProductsBean(displayProductsBean);
+				Configuration configurationAutoCreateSV = configurationMap.get("AUTO_CREATE_STANDARD_VARIANT");
+				Configuration configurationDefaultVN = configurationMap.get("DEFAULT_VARIANT_NAME");
+				if(configurationAutoCreateSV!=null && configurationAutoCreateSV.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+					sellControllerBean.setAutoCreateStandardVariant(ControllersConstants.TRUE);
+					sellControllerBean.setDefaultVariantName(configurationDefaultVN.getPropertyValue().toString());
+				}else{
+					sellControllerBean.setAutoCreateStandardVariant(ControllersConstants.FALSE);
+				}
 				return sellControllerBean;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -271,15 +287,20 @@ public class SellController  {
 			try {
 				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 				
-				Company company = companyService.getCompanyDetailsByCompanyID(currentUser.getCompany().getCompanyId());
+				Company company = currentUser.getCompany();
 				sellControllerBean.setCompanyName(company.getCompanyName());
 				Configuration configurationImage = configurationMap.get("COMPANY_RECEIPT_IMAGE");
 				if(configurationImage!=null){
 					String companyImagePath = "/app/resources/images/"+configurationImage.getPropertyValue();
 					sellControllerBean.setCompanyImagePath(companyImagePath);
 				}
+				Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS");
+				if(configurationTermsAndContitions!=null){
+					String termsAndContitions = configurationTermsAndContitions.getPropertyValue();
+					sellControllerBean.setTermsAndConditions(termsAndContitions);
+				}
 				
-				List<User> users =  resourceService.getAllEmployeesByCompanyId(company.getCompanyId());
+				List<User> users =  resourceService.getAllUsersByCompanyIdOutletId(company.getCompanyId(),currentUser.getOutlet().getOutletId());
 				if(users!=null){
 					for(User user : users){
 						UserBean userBean = new UserBean();
@@ -308,6 +329,14 @@ public class SellController  {
 				{
 					sellControllerBean.setIsInvoiceLevelDiscountEnable("false");
 				}
+				Configuration configurationInvoiceLineLevelDiscount = configurationService.getConfigurationByPropertyNameByCompanyId("INVOICE_LINE_LEVEL_DISCOUNT",currentUser.getCompany().getCompanyId());
+				if(configurationInvoiceLineLevelDiscount!=null && configurationInvoiceLineLevelDiscount.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+					sellControllerBean.setIsInvoiceDetailLevelDiscountEnable("true");
+				}
+				else
+				{
+					sellControllerBean.setIsInvoiceDetailLevelDiscountEnable("false");
+				}
 				
 				if(currentUser.getOutlet().getAddress()!=null){
 					address =  addressService.getAddressByAddressId(currentUser.getOutlet().getAddress().getAddressId(), company.getCompanyId());
@@ -319,7 +348,7 @@ public class SellController  {
 					sellControllerBean.setPhoneNumber(address.getPhone());
 
 				}
-				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
+				DailyRegister dailyRegister = dailyRegisterService.getOpenDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),currentUser.getUserId());
 				sellControllerBean.setRegisterStatus("false");
 				if (dailyRegister != null) {
 					sellControllerBean.setDailyRegisterId(dailyRegister
@@ -388,7 +417,7 @@ public class SellController  {
 						count = count + 1;
 
 						ProductBean productBean = new ProductBean();
-
+						productBean.setProductUuid(product.getProductUuid());
 						BigDecimal supplyPrice = product
 								.getSupplyPriceExclTax();
 
@@ -450,6 +479,8 @@ public class SellController  {
 								if(product.getProductDesc()!=null){
 									productVarientBean.setProductDesc(product.getProductDesc());
 								}
+								productVarientBean.setProductUuid(product.getProductUuid());
+								productVarientBean.setProductVariantUuid(item.getProductVariantUuid());
 								productVarientBean.setSku(item.getSku());
 								productVarientBean.setVarientProducts(product.getVariantProducts());
 								productVarientBean.setProductVariantId(item
@@ -510,21 +541,20 @@ public class SellController  {
 						ProductVaraintDetailBean productVaraintDetailBean = new ProductVaraintDetailBean();
 						if(productVarients!=null && productVarients.size()>0){
 							if (productVarients.get(0).getVariantAttributeByVariantAttributeAssocicationId1() != null) {
-								if( productVarients.get(productVarients.size()-1).getVariantAttributeByVariantAttributeAssocicationId1()!=null){
-									productVaraintDetailBean.setArrtibute1Values(findUniqeVariant(variantAttributeValues, productVarients.get(productVarients.size()-1).getVariantAttributeByVariantAttributeAssocicationId1().getVariantAttributeId(), product.getProductUuid()));
+							if (product.getAttribute1() != null) {
+								productVaraintDetailBean.setArrtibute1Values(product.getAttribute1().split(","));
 								}
 							}
 
 							if (productVarients.get(0).getVariantAttributeByVariantAttributeAssocicationId2() != null) {
-								if(productVarients.get(productVarients.size()-1).getVariantAttributeByVariantAttributeAssocicationId2()!=null){
-									productVaraintDetailBean.setArrtibute2Values(findUniqeVariant(variantAttributeValues, productVarients.get(productVarients.size()-1).getVariantAttributeByVariantAttributeAssocicationId2().getVariantAttributeId(), product.getProductUuid()));
-									
-								}
+								if (product.getAttribute2() != null) {
+									productVaraintDetailBean.setArrtibute2Values(product.getAttribute2().split(","));
+									}
 							}
 							if (productVarients.get(0).getVariantAttributeByVariantAttributeAssocicationId3() != null) {
-								if( productVarients.get(productVarients.size()-1).getVariantAttributeByVariantAttributeAssocicationId3()!=null){
-								productVaraintDetailBean.setArrtibute3Values(findUniqeVariant(variantAttributeValues, productVarients.get(productVarients.size()-1).getVariantAttributeByVariantAttributeAssocicationId3().getVariantAttributeId(), product.getProductUuid()));
-								}
+								if (product.getAttribute3() != null) {
+									productVaraintDetailBean.setArrtibute3Values(product.getAttribute3().split(","));
+									}
 
 							}
 						}
@@ -576,6 +606,256 @@ public class SellController  {
 //			    String fromApacheBytes = new String(apacheBytes);
 //				zipData.setData(new String(bytes, "UTF-16"));
 //			    zipData.setData(fromApacheBytes);
+				Configuration configurationAutoCreateSV = configurationMap.get("AUTO_CREATE_STANDARD_VARIANT");
+				Configuration configurationDefaultVN = configurationMap.get("DEFAULT_VARIANT_NAME");
+				if(configurationAutoCreateSV!=null && configurationAutoCreateSV.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+					sellControllerBean.setAutoCreateStandardVariant(ControllersConstants.TRUE);
+					sellControllerBean.setDefaultVariantName(configurationDefaultVN.getPropertyValue().toString());
+				}else{
+					sellControllerBean.setAutoCreateStandardVariant(ControllersConstants.FALSE);
+				}
+				return sellControllerBean;
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser,
+						"SellController.getAllProducts", "Error Occured "
+								+ errors.toString(), true);
+				return sellControllerBean;
+
+			}
+		}
+
+		else {
+
+			return sellControllerBean;
+		}
+	
+		
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/getAllProductsPrintLableOnly/{sessionId}", method = RequestMethod.GET)
+	public @ResponseBody
+	SellControllerBean getAllProductsPrintLableOnly(
+			@PathVariable("sessionId") String sessionId,
+			HttpServletRequest request) {
+		
+
+		SellControllerBean sellControllerBean = new SellControllerBean();
+		List<ProductBean> productsBean = new ArrayList<>();
+		List<Product> products = new ArrayList<>();
+		List<ProductBean> displayProductsBean = new ArrayList<>();
+		if (SessionValidator.isSessionValid(sessionId, request)) {
+			HttpSession session = request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			
+			try {
+				
+				Company company = currentUser.getCompany();
+				sellControllerBean.setCompanyName(company.getCompanyName());
+				
+				
+			sellControllerBean.setDisplayProductsBean(displayProductsBean);
+			sellControllerBean.setCompanyName(company.getCompanyName());
+				
+				List<ProductVariant> productsProductVariants = new ArrayList<>();
+				Map<Integer, List<ProductVariant>> productVariantsMap = new HashMap<>();
+				productsProductVariants = productVariantService.getAllProductVariantsByOutletId(currentUser.getOutlet().getOutletId(), company.getCompanyId());
+				if(productsProductVariants!=null){
+					for(ProductVariant productVariant:productsProductVariants){
+						List<ProductVariant> productVariants = productVariantsMap.get(productVariant.getProduct().getProductId());
+						if(productVariants!=null){
+							productVariants.add(productVariant);
+							productVariantsMap.put(productVariant.getProduct().getProductId(), productVariants);
+						}else{
+							productVariants = new ArrayList<>();
+							productVariants.add(productVariant);
+							productVariantsMap.put(productVariant.getProduct().getProductId(), productVariants);
+						}
+
+					}
+				}
+				List<SalesTax> salesTaxs = new ArrayList<>();
+				Map<Integer, SalesTax> salesTaxMap = new HashMap<>();
+				salesTaxs = salesTaxService.GetAllSalesTax(company.getCompanyId());
+				if(salesTaxs!=null){
+					for(SalesTax salesTax:salesTaxs){
+						salesTaxMap.put(salesTax.getSalesTaxId(), salesTax);
+					}
+				}
+				
+				products = productService.getAllProductsByOutletId(currentUser.getOutlet().getOutletId());
+				int count = 0;
+				if (products != null) {
+					for (Product product : products) {
+						count = count + 1;
+
+						ProductBean productBean = new ProductBean();
+						productBean.setProductUuid(product.getProductUuid());
+						BigDecimal supplyPrice = product
+								.getSupplyPriceExclTax();
+
+						BigDecimal markupPrct = product.getMarkupPrct();
+						SalesTax tax = salesTaxMap.get(product.getSalesTax().getSalesTaxId());
+						BigDecimal retailPriceExclusiveTax = supplyPrice.add(
+								supplyPrice.multiply(markupPrct).divide(
+										new BigDecimal(100))).setScale(2,
+												RoundingMode.HALF_EVEN);
+
+						BigDecimal taxAmount = retailPriceExclusiveTax
+								.multiply(
+										new BigDecimal(tax
+												.getSalesTaxPercentage()))
+												.divide(new BigDecimal(100))
+												.setScale(2, RoundingMode.HALF_EVEN);
+
+						BigDecimal retailPriceInclusiveTax = retailPriceExclusiveTax
+								.add(taxAmount);
+
+
+						productBean.setTaxAmount(taxAmount.toString());						
+
+						productBean
+						.setRetailPriceInclTax(retailPriceInclusiveTax
+								.toString());
+						productBean
+						.setRetailPriceExclTax(retailPriceExclusiveTax
+								.toString());
+						productBean.setProductName(product.getProductName());
+						productBean.setSku(product.getSku());
+						productBean.setProductDesc(product.getProductDesc());
+						productBean.setProductHandler(product
+								.getProductHandler());
+						productBean.setProductId(product.getProductId()
+								.toString());
+						productBean.setVarientProducts(product.getVariantProducts());
+
+						productBean.setProductId(product.getProductId().toString());
+						
+						if(product.getCurrentInventory() != null)
+						{
+							productBean.setCurrentInventory(product.getCurrentInventory().toString());
+						}
+
+						productBean.setOrignalPrice(product.getSupplyPriceExclTax()
+								.setScale(2, RoundingMode.HALF_EVEN).toString());
+						BigDecimal netPrice = (product.getSupplyPriceExclTax()).multiply(product.getMarkupPrct().divide(new BigDecimal(100))).add(product.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
+						BigDecimal newNetPrice =netPrice.setScale(2,RoundingMode.HALF_EVEN);
+
+						productBean.setNetPrice(newNetPrice.toString());
+
+
+						List<ProductVariant> productVarients = productVariantsMap.get(product.getProductId()) ;
+						List<ProductVariantBean> productVariantsBeans = new ArrayList<>();
+						if(productVarients!=null){
+							for (ProductVariant item : productVarients) {
+								ProductVariantBean productVarientBean = new ProductVariantBean();
+								if(product.getProductDesc()!=null){
+									productVarientBean.setProductDesc(product.getProductDesc());
+								}
+								productVarientBean.setProductUuid(product.getProductUuid());
+								productVarientBean.setProductVariantUuid(item.getProductVariantUuid());
+								productVarientBean.setSku(item.getSku());
+								productVarientBean.setVarientProducts(product.getVariantProducts());
+								productVarientBean.setProductVariantId(item
+										.getProductVariantId().toString());
+								productVarientBean.setVariantAttributeName(product.getProductName()+"/"+item
+										.getVariantAttributeName().toString());
+								if (item.getCurrentInventory() != null) {
+									productVarientBean.setCurrentInventory(item
+											.getCurrentInventory().toString());
+
+								}
+								productVarientBean.setProductId(product.getProductId()
+										.toString());
+								productVarientBean.setProductName(product
+										.getProductName());
+								productVarientBean.setMarkupPrct(item
+										.getMarkupPrct().toString());
+
+								BigDecimal productVarientmarkupPrct = item
+										.getMarkupPrct();
+								SalesTax varientTax = salesTaxMap.get(product.getSalesTax().getSalesTaxId());;
+
+								BigDecimal retailVarPriceExclusiveTax = item
+										.getSupplyPriceExclTax()
+										.add( item.getSupplyPriceExclTax().multiply(
+												productVarientmarkupPrct).divide(
+														new BigDecimal(100)))
+														.setScale(2, RoundingMode.HALF_EVEN);
+
+								BigDecimal varientTaxAmount = retailPriceExclusiveTax
+										.multiply(
+												new BigDecimal(varientTax
+														.getSalesTaxPercentage()))
+														.divide(new BigDecimal(100))
+														.setScale(2, RoundingMode.HALF_EVEN);
+
+								productVarientBean
+								.setRetailPriceExclTax(retailVarPriceExclusiveTax
+										.toString());
+								productVarientBean.setTax(varientTaxAmount
+										.toString());
+
+								productVarientBean.setOrignalPrice(item.getSupplyPriceExclTax()
+										.setScale(2, RoundingMode.HALF_EVEN).toString());
+
+								BigDecimal netPriceVar = (item.getSupplyPriceExclTax()).multiply(item.getMarkupPrct().divide(new BigDecimal(100))).add(item.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
+								BigDecimal newNetPriceVar =netPriceVar.setScale(2,RoundingMode.HALF_EVEN);
+
+								productVarientBean.setNetPrice(newNetPriceVar.toString());
+
+
+								productVariantsBeans.add(productVarientBean);
+								productBean.setProductVariantsBeans(productVariantsBeans);
+
+							}
+						}
+
+						ProductVaraintDetailBean productVaraintDetailBean = new ProductVaraintDetailBean();
+						if(productVarients!=null && productVarients.size()>0){
+							if (productVarients.get(0).getVariantAttributeByVariantAttributeAssocicationId1() != null) {
+							if (product.getAttribute1() != null) {
+								productVaraintDetailBean.setArrtibute1Values(product.getAttribute1().split(","));
+								}
+							}
+
+							if (productVarients.get(0).getVariantAttributeByVariantAttributeAssocicationId2() != null) {
+								if (product.getAttribute2() != null) {
+									productVaraintDetailBean.setArrtibute2Values(product.getAttribute2().split(","));
+									}
+							}
+							if (productVarients.get(0).getVariantAttributeByVariantAttributeAssocicationId3() != null) {
+								if (product.getAttribute3() != null) {
+									productVaraintDetailBean.setArrtibute3Values(product.getAttribute3().split(","));
+									}
+
+							}
+						}
+						productBean
+						.setProductVaraintDetailBean(productVaraintDetailBean);
+
+						productsBean.add(productBean);
+						
+
+					}
+					util.AuditTrail(request, currentUser,
+							"SellController.getAllProducts", "User "
+									+ currentUser.getUserEmail()
+									+ " retrived all products successfully ",
+									false);
+					sellControllerBean.setProductsBean(productsBean);
+				} else {
+					util.AuditTrail(request, currentUser,
+							"SellController.getAllProducts",
+							" products are not found requested by User "
+									+ currentUser.getUserEmail(), false);
+				}
+				sellControllerBean.setDisplayProductsBean(displayProductsBean);
+				
 				
 				return sellControllerBean;
 			} catch (Exception e) {
@@ -1125,7 +1405,7 @@ public class SellController  {
 				dailyRegister.setCompany(companyService
 						.getCompanyDetailsByCompanyID(currentUser.getCompany().getCompanyId()));
 				dailyRegister.setRegister(registerService
-						.getRegestersByOutletId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId()).get(0));
+						.getRegestersByOutletId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId(),currentUser.getUserId()).get(0));
 				dailyRegister.setCompany(currentUser.getCompany());
 				dailyRegister.setCreatedBy(currentUser.getUserId());
 				dailyRegister = dailyRegisterService.addDailyRegister(dailyRegister,currentUser.getCompany().getCompanyId());
@@ -1799,15 +2079,27 @@ public class SellController  {
 		try {
 
 			List<PriceBookBean> listPriceBooksBean = new ArrayList<>();
-			List<PriceBook> priceBooks = null;
+			List<PriceBook> priceBooks = new ArrayList<>();
+			List<PriceBook> priceBookList = null;
 
-			priceBooks = priceBookService.getAllValidPriceBooks(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(), contactgroupId);
-			//Company company = companyService.getCompanyDetailsByCompanyID(currentUser.getCompany().getCompanyId());
-			//Outlet outlet = outletService.getOuletByOutletId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+			priceBookList = priceBookService.getAllValidPriceBooks(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(), contactgroupId);
+			if(priceBookList!=null && priceBookList.size()>0){
+				for(PriceBook priceBook:priceBookList){
+					String [] outletgroups = priceBook.getOuteletsGroup().split(",");
+					for(String outletId:outletgroups){
+						if(currentUser.getOutlet().getOutletId()==Integer.valueOf(outletId)){
+							priceBooks.add(priceBook);
+							break;
+						}
+					}
+					
+				}
+			}
 			
-			if(priceBooks != null)
+			if(priceBooks != null && priceBooks.size()>0)
 			{
-				Map<Integer, List<PriceBookDetail>> priceBookDetailMap =  priceBookDetailService.getPriceBookDetailMapByPriceBookIdCompanyId(currentUser.getCompany().getCompanyId());
+				Map<Integer, PriceBookDetail> priceBookDetailMap =	priceBookDetailService.getAllActivePriceBookDetailsMapByPriceBookIdCompanyId(priceBooks.get(0).getPriceBookId(), currentUser.getCompany().getCompanyId());
+				//Map<Integer, List<PriceBookDetail>> priceBookDetailMap =  priceBookDetailService.getPriceBookDetailMapByPriceBookIdCompanyId(currentUser.getCompany().getCompanyId());
 				for (PriceBook book : priceBooks) {
 					PriceBookBean bookBean = new PriceBookBean();
 					List<PriceBookDetailBean> listProceBookDetailBean = new ArrayList<>();
@@ -1840,19 +2132,23 @@ public class SellController  {
 					bookBean.setFlatSale(book.getFlatSale());
 					bookBean.setFlatDiscount(book.getFlatDiscount().toString());
 
-					List<PriceBookDetail> list = priceBookDetailMap.get(book.getPriceBookId());
-					if(list != null)
+					/*List<PriceBookDetail> pricebookDetailList = new ArrayList<>();
+					pricebookDetailList.add(priceBookDetailMap.get(book.getPriceBookId()));
+					List<PriceBookDetail> list = pricebookDetailList;*/
+					if(priceBookDetailMap != null && priceBookDetailMap.size()>0)
 					{
 						//for (PriceBookDetail priceBookDetail : list) {
 						//	book.getPriceBookDetails().add(priceBookDetail);
 						//}
 
-						book.setPriceBookDetails(new HashSet<PriceBookDetail>(list));
+						//book.setPriceBookDetails(new HashSet<PriceBookDetail>(list));
 
-						for (PriceBookDetail bookDetail : book.getPriceBookDetails()) {
+						for (Map.Entry<Integer, PriceBookDetail> entry : priceBookDetailMap.entrySet()) {
+							PriceBookDetail bookDetail = entry.getValue();
 							PriceBookDetailBean bookDetailBean = new PriceBookDetailBean();
 
 							bookDetailBean.setCompanyId(bookDetail.getCompany().getCompanyId().toString());
+							bookDetailBean.setUuId(bookDetail.getUuid());
 //							if(company != null)
 //							{
 //								bookDetailBean.setCompanyName(company.getCompanyName());

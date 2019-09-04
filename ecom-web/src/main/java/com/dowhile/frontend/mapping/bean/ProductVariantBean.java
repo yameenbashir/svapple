@@ -49,6 +49,12 @@ public class ProductVariantBean {
     private String productUuid;
     private String auditTransfer;
     private String productDesc;
+    private boolean indivisualUpdate;
+    private boolean allUpdate;
+    private String uniteQunatity;
+    private String compositeQunatityConsumed;
+    private int compositeProductId;
+    private int contactId;
 	
 	/**
 	 * 
@@ -102,6 +108,12 @@ public class ProductVariantBean {
 	 * @param productUuid
 	 * @param auditTransfer
 	 * @param productDesc
+	 * @param indivisualUpdate
+	 * @param allUpdate
+	 * @param uniteQunatity
+	 * @param compositeQunatityConsumed
+	 * @param compositeProductId
+	 * @param contactId
 	 */
 	public ProductVariantBean(String iata, String isProduct, String isVariant,
 			String name, String productVariantId, String variantAttributeName,
@@ -120,7 +132,9 @@ public class ProductVariantBean {
 			String retailPrice, String printCount, String discount,
 			String minUnits, String maxUnits, String priceBookDetailId,
 			String priceBookId, String productUuid, String auditTransfer,
-			String productDesc) {
+			String productDesc, boolean indivisualUpdate, boolean allUpdate,
+			String uniteQunatity, String compositeQunatityConsumed,
+			int compositeProductId, int contactId) {
 		this.iata = iata;
 		this.isProduct = isProduct;
 		this.isVariant = isVariant;
@@ -166,6 +180,12 @@ public class ProductVariantBean {
 		this.productUuid = productUuid;
 		this.auditTransfer = auditTransfer;
 		this.productDesc = productDesc;
+		this.indivisualUpdate = indivisualUpdate;
+		this.allUpdate = allUpdate;
+		this.uniteQunatity = uniteQunatity;
+		this.compositeQunatityConsumed = compositeQunatityConsumed;
+		this.compositeProductId = compositeProductId;
+		this.contactId = contactId;
 	}
 
 	/**
@@ -796,5 +816,89 @@ public class ProductVariantBean {
 	 */
 	public void setProductDesc(String productDesc) {
 		this.productDesc = productDesc;
+	}
+
+	/**
+	 * @return the indivisualUpdate
+	 */
+	public boolean isIndivisualUpdate() {
+		return indivisualUpdate;
+	}
+
+	/**
+	 * @param indivisualUpdate the indivisualUpdate to set
+	 */
+	public void setIndivisualUpdate(boolean indivisualUpdate) {
+		this.indivisualUpdate = indivisualUpdate;
+	}
+
+	/**
+	 * @return the allUpdate
+	 */
+	public boolean isAllUpdate() {
+		return allUpdate;
+	}
+
+	/**
+	 * @param allUpdate the allUpdate to set
+	 */
+	public void setAllUpdate(boolean allUpdate) {
+		this.allUpdate = allUpdate;
+	}
+
+	/**
+	 * @return the uniteQunatity
+	 */
+	public String getUniteQunatity() {
+		return uniteQunatity;
+	}
+
+	/**
+	 * @param uniteQunatity the uniteQunatity to set
+	 */
+	public void setUniteQunatity(String uniteQunatity) {
+		this.uniteQunatity = uniteQunatity;
+	}
+
+	/**
+	 * @return the compositeQunatityConsumed
+	 */
+	public String getCompositeQunatityConsumed() {
+		return compositeQunatityConsumed;
+	}
+
+	/**
+	 * @param compositeQunatityConsumed the compositeQunatityConsumed to set
+	 */
+	public void setCompositeQunatityConsumed(String compositeQunatityConsumed) {
+		this.compositeQunatityConsumed = compositeQunatityConsumed;
+	}
+
+	/**
+	 * @return the compositeProductId
+	 */
+	public int getCompositeProductId() {
+		return compositeProductId;
+	}
+
+	/**
+	 * @param compositeProductId the compositeProductId to set
+	 */
+	public void setCompositeProductId(int compositeProductId) {
+		this.compositeProductId = compositeProductId;
+	}
+
+	/**
+	 * @return the contactId
+	 */
+	public int getContactId() {
+		return contactId;
+	}
+
+	/**
+	 * @param contactId the contactId to set
+	 */
+	public void setContactId(int contactId) {
+		this.contactId = contactId;
 	}
 }

@@ -120,6 +120,18 @@ public class PriceBookController {
 						priceBookBean.setValidFrom(priceBook.getValidFrom().toString());
 						priceBookBean.setValidTo(priceBook.getValidTo().toString());
 						priceBookBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(priceBook.getCreatedDate()));
+						String [] outletGroups = priceBook.getOuteletsGroup().split(",");
+						String outletNameGroup = "";
+						for(String outletId:outletGroups){
+							Outlet outlet = (Outlet) outletMap.get(Integer.valueOf(outletId));
+							if(outletNameGroup.equalsIgnoreCase("")){
+								
+								outletNameGroup = outlet.getOutletName();
+							}else{
+								outletNameGroup = outletNameGroup+","+outlet.getOutletName();
+							}
+						}
+						priceBookBean.setOuteletsGroup(outletNameGroup);
 						
 						Calendar localTIme = new GregorianCalendar(TimeZone.getTimeZone("UTC +7"));
 						localTIme.setTime(priceBook.getValidTo());

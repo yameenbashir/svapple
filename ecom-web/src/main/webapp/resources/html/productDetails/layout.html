@@ -375,7 +375,8 @@
 															<option value="-1">Change Printer</option>
 															<option value="A4">A4</option>
 															<option value="Continous">Continous(2x1)</option>
-															<option value="ContinousNew">Continous New(2x1)</option>
+															<option value="ContinousNew">Continous New 244 Pro (2x1)</option>
+															<option value="ContinousNewZebra">Continous New Zebra (2x1)</option>
 															<option value="ContinousLarge">Continous(2.15x1.70)</option>
 															
 														</select>
@@ -554,6 +555,48 @@
 								</div>    
 							</div>
 						</div>
+						<div class="box box-info newFont" ng-show="printOptionsContinousNewZebra">
+							<div class="box-body box-profile popup-transparent">
+								<div class="alert alert-success alert-sm" ng-show="success"
+									ng-bind="successMessage" ng-cloak></div>
+								<div class="alert alert-danger alert-sm" ng-show="error"
+									ng-bind="errorMessage" ng-cloak></div>
+								<b>Print Labels for products</b>
+								 <div style=" margin-top:25px; display: block !important; ">
+									<div id="left_Cont"></div>
+										<div style="display: table-cell !important;" id={{printThisElementContinousNewZebra}}>
+										  <div style=" margin-top:25px; display: block !important; "></div>
+											<div ng-if="layoutProduct.productName!=''" 
+												ng-repeat="productIn in layoutproducts"  style="display: block !important; ">
+												
+												<span style="margin-top:-20px ; margin-left: 10px !important; display: block !important;  font-size: 7px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+													class="text-center" ng-bind="product.productName"></span>
+													<span style="margin-top:-20px ; margin-left: 120px !important; display: block !important;  font-size: 7px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+													class="text-center" ng-bind="'Rs. '+ productIn.price"></span>
+													<span style=" margin-top:-5px ; margin-left: 50px !important; display: block !important;  font-size: 7px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+													class="text-center" ng-bind="product.productDesc"></span>
+													<img class="barcode"  style="margin-top:0px; display: block !important; margin-left: 1px; "
+														jsbarcode-format="CODE128" jsbarcode-value={{productIn.sku}}
+														jsbarcode-fontSize="10" jsbarcode-height="25" jsbarcode-marginRight="10px"
+														jsbarcode-width="1" jsbarcode-textmargin="0" jsbarcode-displayValue="false"
+														jsbarcode-fontoptions="">
+												</img>
+												<span style="margin-top: -7px; margin-left: 15px; display: block !important; font-family: sans-serif;  font-size: 8px; font-weight: bolder;" class="text-center"  ng-bind="productIn.sku"></span>
+      									   		<span style="margin-top:2px ; margin-left: 10px !important; display: block !important;  font-size: 7px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+													class="text-center" ng-bind="productIn.variantAttributeValue1"></span>
+													<span style="margin-top:2px ; margin-left: 140px !important; display: block !important;  font-size: 7px; font-family: sans-serif; font-weight: bolder; position: absolute;"
+													class="text-center" ng-bind="productIn.variantAttributeValue2"></span>
+      									   		<div  style=" margin-top:7px !important; display: block !important; " ng-if="$index!=layoutproducts.length-1">
+      									   		<br/>
+												</div>	
+												
+											</div>
+										</div>
+										<div id="right"></div>
+
+								</div>    
+							</div>
+						</div>
 						<div class="box box-info newFont" ng-show="printOptionsContinousLarge">
 							<div class="box-body box-profile popup-transparent">
 								<div class="alert alert-success alert-sm" ng-show="success"
@@ -602,7 +645,7 @@
 	<div class="row footer-row">
 		<div class="col-lg-12 text-center">
 			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
-				ShopVitals 2018</div>
+				ShopVitals 2019</div>
 		</div>
 	</div>
 </div>

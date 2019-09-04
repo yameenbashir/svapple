@@ -2,7 +2,7 @@
 
 /**
  * PurchaseOrderController
- * @constructor
+ * @constructor ....
  */
 var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$cookieStore','$rootScope','$timeout','SessionService','InventoryCountCreateControllerPreLoad',function($scope, $filter, $http, $window,$cookieStore,$rootScope,$timeout,SessionService,InventoryCountCreateControllerPreLoad) {
 	
@@ -84,7 +84,7 @@ var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$
 						});
 						$cookieStore.put('_ct_sc_ost',$scope.inventoryCountBean);
 						$window.location = Response.layOutPath;
-					    }, 1000);
+					    }, 3000);
 				}
 			else if($scope.responseStatus == 'SYSTEMBUSY'
 				||$scope.responseStatus=='INVALIDUSER'
@@ -93,7 +93,13 @@ var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
 				$window.location = Response.layOutPath;
-			} else {
+			}
+			else if($scope.responseStatus == 'WARNING'){
+				$scope.warning = true;
+				$scope.warningMessage = Response.data;
+				//$window.location = Response.layOutPath;
+			} 
+			else {
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
 			}

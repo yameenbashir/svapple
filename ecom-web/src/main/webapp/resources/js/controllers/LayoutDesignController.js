@@ -110,6 +110,26 @@ var LayoutDesignController = ['$timeout','$scope', '$http','$sce', '$window','$c
 
 
 	};
+	
+	$scope.removeProduct = function(product) {
+		
+		for (var i = 0; i < $scope.layoutProducts.length ; i++) {
+
+			if($scope.layoutProducts[i].id == product.id){
+				$scope.layoutProducts.splice(i, 1);
+			}
+		
+		}
+		for (var i = 0; i < $scope.allProducts.length ; i++) {
+
+			if($scope.allProducts[i].productId == product.id){
+				$scope.allProducts[i].display = "false"; 
+			}
+		
+		}
+
+
+	};
 	$scope.autoCompleteOptions = {
 			minimumChars : 1,
 			dropdownHeight : '200px',

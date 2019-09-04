@@ -61,10 +61,15 @@ public class OrgHierarchyController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			System.out.println("Old Company id: "+outletId);
+			System.out.println("Old outlet id: "+currentUser.getOutlet().getOutletId());
 			Outlet outlet =  outletService.getOuletByOutletId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+			if(outlet.getIsHeadOffice() != null && String.valueOf(outlet.getIsHeadOffice()) != "" && outlet.getIsHeadOffice()){
+				outlet.setIsHeadOffice(true);
+			}else{
+				outlet.setIsHeadOffice(false);
+			}
 			currentUser.setOutlet(outlet);
-			System.out.println("New Company id: "+currentUser.getCompany().getCompanyId());
+			System.out.println("New outlet id: "+currentUser.getOutlet().getOutletId());
 			session.setAttribute("user", currentUser);
 			
 			return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
@@ -86,7 +91,7 @@ public class OrgHierarchyController {
 			
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				List<Outlet> outlets = outletService.getAllActiveOutletsByCompanyId(currentUser.getCompany().getCompanyId());
 				OrganizationGraph organizationGraph =  new OrganizationGraph();
 				organizationGraph.setName(makeTitle(currentUser.getCompany().getCompanyName(),String.valueOf(currentUser.getCompany().getCompanyId()),sessionId,"top-level"));
 				organizationGraph.setTitle(currentUser.getCompany().getCompanyName());

@@ -232,6 +232,10 @@ public class LayoutDesignController {
 						Product product = productService.getProductByProductId(Integer.parseInt(productBean.getProductId()),currentUser.getCompany().getCompanyId());
 						product.setDisplay(true);
 						productService.updateProduct(product, Actions.INVENTORY_NOCHANGE, 0,currentUser.getCompany());
+					}else if(productBean.getDisplay()!=null && productBean.getDisplay().equalsIgnoreCase("false")){
+						Product product = productService.getProductByProductId(Integer.parseInt(productBean.getProductId()),currentUser.getCompany().getCompanyId());
+						product.setDisplay(false);
+						productService.updateProduct(product, Actions.INVENTORY_NOCHANGE, 0,currentUser.getCompany());
 					}
 					
 				}

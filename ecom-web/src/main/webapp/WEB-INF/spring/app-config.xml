@@ -45,7 +45,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="ServiceUtil" class="com.dowhile.service.util.ServiceUtil">
 		<property name="activityDetailDAO" ref="ActivityDetailDAO" />
 		<property name="severityDAO" ref="SeverityDAO" />
-
+		<property name="webActivityDetailDAO" ref="WebActivityDetailDAO" />
 	</bean>
 	<bean id="ResourceService" class="com.dowhile.service.impl.ResourceServiceImpl">
 		<property name="resourceDAO" ref="ResourceDAO" />
@@ -237,6 +237,12 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	</bean>
 	<bean id="NotificationService" class="com.dowhile.service.impl.NotificationServiceImpl">
 		<property name="notificationDAO" ref="NotificationDAO" />
+	</bean>
+	<bean id="CompositeProductHistoryService" class="com.dowhile.service.impl.CompositeProductHistoryServiceImpl">
+		<property name="compositeProductHistoryDAO" ref="CompositeProductHistoryDAO" />
+	</bean>
+	<bean id="StockOrderVService" class="com.dowhile.service.impl.StockOrderVServiceImpl">
+		<property name="stockOrderVDAO" ref="StockOrderVDAO" />
 	</bean>
 	
 	<!-- <bean id="ContactUsService" class="com.dowhile.service.impl.ContactUsServiceImpl">
@@ -447,6 +453,13 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="NotificationDAO" class="com.dowhile.dao.impl.NotificationDAOImpl">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
+	<bean id="CompositeProductHistoryDAO" class="com.dowhile.dao.impl.CompositeProductHistoryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="StockOrderVDAO" class="com.dowhile.dao.impl.StockOrderVDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	
 		
 	<!-- <bean id="ContactUsDAO" class="com.dowhile.dao.impl.ContactUsDAOImpl">
 		<property name="sessionFactory" ref="SessionFactory" />
@@ -536,6 +549,8 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 				<value>com.dowhile.ExpenseType</value>
 				<value>com.dowhile.ContactsSummmary</value>
 				<value>com.dowhile.ProductPriceHistory</value>
+				<value>com.dowhile.CompositeProductHistory</value>
+				<value>com.dowhile.StockOrderV</value>
 
 			</list>
 		</property>

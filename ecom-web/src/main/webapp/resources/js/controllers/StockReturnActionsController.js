@@ -265,6 +265,7 @@ var StockReturnActionsController = ['$scope', '$http', '$window', '$timeout', '$
 		$scope.error = false;
 		$scope.loading = true;
 		$scope.stockOrderBean.statusId = "8"; // Closed Status
+		$scope.stockOrderBean.diliveryDueDate = new Date($scope.stockOrderBean.diliveryDueDate);
 		$http.post('purchaseOrder/updateStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
 		.success(function(Response) {
 			$scope.loading = false;

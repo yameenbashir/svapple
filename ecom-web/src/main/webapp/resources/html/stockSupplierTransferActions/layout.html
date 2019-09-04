@@ -44,7 +44,7 @@
 										ng-disabled="disableProcess">Edit Details</button>
 									<button class="btn btn-success btn-lg"
 										ng-click="showSendReturnStockOrder()"
-										ng-disabled="disableProcess">Send Stock</button>
+										ng-disabled="true">Send Stock</button>
 									<button class="btn btn-danger btn-lg"
 										ng-click="showCancelStockOrder()" ng-disabled="disableProcess">Cancel
 										Order</button>
@@ -94,7 +94,13 @@
 																ng-bind="stockOrderBean.outletName"></span>
 														</div>
 													</div>
-
+												<div class="form-group">
+														<label for="inputEmail3" class="col-sm-2 control-label">Remarks</label>
+														<textArea type="text" class="form-control" ng-disabled="true"
+															id="inputstoreName" placeholder="Remarks..." rows="3"
+															data-ng-model="stockOrderBean.remarks" maxlength="250" id="remarks"
+															 ng-pattern='/^[-@./#&+\w\s]*$/'></textArea>
+													</div>
 
 												</div>
 
@@ -225,8 +231,8 @@
 															<th>Product</th>
 															<!-- <th>Stock on Hand</th> -->
 															<th>Quantity</th>
-															<th  ng-hide="isAdmin()">Supply Price</th>
-															<!-- <th>Retail Price</th> -->
+															<!-- <th  ng-hide="isAdmin()">Supply Price</th> -->
+															<th>Retail Price</th>
 															<th>Total</th>
 
 														</tr>
@@ -239,16 +245,14 @@
 															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
 															<!-- <td	ng-bind="stockOrderDetailBean.productVariantCurrInventory"></td> -->
 															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>
-															<td ng-bind="stockOrderDetailBean.ordrSupplyPrice"  ng-hide="isAdmin()"></td>
-															<!-- <td ng-bind="stockOrderDetailBean.retailPrice"></td> -->
+															<!-- <td ng-bind="stockOrderDetailBean.ordrSupplyPrice"  ng-hide="isAdmin()"></td> -->
+															 <td ng-bind="stockOrderDetailBean.retailPrice"></td>
 															<td ng-bind="stockOrderDetailBean.total"></td>
 
 														</tr>
 													</tbody>
 													<tfoot>
 													<tr>
-														<th></th>
-														<th></th>
 														<th>Total Item Count</th>
 														<th ng-bind = "stockOrderBean.itemCount"></th>													
 														<th>Total</th>														
@@ -300,8 +304,8 @@
 															<th>Product</th>
 															<!-- <th>Stock on Hand</th> -->
 															<th>Quantity</th>
-														<!-- 	<th>Retail Price</th> -->
-															<th>Total</th>
+														 	<!-- <th>Retail Price</th>
+															<th>Total</th> -->
 
 														</tr>
 													</thead>
@@ -313,19 +317,18 @@
 															<td ng-bind="stockOrderDetailBean.variantAttributeName"></td>
 															<!-- <td	ng-bind="stockOrderDetailBean.productVariantCurrInventory"></td> -->
 															<td ng-bind="stockOrderDetailBean.orderProdQty"></td>
-															<!-- <td ng-bind="stockOrderDetailBean.retailPrice"></td> -->
-															<td ng-bind="stockOrderDetailBean.total"></td>
+															<!-- <td ng-bind="stockOrderDetailBean.retailPrice"></td>
+															<td ng-bind="stockOrderDetailBean.total"></td> -->
 														</tr>
 													</tbody>
 													<tfoot>
 													<tr>
 														<th></th>
-														<th></th>
 														<th>Total Item Count</th>
 														<th ng-bind = "stockOrderBean.itemCount"></th>														
-														<th>Total</th>
+														<!-- <th>Total</th> -->
 														
-														<th ng-bind = "grandTotal"></th>
+														<!-- <th ng-bind = "grandTotal"></th> -->
 													</tr>													
 												</tfoot>
 												</table>
@@ -345,7 +348,7 @@
 	<div class="row footer-row">
 		<div class="col-lg-12 text-center">
 			<div class="footerdiv navbar-fixed-bottom">&copy; copyrights
-				ShopVitals 2018</div>
+				ShopVitals 2019</div>
 		</div>
 	</div>
 </div>

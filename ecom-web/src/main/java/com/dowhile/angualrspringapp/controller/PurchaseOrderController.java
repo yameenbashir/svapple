@@ -2,6 +2,7 @@ package com.dowhile.angualrspringapp.controller;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import com.dowhile.service.StatusService;
 import com.dowhile.service.StockOrderService;
 import com.dowhile.service.StockOrderTypeService;
 import com.dowhile.service.util.ServiceUtil;
+import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
 
 /**
@@ -120,8 +122,8 @@ public class PurchaseOrderController {
 				}
 				else{
 					purchaseOrderControllerBean.setRetailPriceBill("false");
-				}			
-				
+				}		
+
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -143,6 +145,54 @@ public class PurchaseOrderController {
 
 	}
 
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/stockSupplierTransferRetailPrice/{sessionId}", method = RequestMethod.POST)
+	public @ResponseBody Response stockSupplierTransferRetailPrice(@PathVariable("sessionId") String sessionId,
+			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request){
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+			User currentUser = (User) session.getAttribute("user");	
+			String retailPriceBill =  "false";
+			try {			
+				
+				Configuration stockSupplierTransferRetailBill = configurationMap.get("RETAIL_PRICE_BILL_STOCK_SUPPLIER_TRANSFER");
+				if (stockOrderBean != null) {	
+					if(stockOrderBean.getStockOrderTypeId().toString().equalsIgnoreCase("5")){
+						if(stockSupplierTransferRetailBill != null ){
+							if(stockSupplierTransferRetailBill.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+								retailPriceBill = stockSupplierTransferRetailBill.getPropertyValue().toString();
+							}
+							else{
+								retailPriceBill = stockSupplierTransferRetailBill.getPropertyValue().toString();
+							}
+						}
+						else{
+							retailPriceBill = "false";
+						}
+					}
+					util.AuditTrail(request, currentUser, "PurchaseOrderController.stockSupplierTransferRetailPrice", 
+							"User "+ currentUser.getUserEmail()+" get StockSupplierTransfer retail price bill+"+stockOrderBean.getStockOrderId()+" successfully ",false);
+					return new Response(retailPriceBill,StatusConstants.SUCCESS,	LayOutPageConstants.STAY_ON_PAGE);
+				}else{
+					util.AuditTrail(request, currentUser, "PurchaseOrderController.stockSupplierTransferRetailPrice", "User "+ 
+							currentUser.getUserEmail()+" Unable to get StockSupplierTransfer retail price bill : ",false);
+					return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+				}
+
+			}catch(Exception e){
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "PurchaseOrderController.stockSupplierTransferRetailPrice",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}		
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllOutlets/{sessionId}", method = RequestMethod.POST)
@@ -355,9 +405,16 @@ public class PurchaseOrderController {
 					stockOrder.setDiliveryDueDate(dateFormat.parse(stockOrderBean.getDiliveryDueDate()));
 					stockOrder.setLastUpdated(new Date());
 					stockOrder.setOrderNo(stockOrderBean.getOrderNo());
+					stockOrder.setTotalAmount(new BigDecimal(0));
+					stockOrder.setTotalItems(new BigDecimal(0));
 					//stockOrder.setOrdrRecvDate(dateFormat.parse(stockOrderBean.getOrdrRecvDate()));
 
-					//stockOrder.setRemarks(stockOrderBean.getRemarks());
+					//Added by Yameen
+					//In case of self process order we are setting remarks
+					if(stockOrderBean.getRemarks()!=null && !stockOrderBean.getRemarks().equalsIgnoreCase("")){
+						stockOrder.setRemarks(stockOrderBean.getRemarks());
+
+					}
 					//stockOrder.setReturnNo(stockOrderBean.getReturnNo());
 					stockOrder.setStatus(statusService.getStatusByStatusId(Integer.parseInt(stockOrderBean.getStatusId().trim()))); 				
 					//stockOrder.setStockOrderDate(dateFormat.parse(stockOrderBean.getStockOrderDate()));
@@ -430,15 +487,23 @@ public class PurchaseOrderController {
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				if (stockOrderBean != null) {				
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
-					stockOrder.setStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()));
+					if(stockOrderBean.getStockOrderId() != null){
+						stockOrder.setStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()));
+					}
 					stockOrder.setActiveIndicator(true);
 					if(stockOrderBean.getRetailPriceBill() != null){
 						stockOrder.setRetailPriceBill(Boolean.valueOf(stockOrderBean.getRetailPriceBill()));
 					}
-					stockOrder.setAutofillReorder(Boolean.valueOf(stockOrderBean.getAutofillReorder()));
-					stockOrder.setDiliveryDueDate(dateFormat.parse(stockOrderBean.getDiliveryDueDate()));
+					if(stockOrderBean.getAutofillReorder() != null){
+						stockOrder.setAutofillReorder(Boolean.valueOf(stockOrderBean.getAutofillReorder()));
+					}
+					if(stockOrderBean.getDiliveryDueDate() != null){
+						stockOrder.setDiliveryDueDate(dateFormat.parse(stockOrderBean.getDiliveryDueDate()));
+					}
 					stockOrder.setLastUpdated(new Date());
-					stockOrder.setOrderNo(stockOrderBean.getOrderNo());
+					if(stockOrderBean.getOrderNo()!= null){
+						stockOrder.setOrderNo(stockOrderBean.getOrderNo());
+					}
 					stockOrder.setOutletByOutletAssocicationId(outletService.getOuletByOutletId(Integer.parseInt(stockOrderBean.getOutletId()),currentUser.getCompany().getCompanyId()));
 					if(stockOrderBean.getSourceOutletId() != null && stockOrderBean.getSourceOutletId() != ""){
 						stockOrder.setOutletBySourceOutletAssocicationId(outletService.getOuletByOutletId(Integer.parseInt(stockOrderBean.getSourceOutletId()),currentUser.getCompany().getCompanyId()));
@@ -453,15 +518,24 @@ public class PurchaseOrderController {
 					else{
 						stockOrder.setOutletBySourceOutletAssocicationId(outletService.getOuletByOutletId(Integer.parseInt(stockOrderBean.getOutletId()), currentUser.getCompany().getCompanyId()));
 						stockOrder.setOutletByOutletAssocicationId(outletService.getOuletByOutletId(Integer.parseInt(stockOrderBean.getSupplierId()), currentUser.getCompany().getCompanyId()));
-					}*/
-					stockOrder.setStatus(statusService.getStatusByStatusId(Integer.parseInt(stockOrderBean.getStatusId()))); 				
-					stockOrder.setStockOrderType(stockOrderTypeService.getStockOrderTypeByStockOrderTypeId(Integer.parseInt(stockOrderBean.getStockOrderTypeId())));
-					stockOrder.setStockRefNo(stockOrderBean.getStockRefNo());
+					}*/					
+					if(stockOrderBean.getStatusId() != null){
+						stockOrder.setStatus(statusService.getStatusByStatusId(Integer.parseInt(stockOrderBean.getStatusId()))); 				
+					}
+					if(stockOrderBean.getStockOrderTypeId() != null){
+						stockOrder.setStockOrderType(stockOrderTypeService.getStockOrderTypeByStockOrderTypeId(Integer.parseInt(stockOrderBean.getStockOrderTypeId())));
+					}
+					if(stockOrderBean.getStockRefNo() != null){
+						stockOrder.setStockRefNo(stockOrderBean.getStockRefNo());
+					}
 					if(stockOrderBean.getSupplierId() != null && stockOrderBean.getSupplierId() != ""){ 
 						stockOrder.setContactId(Integer.parseInt(stockOrderBean.getSupplierId()));
 					}
-					stockOrder.setContactInvoiceNo(stockOrderBean.getSupplierInvoiceNo());
+					if(stockOrderBean.getSupplierInvoiceNo() != null){
+						stockOrder.setContactInvoiceNo(stockOrderBean.getSupplierInvoiceNo());
+					}
 					stockOrder.setUpdatedBy(currentUser.getUserId());
+			
 					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
 
 					util.AuditTrail(request, currentUser, "PurchaseOrderController.addStockOrder", 

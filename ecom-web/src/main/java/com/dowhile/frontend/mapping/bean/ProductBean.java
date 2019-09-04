@@ -9,7 +9,7 @@ import com.dowhile.angualrspringapp.beans.ImageData;
 
 
 /**
- * @author Yameen Bashir
+ * @author Hafiz Yameen Bashir
  *
  */
 public class ProductBean {
@@ -78,6 +78,8 @@ public class ProductBean {
 	private ImageData imageData;
 	private String orignalPrice;
 	private ProductPriceHistoryBean productPriceHistoryBean;
+	private String isComposite;
+	private List<ProductVariantBean> productList;
 	
 	/**
 	 * 
@@ -148,6 +150,8 @@ public class ProductBean {
 	 * @param imageData
 	 * @param orignalPrice
 	 * @param productPriceHistoryBean
+	 * @param isComposite
+	 * @param productList
 	 */
 	public ProductBean(
 			String productId,
@@ -210,7 +214,8 @@ public class ProductBean {
 			List<ProductTagBean> productTagBeanList,
 			List<CompositVariantBean> compositProductCollection,
 			ImageData imageData, String orignalPrice,
-			ProductPriceHistoryBean productPriceHistoryBean) {
+			ProductPriceHistoryBean productPriceHistoryBean,
+			String isComposite, List<ProductVariantBean> productList) {
 		this.productId = productId;
 		this.companyName = companyName;
 		this.css = css;
@@ -273,6 +278,8 @@ public class ProductBean {
 		this.imageData = imageData;
 		this.orignalPrice = orignalPrice;
 		this.productPriceHistoryBean = productPriceHistoryBean;
+		this.isComposite = isComposite;
+		this.productList = productList;
 	}
 
 	/**
@@ -1151,5 +1158,33 @@ public class ProductBean {
 	public void setProductPriceHistoryBean(
 			ProductPriceHistoryBean productPriceHistoryBean) {
 		this.productPriceHistoryBean = productPriceHistoryBean;
+	}
+
+	/**
+	 * @return the isComposite
+	 */
+	public String getIsComposite() {
+		return isComposite;
+	}
+
+	/**
+	 * @param isComposite the isComposite to set
+	 */
+	public void setIsComposite(String isComposite) {
+		this.isComposite = isComposite;
+	}
+
+	/**
+	 * @return the productList
+	 */
+	public List<ProductVariantBean> getProductList() {
+		return productList;
+	}
+
+	/**
+	 * @param productList the productList to set
+	 */
+	public void setProductList(List<ProductVariantBean> productList) {
+		this.productList = productList;
 	}
 }
