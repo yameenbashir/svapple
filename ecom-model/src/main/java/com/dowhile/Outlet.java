@@ -46,28 +46,29 @@ public class Outlet implements java.io.Serializable {
     private Date lastUpdated;
     private Integer createdBy;
     private Integer updatedBy;
-    private Set<ProductVariant> productVariants = new HashSet<ProductVariant>(0);
-    private Set<Receipt> receipts = new HashSet<Receipt>(0);
     private Set<StockOrder> stockOrdersForSourceOutletAssocicationId = new HashSet<StockOrder>(0);
-    private Set<DailyRegister> dailyRegisters = new HashSet<DailyRegister>(0);
+    private Set<CompositeProductHistory> compositeProductHistories = new HashSet<CompositeProductHistory>(0);
     private Set<Loyalty> loyalties = new HashSet<Loyalty>(0);
-    private Set<Notification> notificationsForOutletIdFrom = new HashSet<Notification>(0);
     private Set<Product> products = new HashSet<Product>(0);
     private Set<Message> messages = new HashSet<Message>(0);
-    private Set<Register> registers = new HashSet<Register>(0);
-    private Set<MessageDetail> messageDetails = new HashSet<MessageDetail>(0);
-    private Set<User> users = new HashSet<User>(0);
-    private Set<PriceBook> priceBooks = new HashSet<PriceBook>(0);
     private Set<OrderDetail> orderDetails = new HashSet<OrderDetail>(0);
     private Set<InvoiceDetail> invoiceDetails = new HashSet<InvoiceDetail>(0);
-    private Set<OrderMain> orderMains = new HashSet<OrderMain>(0);
     private Set<ProductHistory> productHistories = new HashSet<ProductHistory>(0);
     private Set<UserOutlets> userOutletses = new HashSet<UserOutlets>(0);
     private Set<CompositeProduct> compositeProducts = new HashSet<CompositeProduct>(0);
     private Set<InventoryCount> inventoryCounts = new HashSet<InventoryCount>(0);
     private Set<InvoiceMain> invoiceMains = new HashSet<InvoiceMain>(0);
-    private Set<Notification> notificationsForOutletIdTo = new HashSet<Notification>(0);
     private Set<ProductPriceHistory> productPriceHistories = new HashSet<ProductPriceHistory>(0);
+    private Set<ProductVariant> productVariants = new HashSet<ProductVariant>(0);
+    private Set<Receipt> receipts = new HashSet<Receipt>(0);
+    private Set<DailyRegister> dailyRegisters = new HashSet<DailyRegister>(0);
+    private Set<Notification> notificationsForOutletIdFrom = new HashSet<Notification>(0);
+    private Set<Register> registers = new HashSet<Register>(0);
+    private Set<MessageDetail> messageDetails = new HashSet<MessageDetail>(0);
+    private Set<User> users = new HashSet<User>(0);
+    private Set<PriceBook> priceBooks = new HashSet<PriceBook>(0);
+    private Set<OrderMain> orderMains = new HashSet<OrderMain>(0);
+    private Set<Notification> notificationsForOutletIdTo = new HashSet<Notification>(0);
     private Set<CashManagment> cashManagments = new HashSet<CashManagment>(0);
     private Set<StockOrder> stockOrdersForOutletAssocicationId = new HashSet<StockOrder>(0);
 
@@ -82,7 +83,7 @@ public class Outlet implements java.io.Serializable {
        this.createdDate = createdDate;
        this.lastUpdated = lastUpdated;
    }
-   public Outlet(Address address, Company company, TimeZone timeZone, SalesTax salesTax, String outletName, String orderNumber, String orderNumberPrefix, String contactNumberPrefix, String contactReturnNumber, boolean activeIndicator, Boolean isHeadOffice, Date createdDate, Date lastUpdated, Integer createdBy, Integer updatedBy, Set<ProductVariant> productVariants, Set<Receipt> receipts, Set<StockOrder> stockOrdersForSourceOutletAssocicationId, Set<DailyRegister> dailyRegisters, Set<Loyalty> loyalties, Set<Notification> notificationsForOutletIdFrom, Set<Product> products, Set<Message> messages, Set<Register> registers, Set<MessageDetail> messageDetails, Set<User> users, Set<PriceBook> priceBooks, Set<OrderDetail> orderDetails, Set<InvoiceDetail> invoiceDetails, Set<OrderMain> orderMains, Set<ProductHistory> productHistories, Set<UserOutlets> userOutletses, Set<CompositeProduct> compositeProducts, Set<InventoryCount> inventoryCounts, Set<InvoiceMain> invoiceMains, Set<Notification> notificationsForOutletIdTo, Set<ProductPriceHistory> productPriceHistories, Set<CashManagment> cashManagments, Set<StockOrder> stockOrdersForOutletAssocicationId) {
+   public Outlet(Address address, Company company, TimeZone timeZone, SalesTax salesTax, String outletName, String orderNumber, String orderNumberPrefix, String contactNumberPrefix, String contactReturnNumber, boolean activeIndicator, Boolean isHeadOffice, Date createdDate, Date lastUpdated, Integer createdBy, Integer updatedBy, Set<StockOrder> stockOrdersForSourceOutletAssocicationId, Set<CompositeProductHistory> compositeProductHistories, Set<Loyalty> loyalties, Set<Product> products, Set<Message> messages, Set<OrderDetail> orderDetails, Set<InvoiceDetail> invoiceDetails, Set<ProductHistory> productHistories, Set<UserOutlets> userOutletses, Set<CompositeProduct> compositeProducts, Set<InventoryCount> inventoryCounts, Set<InvoiceMain> invoiceMains, Set<ProductPriceHistory> productPriceHistories, Set<ProductVariant> productVariants, Set<Receipt> receipts, Set<DailyRegister> dailyRegisters, Set<Notification> notificationsForOutletIdFrom, Set<Register> registers, Set<MessageDetail> messageDetails, Set<User> users, Set<PriceBook> priceBooks, Set<OrderMain> orderMains, Set<Notification> notificationsForOutletIdTo, Set<CashManagment> cashManagments, Set<StockOrder> stockOrdersForOutletAssocicationId) {
       this.address = address;
       this.company = company;
       this.timeZone = timeZone;
@@ -98,28 +99,29 @@ public class Outlet implements java.io.Serializable {
       this.lastUpdated = lastUpdated;
       this.createdBy = createdBy;
       this.updatedBy = updatedBy;
-      this.productVariants = productVariants;
-      this.receipts = receipts;
       this.stockOrdersForSourceOutletAssocicationId = stockOrdersForSourceOutletAssocicationId;
-      this.dailyRegisters = dailyRegisters;
+      this.compositeProductHistories = compositeProductHistories;
       this.loyalties = loyalties;
-      this.notificationsForOutletIdFrom = notificationsForOutletIdFrom;
       this.products = products;
       this.messages = messages;
-      this.registers = registers;
-      this.messageDetails = messageDetails;
-      this.users = users;
-      this.priceBooks = priceBooks;
       this.orderDetails = orderDetails;
       this.invoiceDetails = invoiceDetails;
-      this.orderMains = orderMains;
       this.productHistories = productHistories;
       this.userOutletses = userOutletses;
       this.compositeProducts = compositeProducts;
       this.inventoryCounts = inventoryCounts;
       this.invoiceMains = invoiceMains;
-      this.notificationsForOutletIdTo = notificationsForOutletIdTo;
       this.productPriceHistories = productPriceHistories;
+      this.productVariants = productVariants;
+      this.receipts = receipts;
+      this.dailyRegisters = dailyRegisters;
+      this.notificationsForOutletIdFrom = notificationsForOutletIdFrom;
+      this.registers = registers;
+      this.messageDetails = messageDetails;
+      this.users = users;
+      this.priceBooks = priceBooks;
+      this.orderMains = orderMains;
+      this.notificationsForOutletIdTo = notificationsForOutletIdTo;
       this.cashManagments = cashManagments;
       this.stockOrdersForOutletAssocicationId = stockOrdersForOutletAssocicationId;
    }
@@ -286,24 +288,6 @@ public class Outlet implements java.io.Serializable {
        this.updatedBy = updatedBy;
    }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<ProductVariant> getProductVariants() {
-       return this.productVariants;
-   }
-   
-   public void setProductVariants(Set<ProductVariant> productVariants) {
-       this.productVariants = productVariants;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<Receipt> getReceipts() {
-       return this.receipts;
-   }
-   
-   public void setReceipts(Set<Receipt> receipts) {
-       this.receipts = receipts;
-   }
-
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outletBySourceOutletAssocicationId")
    public Set<StockOrder> getStockOrdersForSourceOutletAssocicationId() {
        return this.stockOrdersForSourceOutletAssocicationId;
@@ -314,12 +298,12 @@ public class Outlet implements java.io.Serializable {
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<DailyRegister> getDailyRegisters() {
-       return this.dailyRegisters;
+   public Set<CompositeProductHistory> getCompositeProductHistories() {
+       return this.compositeProductHistories;
    }
    
-   public void setDailyRegisters(Set<DailyRegister> dailyRegisters) {
-       this.dailyRegisters = dailyRegisters;
+   public void setCompositeProductHistories(Set<CompositeProductHistory> compositeProductHistories) {
+       this.compositeProductHistories = compositeProductHistories;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
@@ -329,15 +313,6 @@ public class Outlet implements java.io.Serializable {
    
    public void setLoyalties(Set<Loyalty> loyalties) {
        this.loyalties = loyalties;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outletByOutletIdFrom")
-   public Set<Notification> getNotificationsForOutletIdFrom() {
-       return this.notificationsForOutletIdFrom;
-   }
-   
-   public void setNotificationsForOutletIdFrom(Set<Notification> notificationsForOutletIdFrom) {
-       this.notificationsForOutletIdFrom = notificationsForOutletIdFrom;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
@@ -359,42 +334,6 @@ public class Outlet implements java.io.Serializable {
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<Register> getRegisters() {
-       return this.registers;
-   }
-   
-   public void setRegisters(Set<Register> registers) {
-       this.registers = registers;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<MessageDetail> getMessageDetails() {
-       return this.messageDetails;
-   }
-   
-   public void setMessageDetails(Set<MessageDetail> messageDetails) {
-       this.messageDetails = messageDetails;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<User> getUsers() {
-       return this.users;
-   }
-   
-   public void setUsers(Set<User> users) {
-       this.users = users;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<PriceBook> getPriceBooks() {
-       return this.priceBooks;
-   }
-   
-   public void setPriceBooks(Set<PriceBook> priceBooks) {
-       this.priceBooks = priceBooks;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
    public Set<OrderDetail> getOrderDetails() {
        return this.orderDetails;
    }
@@ -410,15 +349,6 @@ public class Outlet implements java.io.Serializable {
    
    public void setInvoiceDetails(Set<InvoiceDetail> invoiceDetails) {
        this.invoiceDetails = invoiceDetails;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
-   public Set<OrderMain> getOrderMains() {
-       return this.orderMains;
-   }
-   
-   public void setOrderMains(Set<OrderMain> orderMains) {
-       this.orderMains = orderMains;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
@@ -466,15 +396,6 @@ public class Outlet implements java.io.Serializable {
        this.invoiceMains = invoiceMains;
    }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="outletByOutletIdTo")
-   public Set<Notification> getNotificationsForOutletIdTo() {
-       return this.notificationsForOutletIdTo;
-   }
-   
-   public void setNotificationsForOutletIdTo(Set<Notification> notificationsForOutletIdTo) {
-       this.notificationsForOutletIdTo = notificationsForOutletIdTo;
-   }
-
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
    public Set<ProductPriceHistory> getProductPriceHistories() {
        return this.productPriceHistories;
@@ -482,6 +403,96 @@ public class Outlet implements java.io.Serializable {
    
    public void setProductPriceHistories(Set<ProductPriceHistory> productPriceHistories) {
        this.productPriceHistories = productPriceHistories;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<ProductVariant> getProductVariants() {
+       return this.productVariants;
+   }
+   
+   public void setProductVariants(Set<ProductVariant> productVariants) {
+       this.productVariants = productVariants;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<Receipt> getReceipts() {
+       return this.receipts;
+   }
+   
+   public void setReceipts(Set<Receipt> receipts) {
+       this.receipts = receipts;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<DailyRegister> getDailyRegisters() {
+       return this.dailyRegisters;
+   }
+   
+   public void setDailyRegisters(Set<DailyRegister> dailyRegisters) {
+       this.dailyRegisters = dailyRegisters;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outletByOutletIdFrom")
+   public Set<Notification> getNotificationsForOutletIdFrom() {
+       return this.notificationsForOutletIdFrom;
+   }
+   
+   public void setNotificationsForOutletIdFrom(Set<Notification> notificationsForOutletIdFrom) {
+       this.notificationsForOutletIdFrom = notificationsForOutletIdFrom;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<Register> getRegisters() {
+       return this.registers;
+   }
+   
+   public void setRegisters(Set<Register> registers) {
+       this.registers = registers;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<MessageDetail> getMessageDetails() {
+       return this.messageDetails;
+   }
+   
+   public void setMessageDetails(Set<MessageDetail> messageDetails) {
+       this.messageDetails = messageDetails;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<User> getUsers() {
+       return this.users;
+   }
+   
+   public void setUsers(Set<User> users) {
+       this.users = users;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<PriceBook> getPriceBooks() {
+       return this.priceBooks;
+   }
+   
+   public void setPriceBooks(Set<PriceBook> priceBooks) {
+       this.priceBooks = priceBooks;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")
+   public Set<OrderMain> getOrderMains() {
+       return this.orderMains;
+   }
+   
+   public void setOrderMains(Set<OrderMain> orderMains) {
+       this.orderMains = orderMains;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="outletByOutletIdTo")
+   public Set<Notification> getNotificationsForOutletIdTo() {
+       return this.notificationsForOutletIdTo;
+   }
+   
+   public void setNotificationsForOutletIdTo(Set<Notification> notificationsForOutletIdTo) {
+       this.notificationsForOutletIdTo = notificationsForOutletIdTo;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="outlet")

@@ -2,15 +2,17 @@ package com.dowhile;
 // Generated Aug 17, 2017 1:48:25 PM by Hibernate Tools 3.4.0.CR1
 
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,230 +31,242 @@ import javax.persistence.TemporalType;
 public class PriceBook  implements java.io.Serializable {
 
 
-     private Integer priceBookId;
-     private Outlet outlet;
-     private User userByCreatedBy;
-     private User userByUpdatedBy;
-     private Company company;
-     private ContactGroup contactGroup;
-     private String priceBookName;
-     private Date validFrom;
-     private Date validTo;
-     private Boolean isValidOnStore;
-     private Boolean isValidOnEcom;
-     private boolean activeIndicator;
-     private Date createdDate;
-     private Date lastUpdated;
-     private String flatSale;
-     private BigDecimal flatDiscount;
-     private Set<PriceBookDetail> priceBookDetails = new HashSet<PriceBookDetail>(0);
+    private Integer priceBookId;
+    private Outlet outlet;
+    private User userByCreatedBy;
+    private User userByUpdatedBy;
+    private Company company;
+    private ContactGroup contactGroup;
+    private String priceBookName;
+    private Date validFrom;
+    private Date validTo;
+    private Boolean isValidOnStore;
+    private Boolean isValidOnEcom;
+    private boolean activeIndicator;
+    private Date createdDate;
+    private Date lastUpdated;
+    private String flatSale;
+    private BigDecimal flatDiscount;
+    private String outeletsGroup;
+    private Set<PriceBookDetail> priceBookDetails = new HashSet<PriceBookDetail>(0);
 
-    public PriceBook() {
-    }
+   public PriceBook() {
+   }
 
 	
-    public PriceBook(User userByCreatedBy, User userByUpdatedBy, Company company, String priceBookName, Date validFrom, Date validTo, boolean activeIndicator, Date createdDate, Date lastUpdated, String flatSale, BigDecimal flatDiscount) {
-        this.userByCreatedBy = userByCreatedBy;
-        this.userByUpdatedBy = userByUpdatedBy;
-        this.company = company;
-        this.priceBookName = priceBookName;
-        this.validFrom = validFrom;
-        this.validTo = validTo;
-        this.activeIndicator = activeIndicator;
-        this.createdDate = createdDate;
-        this.lastUpdated = lastUpdated;
-        this.flatSale = flatSale;
-        this.flatDiscount = flatDiscount;
-    }
-    public PriceBook(Outlet outlet, User userByCreatedBy, User userByUpdatedBy, Company company, ContactGroup contactGroup, String priceBookName, Date validFrom, Date validTo, Boolean isValidOnStore, Boolean isValidOnEcom, boolean activeIndicator, Date createdDate, Date lastUpdated, String flatSale, BigDecimal flatDiscount, Set<PriceBookDetail> priceBookDetails) {
-       this.outlet = outlet;
+   public PriceBook(User userByCreatedBy, User userByUpdatedBy, Company company, String priceBookName, Date validFrom, Date validTo, boolean activeIndicator, Date createdDate, Date lastUpdated, String flatSale, BigDecimal flatDiscount) {
        this.userByCreatedBy = userByCreatedBy;
        this.userByUpdatedBy = userByUpdatedBy;
        this.company = company;
-       this.contactGroup = contactGroup;
        this.priceBookName = priceBookName;
        this.validFrom = validFrom;
        this.validTo = validTo;
-       this.isValidOnStore = isValidOnStore;
-       this.isValidOnEcom = isValidOnEcom;
        this.activeIndicator = activeIndicator;
        this.createdDate = createdDate;
        this.lastUpdated = lastUpdated;
        this.flatSale = flatSale;
        this.flatDiscount = flatDiscount;
-       this.priceBookDetails = priceBookDetails;
-    }
+   }
+   public PriceBook(Outlet outlet, User userByCreatedBy, User userByUpdatedBy, Company company, ContactGroup contactGroup, String priceBookName, Date validFrom, Date validTo, Boolean isValidOnStore, Boolean isValidOnEcom, boolean activeIndicator, Date createdDate, Date lastUpdated, String flatSale, BigDecimal flatDiscount, String outeletsGroup, Set<PriceBookDetail> priceBookDetails) {
+      this.outlet = outlet;
+      this.userByCreatedBy = userByCreatedBy;
+      this.userByUpdatedBy = userByUpdatedBy;
+      this.company = company;
+      this.contactGroup = contactGroup;
+      this.priceBookName = priceBookName;
+      this.validFrom = validFrom;
+      this.validTo = validTo;
+      this.isValidOnStore = isValidOnStore;
+      this.isValidOnEcom = isValidOnEcom;
+      this.activeIndicator = activeIndicator;
+      this.createdDate = createdDate;
+      this.lastUpdated = lastUpdated;
+      this.flatSale = flatSale;
+      this.flatDiscount = flatDiscount;
+      this.outeletsGroup = outeletsGroup;
+      this.priceBookDetails = priceBookDetails;
+   }
+  
+    @Id @GeneratedValue(strategy=IDENTITY)
+
    
-     @Id @GeneratedValue(strategy=IDENTITY)
-
-    
-    @Column(name="PRICE_BOOK_ID", unique=true, nullable=false)
-    public Integer getPriceBookId() {
-        return this.priceBookId;
-    }
-    
-    public void setPriceBookId(Integer priceBookId) {
-        this.priceBookId = priceBookId;
-    }
+   @Column(name="PRICE_BOOK_ID", unique=true, nullable=false)
+   public Integer getPriceBookId() {
+       return this.priceBookId;
+   }
+   
+   public void setPriceBookId(Integer priceBookId) {
+       this.priceBookId = priceBookId;
+   }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="OUTLET_ASSOCICATION_ID")
-    public Outlet getOutlet() {
-        return this.outlet;
-    }
-    
-    public void setOutlet(Outlet outlet) {
-        this.outlet = outlet;
-    }
+   @JoinColumn(name="OUTLET_ASSOCICATION_ID")
+   public Outlet getOutlet() {
+       return this.outlet;
+   }
+   
+   public void setOutlet(Outlet outlet) {
+       this.outlet = outlet;
+   }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CREATED_BY", nullable=false)
-    public User getUserByCreatedBy() {
-        return this.userByCreatedBy;
-    }
-    
-    public void setUserByCreatedBy(User userByCreatedBy) {
-        this.userByCreatedBy = userByCreatedBy;
-    }
+   @JoinColumn(name="CREATED_BY", nullable=false)
+   public User getUserByCreatedBy() {
+       return this.userByCreatedBy;
+   }
+   
+   public void setUserByCreatedBy(User userByCreatedBy) {
+       this.userByCreatedBy = userByCreatedBy;
+   }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="UPDATED_BY", nullable=false)
-    public User getUserByUpdatedBy() {
-        return this.userByUpdatedBy;
-    }
-    
-    public void setUserByUpdatedBy(User userByUpdatedBy) {
-        this.userByUpdatedBy = userByUpdatedBy;
-    }
+   @JoinColumn(name="UPDATED_BY", nullable=false)
+   public User getUserByUpdatedBy() {
+       return this.userByUpdatedBy;
+   }
+   
+   public void setUserByUpdatedBy(User userByUpdatedBy) {
+       this.userByUpdatedBy = userByUpdatedBy;
+   }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="COMPANY_ASSOCIATION_ID", nullable=false)
-    public Company getCompany() {
-        return this.company;
-    }
-    
-    public void setCompany(Company company) {
-        this.company = company;
-    }
+   @JoinColumn(name="COMPANY_ASSOCIATION_ID", nullable=false)
+   public Company getCompany() {
+       return this.company;
+   }
+   
+   public void setCompany(Company company) {
+       this.company = company;
+   }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CONTACT_GROUP_ASSOCICATION_ID")
-    public ContactGroup getContactGroup() {
-        return this.contactGroup;
-    }
-    
-    public void setContactGroup(ContactGroup contactGroup) {
-        this.contactGroup = contactGroup;
-    }
+   @JoinColumn(name="CONTACT_GROUP_ASSOCICATION_ID")
+   public ContactGroup getContactGroup() {
+       return this.contactGroup;
+   }
+   
+   public void setContactGroup(ContactGroup contactGroup) {
+       this.contactGroup = contactGroup;
+   }
 
-    
-    @Column(name="PRICE_BOOK_NAME", nullable=false, length=250)
-    public String getPriceBookName() {
-        return this.priceBookName;
-    }
-    
-    public void setPriceBookName(String priceBookName) {
-        this.priceBookName = priceBookName;
-    }
+   
+   @Column(name="PRICE_BOOK_NAME", nullable=false, length=250)
+   public String getPriceBookName() {
+       return this.priceBookName;
+   }
+   
+   public void setPriceBookName(String priceBookName) {
+       this.priceBookName = priceBookName;
+   }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="VALID_FROM", nullable=false, length=10)
-    public Date getValidFrom() {
-        return this.validFrom;
-    }
-    
-    public void setValidFrom(Date validFrom) {
-        this.validFrom = validFrom;
-    }
+   @Temporal(TemporalType.DATE)
+   @Column(name="VALID_FROM", nullable=false, length=10)
+   public Date getValidFrom() {
+       return this.validFrom;
+   }
+   
+   public void setValidFrom(Date validFrom) {
+       this.validFrom = validFrom;
+   }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="VALID_TO", nullable=false, length=10)
-    public Date getValidTo() {
-        return this.validTo;
-    }
-    
-    public void setValidTo(Date validTo) {
-        this.validTo = validTo;
-    }
+   @Temporal(TemporalType.DATE)
+   @Column(name="VALID_TO", nullable=false, length=10)
+   public Date getValidTo() {
+       return this.validTo;
+   }
+   
+   public void setValidTo(Date validTo) {
+       this.validTo = validTo;
+   }
 
-    
-    @Column(name="IS_VALID_ON_STORE")
-    public Boolean getIsValidOnStore() {
-        return this.isValidOnStore;
-    }
-    
-    public void setIsValidOnStore(Boolean isValidOnStore) {
-        this.isValidOnStore = isValidOnStore;
-    }
+   
+   @Column(name="IS_VALID_ON_STORE")
+   public Boolean getIsValidOnStore() {
+       return this.isValidOnStore;
+   }
+   
+   public void setIsValidOnStore(Boolean isValidOnStore) {
+       this.isValidOnStore = isValidOnStore;
+   }
 
-    
-    @Column(name="IS_VALID_ON_ECOM")
-    public Boolean getIsValidOnEcom() {
-        return this.isValidOnEcom;
-    }
-    
-    public void setIsValidOnEcom(Boolean isValidOnEcom) {
-        this.isValidOnEcom = isValidOnEcom;
-    }
+   
+   @Column(name="IS_VALID_ON_ECOM")
+   public Boolean getIsValidOnEcom() {
+       return this.isValidOnEcom;
+   }
+   
+   public void setIsValidOnEcom(Boolean isValidOnEcom) {
+       this.isValidOnEcom = isValidOnEcom;
+   }
 
-    
-    @Column(name="ACTIVE_INDICATOR", nullable=false)
-    public boolean isActiveIndicator() {
-        return this.activeIndicator;
-    }
-    
-    public void setActiveIndicator(boolean activeIndicator) {
-        this.activeIndicator = activeIndicator;
-    }
+   
+   @Column(name="ACTIVE_INDICATOR", nullable=false)
+   public boolean isActiveIndicator() {
+       return this.activeIndicator;
+   }
+   
+   public void setActiveIndicator(boolean activeIndicator) {
+       this.activeIndicator = activeIndicator;
+   }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="CREATED_DATE", nullable=false, length=19)
-    public Date getCreatedDate() {
-        return this.createdDate;
-    }
-    
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+   @Temporal(TemporalType.TIMESTAMP)
+   @Column(name="CREATED_DATE", nullable=false, length=19)
+   public Date getCreatedDate() {
+       return this.createdDate;
+   }
+   
+   public void setCreatedDate(Date createdDate) {
+       this.createdDate = createdDate;
+   }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="LAST_UPDATED", nullable=false, length=19)
-    public Date getLastUpdated() {
-        return this.lastUpdated;
-    }
-    
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
+   @Temporal(TemporalType.TIMESTAMP)
+   @Column(name="LAST_UPDATED", nullable=false, length=19)
+   public Date getLastUpdated() {
+       return this.lastUpdated;
+   }
+   
+   public void setLastUpdated(Date lastUpdated) {
+       this.lastUpdated = lastUpdated;
+   }
 
-    
-    @Column(name="FLAT_SALE", nullable=false, length=6)
-    public String getFlatSale() {
-        return this.flatSale;
-    }
-    
-    public void setFlatSale(String flatSale) {
-        this.flatSale = flatSale;
-    }
+   
+   @Column(name="FLAT_SALE", nullable=false, length=6)
+   public String getFlatSale() {
+       return this.flatSale;
+   }
+   
+   public void setFlatSale(String flatSale) {
+       this.flatSale = flatSale;
+   }
 
-    
-    @Column(name="FLAT_DISCOUNT", nullable=false, precision=8, scale=5)
-    public BigDecimal getFlatDiscount() {
-        return this.flatDiscount;
-    }
-    
-    public void setFlatDiscount(BigDecimal flatDiscount) {
-        this.flatDiscount = flatDiscount;
-    }
+   
+   @Column(name="FLAT_DISCOUNT", nullable=false, precision=8, scale=5)
+   public BigDecimal getFlatDiscount() {
+       return this.flatDiscount;
+   }
+   
+   public void setFlatDiscount(BigDecimal flatDiscount) {
+       this.flatDiscount = flatDiscount;
+   }
+
+   
+   @Column(name="OUTELETS_GROUP", length=200)
+   public String getOuteletsGroup() {
+       return this.outeletsGroup;
+   }
+   
+   public void setOuteletsGroup(String outeletsGroup) {
+       this.outeletsGroup = outeletsGroup;
+   }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="priceBook")
-    public Set<PriceBookDetail> getPriceBookDetails() {
-        return this.priceBookDetails;
-    }
-    
-    public void setPriceBookDetails(Set<PriceBookDetail> priceBookDetails) {
-        this.priceBookDetails = priceBookDetails;
-    }
+   public Set<PriceBookDetail> getPriceBookDetails() {
+       return this.priceBookDetails;
+   }
+   
+   public void setPriceBookDetails(Set<PriceBookDetail> priceBookDetails) {
+       this.priceBookDetails = priceBookDetails;
+   }
 
 
 

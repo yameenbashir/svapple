@@ -4,6 +4,7 @@ package com.dowhile;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -14,420 +15,434 @@ import javax.persistence.Embeddable;
 public class ProductSummmaryId  implements java.io.Serializable {
 
 
-     private int id;
-     private String productName;
-     private String sku;
-     private BigDecimal supplyPriceExclTax;
-     private Integer reorderPoint;
-     private BigDecimal reorderAmount;
-     private Integer currentInventory;
-     private BigDecimal netPrice;
-     private String outletName;
-     private int outletAssocicationId;
-     private Date createdDate;
-     private String brandName;
-     private String productType;
-     private String contactName;
-     private Long variantCount;
-     private Integer variantCurrentInventory;
-     private String variantSku;
-     private BigDecimal variantSupplyPriceExclTax;
-     private Integer variantReorderPoint;
-     private BigDecimal variantReorderAmount;
-     private BigDecimal variantNetPrice;
-     private Long variantCompCount;
-     private int companyAssociationId;
-     private String imagePath;
-     private String variantProducts;
-     private String standardProduct;
-     private BigDecimal variantInventoryCount;
+    private int id;
+    private String productName;
+    private String sku;
+    private BigDecimal supplyPriceExclTax;
+    private Integer reorderPoint;
+    private BigDecimal reorderAmount;
+    private Integer currentInventory;
+    private BigDecimal netPrice;
+    private String outletName;
+    private int outletAssocicationId;
+    private Date createdDate;
+    private String brandName;
+    private String productType;
+    private String contactName;
+    private Long variantCount;
+    private Integer variantCurrentInventory;
+    private String variantSku;
+    private BigDecimal variantSupplyPriceExclTax;
+    private Integer variantReorderPoint;
+    private BigDecimal variantReorderAmount;
+    private BigDecimal variantNetPrice;
+    private Long variantCompCount;
+    private int companyAssociationId;
+    private String imagePath;
+    private String variantProducts;
+    private String standardProduct;
+    private String isComposite;
+    private BigDecimal variantInventoryCount;
 
-    public ProductSummmaryId() {
-    }
+   public ProductSummmaryId() {
+   }
 
 	
-    public ProductSummmaryId(int id, String productName, String sku, BigDecimal supplyPriceExclTax, int outletAssocicationId, Date createdDate, String variantSku, BigDecimal variantSupplyPriceExclTax, int companyAssociationId, String variantProducts, String standardProduct) {
-        this.id = id;
-        this.productName = productName;
-        this.sku = sku;
-        this.supplyPriceExclTax = supplyPriceExclTax;
-        this.outletAssocicationId = outletAssocicationId;
-        this.createdDate = createdDate;
-        this.variantSku = variantSku;
-        this.variantSupplyPriceExclTax = variantSupplyPriceExclTax;
-        this.companyAssociationId = companyAssociationId;
-        this.variantProducts = variantProducts;
-        this.standardProduct = standardProduct;
-    }
-    public ProductSummmaryId(int id, String productName, String sku, BigDecimal supplyPriceExclTax, Integer reorderPoint, BigDecimal reorderAmount, Integer currentInventory, BigDecimal netPrice, String outletName, int outletAssocicationId, Date createdDate, String brandName, String productType, String contactName, Long variantCount, Integer variantCurrentInventory, String variantSku, BigDecimal variantSupplyPriceExclTax, Integer variantReorderPoint, BigDecimal variantReorderAmount, BigDecimal variantNetPrice, Long variantCompCount, int companyAssociationId, String imagePath, String variantProducts, String standardProduct, BigDecimal variantInventoryCount) {
+   public ProductSummmaryId(int id, String productName, String sku, BigDecimal supplyPriceExclTax, int outletAssocicationId, Date createdDate, String variantSku, BigDecimal variantSupplyPriceExclTax, int companyAssociationId, String variantProducts, String standardProduct) {
        this.id = id;
        this.productName = productName;
        this.sku = sku;
        this.supplyPriceExclTax = supplyPriceExclTax;
-       this.reorderPoint = reorderPoint;
-       this.reorderAmount = reorderAmount;
-       this.currentInventory = currentInventory;
-       this.netPrice = netPrice;
-       this.outletName = outletName;
        this.outletAssocicationId = outletAssocicationId;
        this.createdDate = createdDate;
-       this.brandName = brandName;
-       this.productType = productType;
-       this.contactName = contactName;
-       this.variantCount = variantCount;
-       this.variantCurrentInventory = variantCurrentInventory;
        this.variantSku = variantSku;
        this.variantSupplyPriceExclTax = variantSupplyPriceExclTax;
-       this.variantReorderPoint = variantReorderPoint;
-       this.variantReorderAmount = variantReorderAmount;
-       this.variantNetPrice = variantNetPrice;
-       this.variantCompCount = variantCompCount;
        this.companyAssociationId = companyAssociationId;
-       this.imagePath = imagePath;
        this.variantProducts = variantProducts;
        this.standardProduct = standardProduct;
-       this.variantInventoryCount = variantInventoryCount;
-    }
+   }
+   public ProductSummmaryId(int id, String productName, String sku, BigDecimal supplyPriceExclTax, Integer reorderPoint, BigDecimal reorderAmount, Integer currentInventory, BigDecimal netPrice, String outletName, int outletAssocicationId, Date createdDate, String brandName, String productType, String contactName, Long variantCount, Integer variantCurrentInventory, String variantSku, BigDecimal variantSupplyPriceExclTax, Integer variantReorderPoint, BigDecimal variantReorderAmount, BigDecimal variantNetPrice, Long variantCompCount, int companyAssociationId, String imagePath, String variantProducts, String standardProduct, String isComposite, BigDecimal variantInventoryCount) {
+      this.id = id;
+      this.productName = productName;
+      this.sku = sku;
+      this.supplyPriceExclTax = supplyPriceExclTax;
+      this.reorderPoint = reorderPoint;
+      this.reorderAmount = reorderAmount;
+      this.currentInventory = currentInventory;
+      this.netPrice = netPrice;
+      this.outletName = outletName;
+      this.outletAssocicationId = outletAssocicationId;
+      this.createdDate = createdDate;
+      this.brandName = brandName;
+      this.productType = productType;
+      this.contactName = contactName;
+      this.variantCount = variantCount;
+      this.variantCurrentInventory = variantCurrentInventory;
+      this.variantSku = variantSku;
+      this.variantSupplyPriceExclTax = variantSupplyPriceExclTax;
+      this.variantReorderPoint = variantReorderPoint;
+      this.variantReorderAmount = variantReorderAmount;
+      this.variantNetPrice = variantNetPrice;
+      this.variantCompCount = variantCompCount;
+      this.companyAssociationId = companyAssociationId;
+      this.imagePath = imagePath;
+      this.variantProducts = variantProducts;
+      this.standardProduct = standardProduct;
+      this.isComposite = isComposite;
+      this.variantInventoryCount = variantInventoryCount;
+   }
+  
+
+
+   @Column(name="ID", nullable=false)
+   public int getId() {
+       return this.id;
+   }
    
+   public void setId(int id) {
+       this.id = id;
+   }
 
 
-    @Column(name="ID", nullable=false)
-    public int getId() {
-        return this.id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
-    }
+   @Column(name="PRODUCT_NAME", nullable=false, length=500)
+   public String getProductName() {
+       return this.productName;
+   }
+   
+   public void setProductName(String productName) {
+       this.productName = productName;
+   }
 
 
-    @Column(name="PRODUCT_NAME", nullable=false, length=500)
-    public String getProductName() {
-        return this.productName;
-    }
-    
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
+   @Column(name="SKU", nullable=false, length=500)
+   public String getSku() {
+       return this.sku;
+   }
+   
+   public void setSku(String sku) {
+       this.sku = sku;
+   }
 
 
-    @Column(name="SKU", nullable=false, length=500)
-    public String getSku() {
-        return this.sku;
-    }
-    
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
+   @Column(name="SUPPLY_PRICE_EXCL_TAX", nullable=false, precision=20)
+   public BigDecimal getSupplyPriceExclTax() {
+       return this.supplyPriceExclTax;
+   }
+   
+   public void setSupplyPriceExclTax(BigDecimal supplyPriceExclTax) {
+       this.supplyPriceExclTax = supplyPriceExclTax;
+   }
 
 
-    @Column(name="SUPPLY_PRICE_EXCL_TAX", nullable=false, precision=20)
-    public BigDecimal getSupplyPriceExclTax() {
-        return this.supplyPriceExclTax;
-    }
-    
-    public void setSupplyPriceExclTax(BigDecimal supplyPriceExclTax) {
-        this.supplyPriceExclTax = supplyPriceExclTax;
-    }
+   @Column(name="REORDER_POINT")
+   public Integer getReorderPoint() {
+       return this.reorderPoint;
+   }
+   
+   public void setReorderPoint(Integer reorderPoint) {
+       this.reorderPoint = reorderPoint;
+   }
 
 
-    @Column(name="REORDER_POINT")
-    public Integer getReorderPoint() {
-        return this.reorderPoint;
-    }
-    
-    public void setReorderPoint(Integer reorderPoint) {
-        this.reorderPoint = reorderPoint;
-    }
+   @Column(name="REORDER_AMOUNT", precision=20)
+   public BigDecimal getReorderAmount() {
+       return this.reorderAmount;
+   }
+   
+   public void setReorderAmount(BigDecimal reorderAmount) {
+       this.reorderAmount = reorderAmount;
+   }
 
 
-    @Column(name="REORDER_AMOUNT", precision=20)
-    public BigDecimal getReorderAmount() {
-        return this.reorderAmount;
-    }
-    
-    public void setReorderAmount(BigDecimal reorderAmount) {
-        this.reorderAmount = reorderAmount;
-    }
+   @Column(name="CURRENT_INVENTORY")
+   public Integer getCurrentInventory() {
+       return this.currentInventory;
+   }
+   
+   public void setCurrentInventory(Integer currentInventory) {
+       this.currentInventory = currentInventory;
+   }
 
 
-    @Column(name="CURRENT_INVENTORY")
-    public Integer getCurrentInventory() {
-        return this.currentInventory;
-    }
-    
-    public void setCurrentInventory(Integer currentInventory) {
-        this.currentInventory = currentInventory;
-    }
+   @Column(name="NET_PRICE", precision=33, scale=11)
+   public BigDecimal getNetPrice() {
+       return this.netPrice;
+   }
+   
+   public void setNetPrice(BigDecimal netPrice) {
+       this.netPrice = netPrice;
+   }
 
 
-    @Column(name="NET_PRICE", precision=33, scale=11)
-    public BigDecimal getNetPrice() {
-        return this.netPrice;
-    }
-    
-    public void setNetPrice(BigDecimal netPrice) {
-        this.netPrice = netPrice;
-    }
+   @Column(name="OUTLET_NAME", length=100)
+   public String getOutletName() {
+       return this.outletName;
+   }
+   
+   public void setOutletName(String outletName) {
+       this.outletName = outletName;
+   }
 
 
-    @Column(name="OUTLET_NAME", length=100)
-    public String getOutletName() {
-        return this.outletName;
-    }
-    
-    public void setOutletName(String outletName) {
-        this.outletName = outletName;
-    }
+   @Column(name="OUTLET_ASSOCICATION_ID", nullable=false)
+   public int getOutletAssocicationId() {
+       return this.outletAssocicationId;
+   }
+   
+   public void setOutletAssocicationId(int outletAssocicationId) {
+       this.outletAssocicationId = outletAssocicationId;
+   }
 
 
-    @Column(name="OUTLET_ASSOCICATION_ID", nullable=false)
-    public int getOutletAssocicationId() {
-        return this.outletAssocicationId;
-    }
-    
-    public void setOutletAssocicationId(int outletAssocicationId) {
-        this.outletAssocicationId = outletAssocicationId;
-    }
+   @Column(name="CREATED_DATE", nullable=false, length=19)
+   public Date getCreatedDate() {
+       return this.createdDate;
+   }
+   
+   public void setCreatedDate(Date createdDate) {
+       this.createdDate = createdDate;
+   }
 
 
-    @Column(name="CREATED_DATE", nullable=false, length=19)
-    public Date getCreatedDate() {
-        return this.createdDate;
-    }
-    
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+   @Column(name="BRAND_NAME", length=200)
+   public String getBrandName() {
+       return this.brandName;
+   }
+   
+   public void setBrandName(String brandName) {
+       this.brandName = brandName;
+   }
 
 
-    @Column(name="BRAND_NAME", length=200)
-    public String getBrandName() {
-        return this.brandName;
-    }
-    
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
+   @Column(name="PRODUCT_TYPE", length=200)
+   public String getProductType() {
+       return this.productType;
+   }
+   
+   public void setProductType(String productType) {
+       this.productType = productType;
+   }
 
 
-    @Column(name="PRODUCT_TYPE", length=200)
-    public String getProductType() {
-        return this.productType;
-    }
-    
-    public void setProductType(String productType) {
-        this.productType = productType;
-    }
+   @Column(name="CONTACT_NAME", length=200)
+   public String getContactName() {
+       return this.contactName;
+   }
+   
+   public void setContactName(String contactName) {
+       this.contactName = contactName;
+   }
 
 
-    @Column(name="CONTACT_NAME", length=200)
-    public String getContactName() {
-        return this.contactName;
-    }
-    
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
+   @Column(name="VARIANT_COUNT")
+   public Long getVariantCount() {
+       return this.variantCount;
+   }
+   
+   public void setVariantCount(Long variantCount) {
+       this.variantCount = variantCount;
+   }
 
 
-    @Column(name="VARIANT_COUNT")
-    public Long getVariantCount() {
-        return this.variantCount;
-    }
-    
-    public void setVariantCount(Long variantCount) {
-        this.variantCount = variantCount;
-    }
+   @Column(name="VARIANT_CURRENT_INVENTORY")
+   public Integer getVariantCurrentInventory() {
+       return this.variantCurrentInventory;
+   }
+   
+   public void setVariantCurrentInventory(Integer variantCurrentInventory) {
+       this.variantCurrentInventory = variantCurrentInventory;
+   }
 
 
-    @Column(name="VARIANT_CURRENT_INVENTORY")
-    public Integer getVariantCurrentInventory() {
-        return this.variantCurrentInventory;
-    }
-    
-    public void setVariantCurrentInventory(Integer variantCurrentInventory) {
-        this.variantCurrentInventory = variantCurrentInventory;
-    }
+   @Column(name="VARIANT_SKU", nullable=false, length=500)
+   public String getVariantSku() {
+       return this.variantSku;
+   }
+   
+   public void setVariantSku(String variantSku) {
+       this.variantSku = variantSku;
+   }
 
 
-    @Column(name="VARIANT_SKU", nullable=false, length=500)
-    public String getVariantSku() {
-        return this.variantSku;
-    }
-    
-    public void setVariantSku(String variantSku) {
-        this.variantSku = variantSku;
-    }
+   @Column(name="VARIANT_SUPPLY_PRICE_EXCL_TAX", nullable=false, precision=20)
+   public BigDecimal getVariantSupplyPriceExclTax() {
+       return this.variantSupplyPriceExclTax;
+   }
+   
+   public void setVariantSupplyPriceExclTax(BigDecimal variantSupplyPriceExclTax) {
+       this.variantSupplyPriceExclTax = variantSupplyPriceExclTax;
+   }
 
 
-    @Column(name="VARIANT_SUPPLY_PRICE_EXCL_TAX", nullable=false, precision=20)
-    public BigDecimal getVariantSupplyPriceExclTax() {
-        return this.variantSupplyPriceExclTax;
-    }
-    
-    public void setVariantSupplyPriceExclTax(BigDecimal variantSupplyPriceExclTax) {
-        this.variantSupplyPriceExclTax = variantSupplyPriceExclTax;
-    }
+   @Column(name="VARIANT_REORDER_POINT")
+   public Integer getVariantReorderPoint() {
+       return this.variantReorderPoint;
+   }
+   
+   public void setVariantReorderPoint(Integer variantReorderPoint) {
+       this.variantReorderPoint = variantReorderPoint;
+   }
 
 
-    @Column(name="VARIANT_REORDER_POINT")
-    public Integer getVariantReorderPoint() {
-        return this.variantReorderPoint;
-    }
-    
-    public void setVariantReorderPoint(Integer variantReorderPoint) {
-        this.variantReorderPoint = variantReorderPoint;
-    }
+   @Column(name="VARIANT_REORDER_AMOUNT", precision=20)
+   public BigDecimal getVariantReorderAmount() {
+       return this.variantReorderAmount;
+   }
+   
+   public void setVariantReorderAmount(BigDecimal variantReorderAmount) {
+       this.variantReorderAmount = variantReorderAmount;
+   }
 
 
-    @Column(name="VARIANT_REORDER_AMOUNT", precision=20)
-    public BigDecimal getVariantReorderAmount() {
-        return this.variantReorderAmount;
-    }
-    
-    public void setVariantReorderAmount(BigDecimal variantReorderAmount) {
-        this.variantReorderAmount = variantReorderAmount;
-    }
+   @Column(name="VARIANT_NET_PRICE", precision=33, scale=11)
+   public BigDecimal getVariantNetPrice() {
+       return this.variantNetPrice;
+   }
+   
+   public void setVariantNetPrice(BigDecimal variantNetPrice) {
+       this.variantNetPrice = variantNetPrice;
+   }
 
 
-    @Column(name="VARIANT_NET_PRICE", precision=33, scale=11)
-    public BigDecimal getVariantNetPrice() {
-        return this.variantNetPrice;
-    }
-    
-    public void setVariantNetPrice(BigDecimal variantNetPrice) {
-        this.variantNetPrice = variantNetPrice;
-    }
+   @Column(name="VARIANT_COMP_COUNT")
+   public Long getVariantCompCount() {
+       return this.variantCompCount;
+   }
+   
+   public void setVariantCompCount(Long variantCompCount) {
+       this.variantCompCount = variantCompCount;
+   }
 
 
-    @Column(name="VARIANT_COMP_COUNT")
-    public Long getVariantCompCount() {
-        return this.variantCompCount;
-    }
-    
-    public void setVariantCompCount(Long variantCompCount) {
-        this.variantCompCount = variantCompCount;
-    }
+   @Column(name="COMPANY_ASSOCIATION_ID", nullable=false)
+   public int getCompanyAssociationId() {
+       return this.companyAssociationId;
+   }
+   
+   public void setCompanyAssociationId(int companyAssociationId) {
+       this.companyAssociationId = companyAssociationId;
+   }
 
 
-    @Column(name="COMPANY_ASSOCIATION_ID", nullable=false)
-    public int getCompanyAssociationId() {
-        return this.companyAssociationId;
-    }
-    
-    public void setCompanyAssociationId(int companyAssociationId) {
-        this.companyAssociationId = companyAssociationId;
-    }
+   @Column(name="IMAGE_PATH", length=250)
+   public String getImagePath() {
+       return this.imagePath;
+   }
+   
+   public void setImagePath(String imagePath) {
+       this.imagePath = imagePath;
+   }
 
 
-    @Column(name="IMAGE_PATH", length=250)
-    public String getImagePath() {
-        return this.imagePath;
-    }
-    
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+   @Column(name="VARIANT_PRODUCTS", nullable=false, length=10)
+   public String getVariantProducts() {
+       return this.variantProducts;
+   }
+   
+   public void setVariantProducts(String variantProducts) {
+       this.variantProducts = variantProducts;
+   }
 
 
-    @Column(name="VARIANT_PRODUCTS", nullable=false, length=10)
-    public String getVariantProducts() {
-        return this.variantProducts;
-    }
-    
-    public void setVariantProducts(String variantProducts) {
-        this.variantProducts = variantProducts;
-    }
+   @Column(name="STANDARD_PRODUCT", nullable=false, length=10)
+   public String getStandardProduct() {
+       return this.standardProduct;
+   }
+   
+   public void setStandardProduct(String standardProduct) {
+       this.standardProduct = standardProduct;
+   }
 
 
-    @Column(name="STANDARD_PRODUCT", nullable=false, length=10)
-    public String getStandardProduct() {
-        return this.standardProduct;
-    }
-    
-    public void setStandardProduct(String standardProduct) {
-        this.standardProduct = standardProduct;
-    }
+   @Column(name="IS_COMPOSITE", length=10)
+   public String getIsComposite() {
+       return this.isComposite;
+   }
+   
+   public void setIsComposite(String isComposite) {
+       this.isComposite = isComposite;
+   }
 
 
-    @Column(name="VARIANT_INVENTORY_COUNT", precision=32, scale=0)
-    public BigDecimal getVariantInventoryCount() {
-        return this.variantInventoryCount;
-    }
-    
-    public void setVariantInventoryCount(BigDecimal variantInventoryCount) {
-        this.variantInventoryCount = variantInventoryCount;
-    }
+   @Column(name="VARIANT_INVENTORY_COUNT", precision=32, scale=0)
+   public BigDecimal getVariantInventoryCount() {
+       return this.variantInventoryCount;
+   }
+   
+   public void setVariantInventoryCount(BigDecimal variantInventoryCount) {
+       this.variantInventoryCount = variantInventoryCount;
+   }
 
 
-   public boolean equals(Object other) {
-         if ( (this == other ) ) return true;
+  public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
 		 if ( (other == null ) ) return false;
 		 if ( !(other instanceof ProductSummmaryId) ) return false;
 		 ProductSummmaryId castOther = ( ProductSummmaryId ) other; 
-         
+        
 		 return (this.getId()==castOther.getId())
- && ( (this.getProductName()==castOther.getProductName()) || ( this.getProductName()!=null && castOther.getProductName()!=null && this.getProductName().equals(castOther.getProductName()) ) )
- && ( (this.getSku()==castOther.getSku()) || ( this.getSku()!=null && castOther.getSku()!=null && this.getSku().equals(castOther.getSku()) ) )
- && ( (this.getSupplyPriceExclTax()==castOther.getSupplyPriceExclTax()) || ( this.getSupplyPriceExclTax()!=null && castOther.getSupplyPriceExclTax()!=null && this.getSupplyPriceExclTax().equals(castOther.getSupplyPriceExclTax()) ) )
- && ( (this.getReorderPoint()==castOther.getReorderPoint()) || ( this.getReorderPoint()!=null && castOther.getReorderPoint()!=null && this.getReorderPoint().equals(castOther.getReorderPoint()) ) )
- && ( (this.getReorderAmount()==castOther.getReorderAmount()) || ( this.getReorderAmount()!=null && castOther.getReorderAmount()!=null && this.getReorderAmount().equals(castOther.getReorderAmount()) ) )
- && ( (this.getCurrentInventory()==castOther.getCurrentInventory()) || ( this.getCurrentInventory()!=null && castOther.getCurrentInventory()!=null && this.getCurrentInventory().equals(castOther.getCurrentInventory()) ) )
- && ( (this.getNetPrice()==castOther.getNetPrice()) || ( this.getNetPrice()!=null && castOther.getNetPrice()!=null && this.getNetPrice().equals(castOther.getNetPrice()) ) )
- && ( (this.getOutletName()==castOther.getOutletName()) || ( this.getOutletName()!=null && castOther.getOutletName()!=null && this.getOutletName().equals(castOther.getOutletName()) ) )
- && (this.getOutletAssocicationId()==castOther.getOutletAssocicationId())
- && ( (this.getCreatedDate()==castOther.getCreatedDate()) || ( this.getCreatedDate()!=null && castOther.getCreatedDate()!=null && this.getCreatedDate().equals(castOther.getCreatedDate()) ) )
- && ( (this.getBrandName()==castOther.getBrandName()) || ( this.getBrandName()!=null && castOther.getBrandName()!=null && this.getBrandName().equals(castOther.getBrandName()) ) )
- && ( (this.getProductType()==castOther.getProductType()) || ( this.getProductType()!=null && castOther.getProductType()!=null && this.getProductType().equals(castOther.getProductType()) ) )
- && ( (this.getContactName()==castOther.getContactName()) || ( this.getContactName()!=null && castOther.getContactName()!=null && this.getContactName().equals(castOther.getContactName()) ) )
- && ( (this.getVariantCount()==castOther.getVariantCount()) || ( this.getVariantCount()!=null && castOther.getVariantCount()!=null && this.getVariantCount().equals(castOther.getVariantCount()) ) )
- && ( (this.getVariantCurrentInventory()==castOther.getVariantCurrentInventory()) || ( this.getVariantCurrentInventory()!=null && castOther.getVariantCurrentInventory()!=null && this.getVariantCurrentInventory().equals(castOther.getVariantCurrentInventory()) ) )
- && ( (this.getVariantSku()==castOther.getVariantSku()) || ( this.getVariantSku()!=null && castOther.getVariantSku()!=null && this.getVariantSku().equals(castOther.getVariantSku()) ) )
- && ( (this.getVariantSupplyPriceExclTax()==castOther.getVariantSupplyPriceExclTax()) || ( this.getVariantSupplyPriceExclTax()!=null && castOther.getVariantSupplyPriceExclTax()!=null && this.getVariantSupplyPriceExclTax().equals(castOther.getVariantSupplyPriceExclTax()) ) )
- && ( (this.getVariantReorderPoint()==castOther.getVariantReorderPoint()) || ( this.getVariantReorderPoint()!=null && castOther.getVariantReorderPoint()!=null && this.getVariantReorderPoint().equals(castOther.getVariantReorderPoint()) ) )
- && ( (this.getVariantReorderAmount()==castOther.getVariantReorderAmount()) || ( this.getVariantReorderAmount()!=null && castOther.getVariantReorderAmount()!=null && this.getVariantReorderAmount().equals(castOther.getVariantReorderAmount()) ) )
- && ( (this.getVariantNetPrice()==castOther.getVariantNetPrice()) || ( this.getVariantNetPrice()!=null && castOther.getVariantNetPrice()!=null && this.getVariantNetPrice().equals(castOther.getVariantNetPrice()) ) )
- && ( (this.getVariantCompCount()==castOther.getVariantCompCount()) || ( this.getVariantCompCount()!=null && castOther.getVariantCompCount()!=null && this.getVariantCompCount().equals(castOther.getVariantCompCount()) ) )
- && (this.getCompanyAssociationId()==castOther.getCompanyAssociationId())
- && ( (this.getImagePath()==castOther.getImagePath()) || ( this.getImagePath()!=null && castOther.getImagePath()!=null && this.getImagePath().equals(castOther.getImagePath()) ) )
- && ( (this.getVariantProducts()==castOther.getVariantProducts()) || ( this.getVariantProducts()!=null && castOther.getVariantProducts()!=null && this.getVariantProducts().equals(castOther.getVariantProducts()) ) )
- && ( (this.getStandardProduct()==castOther.getStandardProduct()) || ( this.getStandardProduct()!=null && castOther.getStandardProduct()!=null && this.getStandardProduct().equals(castOther.getStandardProduct()) ) )
- && ( (this.getVariantInventoryCount()==castOther.getVariantInventoryCount()) || ( this.getVariantInventoryCount()!=null && castOther.getVariantInventoryCount()!=null && this.getVariantInventoryCount().equals(castOther.getVariantInventoryCount()) ) );
-   }
-   
-   public int hashCode() {
-         int result = 17;
-         
-         result = 37 * result + this.getId();
-         result = 37 * result + ( getProductName() == null ? 0 : this.getProductName().hashCode() );
-         result = 37 * result + ( getSku() == null ? 0 : this.getSku().hashCode() );
-         result = 37 * result + ( getSupplyPriceExclTax() == null ? 0 : this.getSupplyPriceExclTax().hashCode() );
-         result = 37 * result + ( getReorderPoint() == null ? 0 : this.getReorderPoint().hashCode() );
-         result = 37 * result + ( getReorderAmount() == null ? 0 : this.getReorderAmount().hashCode() );
-         result = 37 * result + ( getCurrentInventory() == null ? 0 : this.getCurrentInventory().hashCode() );
-         result = 37 * result + ( getNetPrice() == null ? 0 : this.getNetPrice().hashCode() );
-         result = 37 * result + ( getOutletName() == null ? 0 : this.getOutletName().hashCode() );
-         result = 37 * result + this.getOutletAssocicationId();
-         result = 37 * result + ( getCreatedDate() == null ? 0 : this.getCreatedDate().hashCode() );
-         result = 37 * result + ( getBrandName() == null ? 0 : this.getBrandName().hashCode() );
-         result = 37 * result + ( getProductType() == null ? 0 : this.getProductType().hashCode() );
-         result = 37 * result + ( getContactName() == null ? 0 : this.getContactName().hashCode() );
-         result = 37 * result + ( getVariantCount() == null ? 0 : this.getVariantCount().hashCode() );
-         result = 37 * result + ( getVariantCurrentInventory() == null ? 0 : this.getVariantCurrentInventory().hashCode() );
-         result = 37 * result + ( getVariantSku() == null ? 0 : this.getVariantSku().hashCode() );
-         result = 37 * result + ( getVariantSupplyPriceExclTax() == null ? 0 : this.getVariantSupplyPriceExclTax().hashCode() );
-         result = 37 * result + ( getVariantReorderPoint() == null ? 0 : this.getVariantReorderPoint().hashCode() );
-         result = 37 * result + ( getVariantReorderAmount() == null ? 0 : this.getVariantReorderAmount().hashCode() );
-         result = 37 * result + ( getVariantNetPrice() == null ? 0 : this.getVariantNetPrice().hashCode() );
-         result = 37 * result + ( getVariantCompCount() == null ? 0 : this.getVariantCompCount().hashCode() );
-         result = 37 * result + this.getCompanyAssociationId();
-         result = 37 * result + ( getImagePath() == null ? 0 : this.getImagePath().hashCode() );
-         result = 37 * result + ( getVariantProducts() == null ? 0 : this.getVariantProducts().hashCode() );
-         result = 37 * result + ( getStandardProduct() == null ? 0 : this.getStandardProduct().hashCode() );
-         result = 37 * result + ( getVariantInventoryCount() == null ? 0 : this.getVariantInventoryCount().hashCode() );
-         return result;
-   }   
+&& ( (this.getProductName()==castOther.getProductName()) || ( this.getProductName()!=null && castOther.getProductName()!=null && this.getProductName().equals(castOther.getProductName()) ) )
+&& ( (this.getSku()==castOther.getSku()) || ( this.getSku()!=null && castOther.getSku()!=null && this.getSku().equals(castOther.getSku()) ) )
+&& ( (this.getSupplyPriceExclTax()==castOther.getSupplyPriceExclTax()) || ( this.getSupplyPriceExclTax()!=null && castOther.getSupplyPriceExclTax()!=null && this.getSupplyPriceExclTax().equals(castOther.getSupplyPriceExclTax()) ) )
+&& ( (this.getReorderPoint()==castOther.getReorderPoint()) || ( this.getReorderPoint()!=null && castOther.getReorderPoint()!=null && this.getReorderPoint().equals(castOther.getReorderPoint()) ) )
+&& ( (this.getReorderAmount()==castOther.getReorderAmount()) || ( this.getReorderAmount()!=null && castOther.getReorderAmount()!=null && this.getReorderAmount().equals(castOther.getReorderAmount()) ) )
+&& ( (this.getCurrentInventory()==castOther.getCurrentInventory()) || ( this.getCurrentInventory()!=null && castOther.getCurrentInventory()!=null && this.getCurrentInventory().equals(castOther.getCurrentInventory()) ) )
+&& ( (this.getNetPrice()==castOther.getNetPrice()) || ( this.getNetPrice()!=null && castOther.getNetPrice()!=null && this.getNetPrice().equals(castOther.getNetPrice()) ) )
+&& ( (this.getOutletName()==castOther.getOutletName()) || ( this.getOutletName()!=null && castOther.getOutletName()!=null && this.getOutletName().equals(castOther.getOutletName()) ) )
+&& (this.getOutletAssocicationId()==castOther.getOutletAssocicationId())
+&& ( (this.getCreatedDate()==castOther.getCreatedDate()) || ( this.getCreatedDate()!=null && castOther.getCreatedDate()!=null && this.getCreatedDate().equals(castOther.getCreatedDate()) ) )
+&& ( (this.getBrandName()==castOther.getBrandName()) || ( this.getBrandName()!=null && castOther.getBrandName()!=null && this.getBrandName().equals(castOther.getBrandName()) ) )
+&& ( (this.getProductType()==castOther.getProductType()) || ( this.getProductType()!=null && castOther.getProductType()!=null && this.getProductType().equals(castOther.getProductType()) ) )
+&& ( (this.getContactName()==castOther.getContactName()) || ( this.getContactName()!=null && castOther.getContactName()!=null && this.getContactName().equals(castOther.getContactName()) ) )
+&& ( (this.getVariantCount()==castOther.getVariantCount()) || ( this.getVariantCount()!=null && castOther.getVariantCount()!=null && this.getVariantCount().equals(castOther.getVariantCount()) ) )
+&& ( (this.getVariantCurrentInventory()==castOther.getVariantCurrentInventory()) || ( this.getVariantCurrentInventory()!=null && castOther.getVariantCurrentInventory()!=null && this.getVariantCurrentInventory().equals(castOther.getVariantCurrentInventory()) ) )
+&& ( (this.getVariantSku()==castOther.getVariantSku()) || ( this.getVariantSku()!=null && castOther.getVariantSku()!=null && this.getVariantSku().equals(castOther.getVariantSku()) ) )
+&& ( (this.getVariantSupplyPriceExclTax()==castOther.getVariantSupplyPriceExclTax()) || ( this.getVariantSupplyPriceExclTax()!=null && castOther.getVariantSupplyPriceExclTax()!=null && this.getVariantSupplyPriceExclTax().equals(castOther.getVariantSupplyPriceExclTax()) ) )
+&& ( (this.getVariantReorderPoint()==castOther.getVariantReorderPoint()) || ( this.getVariantReorderPoint()!=null && castOther.getVariantReorderPoint()!=null && this.getVariantReorderPoint().equals(castOther.getVariantReorderPoint()) ) )
+&& ( (this.getVariantReorderAmount()==castOther.getVariantReorderAmount()) || ( this.getVariantReorderAmount()!=null && castOther.getVariantReorderAmount()!=null && this.getVariantReorderAmount().equals(castOther.getVariantReorderAmount()) ) )
+&& ( (this.getVariantNetPrice()==castOther.getVariantNetPrice()) || ( this.getVariantNetPrice()!=null && castOther.getVariantNetPrice()!=null && this.getVariantNetPrice().equals(castOther.getVariantNetPrice()) ) )
+&& ( (this.getVariantCompCount()==castOther.getVariantCompCount()) || ( this.getVariantCompCount()!=null && castOther.getVariantCompCount()!=null && this.getVariantCompCount().equals(castOther.getVariantCompCount()) ) )
+&& (this.getCompanyAssociationId()==castOther.getCompanyAssociationId())
+&& ( (this.getImagePath()==castOther.getImagePath()) || ( this.getImagePath()!=null && castOther.getImagePath()!=null && this.getImagePath().equals(castOther.getImagePath()) ) )
+&& ( (this.getVariantProducts()==castOther.getVariantProducts()) || ( this.getVariantProducts()!=null && castOther.getVariantProducts()!=null && this.getVariantProducts().equals(castOther.getVariantProducts()) ) )
+&& ( (this.getStandardProduct()==castOther.getStandardProduct()) || ( this.getStandardProduct()!=null && castOther.getStandardProduct()!=null && this.getStandardProduct().equals(castOther.getStandardProduct()) ) )
+&& ( (this.getIsComposite()==castOther.getIsComposite()) || ( this.getIsComposite()!=null && castOther.getIsComposite()!=null && this.getIsComposite().equals(castOther.getIsComposite()) ) )
+&& ( (this.getVariantInventoryCount()==castOther.getVariantInventoryCount()) || ( this.getVariantInventoryCount()!=null && castOther.getVariantInventoryCount()!=null && this.getVariantInventoryCount().equals(castOther.getVariantInventoryCount()) ) );
+  }
+  
+  public int hashCode() {
+        int result = 17;
+        
+        result = 37 * result + this.getId();
+        result = 37 * result + ( getProductName() == null ? 0 : this.getProductName().hashCode() );
+        result = 37 * result + ( getSku() == null ? 0 : this.getSku().hashCode() );
+        result = 37 * result + ( getSupplyPriceExclTax() == null ? 0 : this.getSupplyPriceExclTax().hashCode() );
+        result = 37 * result + ( getReorderPoint() == null ? 0 : this.getReorderPoint().hashCode() );
+        result = 37 * result + ( getReorderAmount() == null ? 0 : this.getReorderAmount().hashCode() );
+        result = 37 * result + ( getCurrentInventory() == null ? 0 : this.getCurrentInventory().hashCode() );
+        result = 37 * result + ( getNetPrice() == null ? 0 : this.getNetPrice().hashCode() );
+        result = 37 * result + ( getOutletName() == null ? 0 : this.getOutletName().hashCode() );
+        result = 37 * result + this.getOutletAssocicationId();
+        result = 37 * result + ( getCreatedDate() == null ? 0 : this.getCreatedDate().hashCode() );
+        result = 37 * result + ( getBrandName() == null ? 0 : this.getBrandName().hashCode() );
+        result = 37 * result + ( getProductType() == null ? 0 : this.getProductType().hashCode() );
+        result = 37 * result + ( getContactName() == null ? 0 : this.getContactName().hashCode() );
+        result = 37 * result + ( getVariantCount() == null ? 0 : this.getVariantCount().hashCode() );
+        result = 37 * result + ( getVariantCurrentInventory() == null ? 0 : this.getVariantCurrentInventory().hashCode() );
+        result = 37 * result + ( getVariantSku() == null ? 0 : this.getVariantSku().hashCode() );
+        result = 37 * result + ( getVariantSupplyPriceExclTax() == null ? 0 : this.getVariantSupplyPriceExclTax().hashCode() );
+        result = 37 * result + ( getVariantReorderPoint() == null ? 0 : this.getVariantReorderPoint().hashCode() );
+        result = 37 * result + ( getVariantReorderAmount() == null ? 0 : this.getVariantReorderAmount().hashCode() );
+        result = 37 * result + ( getVariantNetPrice() == null ? 0 : this.getVariantNetPrice().hashCode() );
+        result = 37 * result + ( getVariantCompCount() == null ? 0 : this.getVariantCompCount().hashCode() );
+        result = 37 * result + this.getCompanyAssociationId();
+        result = 37 * result + ( getImagePath() == null ? 0 : this.getImagePath().hashCode() );
+        result = 37 * result + ( getVariantProducts() == null ? 0 : this.getVariantProducts().hashCode() );
+        result = 37 * result + ( getStandardProduct() == null ? 0 : this.getStandardProduct().hashCode() );
+        result = 37 * result + ( getIsComposite() == null ? 0 : this.getIsComposite().hashCode() );
+        result = 37 * result + ( getVariantInventoryCount() == null ? 0 : this.getVariantInventoryCount().hashCode() );
+        return result;
+  }   
 
 
 }

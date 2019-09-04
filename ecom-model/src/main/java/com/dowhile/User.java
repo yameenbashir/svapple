@@ -50,52 +50,54 @@ public class User implements java.io.Serializable {
     private Integer updatedBy;
     private Set<GeneralLedgerEvent> generalLedgerEventsForUpdatedBy = new HashSet<GeneralLedgerEvent>(0);
     private Set<ChartOfAccount> chartOfAccountsForCreatedBy = new HashSet<ChartOfAccount>(0);
-    private Set<PriceBook> priceBooksForCreatedBy = new HashSet<PriceBook>(0);
-    private Set<AccountType> accountTypesForUpdatedBy = new HashSet<AccountType>(0);
-    private Set<Configuration> configurationsForUpdatedBy = new HashSet<Configuration>(0);
-    private Set<ActivityDetail> activityDetailsForCreatedByManagerId = new HashSet<ActivityDetail>(0);
-    private Set<UserOutlets> userOutletsesForCreatedBy = new HashSet<UserOutlets>(0);
     private Set<ProductPriceHistory> productPriceHistoriesForCreatedBy = new HashSet<ProductPriceHistory>(0);
     private Set<CompositeProduct> compositeProductsForUpdatedBy = new HashSet<CompositeProduct>(0);
     private Set<Tag> tagsForUpdatedBy = new HashSet<Tag>(0);
-    private Set<VariantAttributeValues> variantAttributeValuesesForCreatedBy = new HashSet<VariantAttributeValues>(0);
-    private Set<ProductHistory> productHistories = new HashSet<ProductHistory>(0);
     private Set<Product> productsForCreatedBy = new HashSet<Product>(0);
-    private Set<GlTransConfig> glTransConfigsForCreatedBy = new HashSet<GlTransConfig>(0);
     private Set<BankAccount> bankAccountsForCreatedBy = new HashSet<BankAccount>(0);
-    private Set<PriceBookDetail> priceBookDetailsForUpdatedBy = new HashSet<PriceBookDetail>(0);
-    private Set<VariantAttribute> variantAttributesForUpdatedBy = new HashSet<VariantAttribute>(0);
-    private Set<PriceBookDetail> priceBookDetailsForCreatedBy = new HashSet<PriceBookDetail>(0);
-    private Set<GlTransConfig> glTransConfigsForUpdatedBy = new HashSet<GlTransConfig>(0);
     private Set<ProductVariant> productVariantsForCreatedBy = new HashSet<ProductVariant>(0);
     private Set<VariantAttribute> variantAttributesForCreatedBy = new HashSet<VariantAttribute>(0);
     private Set<ProductVariant> productVariantsForUpdatedBy = new HashSet<ProductVariant>(0);
     private Set<ActivityDetail> activityDetailsForEmployeeAssociationId = new HashSet<ActivityDetail>(0);
     private Set<AccountType> accountTypesForCreatedBy = new HashSet<AccountType>(0);
+    private Set<CompositeProductHistory> compositeProductHistoriesForCreatedBy = new HashSet<CompositeProductHistory>(0);
+    private Set<ProductPriceHistory> productPriceHistoriesForUpdatedBy = new HashSet<ProductPriceHistory>(0);
+    private Set<PriceBook> priceBooksForUpdatedBy = new HashSet<PriceBook>(0);
+    private Set<Module> modulesForUpdatedBy = new HashSet<Module>(0);
+    private Set<WebActivityDetail> webActivityDetailsForCreatedByManagerId = new HashSet<WebActivityDetail>(0);
+    private Set<Module> modulesForCreatedBy = new HashSet<Module>(0);
+    private Set<ProductTag> productTagsForCreatedBy = new HashSet<ProductTag>(0);
+    private Set<GeneralLedger> generalLedgersForUpdatedBy = new HashSet<GeneralLedger>(0);
+    private Set<ProductTag> productTagsForUpdatedBy = new HashSet<ProductTag>(0);
+    private Set<GeneralLedger> generalLedgersForCreatedBy = new HashSet<GeneralLedger>(0);
+    private Set<PriceBook> priceBooksForCreatedBy = new HashSet<PriceBook>(0);
+    private Set<AccountType> accountTypesForUpdatedBy = new HashSet<AccountType>(0);
+    private Set<Configuration> configurationsForUpdatedBy = new HashSet<Configuration>(0);
+    private Set<ActivityDetail> activityDetailsForCreatedByManagerId = new HashSet<ActivityDetail>(0);
+    private Set<UserOutlets> userOutletsesForCreatedBy = new HashSet<UserOutlets>(0);
+    private Set<VariantAttributeValues> variantAttributeValuesesForCreatedBy = new HashSet<VariantAttributeValues>(0);
+    private Set<ProductHistory> productHistories = new HashSet<ProductHistory>(0);
+    private Set<CompositeProductHistory> compositeProductHistoriesForUpdatedBy = new HashSet<CompositeProductHistory>(0);
+    private Set<GlTransConfig> glTransConfigsForCreatedBy = new HashSet<GlTransConfig>(0);
+    private Set<PriceBookDetail> priceBookDetailsForUpdatedBy = new HashSet<PriceBookDetail>(0);
+    private Set<VariantAttribute> variantAttributesForUpdatedBy = new HashSet<VariantAttribute>(0);
+    private Set<PriceBookDetail> priceBookDetailsForCreatedBy = new HashSet<PriceBookDetail>(0);
+    private Set<GlTransConfig> glTransConfigsForUpdatedBy = new HashSet<GlTransConfig>(0);
     private Set<VariantAttributeValues> variantAttributeValuesesForUpdatedBy = new HashSet<VariantAttributeValues>(0);
     private Set<UserOutlets> userOutletsesForUpdatedBy = new HashSet<UserOutlets>(0);
     private Set<UserOutlets> userOutletsesForUserAssociationId = new HashSet<UserOutlets>(0);
     private Set<GeneralLedgerEvent> generalLedgerEventsForCreatedBy = new HashSet<GeneralLedgerEvent>(0);
-    private Set<ProductPriceHistory> productPriceHistoriesForUpdatedBy = new HashSet<ProductPriceHistory>(0);
     private Set<Ticket> ticketsForResolvedBy = new HashSet<Ticket>(0);
     private Set<BankAccount> bankAccountsForUpdatedBy = new HashSet<BankAccount>(0);
-    private Set<PriceBook> priceBooksForUpdatedBy = new HashSet<PriceBook>(0);
     private Set<Product> productsForUpdatedBy = new HashSet<Product>(0);
     private Set<Tag> tagsForCreatedBy = new HashSet<Tag>(0);
     private Set<Announcement> announcementsForUpdatedBy = new HashSet<Announcement>(0);
     private Set<Announcement> announcementsForCreatedBy = new HashSet<Announcement>(0);
-    private Set<Module> modulesForUpdatedBy = new HashSet<Module>(0);
     private Set<Ticket> ticketsForCreatedBy = new HashSet<Ticket>(0);
     private Set<WebActivityDetail> webActivityDetailsForEmployeeAssociationId = new HashSet<WebActivityDetail>(0);
-    private Set<WebActivityDetail> webActivityDetailsForCreatedByManagerId = new HashSet<WebActivityDetail>(0);
     private Set<CompositeProduct> compositeProductsForCreatedBy = new HashSet<CompositeProduct>(0);
     private Set<Configuration> configurationsForCreatedBy = new HashSet<Configuration>(0);
-    private Set<Module> modulesForCreatedBy = new HashSet<Module>(0);
-    private Set<ProductTag> productTagsForCreatedBy = new HashSet<ProductTag>(0);
     private Set<ChartOfAccount> chartOfAccountsForUpdatedBy = new HashSet<ChartOfAccount>(0);
-    private Set<GeneralLedger> generalLedgersForUpdatedBy = new HashSet<GeneralLedger>(0);
-    private Set<ProductTag> productTagsForUpdatedBy = new HashSet<ProductTag>(0);
-    private Set<GeneralLedger> generalLedgersForCreatedBy = new HashSet<GeneralLedger>(0);
 
    public User() {
    }
@@ -113,7 +115,7 @@ public class User implements java.io.Serializable {
        this.createdDate = createdDate;
        this.lastUpdated = lastUpdated;
    }
-   public User(Outlet outlet, Company company, Role role, Contact contact, String userEmail, String password, String firstName, String lastName, byte[] image, Date lastLogin, boolean activeIndicator, Date createdDate, Date lastUpdated, Integer createdBy, Integer updatedBy, Set<GeneralLedgerEvent> generalLedgerEventsForUpdatedBy, Set<ChartOfAccount> chartOfAccountsForCreatedBy, Set<PriceBook> priceBooksForCreatedBy, Set<AccountType> accountTypesForUpdatedBy, Set<Configuration> configurationsForUpdatedBy, Set<ActivityDetail> activityDetailsForCreatedByManagerId, Set<UserOutlets> userOutletsesForCreatedBy, Set<ProductPriceHistory> productPriceHistoriesForCreatedBy, Set<CompositeProduct> compositeProductsForUpdatedBy, Set<Tag> tagsForUpdatedBy, Set<VariantAttributeValues> variantAttributeValuesesForCreatedBy, Set<ProductHistory> productHistories, Set<Product> productsForCreatedBy, Set<GlTransConfig> glTransConfigsForCreatedBy, Set<BankAccount> bankAccountsForCreatedBy, Set<PriceBookDetail> priceBookDetailsForUpdatedBy, Set<VariantAttribute> variantAttributesForUpdatedBy, Set<PriceBookDetail> priceBookDetailsForCreatedBy, Set<GlTransConfig> glTransConfigsForUpdatedBy, Set<ProductVariant> productVariantsForCreatedBy, Set<VariantAttribute> variantAttributesForCreatedBy, Set<ProductVariant> productVariantsForUpdatedBy, Set<ActivityDetail> activityDetailsForEmployeeAssociationId, Set<AccountType> accountTypesForCreatedBy, Set<VariantAttributeValues> variantAttributeValuesesForUpdatedBy, Set<UserOutlets> userOutletsesForUpdatedBy, Set<UserOutlets> userOutletsesForUserAssociationId, Set<GeneralLedgerEvent> generalLedgerEventsForCreatedBy, Set<ProductPriceHistory> productPriceHistoriesForUpdatedBy, Set<Ticket> ticketsForResolvedBy, Set<BankAccount> bankAccountsForUpdatedBy, Set<PriceBook> priceBooksForUpdatedBy, Set<Product> productsForUpdatedBy, Set<Tag> tagsForCreatedBy, Set<Announcement> announcementsForUpdatedBy, Set<Announcement> announcementsForCreatedBy, Set<Module> modulesForUpdatedBy, Set<Ticket> ticketsForCreatedBy, Set<WebActivityDetail> webActivityDetailsForEmployeeAssociationId, Set<WebActivityDetail> webActivityDetailsForCreatedByManagerId, Set<CompositeProduct> compositeProductsForCreatedBy, Set<Configuration> configurationsForCreatedBy, Set<Module> modulesForCreatedBy, Set<ProductTag> productTagsForCreatedBy, Set<ChartOfAccount> chartOfAccountsForUpdatedBy, Set<GeneralLedger> generalLedgersForUpdatedBy, Set<ProductTag> productTagsForUpdatedBy, Set<GeneralLedger> generalLedgersForCreatedBy) {
+   public User(Outlet outlet, Company company, Role role, Contact contact, String userEmail, String password, String firstName, String lastName, byte[] image, Date lastLogin, boolean activeIndicator, Date createdDate, Date lastUpdated, Integer createdBy, Integer updatedBy, Set<GeneralLedgerEvent> generalLedgerEventsForUpdatedBy, Set<ChartOfAccount> chartOfAccountsForCreatedBy, Set<ProductPriceHistory> productPriceHistoriesForCreatedBy, Set<CompositeProduct> compositeProductsForUpdatedBy, Set<Tag> tagsForUpdatedBy, Set<Product> productsForCreatedBy, Set<BankAccount> bankAccountsForCreatedBy, Set<ProductVariant> productVariantsForCreatedBy, Set<VariantAttribute> variantAttributesForCreatedBy, Set<ProductVariant> productVariantsForUpdatedBy, Set<ActivityDetail> activityDetailsForEmployeeAssociationId, Set<AccountType> accountTypesForCreatedBy, Set<CompositeProductHistory> compositeProductHistoriesForCreatedBy, Set<ProductPriceHistory> productPriceHistoriesForUpdatedBy, Set<PriceBook> priceBooksForUpdatedBy, Set<Module> modulesForUpdatedBy, Set<WebActivityDetail> webActivityDetailsForCreatedByManagerId, Set<Module> modulesForCreatedBy, Set<ProductTag> productTagsForCreatedBy, Set<GeneralLedger> generalLedgersForUpdatedBy, Set<ProductTag> productTagsForUpdatedBy, Set<GeneralLedger> generalLedgersForCreatedBy, Set<PriceBook> priceBooksForCreatedBy, Set<AccountType> accountTypesForUpdatedBy, Set<Configuration> configurationsForUpdatedBy, Set<ActivityDetail> activityDetailsForCreatedByManagerId, Set<UserOutlets> userOutletsesForCreatedBy, Set<VariantAttributeValues> variantAttributeValuesesForCreatedBy, Set<ProductHistory> productHistories, Set<CompositeProductHistory> compositeProductHistoriesForUpdatedBy, Set<GlTransConfig> glTransConfigsForCreatedBy, Set<PriceBookDetail> priceBookDetailsForUpdatedBy, Set<VariantAttribute> variantAttributesForUpdatedBy, Set<PriceBookDetail> priceBookDetailsForCreatedBy, Set<GlTransConfig> glTransConfigsForUpdatedBy, Set<VariantAttributeValues> variantAttributeValuesesForUpdatedBy, Set<UserOutlets> userOutletsesForUpdatedBy, Set<UserOutlets> userOutletsesForUserAssociationId, Set<GeneralLedgerEvent> generalLedgerEventsForCreatedBy, Set<Ticket> ticketsForResolvedBy, Set<BankAccount> bankAccountsForUpdatedBy, Set<Product> productsForUpdatedBy, Set<Tag> tagsForCreatedBy, Set<Announcement> announcementsForUpdatedBy, Set<Announcement> announcementsForCreatedBy, Set<Ticket> ticketsForCreatedBy, Set<WebActivityDetail> webActivityDetailsForEmployeeAssociationId, Set<CompositeProduct> compositeProductsForCreatedBy, Set<Configuration> configurationsForCreatedBy, Set<ChartOfAccount> chartOfAccountsForUpdatedBy) {
       this.outlet = outlet;
       this.company = company;
       this.role = role;
@@ -131,52 +133,54 @@ public class User implements java.io.Serializable {
       this.updatedBy = updatedBy;
       this.generalLedgerEventsForUpdatedBy = generalLedgerEventsForUpdatedBy;
       this.chartOfAccountsForCreatedBy = chartOfAccountsForCreatedBy;
-      this.priceBooksForCreatedBy = priceBooksForCreatedBy;
-      this.accountTypesForUpdatedBy = accountTypesForUpdatedBy;
-      this.configurationsForUpdatedBy = configurationsForUpdatedBy;
-      this.activityDetailsForCreatedByManagerId = activityDetailsForCreatedByManagerId;
-      this.userOutletsesForCreatedBy = userOutletsesForCreatedBy;
       this.productPriceHistoriesForCreatedBy = productPriceHistoriesForCreatedBy;
       this.compositeProductsForUpdatedBy = compositeProductsForUpdatedBy;
       this.tagsForUpdatedBy = tagsForUpdatedBy;
-      this.variantAttributeValuesesForCreatedBy = variantAttributeValuesesForCreatedBy;
-      this.productHistories = productHistories;
       this.productsForCreatedBy = productsForCreatedBy;
-      this.glTransConfigsForCreatedBy = glTransConfigsForCreatedBy;
       this.bankAccountsForCreatedBy = bankAccountsForCreatedBy;
-      this.priceBookDetailsForUpdatedBy = priceBookDetailsForUpdatedBy;
-      this.variantAttributesForUpdatedBy = variantAttributesForUpdatedBy;
-      this.priceBookDetailsForCreatedBy = priceBookDetailsForCreatedBy;
-      this.glTransConfigsForUpdatedBy = glTransConfigsForUpdatedBy;
       this.productVariantsForCreatedBy = productVariantsForCreatedBy;
       this.variantAttributesForCreatedBy = variantAttributesForCreatedBy;
       this.productVariantsForUpdatedBy = productVariantsForUpdatedBy;
       this.activityDetailsForEmployeeAssociationId = activityDetailsForEmployeeAssociationId;
       this.accountTypesForCreatedBy = accountTypesForCreatedBy;
+      this.compositeProductHistoriesForCreatedBy = compositeProductHistoriesForCreatedBy;
+      this.productPriceHistoriesForUpdatedBy = productPriceHistoriesForUpdatedBy;
+      this.priceBooksForUpdatedBy = priceBooksForUpdatedBy;
+      this.modulesForUpdatedBy = modulesForUpdatedBy;
+      this.webActivityDetailsForCreatedByManagerId = webActivityDetailsForCreatedByManagerId;
+      this.modulesForCreatedBy = modulesForCreatedBy;
+      this.productTagsForCreatedBy = productTagsForCreatedBy;
+      this.generalLedgersForUpdatedBy = generalLedgersForUpdatedBy;
+      this.productTagsForUpdatedBy = productTagsForUpdatedBy;
+      this.generalLedgersForCreatedBy = generalLedgersForCreatedBy;
+      this.priceBooksForCreatedBy = priceBooksForCreatedBy;
+      this.accountTypesForUpdatedBy = accountTypesForUpdatedBy;
+      this.configurationsForUpdatedBy = configurationsForUpdatedBy;
+      this.activityDetailsForCreatedByManagerId = activityDetailsForCreatedByManagerId;
+      this.userOutletsesForCreatedBy = userOutletsesForCreatedBy;
+      this.variantAttributeValuesesForCreatedBy = variantAttributeValuesesForCreatedBy;
+      this.productHistories = productHistories;
+      this.compositeProductHistoriesForUpdatedBy = compositeProductHistoriesForUpdatedBy;
+      this.glTransConfigsForCreatedBy = glTransConfigsForCreatedBy;
+      this.priceBookDetailsForUpdatedBy = priceBookDetailsForUpdatedBy;
+      this.variantAttributesForUpdatedBy = variantAttributesForUpdatedBy;
+      this.priceBookDetailsForCreatedBy = priceBookDetailsForCreatedBy;
+      this.glTransConfigsForUpdatedBy = glTransConfigsForUpdatedBy;
       this.variantAttributeValuesesForUpdatedBy = variantAttributeValuesesForUpdatedBy;
       this.userOutletsesForUpdatedBy = userOutletsesForUpdatedBy;
       this.userOutletsesForUserAssociationId = userOutletsesForUserAssociationId;
       this.generalLedgerEventsForCreatedBy = generalLedgerEventsForCreatedBy;
-      this.productPriceHistoriesForUpdatedBy = productPriceHistoriesForUpdatedBy;
       this.ticketsForResolvedBy = ticketsForResolvedBy;
       this.bankAccountsForUpdatedBy = bankAccountsForUpdatedBy;
-      this.priceBooksForUpdatedBy = priceBooksForUpdatedBy;
       this.productsForUpdatedBy = productsForUpdatedBy;
       this.tagsForCreatedBy = tagsForCreatedBy;
       this.announcementsForUpdatedBy = announcementsForUpdatedBy;
       this.announcementsForCreatedBy = announcementsForCreatedBy;
-      this.modulesForUpdatedBy = modulesForUpdatedBy;
       this.ticketsForCreatedBy = ticketsForCreatedBy;
       this.webActivityDetailsForEmployeeAssociationId = webActivityDetailsForEmployeeAssociationId;
-      this.webActivityDetailsForCreatedByManagerId = webActivityDetailsForCreatedByManagerId;
       this.compositeProductsForCreatedBy = compositeProductsForCreatedBy;
       this.configurationsForCreatedBy = configurationsForCreatedBy;
-      this.modulesForCreatedBy = modulesForCreatedBy;
-      this.productTagsForCreatedBy = productTagsForCreatedBy;
       this.chartOfAccountsForUpdatedBy = chartOfAccountsForUpdatedBy;
-      this.generalLedgersForUpdatedBy = generalLedgersForUpdatedBy;
-      this.productTagsForUpdatedBy = productTagsForUpdatedBy;
-      this.generalLedgersForCreatedBy = generalLedgersForCreatedBy;
    }
   
     @Id @GeneratedValue(strategy=IDENTITY)
@@ -360,51 +364,6 @@ public class User implements java.io.Serializable {
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<PriceBook> getPriceBooksForCreatedBy() {
-       return this.priceBooksForCreatedBy;
-   }
-   
-   public void setPriceBooksForCreatedBy(Set<PriceBook> priceBooksForCreatedBy) {
-       this.priceBooksForCreatedBy = priceBooksForCreatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<AccountType> getAccountTypesForUpdatedBy() {
-       return this.accountTypesForUpdatedBy;
-   }
-   
-   public void setAccountTypesForUpdatedBy(Set<AccountType> accountTypesForUpdatedBy) {
-       this.accountTypesForUpdatedBy = accountTypesForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<Configuration> getConfigurationsForUpdatedBy() {
-       return this.configurationsForUpdatedBy;
-   }
-   
-   public void setConfigurationsForUpdatedBy(Set<Configuration> configurationsForUpdatedBy) {
-       this.configurationsForUpdatedBy = configurationsForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedByManagerId")
-   public Set<ActivityDetail> getActivityDetailsForCreatedByManagerId() {
-       return this.activityDetailsForCreatedByManagerId;
-   }
-   
-   public void setActivityDetailsForCreatedByManagerId(Set<ActivityDetail> activityDetailsForCreatedByManagerId) {
-       this.activityDetailsForCreatedByManagerId = activityDetailsForCreatedByManagerId;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<UserOutlets> getUserOutletsesForCreatedBy() {
-       return this.userOutletsesForCreatedBy;
-   }
-   
-   public void setUserOutletsesForCreatedBy(Set<UserOutlets> userOutletsesForCreatedBy) {
-       this.userOutletsesForCreatedBy = userOutletsesForCreatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
    public Set<ProductPriceHistory> getProductPriceHistoriesForCreatedBy() {
        return this.productPriceHistoriesForCreatedBy;
    }
@@ -432,24 +391,6 @@ public class User implements java.io.Serializable {
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<VariantAttributeValues> getVariantAttributeValuesesForCreatedBy() {
-       return this.variantAttributeValuesesForCreatedBy;
-   }
-   
-   public void setVariantAttributeValuesesForCreatedBy(Set<VariantAttributeValues> variantAttributeValuesesForCreatedBy) {
-       this.variantAttributeValuesesForCreatedBy = variantAttributeValuesesForCreatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
-   public Set<ProductHistory> getProductHistories() {
-       return this.productHistories;
-   }
-   
-   public void setProductHistories(Set<ProductHistory> productHistories) {
-       this.productHistories = productHistories;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
    public Set<Product> getProductsForCreatedBy() {
        return this.productsForCreatedBy;
    }
@@ -459,57 +400,12 @@ public class User implements java.io.Serializable {
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<GlTransConfig> getGlTransConfigsForCreatedBy() {
-       return this.glTransConfigsForCreatedBy;
-   }
-   
-   public void setGlTransConfigsForCreatedBy(Set<GlTransConfig> glTransConfigsForCreatedBy) {
-       this.glTransConfigsForCreatedBy = glTransConfigsForCreatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
    public Set<BankAccount> getBankAccountsForCreatedBy() {
        return this.bankAccountsForCreatedBy;
    }
    
    public void setBankAccountsForCreatedBy(Set<BankAccount> bankAccountsForCreatedBy) {
        this.bankAccountsForCreatedBy = bankAccountsForCreatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<PriceBookDetail> getPriceBookDetailsForUpdatedBy() {
-       return this.priceBookDetailsForUpdatedBy;
-   }
-   
-   public void setPriceBookDetailsForUpdatedBy(Set<PriceBookDetail> priceBookDetailsForUpdatedBy) {
-       this.priceBookDetailsForUpdatedBy = priceBookDetailsForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<VariantAttribute> getVariantAttributesForUpdatedBy() {
-       return this.variantAttributesForUpdatedBy;
-   }
-   
-   public void setVariantAttributesForUpdatedBy(Set<VariantAttribute> variantAttributesForUpdatedBy) {
-       this.variantAttributesForUpdatedBy = variantAttributesForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<PriceBookDetail> getPriceBookDetailsForCreatedBy() {
-       return this.priceBookDetailsForCreatedBy;
-   }
-   
-   public void setPriceBookDetailsForCreatedBy(Set<PriceBookDetail> priceBookDetailsForCreatedBy) {
-       this.priceBookDetailsForCreatedBy = priceBookDetailsForCreatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<GlTransConfig> getGlTransConfigsForUpdatedBy() {
-       return this.glTransConfigsForUpdatedBy;
-   }
-   
-   public void setGlTransConfigsForUpdatedBy(Set<GlTransConfig> glTransConfigsForUpdatedBy) {
-       this.glTransConfigsForUpdatedBy = glTransConfigsForUpdatedBy;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
@@ -557,6 +453,213 @@ public class User implements java.io.Serializable {
        this.accountTypesForCreatedBy = accountTypesForCreatedBy;
    }
 
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<CompositeProductHistory> getCompositeProductHistoriesForCreatedBy() {
+       return this.compositeProductHistoriesForCreatedBy;
+   }
+   
+   public void setCompositeProductHistoriesForCreatedBy(Set<CompositeProductHistory> compositeProductHistoriesForCreatedBy) {
+       this.compositeProductHistoriesForCreatedBy = compositeProductHistoriesForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<ProductPriceHistory> getProductPriceHistoriesForUpdatedBy() {
+       return this.productPriceHistoriesForUpdatedBy;
+   }
+   
+   public void setProductPriceHistoriesForUpdatedBy(Set<ProductPriceHistory> productPriceHistoriesForUpdatedBy) {
+       this.productPriceHistoriesForUpdatedBy = productPriceHistoriesForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<PriceBook> getPriceBooksForUpdatedBy() {
+       return this.priceBooksForUpdatedBy;
+   }
+   
+   public void setPriceBooksForUpdatedBy(Set<PriceBook> priceBooksForUpdatedBy) {
+       this.priceBooksForUpdatedBy = priceBooksForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<Module> getModulesForUpdatedBy() {
+       return this.modulesForUpdatedBy;
+   }
+   
+   public void setModulesForUpdatedBy(Set<Module> modulesForUpdatedBy) {
+       this.modulesForUpdatedBy = modulesForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedByManagerId")
+   public Set<WebActivityDetail> getWebActivityDetailsForCreatedByManagerId() {
+       return this.webActivityDetailsForCreatedByManagerId;
+   }
+   
+   public void setWebActivityDetailsForCreatedByManagerId(Set<WebActivityDetail> webActivityDetailsForCreatedByManagerId) {
+       this.webActivityDetailsForCreatedByManagerId = webActivityDetailsForCreatedByManagerId;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<Module> getModulesForCreatedBy() {
+       return this.modulesForCreatedBy;
+   }
+   
+   public void setModulesForCreatedBy(Set<Module> modulesForCreatedBy) {
+       this.modulesForCreatedBy = modulesForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<ProductTag> getProductTagsForCreatedBy() {
+       return this.productTagsForCreatedBy;
+   }
+   
+   public void setProductTagsForCreatedBy(Set<ProductTag> productTagsForCreatedBy) {
+       this.productTagsForCreatedBy = productTagsForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<GeneralLedger> getGeneralLedgersForUpdatedBy() {
+       return this.generalLedgersForUpdatedBy;
+   }
+   
+   public void setGeneralLedgersForUpdatedBy(Set<GeneralLedger> generalLedgersForUpdatedBy) {
+       this.generalLedgersForUpdatedBy = generalLedgersForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<ProductTag> getProductTagsForUpdatedBy() {
+       return this.productTagsForUpdatedBy;
+   }
+   
+   public void setProductTagsForUpdatedBy(Set<ProductTag> productTagsForUpdatedBy) {
+       this.productTagsForUpdatedBy = productTagsForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<GeneralLedger> getGeneralLedgersForCreatedBy() {
+       return this.generalLedgersForCreatedBy;
+   }
+   
+   public void setGeneralLedgersForCreatedBy(Set<GeneralLedger> generalLedgersForCreatedBy) {
+       this.generalLedgersForCreatedBy = generalLedgersForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<PriceBook> getPriceBooksForCreatedBy() {
+       return this.priceBooksForCreatedBy;
+   }
+   
+   public void setPriceBooksForCreatedBy(Set<PriceBook> priceBooksForCreatedBy) {
+       this.priceBooksForCreatedBy = priceBooksForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<AccountType> getAccountTypesForUpdatedBy() {
+       return this.accountTypesForUpdatedBy;
+   }
+   
+   public void setAccountTypesForUpdatedBy(Set<AccountType> accountTypesForUpdatedBy) {
+       this.accountTypesForUpdatedBy = accountTypesForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<Configuration> getConfigurationsForUpdatedBy() {
+       return this.configurationsForUpdatedBy;
+   }
+   
+   public void setConfigurationsForUpdatedBy(Set<Configuration> configurationsForUpdatedBy) {
+       this.configurationsForUpdatedBy = configurationsForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedByManagerId")
+   public Set<ActivityDetail> getActivityDetailsForCreatedByManagerId() {
+       return this.activityDetailsForCreatedByManagerId;
+   }
+   
+   public void setActivityDetailsForCreatedByManagerId(Set<ActivityDetail> activityDetailsForCreatedByManagerId) {
+       this.activityDetailsForCreatedByManagerId = activityDetailsForCreatedByManagerId;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<UserOutlets> getUserOutletsesForCreatedBy() {
+       return this.userOutletsesForCreatedBy;
+   }
+   
+   public void setUserOutletsesForCreatedBy(Set<UserOutlets> userOutletsesForCreatedBy) {
+       this.userOutletsesForCreatedBy = userOutletsesForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<VariantAttributeValues> getVariantAttributeValuesesForCreatedBy() {
+       return this.variantAttributeValuesesForCreatedBy;
+   }
+   
+   public void setVariantAttributeValuesesForCreatedBy(Set<VariantAttributeValues> variantAttributeValuesesForCreatedBy) {
+       this.variantAttributeValuesesForCreatedBy = variantAttributeValuesesForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
+   public Set<ProductHistory> getProductHistories() {
+       return this.productHistories;
+   }
+   
+   public void setProductHistories(Set<ProductHistory> productHistories) {
+       this.productHistories = productHistories;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<CompositeProductHistory> getCompositeProductHistoriesForUpdatedBy() {
+       return this.compositeProductHistoriesForUpdatedBy;
+   }
+   
+   public void setCompositeProductHistoriesForUpdatedBy(Set<CompositeProductHistory> compositeProductHistoriesForUpdatedBy) {
+       this.compositeProductHistoriesForUpdatedBy = compositeProductHistoriesForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<GlTransConfig> getGlTransConfigsForCreatedBy() {
+       return this.glTransConfigsForCreatedBy;
+   }
+   
+   public void setGlTransConfigsForCreatedBy(Set<GlTransConfig> glTransConfigsForCreatedBy) {
+       this.glTransConfigsForCreatedBy = glTransConfigsForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<PriceBookDetail> getPriceBookDetailsForUpdatedBy() {
+       return this.priceBookDetailsForUpdatedBy;
+   }
+   
+   public void setPriceBookDetailsForUpdatedBy(Set<PriceBookDetail> priceBookDetailsForUpdatedBy) {
+       this.priceBookDetailsForUpdatedBy = priceBookDetailsForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<VariantAttribute> getVariantAttributesForUpdatedBy() {
+       return this.variantAttributesForUpdatedBy;
+   }
+   
+   public void setVariantAttributesForUpdatedBy(Set<VariantAttribute> variantAttributesForUpdatedBy) {
+       this.variantAttributesForUpdatedBy = variantAttributesForUpdatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
+   public Set<PriceBookDetail> getPriceBookDetailsForCreatedBy() {
+       return this.priceBookDetailsForCreatedBy;
+   }
+   
+   public void setPriceBookDetailsForCreatedBy(Set<PriceBookDetail> priceBookDetailsForCreatedBy) {
+       this.priceBookDetailsForCreatedBy = priceBookDetailsForCreatedBy;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
+   public Set<GlTransConfig> getGlTransConfigsForUpdatedBy() {
+       return this.glTransConfigsForUpdatedBy;
+   }
+   
+   public void setGlTransConfigsForUpdatedBy(Set<GlTransConfig> glTransConfigsForUpdatedBy) {
+       this.glTransConfigsForUpdatedBy = glTransConfigsForUpdatedBy;
+   }
+
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
    public Set<VariantAttributeValues> getVariantAttributeValuesesForUpdatedBy() {
        return this.variantAttributeValuesesForUpdatedBy;
@@ -593,15 +696,6 @@ public class User implements java.io.Serializable {
        this.generalLedgerEventsForCreatedBy = generalLedgerEventsForCreatedBy;
    }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<ProductPriceHistory> getProductPriceHistoriesForUpdatedBy() {
-       return this.productPriceHistoriesForUpdatedBy;
-   }
-   
-   public void setProductPriceHistoriesForUpdatedBy(Set<ProductPriceHistory> productPriceHistoriesForUpdatedBy) {
-       this.productPriceHistoriesForUpdatedBy = productPriceHistoriesForUpdatedBy;
-   }
-
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByResolvedBy")
    public Set<Ticket> getTicketsForResolvedBy() {
        return this.ticketsForResolvedBy;
@@ -618,15 +712,6 @@ public class User implements java.io.Serializable {
    
    public void setBankAccountsForUpdatedBy(Set<BankAccount> bankAccountsForUpdatedBy) {
        this.bankAccountsForUpdatedBy = bankAccountsForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<PriceBook> getPriceBooksForUpdatedBy() {
-       return this.priceBooksForUpdatedBy;
-   }
-   
-   public void setPriceBooksForUpdatedBy(Set<PriceBook> priceBooksForUpdatedBy) {
-       this.priceBooksForUpdatedBy = priceBooksForUpdatedBy;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
@@ -665,15 +750,6 @@ public class User implements java.io.Serializable {
        this.announcementsForCreatedBy = announcementsForCreatedBy;
    }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<Module> getModulesForUpdatedBy() {
-       return this.modulesForUpdatedBy;
-   }
-   
-   public void setModulesForUpdatedBy(Set<Module> modulesForUpdatedBy) {
-       this.modulesForUpdatedBy = modulesForUpdatedBy;
-   }
-
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
    public Set<Ticket> getTicketsForCreatedBy() {
        return this.ticketsForCreatedBy;
@@ -690,15 +766,6 @@ public class User implements java.io.Serializable {
    
    public void setWebActivityDetailsForEmployeeAssociationId(Set<WebActivityDetail> webActivityDetailsForEmployeeAssociationId) {
        this.webActivityDetailsForEmployeeAssociationId = webActivityDetailsForEmployeeAssociationId;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedByManagerId")
-   public Set<WebActivityDetail> getWebActivityDetailsForCreatedByManagerId() {
-       return this.webActivityDetailsForCreatedByManagerId;
-   }
-   
-   public void setWebActivityDetailsForCreatedByManagerId(Set<WebActivityDetail> webActivityDetailsForCreatedByManagerId) {
-       this.webActivityDetailsForCreatedByManagerId = webActivityDetailsForCreatedByManagerId;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
@@ -719,24 +786,6 @@ public class User implements java.io.Serializable {
        this.configurationsForCreatedBy = configurationsForCreatedBy;
    }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<Module> getModulesForCreatedBy() {
-       return this.modulesForCreatedBy;
-   }
-   
-   public void setModulesForCreatedBy(Set<Module> modulesForCreatedBy) {
-       this.modulesForCreatedBy = modulesForCreatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<ProductTag> getProductTagsForCreatedBy() {
-       return this.productTagsForCreatedBy;
-   }
-   
-   public void setProductTagsForCreatedBy(Set<ProductTag> productTagsForCreatedBy) {
-       this.productTagsForCreatedBy = productTagsForCreatedBy;
-   }
-
 @OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
    public Set<ChartOfAccount> getChartOfAccountsForUpdatedBy() {
        return this.chartOfAccountsForUpdatedBy;
@@ -744,33 +793,6 @@ public class User implements java.io.Serializable {
    
    public void setChartOfAccountsForUpdatedBy(Set<ChartOfAccount> chartOfAccountsForUpdatedBy) {
        this.chartOfAccountsForUpdatedBy = chartOfAccountsForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<GeneralLedger> getGeneralLedgersForUpdatedBy() {
-       return this.generalLedgersForUpdatedBy;
-   }
-   
-   public void setGeneralLedgersForUpdatedBy(Set<GeneralLedger> generalLedgersForUpdatedBy) {
-       this.generalLedgersForUpdatedBy = generalLedgersForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByUpdatedBy")
-   public Set<ProductTag> getProductTagsForUpdatedBy() {
-       return this.productTagsForUpdatedBy;
-   }
-   
-   public void setProductTagsForUpdatedBy(Set<ProductTag> productTagsForUpdatedBy) {
-       this.productTagsForUpdatedBy = productTagsForUpdatedBy;
-   }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="userByCreatedBy")
-   public Set<GeneralLedger> getGeneralLedgersForCreatedBy() {
-       return this.generalLedgersForCreatedBy;
-   }
-   
-   public void setGeneralLedgersForCreatedBy(Set<GeneralLedger> generalLedgersForCreatedBy) {
-       this.generalLedgersForCreatedBy = generalLedgersForCreatedBy;
    }
 
 

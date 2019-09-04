@@ -70,6 +70,7 @@ public class Company implements java.io.Serializable {
     private Set<ChartOfAccount> chartOfAccounts = new HashSet<ChartOfAccount>(0);
     private Set<Address> addresses = new HashSet<Address>(0);
     private Set<Message> messages = new HashSet<Message>(0);
+    private Set<CompositeProductHistory> compositeProductHistories = new HashSet<CompositeProductHistory>(0);
     private Set<ProductTag> productTags = new HashSet<ProductTag>(0);
     private Set<PriceBookDetail> priceBookDetails = new HashSet<PriceBookDetail>(0);
     private Set<User> users = new HashSet<User>(0);
@@ -115,7 +116,7 @@ public class Company implements java.io.Serializable {
        this.createdDate = createdDate;
        this.lastUpdated = lastUpdated;
    }
-   public Company(Currency currency, PrinterFormat printerFormat, TimeZone timeZone, String companyName, String displayPrices, String skuGeneration, String currentSequenceNumber, Boolean loyaltyEnabled, BigDecimal loyaltyInvoiceAmount, BigDecimal loyaltyAmount, Date loyaltyEnabledDate, BigDecimal loyaltyBonusAmount, Boolean loyaltyBonusEnabled, Date loyaltyBonusEnabledDate, String userSwitchSecurity, String enableStoresCredit, String url, Boolean activeIndicator, Date createdDate, Date lastUpdated, Integer createdBy, Integer updatedBy, Set<InventoryCountDetail> inventoryCountDetails, Set<Brand> brands, Set<Receipt> receipts, Set<DailyRegister> dailyRegisters, Set<ExpenseType> expenseTypes, Set<ContactPayments> contactPaymentses, Set<InventoryCount> inventoryCounts, Set<Register> registers, Set<ProductPriceHistory> productPriceHistories, Set<Announcement> announcements, Set<Configuration> configurations, Set<PriceBook> priceBooks, Set<AccountType> accountTypes, Set<Contact> contacts, Set<StockOrder> stockOrders, Set<ChartOfAccount> chartOfAccounts, Set<Address> addresses, Set<Message> messages, Set<ProductTag> productTags, Set<PriceBookDetail> priceBookDetails, Set<User> users, Set<Module> modules, Set<OrderMain> orderMains, Set<GeneralLedger> generalLedgers, Set<VariantAttributeValues> variantAttributeValueses, Set<CashManagment> cashManagments, Set<VariantAttribute> variantAttributes, Set<Notification> notifications, Set<TicketActivity> ticketActivities, Set<Menu> menus, Set<InvoiceMain> invoiceMains, Set<CompositeProduct> compositeProducts, Set<Product> products, Set<ProductType> productTypes, Set<ActivityDetail> activityDetails, Set<InvoiceDetail> invoiceDetails, Set<BankAccount> bankAccounts, Set<ProductHistory> productHistories, Set<UserOutlets> userOutletses, Set<GlTransConfig> glTransConfigs, Set<StockOrderDetail> stockOrderDetails, Set<MessageDetail> messageDetails, Set<Loyalty> loyalties, Set<Tag> tags, Set<ProductVariant> productVariants, Set<Ticket> tickets, Set<Outlet> outlets, Set<GeneralLedgerEvent> generalLedgerEvents, Set<ContactGroup> contactGroups, Set<SalesTax> salesTaxes) {
+   public Company(Currency currency, PrinterFormat printerFormat, TimeZone timeZone, String companyName, String displayPrices, String skuGeneration, String currentSequenceNumber, Boolean loyaltyEnabled, BigDecimal loyaltyInvoiceAmount, BigDecimal loyaltyAmount, Date loyaltyEnabledDate, BigDecimal loyaltyBonusAmount, Boolean loyaltyBonusEnabled, Date loyaltyBonusEnabledDate, String userSwitchSecurity, String enableStoresCredit, String url, Boolean activeIndicator, Date createdDate, Date lastUpdated, Integer createdBy, Integer updatedBy, Set<InventoryCountDetail> inventoryCountDetails, Set<Brand> brands, Set<Receipt> receipts, Set<DailyRegister> dailyRegisters, Set<ExpenseType> expenseTypes, Set<ContactPayments> contactPaymentses, Set<InventoryCount> inventoryCounts, Set<Register> registers, Set<ProductPriceHistory> productPriceHistories, Set<Announcement> announcements, Set<Configuration> configurations, Set<PriceBook> priceBooks, Set<AccountType> accountTypes, Set<Contact> contacts, Set<StockOrder> stockOrders, Set<ChartOfAccount> chartOfAccounts, Set<Address> addresses, Set<Message> messages, Set<CompositeProductHistory> compositeProductHistories, Set<ProductTag> productTags, Set<PriceBookDetail> priceBookDetails, Set<User> users, Set<Module> modules, Set<OrderMain> orderMains, Set<GeneralLedger> generalLedgers, Set<VariantAttributeValues> variantAttributeValueses, Set<CashManagment> cashManagments, Set<VariantAttribute> variantAttributes, Set<Notification> notifications, Set<TicketActivity> ticketActivities, Set<Menu> menus, Set<InvoiceMain> invoiceMains, Set<CompositeProduct> compositeProducts, Set<Product> products, Set<ProductType> productTypes, Set<ActivityDetail> activityDetails, Set<InvoiceDetail> invoiceDetails, Set<BankAccount> bankAccounts, Set<ProductHistory> productHistories, Set<UserOutlets> userOutletses, Set<GlTransConfig> glTransConfigs, Set<StockOrderDetail> stockOrderDetails, Set<MessageDetail> messageDetails, Set<Loyalty> loyalties, Set<Tag> tags, Set<ProductVariant> productVariants, Set<Ticket> tickets, Set<Outlet> outlets, Set<GeneralLedgerEvent> generalLedgerEvents, Set<ContactGroup> contactGroups, Set<SalesTax> salesTaxes) {
       this.currency = currency;
       this.printerFormat = printerFormat;
       this.timeZone = timeZone;
@@ -156,6 +157,7 @@ public class Company implements java.io.Serializable {
       this.chartOfAccounts = chartOfAccounts;
       this.addresses = addresses;
       this.messages = messages;
+      this.compositeProductHistories = compositeProductHistories;
       this.productTags = productTags;
       this.priceBookDetails = priceBookDetails;
       this.users = users;
@@ -582,6 +584,15 @@ public class Company implements java.io.Serializable {
    
    public void setMessages(Set<Message> messages) {
        this.messages = messages;
+   }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="company")
+   public Set<CompositeProductHistory> getCompositeProductHistories() {
+       return this.compositeProductHistories;
+   }
+   
+   public void setCompositeProductHistories(Set<CompositeProductHistory> compositeProductHistories) {
+       this.compositeProductHistories = compositeProductHistories;
    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="company")
