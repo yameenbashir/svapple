@@ -81,33 +81,40 @@ public class ServiceUtil {
 			String PageNameDetails,String activityDetailDesc, boolean isException){
 		
 		ActivityDetail activityDetail = new ActivityDetail();
-		UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+		try{
+			
+			UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+			
+		    Browser browser = userAgent.getBrowser();
+		    OperatingSystem os = userAgent.getOperatingSystem();
+		    String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		    if (ipAddress == null) {
+		    	   ipAddress = request.getRemoteAddr();
+		    }
+		   
+			activityDetail.setActivityDetail(PageNameDetails);
+			activityDetail.setBrowserName(browser.getName());
+			activityDetail.setBrowserVersion(userAgent.getBrowserVersion().getVersion());
+			activityDetail.setCreatedDate(new Date());
+			activityDetail.setIpAddress(ipAddress);
+			activityDetail.setOperatingSystem(os.getName());
+			activityDetail.setOtherInformation(activityDetailDesc.getBytes());
+			activityDetail.setSessionId(request.getSession().getId());
+			Severity severity = getSeverityDAO().getSeverityBySeverityId(1);
+			activityDetail.setSeverity(severity);
+			activityDetail.setUserByCreatedByManagerId(user);
+			activityDetail.setEmloyeeEmail(user.getUserEmail());
+			activityDetail.setEmployeeName(user.getFirstName());
+			activityDetail.setDeviceType(os.getDeviceType().getName());
+			activityDetail.setUserByEmployeeAssociationId(user);
+			activityDetail.setIsException(String.valueOf(isException));
+			activityDetail.setCompany(user.getCompany());
+			getActivityDetailDAO().addActivityDetail(activityDetail,user.getCompany().getCompanyId());
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 		
-	    Browser browser = userAgent.getBrowser();
-	    OperatingSystem os = userAgent.getOperatingSystem();
-	    String ipAddress = request.getHeader("X-FORWARDED-FOR");
-	    if (ipAddress == null) {
-	    	   ipAddress = request.getRemoteAddr();
-	    }
-	   
-		activityDetail.setActivityDetail(PageNameDetails);
-		activityDetail.setBrowserName(browser.getName());
-		activityDetail.setBrowserVersion(userAgent.getBrowserVersion().getVersion());
-		activityDetail.setCreatedDate(new Date());
-		activityDetail.setIpAddress(ipAddress);
-		activityDetail.setOperatingSystem(os.getName());
-		activityDetail.setOtherInformation(activityDetailDesc.getBytes());
-		activityDetail.setSessionId(request.getSession().getId());
-		Severity severity = getSeverityDAO().getSeverityBySeverityId(1);
-		activityDetail.setSeverity(severity);
-		activityDetail.setUserByCreatedByManagerId(user);
-		activityDetail.setEmloyeeEmail(user.getUserEmail());
-		activityDetail.setEmployeeName(user.getFirstName());
-		activityDetail.setDeviceType(os.getDeviceType().getName());
-		activityDetail.setUserByEmployeeAssociationId(user);
-		activityDetail.setIsException(String.valueOf(isException));
-		activityDetail.setCompany(user.getCompany());
-		getActivityDetailDAO().addActivityDetail(activityDetail,user.getCompany().getCompanyId());
 		return activityDetail;
 	}
 	
@@ -116,32 +123,37 @@ public class ServiceUtil {
 		
 		//ActivityDetail activityDetail = new ActivityDetail();
 		WebActivityDetail webActivityDetail = new WebActivityDetail();
-		UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+		try{
+			UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+			
+		    Browser browser = userAgent.getBrowser();
+		    OperatingSystem os = userAgent.getOperatingSystem();
+		    String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		    if (ipAddress == null) {
+		    	   ipAddress = request.getRemoteAddr();
+		    }
+		   
+			webActivityDetail.setActivityDetail(PageNameDetails);
+			webActivityDetail.setBrowserName(browser.getName());
+			webActivityDetail.setBrowserVersion(userAgent.getBrowserVersion().getVersion());
+			webActivityDetail.setCreatedDate(new Date());
+			webActivityDetail.setIpAddress(ipAddress);
+			webActivityDetail.setOperatingSystem(os.getName());
+			webActivityDetail.setOtherInformation(activityDetailDesc.getBytes());
+			webActivityDetail.setSessionId(request.getSession().getId());
+			Severity severity = getSeverityDAO().getSeverityBySeverityId(1);
+			webActivityDetail.setSeverity(severity);
+			webActivityDetail.setUserByCreatedByManagerId(user);
+			webActivityDetail.setEmloyeeEmail(user.getUserEmail());
+			webActivityDetail.setEmployeeName(user.getFirstName());
+			webActivityDetail.setDeviceType(os.getDeviceType().getName());
+			webActivityDetail.setUserByEmployeeAssociationId(user);
+			webActivityDetail.setIsException(String.valueOf(isException));
+			getWebActivityDetailDAO().addWebActivityDetail(webActivityDetail);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 		
-	    Browser browser = userAgent.getBrowser();
-	    OperatingSystem os = userAgent.getOperatingSystem();
-	    String ipAddress = request.getHeader("X-FORWARDED-FOR");
-	    if (ipAddress == null) {
-	    	   ipAddress = request.getRemoteAddr();
-	    }
-	   
-		webActivityDetail.setActivityDetail(PageNameDetails);
-		webActivityDetail.setBrowserName(browser.getName());
-		webActivityDetail.setBrowserVersion(userAgent.getBrowserVersion().getVersion());
-		webActivityDetail.setCreatedDate(new Date());
-		webActivityDetail.setIpAddress(ipAddress);
-		webActivityDetail.setOperatingSystem(os.getName());
-		webActivityDetail.setOtherInformation(activityDetailDesc.getBytes());
-		webActivityDetail.setSessionId(request.getSession().getId());
-		Severity severity = getSeverityDAO().getSeverityBySeverityId(1);
-		webActivityDetail.setSeverity(severity);
-		webActivityDetail.setUserByCreatedByManagerId(user);
-		webActivityDetail.setEmloyeeEmail(user.getUserEmail());
-		webActivityDetail.setEmployeeName(user.getFirstName());
-		webActivityDetail.setDeviceType(os.getDeviceType().getName());
-		webActivityDetail.setUserByEmployeeAssociationId(user);
-		webActivityDetail.setIsException(String.valueOf(isException));
-		getWebActivityDetailDAO().addWebActivityDetail(webActivityDetail);
 		return webActivityDetail;
 	}
 	

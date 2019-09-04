@@ -25,4 +25,5 @@ public interface PriceBookDetailService {
 	Map<Integer, PriceBookDetail> getPriceBookDetailMapByPriceBookDetailIdCompanyId(int companyId);
 	Map<Integer, List<PriceBookDetail>> getPriceBookDetailMapByPriceBookIdCompanyId(int companyId);
 	void addPriceBookDetail(List<PriceBookDetail> priceBookDetails);
+	Map<Integer, PriceBookDetail> getAllActivePriceBookDetailsMapByPriceBookIdCompanyId(int pricebookId,int companyId);
 }

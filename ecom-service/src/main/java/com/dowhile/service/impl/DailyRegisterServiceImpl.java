@@ -44,9 +44,9 @@ public class DailyRegisterServiceImpl implements DailyRegisterService{
 
 	@Override
 	public com.dowhile.DailyRegister getOpenDailyRegister(int companyId,
-			int OutletId) {
+			int OutletId,int userId) {
 		// TODO Auto-generated method stub
-		return dailyRegisterDAO.getOpenDailyRegister(companyId, OutletId);
+		return dailyRegisterDAO.getOpenDailyRegister(companyId, OutletId,userId);
 	}
 
 	@Override

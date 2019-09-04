@@ -106,9 +106,9 @@ public class SaleServiceImpl implements SaleService {
 	}
 
 	@Override
-	public double getTodaysRevenue(int outletId, int companyId) {
+	public double getTodaysRevenue(int outletId, int companyId,int dailyRegisterId) {
 		// TODO Auto-generated method stub
-		return getSaleDAO().getTodaysRevenue(outletId, companyId);
+		return getSaleDAO().getTodaysRevenue(outletId, companyId,dailyRegisterId);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -179,9 +179,9 @@ public class SaleServiceImpl implements SaleService {
 	}
 
 	@Override
-	public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId, int limit, String invoiceRefNum, String status, Date fromDate, Date toDate  )
+	public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId, int limit, String invoiceRefNum, String status, Date fromDate, Date toDate,Integer customerId  )
 	{
-		return getSaleDAO().getAllInvoicesMainById( outletId,  copmayId,  limit,  invoiceRefNum,  status,  fromDate,  toDate  );
+		return getSaleDAO().getAllInvoicesMainById( outletId,  copmayId,  limit,  invoiceRefNum,  status,  fromDate,  toDate ,customerId );
 		
 	}
 	@Override

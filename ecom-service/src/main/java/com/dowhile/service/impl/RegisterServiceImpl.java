@@ -54,9 +54,9 @@ public class RegisterServiceImpl implements RegisterService{
 	}
 
 	@Override
-	public List<Register> getRegestersByOutletId(int outletId, int companyId) {
+	public List<Register> getRegestersByOutletId(int outletId, int companyId,int userId) {
 		// TODO Auto-generated method stub
-		return getRegisterDAO().getRegistersByOutletId(outletId,companyId);
+		return getRegisterDAO().getRegistersByOutletId(outletId,companyId,userId);
 	}
 
 	@Override

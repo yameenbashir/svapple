@@ -131,6 +131,12 @@ public class ResourceServiceImpl implements ResourceService{
 		}
 		return map;
 	}
+
+	@Override
+	public List<User> getAllUsersByCompanyIdOutletId(int companyId, int outletId) {
+		// TODO Auto-generated method stub
+		return getResourceDAO().getAllUsersByCompanyIdOutletId(companyId, outletId);
+	}
 	
 
 }

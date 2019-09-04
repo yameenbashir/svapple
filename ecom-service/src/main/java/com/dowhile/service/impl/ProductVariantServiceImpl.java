@@ -110,7 +110,7 @@ public class ProductVariantServiceImpl implements ProductVariantService{
 	@Override
 	public List<ProductVariant> getAllProductVariantsByOutletId(int outletId, int companyId) {
 		// TODO Auto-generated method stub
-		return getProductVariantDAO().getAllProductVariantsByOutletId(outletId,companyId);
+		return getProductVariantDAO().getAllActiveProductVariantsByOutletIdCompanyId(outletId,companyId);
 	}
 
 	@Override
@@ -187,6 +187,28 @@ public class ProductVariantServiceImpl implements ProductVariantService{
 			
 		}
 
+		return map;
+	}
+
+	@Override
+	public List<ProductVariant> getAllActiveProductVariants() {
+		// TODO Auto-generated method stub
+		return getProductVariantDAO().getAllActiveProductVariants();
+	}
+
+	@Override
+	public Map<Integer, ProductVariant> getAllActiveProductsVariantMapByOutletIdCompanyId(
+			int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		List<ProductVariant> products = getProductVariantDAO().getAllActiveProductVariantsByOutletIdCompanyId(outletId, companyId);
+		Map<Integer, ProductVariant> map = new HashMap<Integer, ProductVariant>();
+		if(products!=null){
+			for(ProductVariant product : products){
+				if(map.get(product.getProductVariantId())==null){
+					map.put(product.getProductVariantId(), product);
+				}
+			}
+		}
 		return map;
 	}
 }

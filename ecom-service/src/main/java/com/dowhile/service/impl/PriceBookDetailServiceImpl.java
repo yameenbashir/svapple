@@ -130,4 +130,18 @@ public class PriceBookDetailServiceImpl implements PriceBookDetailService{
 		return map;
 	}
 
+	@Override
+	public Map<Integer, PriceBookDetail> getAllActivePriceBookDetailsMapByPriceBookIdCompanyId(
+			int pricebookId, int companyId) {
+		// TODO Auto-generated method stub
+		Map<Integer, PriceBookDetail> map = new HashMap<Integer, PriceBookDetail>();
+		List<PriceBookDetail> priceBookDetails = getPriceBookDetailDAO().getAllActivePriceBookDetailsByPriceBookIdCompanyId(pricebookId, companyId);
+		if(priceBookDetails!=null){
+			for(PriceBookDetail priceBook : priceBookDetails){
+				map.put(priceBook.getPriceBookDetailId(), priceBook);
+			}
+		}
+		return map;
+	}
+
 }

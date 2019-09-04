@@ -87,4 +87,11 @@ public class PriceBookServiceImpl implements PriceBookService{
 		return getPriceBookDAO().getAllInActivePriceBooksByCompanyId(companyId);
 	}
 
+	@Override
+	public List<PriceBook> getActivePriceBooksByDateRangeCompanyId(
+			Date validFrom, Date validTo, int companyId) {
+		// TODO Auto-generated method stub
+		return getPriceBookDAO().getActivePriceBooksByDateRangeCompanyId(validFrom, validTo, companyId);
+	}
+
 }

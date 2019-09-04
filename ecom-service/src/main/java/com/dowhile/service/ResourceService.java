@@ -24,5 +24,6 @@ public interface ResourceService {
 	boolean updateUserLoginTime(User user,int companyId);
 	List<User> getAllUsers(int companyId);
 	Map<Integer,User> getAllUsersMap(int companyId);
+	List<User> getAllUsersByCompanyIdOutletId(int companyId,int outletId);
 	
 }

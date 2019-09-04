@@ -29,7 +29,7 @@ public interface SaleService   {
 	InvoiceDetail getInvoiceDetailByDetailID(int invoiceDetail_ID,int companyId);
 	InvoiceDetail getInvoiceDetailByMainID(int invoiceMain_ID,int companyId);
 	List<InvoiceDetail> addInvoiceDetails(List<InvoiceDetail> invoiceDetails,int companyId);
-	List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId, int limit, String invoiceRefNum, String status, Date fromDate, Date toDate  );
+	List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId, int limit, String invoiceRefNum, String status, Date fromDate, Date toDate,Integer customerId  );
 	List<InvoiceDetail> getAllInvoicesDeailById(int outletId, int CopmayId, int invoiceMainId);
 	@SuppressWarnings("rawtypes")
 	List getGrossProfit(int outletId, int copmayId, Date startDate, Date endDate) ;
@@ -48,7 +48,7 @@ public interface SaleService   {
 	List getDiscounts(int outletId, int copmayId, Date startDate, Date endDate) ;
 	@SuppressWarnings("rawtypes")
 	List getBasketSize(int outletId, int copmayId, Date startDate, Date endDate) ;
-	double getTodaysRevenue(int outletId, int companyId);
+	double getTodaysRevenue(int outletId, int companyId,int dailyRegisterId);
 	@SuppressWarnings("rawtypes")
 	List getBasketValue(int outletId, int copmayId, Date startDate, Date endDate) ;
 	@SuppressWarnings("rawtypes")

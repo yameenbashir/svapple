@@ -70,10 +70,10 @@ public class CompositeProductServiceImpl implements CompositeProductService{
 	}
 
 	@Override
-	public List<CompositeProduct> getAllCompositeProductsByProductIdOultetId(
+	public List<CompositeProduct> getAllCompositeProductsByProductIdOultetIdCompanyId(
 			int productId,int outletId, int companyId) {
 		// TODO Auto-generated method stub
-		return getCompositeProductDAO().getAllCompositeProductsByProductIdOultetId(productId, outletId, companyId);
+		return getCompositeProductDAO().getAllCompositeProductsByProductIdOultetIdCompanyId(productId, outletId, companyId);
 	}
 
 	@Override
@@ -93,6 +93,13 @@ public class CompositeProductServiceImpl implements CompositeProductService{
 			String compositeProductUuId, int companyId) {
 		// TODO Auto-generated method stub
 		return getCompositeProductDAO().getCountOfInventoryByCompositeProductUuId(compositeProductUuId, companyId);
+	}
+
+	@Override
+	public boolean addCompositeProductList(
+			List<CompositeProduct> compositeProductList) {
+		// TODO Auto-generated method stub
+		return getCompositeProductDAO().addCompositeProductList(compositeProductList);
 	}
 
 }

@@ -83,4 +83,10 @@ public class OutletServiceImpl implements OutletService{
 		}
 		return map;
 	}
+
+	@Override
+	public List<Outlet> getAllActiveOutletsByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		return getOutletDAO().getAllActiveOutletsByCompanyId(companyId);
+	}
 }

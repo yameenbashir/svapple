@@ -72,6 +72,12 @@ public class StockOrderServiceImpl implements StockOrderService{
 	}
 	
 	@Override
+	public List<StockOrder> getStockOrderByOutletIdNotComp(int outletID,int companyId) {
+		// TODO Auto-generated method stub
+		return getStockOrderDAO().getStockOrderByOutletIdNotComp(outletID,companyId);
+	}
+	
+	@Override
 	public List<StockOrder> getStockOrderCompletedByOutletId(int outletID,int companyId) {
 		// TODO Auto-generated method stub
 		return getStockOrderDAO().getStockOrderCompletedByOutletId(outletID,companyId);

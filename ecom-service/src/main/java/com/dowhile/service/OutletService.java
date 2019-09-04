@@ -21,4 +21,5 @@ public interface OutletService {
 	Outlet getOuletByOutletId(int outletId, int companyId);
 	Outlet getHeadOfficeOutlet(int companyId);
 	Map<Integer,Outlet> getAllOutletsMapByCompanyId(int companyId);
+	List<Outlet> getAllActiveOutletsByCompanyId( int companyId);
 }
