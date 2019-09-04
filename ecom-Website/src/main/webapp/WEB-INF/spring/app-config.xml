@@ -229,6 +229,16 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="ExpenseTypeService" class="com.dowhile.service.impl.ExpenseTypeServiceImpl">
 		<property name="expenseTypeDAO" ref="ExpenseTypeDAO" />
 	</bean>
+	<bean id="InventoryDetailReportService" class="com.dowhile.service.impl.InventoryDetailReportServiceImpl">
+		<property name="inventoryDetailReportDAO" ref="InventoryDetailReportDAO" />
+	</bean>
+	<bean id="ProductPriceHistoryService" class="com.dowhile.service.impl.ProductPriceHistoryServiceImpl">
+		<property name="productPriceHistoryDAO" ref="ProductPriceHistoryDAO" />
+	</bean>
+	<bean id="NotificationService" class="com.dowhile.service.impl.NotificationServiceImpl">
+		<property name="notificationDAO" ref="NotificationDAO" />
+	</bean>
+	
 	<bean id="ContactUsService" class="com.dowhile.service.impl.ContactUsServiceImpl">
 		<property name="contactUsDAO" ref="ContactUsDAO" />
 	</bean>
@@ -428,6 +438,16 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="SmsReportDAO" class="com.dowhile.dao.impl.SmsReportDAOImpl">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
+	<bean id="InventoryDetailReportDAO" class="com.dowhile.dao.impl.InventoryDetailReportDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProductPriceHistoryDAO" class="com.dowhile.dao.impl.ProductPriceHistoryDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="NotificationDAO" class="com.dowhile.dao.impl.NotificationDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+		
 	<bean id="ContactUsDAO" class="com.dowhile.dao.impl.ContactUsDAOImpl">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
@@ -509,18 +529,20 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 				<value>com.dowhile.OrderMain</value>
 				<value>com.dowhile.OrderDetail</value>
 				<value>com.dowhile.InventoryReport</value>
+				<value>com.dowhile.InventoryDetailReport</value>
 				<value>com.dowhile.RegisterReport</value>
 				<value>com.dowhile.PriceBookDetailSummary</value>
 				<value>com.dowhile.SmsReport</value>
 				<value>com.dowhile.ExpenseType</value>
 				<value>com.dowhile.ContactsSummmary</value>
+				<value>com.dowhile.ProductPriceHistory</value>
 
 			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<!--  <prop key="hibernate.current_session_context_class">thread</prop>-->
 				<prop key="hibernate.jdbc.batch_size">1000</prop>
 				
@@ -538,24 +560,31 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 
 
 
-<!--DEV SERVER -->
+<!--DEV SERVER  JAmx8xUWfAKW-->
 
 	<bean id="DataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost/ECOM" />
+		<property name="url" value="jdbc:mysql://localhost/ecom" />
 		<property name="username" value="root" />
 		<property name="password" value="123456" />
 		
 	</bean>
-
-
-	<!-- Backup Data Source Declaration local
+	<!-- SandBox 172.30.96.159 
+	<bean id="DataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://10.128.34.129:3306/ecom" />
+		<property name="username" value="root" />
+		<property name="password" value="qwSDlMHWF7bo5nwR" />
+		
+	</bean> -->
+	<!-- Backup Data Source Declaration local 
 	   <bean id="DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
 		name="url" value="jdbc:mysql://127.6.205.130:3306/ecom" /> <property name="username" 
 		value="adminLUrgBeJ" /> <property name="password" value="nXxrb8Ge1Ccw" /> 
-		</bean>   -->
+		</bean>  -->
 	<!-- Prod Data Source Declaration local 
 	 <bean id="DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 

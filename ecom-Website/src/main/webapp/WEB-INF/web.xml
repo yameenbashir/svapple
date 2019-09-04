@@ -4,6 +4,22 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/spring/app-config.xml</param-value>
   </context-param>
+<servlet>
+    <servlet-name>robots</servlet-name>
+    <jsp-file>/WEB-INF/robots.txt</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>robots</servlet-name>
+    <url-pattern>/robots.txt</url-pattern>
+</servlet-mapping>
+<servlet>
+    <servlet-name>sitemap</servlet-name>
+    <jsp-file>/WEB-INF/sitemap.xml</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>sitemap</servlet-name>
+    <url-pattern>/sitemap.xml</url-pattern>
+</servlet-mapping>
   <listener>
     <listener-class>
             org.springframework.web.context.ContextLoaderListener
@@ -27,4 +43,16 @@
     <servlet-name>DispatcherServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Support Both HTTP and HTTPS
+			</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+
 </web-app>

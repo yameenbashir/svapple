@@ -33,7 +33,7 @@ var HomeController = function($scope, $http, $window,$cookieStore,$rootScope,$ti
 				$timeout(function(){
 					$rootScope.homeContactSuccess = false;
 					$('#myModal2').modal('hide');
-				    }, 1000);
+				    }, 9000);
 				$rootScope.contactUsBean = {};
 				
 			}else if($scope.responseStatus == 'SYSTEMBUSY'
@@ -77,7 +77,7 @@ var HomeController = function($scope, $http, $window,$cookieStore,$rootScope,$ti
 				$timeout(function(){
 					$rootScope.homeContactUsSuccess = false;
 					$('#myModal2').modal('hide');
-				    }, 1000);
+				    }, 9000);
 				
 				$rootScope.contactUsPopupBean = {};
 				

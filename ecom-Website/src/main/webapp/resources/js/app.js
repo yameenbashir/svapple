@@ -49,6 +49,11 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
         templateUrl: 'home/layout',
         controller: HomeController
     });
+    
+    $routeProvider.when('/contactUs', {
+        templateUrl: 'contactUs/layout',
+        controller: ContactUsController
+    });
  
     $routeProvider.otherwise({redirectTo: '/home'});
    

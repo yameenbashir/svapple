@@ -1,12 +1,14 @@
 package com.dowhile.angualrspringapp.beans;
 
 public class ContactUsBean {
+	
 	private String name;
 	private String email;
 	private String message;
 	private String contactNumber;
 	private String contactUsId;
 	private String requestStatus;
+	private String createdDate;
 	/**
 	 * 
 	 */
@@ -20,15 +22,18 @@ public class ContactUsBean {
 	 * @param contactNumber
 	 * @param contactUsId
 	 * @param requestStatus
+	 * @param createdDate
 	 */
 	public ContactUsBean(String name, String email, String message,
-			String contactNumber, String contactUsId, String requestStatus) {
+			String contactNumber, String contactUsId, String requestStatus,
+			String createdDate) {
 		this.name = name;
 		this.email = email;
 		this.message = message;
 		this.contactNumber = contactNumber;
 		this.contactUsId = contactUsId;
 		this.requestStatus = requestStatus;
+		this.createdDate = createdDate;
 	}
 	/**
 	 * @return the name
@@ -101,5 +106,17 @@ public class ContactUsBean {
 	 */
 	public void setRequestStatus(String requestStatus) {
 		this.requestStatus = requestStatus;
+	}
+	/**
+	 * @return the createdDate
+	 */
+	public String getCreatedDate() {
+		return createdDate;
+	}
+	/**
+	 * @param createdDate the createdDate to set
+	 */
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
 	}
 }
