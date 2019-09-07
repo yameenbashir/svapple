@@ -14,6 +14,7 @@ import com.dowhile.TimeZone;
  * @author Yameen Bashir
  *
  */
+
 public class CompanyBean {
 	private int companyId;
 	private TimeZone timeZone;
