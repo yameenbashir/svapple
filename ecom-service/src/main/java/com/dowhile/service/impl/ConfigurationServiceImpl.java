@@ -87,4 +87,9 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		// TODO Auto-generated method stub
 		return getConfigurationDAO().getAllConfigurationsForCompanySetupImgagesByCompanyId(companyId);
 	}
+	@Override
+	public boolean addConfigurationList(List<Configuration> configurationList) {
+		// TODO Auto-generated method stub
+		return getConfigurationDAO().addConfigurationList(configurationList);
+	}
 }

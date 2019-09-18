@@ -1,4 +1,5 @@
 <div class="container">
+	<div class="row">
 	<div class="content-wrapper">
 		<section class="content-header">
 			<ol class="breadcrumb">
@@ -34,10 +35,10 @@
 										<!-- form start -->
 										<form class="form-horizontal">
 											<div class="box-body">
-												<div class="alert alert-success alert-sm" ng-show="success"
-													ng-bind="successMessage" ng-cloak></div>
-												<div class="alert alert-danger alert-sm" ng-show="error"
-													ng-bind="errorMessage" ng-cloak></div>
+												<div class="alert alert-success alert-sm" ng-show="companySuccess"
+													ng-bind="companySuccessMessage" ng-cloak></div>
+												<div class="alert alert-danger alert-sm" ng-show="companyError"
+													ng-bind="companyErrorMessage" ng-cloak></div>
 												<div class="form-group">
 													<label for="inputEmail3" class="col-sm-4 control-label">Store
 														Name</label>
@@ -52,21 +53,45 @@
 													<label for="inputEmail3" class="col-sm-4 control-label">Private
 														URL</label>
 													<div class="col-sm-8">
-														<input type="text" class="form-control" id="inputURL"
+														<input type="url" class="form-control" id="inputURL"
 															placeholder="URL..."
-															data-ng-model="companyBean.companyName" maxlength="25">
+															data-ng-model="companyBean.privateUrl" maxlength="25"
+															ng-pattern='^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?' required>
+																<span ng-show="!companyBean.privateUrl"
+																	style="color: red;">* Enter PrivateUrl</span>
 													</div>
 												</div>
+												
+												<div class="form-group">
+													<label for="inputEmail3" class="col-sm-4 control-label">Domain
+														Name</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="inputURL"
+															placeholder="Domain name..."
+															data-ng-model="companyBean.domainName" maxlength="25"
+															ng-pattern='/^[a-zA-Z]*$/' required>
+																<span ng-show="!companyBean.domainName"
+																	style="color: red;">* Enter domain name with no space and no special character</span>
+													</div>
+												</div>
+												
 												<div class="form-group">
 													<label for="inputEmail3" class="col-sm-4 control-label">Default
 														Currency</label>
 													<div class="col-sm-8">
+													   <!--  <select class="form-control " data-native-menu="false"
+															data-role="listview" 
+															data-ng-model="companyBean.currencyID" 
+        													ng-init="companyBean.currencyID = companyBean.currencyID || currency[0].currencyID"
+        													ng-options="currency.currencyID as currency.currencyName for currency in currencyList">
+														</select> -->
+
 														<select class="form-control " data-native-menu="false"
-															data-role="listview"
-															data-ng-model="companyBean.currencyID">
-															<option ng-repeat="currency in currencyList"
-																value="{{currency.currencyId}}">{{currency.currencyName}}</option>
-														</select>
+																data-role="listview"
+																data-ng-model="companyBean.currencyID">
+																<option ng-repeat="currency in currencyList"
+																	value="{{currency.currencyId}}">{{currency.currencyName}}</option>
+															</select>
 													</div>
 												</div>	
 													
@@ -1131,29 +1156,24 @@
 														Zone</label>
 														
 														<div class="col-sm-8">
+														
+														<!-- <select class="form-control " data-native-menu="false"
+															data-role="listview" 
+															data-ng-model="companyBean.timeZoneID" 
+        													ng-init="companyBean.timeZoneID = companyBean.timeZoneID || timeZone[0].timeZoneID"
+        													ng-options="timeZone.timeZoneID as timeZone.timeZoneValue for timeZone in timeZonesList">
+														</select> -->
+														
 														 <select class="form-control " data-native-menu="false"
 															data-role="listview"
 															data-ng-model="companyBean.timeZoneID">
-															<option ng-repeat="timeZone in timeZonesList"
-																value="{{timeZone.timeZoneId}}">{{timeZone.timeZoneValue}}</option>
+															<option ng-repeat="timeZone in timeZonesList" 
+																value="{{timeZone.timeZoneId}}">{{timeZone.timeZoneValue}} </option>
 														</select>
 													</div>
 												</div>
 
-												<div class="form-group">
-													<label for="inputPassword3" class="col-sm-4 control-label">Display
-														Prices </label>
-													<div class="col-sm-8">
-														<select class="form-control select2" style="width: 100%;"
-															data-ng-model="companyBean.displayPrices">
-
-															<option value="0" selected="selected">Tax
-																exclusive</option>
-															<option value="1">Tax inclusive</option>
-
-														</select>
-													</div>
-												</div>
+												
 
 
 
@@ -1166,18 +1186,33 @@
 										<div class="box-header with-border"></div>
 										<!-- /.box-header -->
 										<!-- form start -->
-										<form class="form-horizontal">
+										<form name="myform" class="form-horizontal">
 											<div class="box-body">
 												<div class="alert alert-success alert-sm" ng-show="success"
 													ng-bind="successMessage" ng-cloak></div>
 												<div class="alert alert-danger alert-sm" ng-show="error"
 													ng-bind="errorMessage" ng-cloak></div>
 												<div class="form-group">
+													<label for="inputPassword3" class="col-sm-4 control-label">Display
+														Prices </label>
+													<div class="col-sm-8">
+														<select class="form-control select2" style="width: 100%;"
+															data-ng-model="companyBean.displayPrices" ng-init="companyBean.displayPrices= 'Tax inclusive'">
+
+															<option value="Tax exclusive" selected="selected">Tax
+																 exclusive</option>
+															<option value="Tax inclusive">Tax inclusive</option>
+
+														</select>
+													</div>
+												</div>
+												
+												<div class="form-group">
 													<label for="inputEmail3" class="col-sm-4 control-label">Label
 														Printer Format</label>
 													<div class="col-sm-8">
 														<select class="form-control select2" style="width: 100%;"
-															data-ng-model="companyBean.printerformatID">
+															data-ng-model="companyBean.printerformatID" ng-init="companyBean.printerformatID= '2x1'">
 															<option value="" selected="selected"></option>
 															<option value="2x1">Continuous feed</option>
 															<option value="5x1">Continuous feed (wide)</option>
@@ -1196,10 +1231,12 @@
 														Generation</label>
 													<div class="col-sm-8">
 														<select class="form-control select2" style="width: 100%;"
-															data-ng-model="companyBean.skuGeneration">
+															data-ng-model="companyBean.skuGeneration" ng-init="companyBean.skuGeneration='Generate
+																by Sequence Number'">
 
-															<option value="0">Generate by Name</option>
-															<option value="1" selected="selected">Generate
+															<option value="Generate by Name">Generate by Name</option>
+															<option value="Generate
+																by Sequence Number" selected="selected">Generate
 																by Sequence Number</option>
 
 
@@ -1207,14 +1244,15 @@
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="inputEmail3" class="col-sm-4 control-label">Current
+													<label for="inputsequenceNo" class="col-sm-4 control-label">Current
 														Sequence No. </label>
 													<div class="col-sm-8">
 														<input type="text" class="form-control"
 															id="inputsequenceNo"
 															placeholder="current Sequence Number..."
-															data-ng-model="companyBean.currentSequenceNumber"
-															maxlength="25" ng-pattern='/^[A-Za-z\s]+$/' required>
+															data-ng-model="companyBean.currentSequenceNumber" maxlength="25" 
+															ng-pattern='/^[a-z0-9._]+$/' required>
+															
 													</div>
 												</div>
 
@@ -1223,15 +1261,20 @@
 														Switching Security</label>
 													<div class="col-sm-8">
 														<select class="form-control select2" style="width: 100%;"
-															data-ng-model="companyBean.userSecurity">
+															data-ng-model="companyBean.userSecurity" ng-init="companyBean.userSecurity= 'Never require a password when
+																switching between users'">
 
 
-															<option value="0">Never require a password when
+															<option value="Never require a password when
+																switching between users">Never require a password when
 																switching between users</option>
-															<option value="1" selected="selected">Require a
+															<option value="Require a
+																password when switching to a user with greater
+																privileges" selected="selected">Require a
 																password when switching to a user with greater
 																privileges</option>
-															<option value="2">Always require a password when
+															<option value="Always require a password when
+																switching between users">Always require a password when
 																switching between users</option>
 
 														</select>
@@ -1247,20 +1290,22 @@
 									<div class="col-md-1"></div>
 								</div>
 							</div>
+							
+							
 
 
 
 							<!-- /.box-body -->
-							<div class="box-footer">
+							<!-- <div class="box-footer">
 								<button class="btn btn-primary btn-sm pull-right btn-primary-spacing"
 									ng-click="addNewCompany()">Save</button>
 								<button class="btn btn-default btn-sm pull-right btn-primary-spacing"
-									ng-click="todo">Cancel</button>
+									ng-click="reloadRoute()">Cancel</button>
 
 
 							</div>
 							
-							<!-- /.box-footer -->
+							/.box-footer -->
 
 						</div>
 						<!-- /.box -->
@@ -1270,10 +1315,372 @@
 				<!-- /.box -->
 
 			</div>
+			<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<div class="box">
+							<div class="box-header">
+								<i class="fa fa-building-o fa-4x" aria-hidden="true"></i>
+								<h3 class="box-title">Contact Information</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<div class="box box-info">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											<!-- /.box-header -->
+											<!-- form start -->
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="alert alert-success alert-sm" ng-show="success"
+														ng-bind="successMessage" ng-cloak></div>
+													<div class="alert alert-danger alert-sm" ng-show="error"
+														ng-bind="errorMessage" ng-cloak></div>
+												<div class="form-group">
+														<label for="inputfirstname" class="col-sm-4 control-label">First 
+														Name</label>
+													<div class="col-md-8">
+														<input type="text" class="form-control"
+															id="inputfirstname" 
+															placeholder="FirstName"
+															data-ng-model="companyBean.firstName" maxlength="25"
+															ng-pattern='/^[A-Za-z\s]+$' required>
+													</div>
+													</div>
+													<div class="form-group">
+															<label for="inputlastname" class="col-sm-4 control-label">Last 
+															Name</label>
+														<div class="col-md-8">
+																<input type="text" class="form-control"
+																id="inputlastname" placeholder="LastName"
+																data-ng-model="companyBean.lastName" maxlength="25"
+																ng-pattern='^/[A-Za-z\s]+$' required>
+														</div>
+														</div>
+														<div class="form-group">
+																<label for="inputemail" class="col-sm-4 control-label">Email
+																</label>
+															<div class="col-md-8">
+																<input type="email" class="form-control"
+																id="inputemail" placeholder="Email"
+																data-ng-model="companyBean.email" maxlength="25"
+																ng-pattern='/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/' required>
+																<span ng-show="!companyBean.email"
+																	style="color: red;">* Enter Email</span>
+															</div>
+														</div>
+														<div class="form-group">
+																<label for="inputpassword" class="col-sm-4 control-label">Password
+																</label>
+															<div class="col-md-8">
+																	<input type="password" class="form-control"
+																	id="inputpassword" placeHolder="Password"
+																	data-ng-model="companyBean.password" maxlength="30"
+																	ng-pattren="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/"required>
+																	<span ng-show="!companyBean.password"
+																		style="color: red;">* Enter Password</span>
+																
+															</div>
+														</div>
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+										<div class="box-header with-border"></div>
+										<!-- /.box-header -->
+										<!-- form start -->
+										<form name="myform" class="form-horizontal">
+											<div class="box-body">
+												<div class="alert alert-success alert-sm" ng-show="success"
+													ng-bind="successMessage" ng-cloak></div>
+												<div class="alert alert-danger alert-sm" ng-show="error"
+													ng-bind="errorMessage" ng-cloak></div>
+												<div class="form-group" >
+													<label for="inputphone no" class="col-sm-4 control-label" >Phone
+													</label>
+													<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputphone"
+																placeholder="Phone..."
+																data-ng-model="companyBean.phone"
+																maxlength="25">
+														</div>
+												</div>
+												<!-- <div class="form-group">
+														<label for="website" class="col-sm-4 control-label">Web
+															Site </label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="website"
+																placeholder="Web Site..."
+																data-ng-model="companyBean.addresses[0].website"
+																maxlength="100">
+														</div>	
+											</div>
+											<div class="form-group">
+														<label for="twiter" class="col-sm-4 control-label">Twiter
+														</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="twiter"
+																placeholder="Twiter..."
+																data-ng-model="companyBean.addresses[0].twitter"
+																maxlength="100">
+														</div>
+													</div> -->
+										</form>
+
+									</div>
+										
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+								<!-- /.box-body -->
+								<div class="box-footer">
+									<!-- <button
+										class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+										ng-click="updateContactInformation()" 
+										ng-show="!contactInformationloading || !addNewCompanyloading ">
+										ng-disabled="!companyBean.firstName || !companyBean.lastName || !companyBean.email || !companyBean.password ||! 
+										|| ! companyBean.companyName || !companyBean.companyName || !companyBean.currencyID || !companyBean.timeZoneID || !companyBean.displayPrices
+										|| !companyBean.printerformatID || !companyBean.skuGeneration || !companyBean.currentSequenceNumber || !companyBean.userSecurity"Save</button>
+										<button  ng-show="contactInformationloading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+							    		Save Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+				       	    		</button>
+									<button
+										class="btn btn-default btn-sm pull-right btn-primary-spacing"
+										ng-click="cancelClick()">Cancel</button> -->
+										
+										<button class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+									ng-click="addNewCompany()"
+									ng-show="!contactInformationloading || !addNewCompanyloading "
+									ng-disabled="!companyBean.firstName || !companyBean.lastName || !companyBean.email || !companyBean.password || !companyBean.phone
+										|| ! companyBean.companyName || !companyBean.privateUrl ||! companyBean.domainName || !companyBean.currencyID || !companyBean.timeZoneID || !companyBean.displayPrices
+										|| !companyBean.printerformatID || !companyBean.skuGeneration || !companyBean.currentSequenceNumber || !companyBean.userSecurity">Save</button>
+										<button  ng-show="contactInformationloading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+							    		Save Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+								<button class="btn btn-default btn-sm pull-right btn-primary-spacing"
+									ng-click="reloadRoute()">Cancel</button>
+
+								</div>
+
+								<!-- /.box-footer -->
+
+							</div>
+							<!-- /.box -->
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
+
+				</div>
+				
+				
+				<!-- <div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<div class="box">
+							<div class="box-header">
+								<i class="fa fa-building-o fa-4x" aria-hidden="true"></i>
+								<h3 class="box-title">Address</h3>
+							</div>
+							/.box-header
+							<div class="box-body no-padding">
+								<div class="box box-info">
+									<div class="row">
+										<div class="col-md-1"></div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											/.box-header
+											form start
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="alert alert-success alert-sm" ng-show="success"
+														ng-bind="successMessage" ng-cloak></div>
+													<div class="alert alert-danger alert-sm" ng-show="error"
+														ng-bind="errorMessage" ng-cloak></div>
+
+													<div class="subhead info_bar">
+														<p>Physical Address</p>
+													</div>
+
+													<div class="form-group">
+														<label for="street" class="col-sm-4 control-label">Street
+														</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="street"
+																data-ng-model="companyBean.addresses[0].street"
+																maxlength="100">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															Suburb</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[0].suburb"
+																maxlength="25">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															City</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[0].city"
+																maxlength="25">
+														</div>
+													</div>
+
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															Postal Code</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[0].postalCode"
+																maxlength="25">
+														</div>
+													</div>
+
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															State</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[0].state"
+																maxlength="25">
+														</div>
+													</div>
+
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-5">
+
+											<div class="box-header with-border"></div>
+											/.box-header
+											form start
+											<form class="form-horizontal">
+												<div class="box-body">
+													<div class="alert alert-success alert-sm" ng-show="success"
+														ng-bind="successMessage" ng-cloak></div>
+													<div class="alert alert-danger alert-sm" ng-show="error"
+														ng-bind="errorMessage" ng-cloak></div>
+
+													<div class="subhead info_bar">
+														<p style="width: 150px; float: left;">Postal Address</p>
+														<a ng-click="populatePhysicalAddress()"
+															id="copy_physical_address">Same as Physical Address</a>
+														<div class="clearer"></div>
+													</div>
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">Street
+														</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control"
+																id="inputstoreName"
+																data-ng-model="companyBean.addresses[1].street"
+																maxlength="50" ng-pattern='/^[A-Za-z\s]+$/'>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															Suburb</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[1].suburb"
+																maxlength="25">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															City</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[1].city"
+																maxlength="25">
+														</div>
+													</div>
+
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															Postal Code</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[1].postalCode"
+																maxlength="25">
+														</div>
+													</div>
+
+
+													<div class="form-group">
+														<label for="inputEmail3" class="col-sm-4 control-label">
+															State</label>
+														<div class="col-sm-8">
+															<input type="text" class="form-control" id="inputURL"
+																data-ng-model="companyBean.addresses[1].state"
+																maxlength="25">
+														</div>
+													</div>
+
+
+												</div>
+											</form>
+
+										</div>
+										<div class="col-md-1"></div>
+									</div>
+								</div>
+
+
+
+								/.box-body
+								<div class="box-footer">
+								
+										<button class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+									ng-click="addNewCompany()"
+									ng-show="!contactInformationloading || !addNewCompanyloading "
+									ng-disabled="!companyBean.firstName || !companyBean.lastName || !companyBean.email || !companyBean.password
+										|| ! companyBean.companyName || !companyBean.privateUrl ||! companyBean.domainName || !companyBean.currencyID || !companyBean.timeZoneID || !companyBean.displayPrices
+										|| !companyBean.printerformatID || !companyBean.skuGeneration || !companyBean.currentSequenceNumber || !companyBean.userSecurity">Save</button>
+										<button  ng-show="contactInformationloading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+							    		Save Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+								<button class="btn btn-default btn-sm pull-right btn-primary-spacing"
+									ng-click="reloadRoute()">Cancel</button>
+
+								</div>
+
+								/.box-footer
+
+							</div>
+							/.box
+						</div>
+						/.box-body
+					</div>
+					/.box
+
+				</div> -->
+										
+										
 		</section>
 		<div class="col-md-1"></div>
+		</div>
 	</div>
 </div>
+
  <div class="container">
 		<div class="row footer-row">
 			<div class="col-lg-12 text-center">
@@ -1281,3 +1688,9 @@
 			</div>
 		</div>
 	</div>
+
+	
+	
+	
+	
+	

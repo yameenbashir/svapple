@@ -16,6 +16,10 @@ public class CompanyBean {
 	
 	private String companyId;
 	private String companyName;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
 	private String displayPrices;
 	private String skuGeneration;
 	private String currentSequenceNumber;
@@ -37,6 +41,9 @@ public class CompanyBean {
 	private String loyaltyBonusEnabledDate;
 	private String url;
 	private String enableStoresCredit;
+	private String privateUrl;
+	private String domainName;
+	private String phone;
 	/**
 	 * 
 	 */
@@ -75,7 +82,7 @@ public class CompanyBean {
 			String currencyID, List<AddressBean> addresses,
 			String loyaltyInvoiceAmount, String loyaltyAmount,
 			String loyaltyBonusAmount, String loyaltyBonusEnabled,
-			String loyaltyBonusEnabledDate, String enableStoresCredit) {
+			String loyaltyBonusEnabledDate, String enableStoresCredit,String privateUrl,String domainName,String phone) {
 		this.companyId = companyId;
 		this.companyName = companyName;
 		this.displayPrices = displayPrices;
@@ -98,6 +105,93 @@ public class CompanyBean {
 		this.loyaltyBonusEnabled = loyaltyBonusEnabled;
 		this.loyaltyBonusEnabledDate = loyaltyBonusEnabledDate;
 		this.enableStoresCredit = enableStoresCredit;
+		this.privateUrl = privateUrl;
+		this.domainName = domainName;
+		this.phone = phone;
+	}
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	/**
+	 * @return the privateUrl
+	 */
+	public String getPrivateUrl() {
+		return privateUrl;
+	}
+	/**
+	 * @param privateUrl the privateUrl to set
+	 */
+	public void setPrivateUrl(String privateUrl) {
+		this.privateUrl = privateUrl;
+	}
+	/**
+	 * @return the domainName
+	 */
+	public String getDomainName() {
+		return domainName;
+	}
+	/**
+	 * @param domainName the domainName to set
+	 */
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
+	}
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	/**
 	 * @return the companyId

@@ -102,6 +102,7 @@ App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeo
 	$rootScope.IsSuperUser = $cookieStore.get('IsSuperUser');
 	$rootScope.toDoList = $cookieStore.get('toDoList');
 	$rootScope.notificationList = $cookieStore.get('NotificationList');
+	$rootScope.countNotifications = $cookieStore.get('countNotifications');
 	$rootScope.sessionId = $cookieStore.get('sessionId');
 	$rootScope.locationProcessing = $cookieStore.get('locationProcessing');
 	$rootScope.shiftProcessing = $cookieStore.get('shiftProcessing');
@@ -2028,6 +2029,48 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 
 	});
+	$routeProvider.when('/notificationsReaded', {
+		templateUrl: 'resources/html/notificationsReaded/layout.html',
+		controller:NotificationsReadedController,
+		resolve: {
+			"NotificationsReadedControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["home"]==true){
+					$rootScope.productTagsLoadedFully = true;
+					controllerData = $http.post('notificationsReaded/getAllNotifications/'+$cookieStore.get('_s_tk_com')+'/'+"false").success(function(Response) {
+						controllerData = Response.data;
+						//$log.info(Response);
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    	    					
+				}
+				return myDefer.promise;
+			}
+		}
+
+	});
+	
 	$routeProvider.when('/sell', {
 		templateUrl: 'resources/html/sell/layout.html',
 		controller: SellController,

@@ -94,39 +94,88 @@ var CompanySetupController = ['$scope', '$http', '$window','$cookieStore','$root
 
 	};
 	$scope.fetchAlltimeZones();
+	$scope.reloadRoute = function() {
+		   $window.location.reload();
+		};
+	
 
- $scope.addNewCompany = function() {
-  $scope.companySuccess = false;
-  $scope.companyError = false;
-  $scope.loading = true;
-  $http.post('companySetup/addNewCompany/'+$scope._s_tk_com, $scope.companyBean)
-  .success(function(Response) {
-   $scope.loading = false;
-   
-   $scope.responseStatus = Response.status;
-   if ($scope.responseStatus == 'SUCCESSFUL') {
-    $scope.companyBean = {};
-    $scope.companySuccess = true;
-    $scope.companySuccessMessage = Response.data;
-    $timeout(function(){
-     $scope.companySuccess = false;
-     $window.location = Response.layOutPath;
-        }, 2000);
-    
-   }else if($scope.responseStatus == 'INVALIDSESSION'||$scope.responseStatus == 'SYSTEMBUSY') {
-    $scope.companyError = true;
-    $scope.companyErrorMessage = Response.data;
-    $window.location = Response.layOutPath;
-   }else {
-    $scope.companyError = true;
-    $scope.companyErrorMessage = Response.data;
-   }
-  }).error(function() {
-   $scope.loading = false;
-   $scope.companyError = true;
-   $scope.companyErrorMessage = $scope.systemBusy;
-  });
- };
+	 $scope.addNewCompany = function() {
+		  $scope.companySuccess = false;
+		  $scope.companyError = false;
+		  $scope.loading = true;
+		  $scope.addNewCompanyloading = true;
+		  /*if($scope.companyBean.companyName!=  $scope.companiesList.companyName){*/
+		    if($scope.companyBean.companyName!=''){
+			  	if( $scope.companyBean.email!='' && $scope.companyBean.password!=''){
+			  			if( $scope.companyBean.email!= $scope.userBean.email){	
+			  $http.post('companySetup/addNewCompany/'+$scope._s_tk_com, $scope.companyBean)
+			  .success(function(Response) {
+			   $scope.loading = false;
+			   $scope.addNewCompanyloading = false;
+			   
+			   $scope.responseStatus = Response.status;
+			   if ($scope.responseStatus == 'SUCCESSFUL') {
+			    $scope.companyBean = {};
+			    $scope.companySuccess = true;
+			    $scope.companySuccessMessage = Response.data;
+			    $timeout(function(){
+			     $scope.companySuccess = false;
+			     $window.location = Response.layOutPath;
+			        }, 2000);
+		 
+		   }else if($scope.responseStatus == 'INVALIDSESSION'||$scope.responseStatus == 'SYSTEMBUSY') {
+		    $scope.companyError = true;
+		    $scope.companyErrorMessage = Response.data;
+		    $window.location = Response.layOutPath;
+		   }else {
+		    $scope.companyError = true;
+		    $scope.companyErrorMessage = Response.data;
+		   }
+		  }).error(function() {
+		   $scope.loading = false;
+		   $scope.addNewCompanyloading = false;
+		   $scope.companyError = true;
+		   $scope.companyErrorMessage = $scope.systemBusy;
+		  });
+			  }else{
+				  $timeout(function(){
+						$scope.error = false;
+						$window.location = Response.layOutPath;;
+					}, 2000);
+					$scope.error = true;
+					$scope.errorMessage = 'Please enter another email,user with same user email already exist ';
+					$scope.addNewCompanyloading = false;
+					$scope.companyError = true;
+				    $scope.companyErrorMessage = $scope.systemBusy;
+			  }
+			  	}else{
+					  
+			  		$timeout(function(){
+						$scope.error = false;
+						
+					}, 3000);
+					$scope.error = true;
+					$scope.errorMessage = 'Please enter email and  password in both fields';
+					$scope.passwordBean.newPassword = '';
+					$scope.passwordBean.confirmPassword = '';
+					$scope.passwordBean.password = '';
+				  }
+		 }else{
+
+				$timeout(function(){
+					$scope.error = false;
+					$window.location = Response.layOutPath;;
+				}, 2000);
+				$scope.error = true;
+				$scope.errorMessage = 'Please enter another name,Company with same name already exist ';
+				$scope.addNewCompanyloading = false;
+				$scope.companyError = true;
+			    $scope.companyErrorMessage = $scope.systemBusy;
+			}
+			  
+			  
+			  
+		 };
 
  SessionService.validate();
  $rootScope.globalPageLoader = false;

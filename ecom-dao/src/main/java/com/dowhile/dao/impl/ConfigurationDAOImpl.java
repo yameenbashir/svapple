@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.Session;
 import com.dowhile.Configuration;
 import com.dowhile.dao.ConfigurationDAO;
 
@@ -163,6 +163,23 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	@Override
+	public boolean addConfigurationList(List<Configuration> configurationList) {
+		// TODO Auto-generated method stub
+		Session session = null;
+		try{
+			session =  getSessionFactory().getCurrentSession();
+			for(Configuration configuration : configurationList){
+				session.save(configuration);
+					
+			}
+			return true;
+		
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return false;
 	}
 
 }

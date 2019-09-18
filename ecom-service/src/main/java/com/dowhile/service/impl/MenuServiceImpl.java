@@ -64,4 +64,16 @@ public class MenuServiceImpl implements MenuService{
 		return getMenuDAO().getMenuByMenuIdCompanyId(menuId, companyId);
 	}
 
+	@Override
+	public List<Menu> getAllMenuByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		return getMenuDAO().getAllMenuByCompanyId(companyId);
+	}
+
+	@Override
+	public boolean addMenuList(List<Menu> menuList) {
+		// TODO Auto-generated method stub
+		return getMenuDAO().addMenuList(menuList);
+	}
+
 }

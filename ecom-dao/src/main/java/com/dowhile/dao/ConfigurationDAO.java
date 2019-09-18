@@ -19,4 +19,5 @@ public interface ConfigurationDAO {
 	List<Configuration> getAllConfigurationsByCompanyId(int companyId);
 	List<Configuration> getAllConfigurationsForCompanySetupImgagesByCompanyId(int companyId);
 	boolean deleteConfiguration(Configuration configuration);
+	boolean addConfigurationList(List<Configuration> configurationList);
 }

@@ -18,5 +18,6 @@ public interface MenuDAO {
 	boolean deleteMenu(Menu menu, int companyId);
 	List<Menu> getMenuByRoleId(int roleId, int companyId);
 	Menu getMenuByMenuIdCompanyId(int menuId,int companyId);
-
+	List<Menu> getAllMenuByCompanyId(int companyId);
+	boolean addMenuList(List<Menu> menuList);
 }

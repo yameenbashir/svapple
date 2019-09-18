@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 
 import com.dowhile.Menu;
 import com.dowhile.dao.MenuDAO;
@@ -114,6 +115,42 @@ public class MenuDAOImpl implements MenuDAO{
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public List<Menu> getAllMenuByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			@SuppressWarnings("unchecked")
+			List<Menu> list = getSessionFactory().getCurrentSession()
+			.createQuery("from Menu where COMPANY_ASSOCIATION_ID = ?")
+			.setParameter(0, companyId).list();
+			if(list!=null&& list.size()>0){
+
+				return list;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean addMenuList(List<Menu> menuList) {
+		// TODO Auto-generated method stub
+		Session session = null;
+		try{
+			session =  getSessionFactory().getCurrentSession();
+			for(Menu menu : menuList){
+				session.save(menu);
+					
+			}
+			return true;
+		
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return false;
 	}
 
 }
