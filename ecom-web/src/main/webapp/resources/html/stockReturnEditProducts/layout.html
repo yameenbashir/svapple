@@ -194,6 +194,16 @@
 											id="product_search_quantity" ng-maxlength="50" ng-disabled = "true"
 											style="height: 50px; width: 1000px;">
 									</div>
+									<div class="col-md-3">
+									<button class="btn btn-primary btn  "
+													ng-click="updateStockOrderDetail()"
+													ng-disabled="!checkStockOrderDetailList()"
+													ng-show="!loading">Update</button>
+												<button ng-show="loading" class="btn btn-primary btn">
+													Processing<i
+														class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+												</button>
+												</div>
 								</div>
 
 							</div>
@@ -241,7 +251,7 @@
 																data-ng-model="stockOrderDetailBean.orderProdQty"
 																min="1" class="" id="Name" maxlength="9"
 																ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
-																ng-blur="calculateTotal(stockOrderDetailBean.productVariantId)"
+																ng-blur="calculateTotalforItem(stockOrderDetailBean.productVariantId)"
 																required><br /> <span
 																ng-show="stockOrderDetailBean.greaterThanStock"
 																style="color: red;">* Greater than stock</span></td>

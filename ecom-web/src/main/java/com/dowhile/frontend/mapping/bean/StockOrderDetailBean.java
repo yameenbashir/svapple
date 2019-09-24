@@ -2,8 +2,12 @@ package com.dowhile.frontend.mapping.bean;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.dowhile.Outlet;
+import com.dowhile.Product;
+import com.dowhile.ProductVariant;
 import com.dowhile.Status;
 import com.dowhile.StockOrder;
 import com.dowhile.StockOrderType;
@@ -37,6 +41,7 @@ public class StockOrderDetailBean {
      private String order;
      private String greaterThanStock;
      private String activeIndicator;
+     private String isDirty;
      private String createdDate;
      private String lastUpdated;
      private String createdBy;
@@ -357,5 +362,11 @@ public class StockOrderDetailBean {
 	}
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
+	}
+	public String getIsDirty() {
+		return isDirty;
+	}
+	public void setIsDirty(String isDirty) {
+		this.isDirty = isDirty;
 	}
 }

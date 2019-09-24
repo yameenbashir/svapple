@@ -72,6 +72,11 @@ public class StockOrderServiceImpl implements StockOrderService{
 	}
 	
 	@Override
+	public List<StockOrder> getTenStockOrderByOutletId(int outletID,int companyId) {
+		// TODO Auto-generated method stub
+		return getStockOrderDAO().getTenStockOrderByOutletId(outletID,companyId);
+	}
+	@Override
 	public List<StockOrder> getStockOrderByOutletIdNotComp(int outletID,int companyId) {
 		// TODO Auto-generated method stub
 		return getStockOrderDAO().getStockOrderByOutletIdNotComp(outletID,companyId);
@@ -84,9 +89,21 @@ public class StockOrderServiceImpl implements StockOrderService{
 	}
 	
 	@Override
+	public List<StockOrder> getTenStockOrderCompletedByOutletId(int outletID,int companyId) {
+		// TODO Auto-generated method stub
+		return getStockOrderDAO().getTenStockOrderCompletedByOutletId(outletID,companyId);
+	}
+	
+	@Override
 	public List<StockOrder> GetAllStockOrder(int companyId) {
 		// TODO Auto-generated method stub
 		return getStockOrderDAO().GetAllStockOrder(companyId);
+	}
+	
+	@Override
+	public List<StockOrder> GetTenStockOrder(int companyId) {
+		// TODO Auto-generated method stub
+		return getStockOrderDAO().GetTenStockOrder(companyId);
 	}
 	
 	@Override

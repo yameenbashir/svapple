@@ -60,6 +60,12 @@ public class StockOrderDetailServiceImpl implements StockOrderDetailService{
 	}
 	
 	@Override
+	public void saveorUpdateStockOrderDetailsList(List<StockOrderDetail> stockOrderDetailsList,int companyId) {
+		// TODO Auto-generated method stub
+		 getStockOrderDetailDAO().saveorUpdateStockOrderDetailsList(stockOrderDetailsList,companyId);
+	}
+	
+	@Override
 	public boolean deleteStockOrderDetail(StockOrderDetail stockOrderDetail,int companyId) {
 		// TODO Auto-generated method stub
 		return getStockOrderDetailDAO().deleteStockOrderDetail(stockOrderDetail,companyId);

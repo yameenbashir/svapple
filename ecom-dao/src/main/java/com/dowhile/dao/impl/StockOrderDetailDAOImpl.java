@@ -96,6 +96,18 @@ public class StockOrderDetailDAOImpl implements StockOrderDetailDAO{
 			ex.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void saveorUpdateStockOrderDetailsList(List<StockOrderDetail> stockOrderDetailsList,int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			for(StockOrderDetail stockOrderDetail: stockOrderDetailsList){
+				getSessionFactory().getCurrentSession().saveOrUpdate(stockOrderDetail);
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+	}
 
 	@Override
 	public boolean deleteStockOrderDetail(StockOrderDetail stockOrderDetail,int companyId) {

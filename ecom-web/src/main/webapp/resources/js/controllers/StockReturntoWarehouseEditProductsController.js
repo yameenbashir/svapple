@@ -19,6 +19,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 	$scope.productMap = [];
 	$scope.productSKU = '';
 	$scope.skudisable = false;
+	$scope.loading = false;	
 
 	$scope.sessionValidation = function(){
 
@@ -43,8 +44,9 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 			var year = orderDate.getFullYear();
 			$scope.stockOrderBean.diliveryDueDate = month.toString() + "/" + day.toString() + "/" + year.toString();
 			$scope.isAdmin();
-			$scope.stockOrderBean.itemCount = 0;
-			$scope.calculateItemCount();
+			//$scope.stockOrderBean.itemCount = 0;
+			//$scope.calculateItemCount();
+			$scope.AllInOne();
 		}
 	};
 
@@ -83,7 +85,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 
 			if($scope.data.stockOrderDetailBeansList!=null){
 				$scope.stockOrderDetailBeansList = $scope.data.stockOrderDetailBeansList;
-				$scope.arrangeOrder();
+				//$scope.arrangeOrder();
 			}
 			if($scope.data.productVariantBeansList!=null){
 				$scope.productVariantBeansList = $scope.data.productVariantBeansList;
@@ -101,10 +103,10 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				$scope.productMap = $scope.data.productMap;
 			}
 			//$scope.calculateGrandTotal();
-			$scope.calculateTotalAll();
+			/*$scope.calculateTotalAll();
 			if($scope.isAdmin() == false){
 				$scope.calculateTotalAllAdmin();
-			}
+			}*/
 		}
 		$rootScope.globalPageLoader = false;
 	};
@@ -170,14 +172,14 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				}
 			}			
 		}
+		$scope.AllInOne();
 	};
-
 
 
 	$scope.addProduct  = function() {
 		$scope.dualEntry = false;
-		var productVariantBeantoReplace = {};
 		var obj = $scope.productVariantBean;		
+		var productVariantBeantoReplace = {};
 		if($scope.stockOrderDetailBeansList.length > 0){
 			if(obj.isProduct != "true"){
 				angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
@@ -202,10 +204,11 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 							value.total = "0";
 						}
 						productVariantBeantoReplace =angular.copy(value);;
+						productVariantBeantoReplace.isDirty = true;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -233,6 +236,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 						$scope.stockOrderDetailBean.total = "0";
 					}
 					$scope.stockOrderDetailBean.order = $scope.counter;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
 					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
@@ -262,11 +266,12 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 						else{
 							value.total = "0";
 						}
-						productVariantBeantoReplace =angular.copy(value);;
+						productVariantBeantoReplace =angular.copy(value);
+						productVariantBeantoReplace.isDirty = true;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -294,6 +299,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 						$scope.stockOrderDetailBean.total = "0";
 					}
 					$scope.stockOrderDetailBean.order = $scope.counter;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
 					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
@@ -322,13 +328,15 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				$scope.stockOrderDetailBean.total = $scope.stockOrderDetailBean.ordrSupplyPrice * $scope.stockOrderDetailBean.orderProdQty;
 			}
 			$scope.stockOrderDetailBean.order = $scope.counter;
+			$scope.stockOrderDetailBean.isDirty = true;
 			$scope.counter++;
 			$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
 			$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 		}
-		$scope.calculateTotal(obj.productVariantId);
+		//$scope.calculateTotal(obj.productVariantId);
 		$scope.stockOrderDetailBean = {};
-		$scope.calculateItemCount();
+		//$scope.calculateItemCount(); Covered in All in One 
+		//$scope.AllInOne();
 		$scope.airportName = [];
 	};
 
@@ -359,11 +367,12 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 						else{
 							value.recvTotal = "0";
 						}
-						productVariantBeantoReplace =angular.copy(value);;
+						productVariantBeantoReplace =angular.copy(value);
+						productVariantBeantoReplace.isDirty = true;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -392,6 +401,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 					}
 					$scope.stockOrderDetailBean.order = $scope.counter;
 					$scope.counter++;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
 					$scope.stockOrderDetailBean.orderProdQty = "0";
 					$scope.stockOrderDetailBean.total = "0";
@@ -422,11 +432,12 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 						else{
 							value.recvTotal = "0";
 						}
-						productVariantBeantoReplace =angular.copy(value);;
+						productVariantBeantoReplace =angular.copy(value);
+						productVariantBeantoReplace.isDirty = true;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -454,6 +465,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 						$scope.stockOrderDetailBean.recvTotal = "0";
 					}
 					$scope.stockOrderDetailBean.order = $scope.counter;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
 					$scope.stockOrderDetailBean.orderProdQty = "0";
@@ -484,15 +496,18 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				$scope.stockOrderDetailBean.recvTotal = $scope.stockOrderDetailBean.ordrSupplyPrice * $scope.stockOrderDetailBean.recvProdQty;
 			}
 			$scope.stockOrderDetailBean.order = $scope.counter;
+			$scope.stockOrderDetailBean.isDirty = true;
 			$scope.counter++;
 			$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
 			$scope.stockOrderDetailBean.orderProdQty = "0";
 			$scope.stockOrderDetailBean.total = "0";
 			$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 		}
-		$scope.calculateTotalAdmin(obj.productVariantId);
+		//$scope.calculateTotalAdmin(obj.productVariantId);
 		$scope.stockOrderDetailBean = {};
-		$scope.calculateItemCountAdmin();
+		//$scope.calculateItemCountAdmin();
+		$scope.stockOrderDetailBean.isDirty = true;
+		//$scope.AllInOne();
 		$scope.airportName = [];
 	};
 
@@ -538,13 +553,84 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		});
 		$scope.showConfirmDeletePopup = false; 
 		$scope.delStockOrderDetailBean = {};
-		$scope.arrangeOrder();
+		/*$scope.arrangeOrder();
 		$scope.calculateGrandTotal();
-		$scope.calculateItemCount();
-		$scope.calculateRecItemCount();
+		$scope.calculateItemCount();*/  //Covered in All in One
+		$scope.AllInOne(); 
+		//$scope.calculateRecItemCount(); for Stock Orders with WF only (e.g. Stock RTW, Stock Receive)
 	};
 
-	$scope.arrangeOrder = function(){
+
+	$scope.AllInOne = function(){
+		$scope.counter = 1;
+		$scope.stockOrderBean.itemCount = 0;
+		$scope.grandTotal = "0";
+		$scope.stockOrderBean.itemCountRecv = 0;
+		$scope.grandrecvTotal = "0";				
+		if ($scope.stockOrderDetailBeansList.length > 0) {
+			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
+				//arrange Order
+				$scope.stockOrderDetailBeansList[i].order = $scope.counter; 
+				$scope.counter++;
+				//Calculate Total for Item
+				if($scope.stockOrderBean.retailPriceBill == true){ 
+					$scope.stockOrderDetailBeansList[i].total = $scope.stockOrderDetailBeansList[i].retailPrice * $scope.stockOrderDetailBeansList[i].orderProdQty;
+				}
+				else{
+					$scope.stockOrderDetailBeansList[i].total = $scope.stockOrderDetailBeansList[i].ordrSupplyPrice * $scope.stockOrderDetailBeansList[i].orderProdQty;
+				}				
+				if(isNaN($scope.stockOrderDetailBeansList[i].total)){
+					$scope.stockOrderDetailBeansList[i].total = "0";
+				}
+				if(parseInt($scope.stockOrderDetailBeansList[i].productVariantCurrInventory) < parseInt($scope.stockOrderDetailBeansList[i].orderProdQty)){
+					$scope.stockOrderDetailBeansList[i].greaterThanStock = true;
+				}
+				else{
+					$scope.stockOrderDetailBeansList[i].greaterThanStock = false;
+				}
+				//Calculate Total Items Count
+				$scope.stockOrderBean.itemCount = parseInt($scope.stockOrderBean.itemCount) + parseInt($scope.stockOrderDetailBeansList[i].orderProdQty);
+				if(isNaN($scope.stockOrderBean.itemCount)){
+					$scope.stockOrderBean.itemCount = "0";
+				}
+				//Calculate Total Grand Total
+				$scope.grandTotal = parseFloat($scope.grandTotal) + parseFloat($scope.stockOrderDetailBeansList[i].total);
+				if(isNaN($scope.grandTotal)){
+					$scope.grandTotal = "0";
+				}
+				if($scope.isAdmin() == false){ //In Case of Admin
+					//Calculate Total Recv for each Item
+					if($scope.stockOrderBean.retailPriceBill == true){
+						$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].retailPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+					}
+					else{
+						$scope.stockOrderDetailBeansList[i].recvTotal = value.ordrSupplyPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+					}				
+					if(isNaN($scope.stockOrderDetailBeansList[i].recvTotal)){
+						$scope.stockOrderDetailBeansList[i].recvTotal = "0";
+					}
+					if(parseInt($scope.stockOrderDetailBeansList[i].productVariantCurrInventory) < parseInt($scope.stockOrderDetailBeansList[i].recvProdQty)){
+						$scope.stockOrderDetailBeansList[i].greaterThanStock = true;
+					}
+					else{
+						$scope.stockOrderDetailBeansList[i].greaterThanStock = false;
+					}
+					//Calculate Total Recv Items for Admin
+					$scope.stockOrderBean.itemCountRecv = parseInt($scope.stockOrderBean.itemCountRecv) + parseInt($scope.stockOrderDetailBeansList[i].recvProdQty);
+					if(isNaN($scope.stockOrderBean.itemCountRecv) || $scope.stockOrderBean.itemCountRecv == ""){
+						$scope.stockOrderBean.itemCountRecv = "0";
+					}
+					//Calculate Grand Recv Total for Admin
+					$scope.grandrecvTotal = parseFloat($scope.grandrecvTotal) + parseFloat($scope.stockOrderDetailBeansList[i].recvTotal);
+					if(isNaN($scope.grandrecvTotal)){
+						$scope.grandrecvTotal = "0";
+					}
+				}
+			}
+		}
+	};
+
+	/*$scope.arrangeOrder = function(){
 		$scope.counter = 1;
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -579,7 +665,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		});	
 		$scope.calculateGrandTotal();
 		$scope.calculateItemCount();
-	};
+	}; 
 
 	$scope.calculateTotalAdmin = function(productVariantId){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
@@ -603,7 +689,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		});
 		$scope.calculateItemCountAdmin();
 		$scope.calculateGrandrecvTotal();
-	};
+	}; */
 
 	$scope.markAllReceive = function(){
 		if ($scope.stockOrderDetailBeansList.length > 0) {
@@ -613,17 +699,19 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				/*$scope.stockOrderDetailBeansList[i].recvSupplyPrice = "";
 				$scope.stockOrderDetailBeansList[i].recvSupplyPrice = angular.copy($scope.stockOrderDetailBeansList[i].ordrSupplyPrice);*/
 				$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].retailPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+				$scope.stockOrderDetailBeansList[i].isDirty = true;
 				if(isNaN($scope.stockOrderDetailBeansList[i].recvTotal)){
 					$scope.stockOrderDetailBeansList[i].recvTotal = "0";
 				}
 			}
 
 		}
-		$scope.calculateItemCountAdmin();
-		$scope.calculateGrandrecvTotal();
+		//$scope.calculateItemCountAdmin();
+		//$scope.calculateGrandrecvTotal();
+		$scope.AllInOne();
 	};
 
-	$scope.calculateItemCount = function(){
+	/*$scope.calculateItemCount = function(){
 		$scope.stockOrderBean.itemCount = 0;
 		if($scope.stockOrderDetailBeansList != null){
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -666,8 +754,8 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		}
 		$scope.calculateItemCountAdmin();
 	};
-	
-	
+
+
 	$scope.calculateGrandTotal = function(){
 		$scope.grandTotal = "0";
 		if ($scope.stockOrderDetailBeansList.length > 0) {
@@ -696,7 +784,83 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				}
 			}
 		}
+	}; */
+
+	$scope.calculateTotalforItem = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				if($scope.stockOrderBean.retailPriceBill == true){
+					value.total = value.retailPrice * value.orderProdQty;
+				}
+				else{
+					value.total = value.ordrSupplyPrice * value.orderProdQty;
+				}				
+				if(isNaN(value.total)){
+					value.total = "0";
+				}
+				if(parseInt(value.productVariantCurrInventory) < parseInt(value.orderProdQty)){
+					value.greaterThanStock = true;
+				}
+				else{
+					value.greaterThanStock = false;
+				}
+				value.isDirty = true;
+			}
+		});	
+		/*$scope.calculateGrandTotal();
+		$scope.calculateItemCount();*/
+		$scope.AllInOne();
 	};
+	
+	$scope.calculateTotalAdminforItem = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				if($scope.stockOrderBean.retailPriceBill == true){
+					value.recvTotal = value.retailPrice * value.recvProdQty;
+				}
+				else{
+					value.recvTotal = value.ordrSupplyPrice * value.recvProdQty;
+				}				
+				if(isNaN(value.recvTotal)){
+					value.recvTotal = "0";
+				}
+				if(parseInt(value.productVariantCurrInventory) < parseInt(value.recvProdQty)){
+					value.greaterThanStock = true;
+				}
+				else{
+					value.greaterThanStock = false;
+				}
+				value.isDirty = true;
+			}
+		});	
+		/*$scope.calculateGrandTotal();
+		$scope.calculateItemCount();*/
+		$scope.AllInOne();		
+	}; 
+
+	/*$scope.calculateTotalAdmin = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				if($scope.stockOrderBean.retailPriceBill == true){
+					value.recvTotal = value.retailPrice * value.recvProdQty;
+				}
+				else{
+					value.recvTotal = value.ordrSupplyPrice * value.recvProdQty;
+				}				
+				if(isNaN(value.recvTotal)){
+					value.recvTotal = "0";
+				}
+				if(parseInt(value.productVariantCurrInventory) < parseInt(value.recvProdQty)){
+					value.greaterThanStock = true;
+				}
+				else{
+					value.greaterThanStock = false;
+				}
+			}
+		});	
+		/*$scope.calculateGrandTotal();
+		$scope.calculateItemCount(); 
+	}; */
 
 	$scope.checkStockOrderDetailList = function() {
 		if ($scope.stockOrderDetailBeansList.length > 0) { // your question said "more than one element"
@@ -754,8 +918,14 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				$scope.responseStatus = Response.status;
 				if ($scope.responseStatus == 'SUCCESSFUL') {
 					$scope.success = true;
-					$scope.successMessage = Response.data;
-					$cookieStore.put('_e_cOt_pio',"") ;
+					$scope.stockOrderDetailBeansList = Response.data;
+					$cookieStore.put('_e_cOt_pio',"");
+					if ($scope.stockOrderDetailBeansList.length > 0) {
+						for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
+							$scope.stockOrderDetailBeansList[i].isDirty = false; 
+						}
+					}
+					$scope.AllInOne();
 					$timeout(function(){
 						$scope.success = false;
 						//$window.location = Response.layOutPath;
@@ -789,8 +959,9 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
-		$scope.calculateGrandTotal();
-		$scope.calculateGrandrecvTotal();
+		$scope.AllInOne();
+		//$scope.calculateGrandTotal();
+		//$scope.calculateGrandrecvTotal();
 		$scope.stockOrderBean.statusId = "3"; // Completed status
 		$http.post('purchaseOrderDetails/updateAndReturntoHeadOffice/'+$scope._s_tk_com+'/'+$scope.grandrecvTotal+'/'+$scope.stockOrderBean.itemCountRecv, $scope.stockOrderDetailBeansList)
 		.success(function(Response) {
@@ -888,14 +1059,14 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 			renderItem : function(item) {
 				var result = [];
 				if($scope.hideRefValues == false){
-				result = {
-						value : item.variantAttributeName,
-						label : $sce.trustAsHtml("<table class='auto-complete'>"
-								+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
-								+ item.variantAttributeName + "</td>"
-								+ "<td style='width: 10%'>" + "</td>"
-								+ "</tr>" + "</tbody>" + "</table>")
-				};
+					result = {
+							value : item.variantAttributeName,
+							label : $sce.trustAsHtml("<table class='auto-complete'>"
+									+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
+									+ item.variantAttributeName + "</td>"
+									+ "<td style='width: 10%'>" + "</td>"
+									+ "</tr>" + "</tbody>" + "</table>")
+					};
 				}
 				else{
 
@@ -929,7 +1100,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 			}
 		}
 	};
-	
+
 	$scope.sessionValidation();
 }];
 

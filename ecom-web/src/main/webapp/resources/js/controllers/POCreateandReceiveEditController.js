@@ -35,8 +35,9 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			$scope.stockOrderBean.itemCount = 0;
 			$scope.itemCountTotal = 0;
 			$scope.stockOrderBean.recItemCount = 0;
-			$scope.calculateItemCount();
-			$scope.calculateRecItemCount();
+			$scope.AllInOne();
+			/*$scope.calculateItemCount();
+			$scope.calculateRecItemCount();*/
 		}
 	};
 
@@ -85,8 +86,8 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			}
 			if($scope.data.stockOrderDetailBeansList!=null){
 				$scope.stockOrderDetailBeansList = $scope.data.stockOrderDetailBeansList;
-				$scope.arrangeOrder();
-				$scope.calculateGrandTotal();
+				/*$scope.arrangeOrder();
+				$scope.calculateGrandTotal();*/
 			}
 
 		}
@@ -143,7 +144,6 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 		$http.post('purchaseOrder/updateStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
 		.success(function(Response) {
 			$scope.loading = false;
-
 			$scope.responseStatus = Response.status;
 			if ($scope.responseStatus == 'SUCCESSFUL') {
 				$scope.productTypeBean = {};
@@ -291,6 +291,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 				$scope.addProduct();
 			}
 		}
+		$scope.AllInOne();
 	};
 
 
@@ -319,8 +320,9 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 						productVariantBeantoReplace =angular.copy(value);;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
+						productVariantBeantoReplace.isDirty = true;
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -340,6 +342,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 					$scope.stockOrderDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 					$scope.dualEntry = false;
 				}
@@ -363,8 +366,9 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 						productVariantBeantoReplace =angular.copy(value);;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
+						productVariantBeantoReplace.isDirty = true;
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -384,6 +388,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 					$scope.stockOrderDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 					$scope.dualEntry = false;
 				}
@@ -402,10 +407,11 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			$scope.stockOrderDetailBean.order = $scope.counter;
 			$scope.counter++;
 			$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
+			$scope.stockOrderDetailBean.isDirty = true;
 			$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 		}
 		$scope.stockOrderDetailBean = {};
-		$scope.calculateItemCount();
+		//$scope.calculateItemCount();
 		$scope.airportName = [];
 	};
 
@@ -452,13 +458,54 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 		});
 		$scope.showConfirmDeletePopup = false; 
 		$scope.delStockOrderDetailBean = {};
-		$scope.arrangeOrder();
+		/*$scope.arrangeOrder();
 		$scope.calculateGrandTotal();
 		$scope.calculateItemCount();
-		$scope.calculateRecItemCount();
+		$scope.calculateRecItemCount();*/
+		$scope.AllInOne();
 	};
 
-	$scope.arrangeOrder = function(){
+	$scope.AllInOne = function(){
+		$scope.counter = 1;
+		$scope.stockOrderBean.itemCount = 0;
+		$scope.grandTotal = "0";
+		$scope.stockOrderBean.recItemCount = 0;
+		$scope.grandTotal = "0";				
+		if ($scope.stockOrderDetailBeansList.length > 0) {
+			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
+				//arrange Order
+				$scope.stockOrderDetailBeansList[i].order = $scope.counter; 
+				$scope.counter++;
+				//Calculate Total for Item
+				$scope.stockOrderDetailBeansList[i].total = $scope.stockOrderDetailBeansList[i].ordrSupplyPrice * $scope.stockOrderDetailBeansList[i].orderProdQty;			
+				if(isNaN($scope.stockOrderDetailBeansList[i].total)){
+					$scope.stockOrderDetailBeansList[i].total = "0";
+				}
+				//Calculate Total Items Count
+				$scope.stockOrderBean.itemCount = parseInt($scope.stockOrderBean.itemCount) + parseInt($scope.stockOrderDetailBeansList[i].orderProdQty);
+				if(isNaN($scope.stockOrderBean.itemCount)){
+					$scope.stockOrderBean.itemCount = "0";
+				}				
+				//Calculate Total Recv for each Item
+				$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].recvSupplyPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+				if(isNaN($scope.stockOrderDetailBeansList[i].recvTotal)){
+					$scope.stockOrderDetailBeansList[i].recvTotal = "0";
+				}
+				//Calculate Total Recv Items
+				$scope.stockOrderBean.recItemCount = parseInt($scope.stockOrderBean.recItemCount) + parseInt($scope.stockOrderDetailBeansList[i].recvProdQty);
+				if(isNaN($scope.stockOrderBean.recItemCount) || $scope.stockOrderBean.recItemCount == ""){
+					$scope.stockOrderBean.recItemCount = "0";
+				}
+				//Calculate Total Grand Total
+				$scope.grandTotal = parseFloat($scope.grandTotal) + parseFloat($scope.stockOrderDetailBeansList[i].recvTotal);
+				if(isNaN($scope.grandTotal)){
+					$scope.grandTotal = "0";
+				}
+			}
+		}
+	};
+	
+	/*$scope.arrangeOrder = function(){
 		$scope.counter = 1;
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -479,9 +526,22 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			}
 		});	
 		$scope.calculateItemCount();
+	}; */
+
+	$scope.calculateTotalforItem = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				value.total = value.ordrSupplyPrice * value.orderProdQty;
+				if(isNaN(value.total)){
+					value.total = "0";
+				}
+				value.isDirty = true;
+			}
+		});	
+		$scope.AllInOne();
 	};
 
-	$scope.calculateItemCount = function(){
+	/*$scope.calculateItemCount = function(){
 		$scope.stockOrderBean.itemCount = 0;
 		$scope.itemCountTotal = "0";
 		if($scope.stockOrderDetailBeansList != null){
@@ -511,7 +571,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 				}
 			}
 		}
-	};
+	}; 
 
 
 	$scope.calculateRecvTotal = function(productVariantId){
@@ -524,9 +584,22 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			}
 		});
 		$scope.calculateGrandTotal();
-	};
+	}; */
 
-	$scope.calculateGrandTotal = function(){
+	$scope.calculateRecvTotalforItem = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				value.recvTotal = value.recvSupplyPrice * value.recvProdQty;
+				if(isNaN(value.recvTotal)){
+					value.recvTotal = "0";
+				}
+				value.isDirty = true;
+			}
+		});
+		$scope.AllInOne();
+	};
+	
+	/*$scope.calculateGrandTotal = function(){
 		$scope.grandTotal = "0";
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -540,7 +613,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			}
 		}
 		$scope.calculateRecItemCount();
-	};
+	};*/
 
 	$scope.checkStockOrderDetailListforRec = function() {
 		if ($scope.stockOrderDetailBeansList.length > 0) { // your question said "more than one element"
@@ -553,13 +626,39 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 				}		   
 			}
 			return true;
-			$scope.calculateGrandTotal();
+			//$scope.calculateGrandTotal();
 		}
 		else {
 			return false;
 		}
 	};
-
+	
+	$scope.calculateTotalforItem = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				if($scope.stockOrderBean.retailPriceBill == true){
+					value.total = value.retailPrice * value.orderProdQty;
+				}
+				else{
+					value.total = value.ordrSupplyPrice * value.orderProdQty;
+				}				
+				if(isNaN(value.total)){
+					value.total = "0";
+				}
+				/*if(parseInt(value.productVariantCurrInventory) < parseInt(value.orderProdQty)){
+					value.greaterThanStock = true;
+				}
+				else{
+					value.greaterThanStock = false;
+				}*/
+				value.isDirty = true;
+			}
+		});	
+		/*$scope.calculateGrandTotal();
+		$scope.calculateItemCount();*/
+		$scope.AllInOne();
+	};
+	
 	$scope.checkStockOrderDetailList = function() {
 		if ($scope.stockOrderDetailBeansList.length > 0) { // your question said "more than one element"
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -585,13 +684,15 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 				$scope.stockOrderDetailBeansList[i].recvSupplyPrice = "";
 				$scope.stockOrderDetailBeansList[i].recvSupplyPrice = angular.copy($scope.stockOrderDetailBeansList[i].ordrSupplyPrice);
 				$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].recvSupplyPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+				$scope.stockOrderDetailBeansList[i].isDirty = true;
 				if(isNaN($scope.stockOrderDetailBeansList[i].total)){
 					$scope.stockOrderDetailBeansList[i].total = "0";
 				}
 			}
 
 		}
-		$scope.calculateGrandTotal();
+		//$scope.calculateGrandTotal();
+		$scope.AllInOne();
 	};
 
 
@@ -603,13 +704,19 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;
-			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com+'/'+$scope.itemCountTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;					
 				$scope.responseStatus = Response.status;
 				if ($scope.responseStatus == 'SUCCESSFUL') {
 					$scope.success = true;
-					$scope.successMessage = Response.data;
+					$scope.stockOrderDetailBeansList = Response.data;
+					if ($scope.stockOrderDetailBeansList.length > 0) {
+						for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
+							$scope.stockOrderDetailBeansList[i].isDirty = false; 
+						}
+					}
+					$scope.AllInOne();
 					$cookieStore.put('_e_cOt_pio',"") ;
 					$timeout(function(){
 						$scope.success = false;

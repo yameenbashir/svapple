@@ -18,6 +18,7 @@ public interface StockOrderDetailDAO {
 	void addStockOrderDetailsList(List<StockOrderDetail> stockOrderDetail,int companyId);
 	StockOrderDetail updateStockOrderDetail(StockOrderDetail stockOrderDetail,int companyId);
 	void updateStockOrderDetailsList(List<StockOrderDetail> stockOrderDetailsList,int companyId);
+	void saveorUpdateStockOrderDetailsList(List<StockOrderDetail> stockOrderDetailsList,int companyId);
 	boolean deleteStockOrderDetail(StockOrderDetail stockOrderDetail,int companyId);
 	void deleteStockOrderDetailsList(List<StockOrderDetail> stockOrderDetail,int companyId);
 	StockOrderDetail getStockOrderDetailByStockOrderDetailID(int stockOrderDetailID,int companyId);

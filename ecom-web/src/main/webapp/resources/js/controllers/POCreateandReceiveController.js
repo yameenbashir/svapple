@@ -32,6 +32,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 	$scope.productSKU = '';
 	$scope.skudisable = false;
 	$scope.inputTypeScan = true;
+	$scope.update = false;
 
 	// product info declarions end
 	$scope.sessionValidation = function(){
@@ -46,6 +47,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 			$scope.stockOrderBean.itemCount = 0;
 			$scope.itemCountTotal = 0;
 			$scope.stockOrderBean.recItemCount = 0;
+			$scope.AllInOne();
 		}
 	};
 
@@ -92,8 +94,8 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 			if($scope.data.supplierBeansList!=null){
 				$scope.supplierList = $scope.data.supplierBeansList;
 			}
-			$scope.calculateItemCount();
-			$scope.calculateRecItemCount();
+			/*$scope.calculateItemCount();
+			$scope.calculateRecItemCount();*/
 		}
 		$rootScope.globalPageLoader = false;
 	};
@@ -145,20 +147,21 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 		$scope.loading = true;
 		$scope.stockOrderBean.statusId = "1"; // Initiated status at Stock Order Creation page
 		$scope.stockOrderBean.stockOrderTypeId = "1"; // Supplier Order
-		$http.post('purchaseOrder/addStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
-		.success(function(Response) {
-			$scope.loading = false;
-
-			$scope.responseStatus = Response.status;
-			if ($scope.responseStatus == 'SUCCESSFUL') {
-				$scope.productTypeBean = {};
-				$scope.success = true;
-				$scope.successMessage = "Request Processed successfully!";
-				$scope.stockOrderId = Response.data;
-				$scope.stockOrderBean.stockOrderId = angular.copy($scope.stockOrderId);
-				$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
-				$scope.updateStockOrderDetail();
-				/*$timeout(function(){
+		if ($scope.update == false){
+			$http.post('purchaseOrder/addStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
+			.success(function(Response) {
+				$scope.loading = false;
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {
+					$scope.productTypeBean = {};
+					$scope.success = true;
+					$scope.successMessage = "Request Processed successfully!";
+					$scope.stockOrderId = Response.data;
+					$scope.stockOrderBean.stockOrderId = angular.copy($scope.stockOrderId);
+					$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
+					$scope.update = true;
+					$scope.updateStockOrderDetail();
+					/*$timeout(function(){
 					$scope.success = false;
 					angular.forEach($scope.supplierList, function(value,key){
 						if(value.supplierId == $scope.stockOrderBean.supplierId){
@@ -178,25 +181,76 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 					$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
 					$window.location = Response.layOutPath;
 				}, 1000);*/
-			}
-			else if($scope.responseStatus == 'SYSTEMBUSY'
-				||$scope.responseStatus=='INVALIDUSER'
-					||$scope.responseStatus =='ERROR'
-						||$scope.responseStatus =='INVALIDSESSION'){
-				$scope.error = true;
-				$scope.errorMessage = Response.data;
-				$window.location = Response.layOutPath;
-			} else {
-				$scope.error = true;
-				$scope.errorMessage = Response.data;
-			}
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
 
-		}).error(function() {
-			$rootScope.emergencyInfoLoadedFully = false;
-			$scope.error = true;
-			$scope.errorMessage  = $scope.systemBusy;
-		});
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}else{
+			$http.post('purchaseOrder/updateStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
+			.success(function(Response) {
+				$scope.loading = false;
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {
+					$scope.productTypeBean = {};
+					$scope.success = true;
+					$scope.successMessage = "Request Processed successfully!";
+					$scope.stockOrderId = Response.data;
+					$scope.stockOrderBean.stockOrderId = angular.copy($scope.stockOrderId);
+					$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
+					$scope.updateStockOrderDetail();
+					/*$timeout(function(){
+					$scope.success = false;
+					angular.forEach($scope.supplierList, function(value,key){
+						if(value.supplierId == $scope.stockOrderBean.supplierId){
+							$scope.stockOrderBean.supplierName = value.supplierName;
+						}
+					});
+					angular.forEach($scope.outletList, function(value,key){
+						if(value.outletId == $scope.stockOrderBean.outletId){
+							$scope.stockOrderBean.outletName = value.outletName;
+						}
+					});
+					angular.forEach($scope.stockOrderTypeBeansList, function(value,key){
+						if(value.stockOrderTypeId == $scope.stockOrderBean.stockOrderTypeId){
+							$scope.stockOrderBean.stockOrderTypeDesc = value.stockOrderTypeDesc;
+						}
+					});
+					$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
+					$window.location = Response.layOutPath;
+				}, 1000);*/
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
 
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}
 	};
 
 	$scope.showConfirmReceiveStockOrder = function(){
@@ -297,6 +351,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 				$scope.addProduct();
 			}
 		}
+		$scope.AllInOne();
 	};
 
 
@@ -325,8 +380,9 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 						productVariantBeantoReplace =angular.copy(value);;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
+						productVariantBeantoReplace.isDirty = true;
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -346,6 +402,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 					$scope.stockOrderDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 					$scope.dualEntry = false;
 				}
@@ -369,8 +426,9 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 						productVariantBeantoReplace =angular.copy(value);;
 						var index = $scope.stockOrderDetailBeansList.indexOf(value);
 						$scope.stockOrderDetailBeansList.splice(index, 1);
+						productVariantBeantoReplace.isDirty = true;
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -390,6 +448,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 					$scope.stockOrderDetailBean.order = $scope.counter;
 					$scope.counter++;
 					$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
+					$scope.stockOrderDetailBean.isDirty = true;
 					$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 					$scope.dualEntry = false;
 				}
@@ -408,10 +467,11 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 			$scope.stockOrderDetailBean.order = $scope.counter;
 			$scope.counter++;
 			$scope.stockOrderDetailBean.stockOrderId = $scope.stockOrderBean.stockOrderId;
+			$scope.stockOrderDetailBean.isDirty = true;
 			$scope.stockOrderDetailBeansList.unshift($scope.stockOrderDetailBean);
 		}
 		$scope.stockOrderDetailBean = {};
-		$scope.calculateItemCount();
+		/*$scope.calculateItemCount(); */
 		$scope.airportName = [];
 	};
 
@@ -458,13 +518,54 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 		});
 		$scope.showConfirmDeletePopup = false; 
 		$scope.delStockOrderDetailBean = {};
-		$scope.arrangeOrder();
+		$scope.AllInOne();
+		/*$scope.arrangeOrder();
 		$scope.calculateGrandTotal();
 		$scope.calculateItemCount();
-		$scope.calculateRecItemCount();
+		$scope.calculateRecItemCount();*/
 	};
 
-	$scope.arrangeOrder = function(){
+	$scope.AllInOne = function(){
+		$scope.counter = 1;
+		$scope.stockOrderBean.itemCount = 0;
+		$scope.grandTotal = "0";
+		$scope.stockOrderBean.recItemCount = 0;
+		$scope.grandTotal = "0";				
+		if ($scope.stockOrderDetailBeansList.length > 0) {
+			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
+				//arrange Order
+				$scope.stockOrderDetailBeansList[i].order = $scope.counter; 
+				$scope.counter++;
+				//Calculate Total for Item
+				$scope.stockOrderDetailBeansList[i].total = $scope.stockOrderDetailBeansList[i].ordrSupplyPrice * $scope.stockOrderDetailBeansList[i].orderProdQty;			
+				if(isNaN($scope.stockOrderDetailBeansList[i].total)){
+					$scope.stockOrderDetailBeansList[i].total = "0";
+				}
+				//Calculate Total Items Count
+				$scope.stockOrderBean.itemCount = parseInt($scope.stockOrderBean.itemCount) + parseInt($scope.stockOrderDetailBeansList[i].orderProdQty);
+				if(isNaN($scope.stockOrderBean.itemCount)){
+					$scope.stockOrderBean.itemCount = "0";
+				}				
+				//Calculate Total Recv for each Item
+				$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].recvSupplyPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+				if(isNaN($scope.stockOrderDetailBeansList[i].recvTotal)){
+					$scope.stockOrderDetailBeansList[i].recvTotal = "0";
+				}
+				//Calculate Total Recv Items
+				$scope.stockOrderBean.recItemCount = parseInt($scope.stockOrderBean.recItemCount) + parseInt($scope.stockOrderDetailBeansList[i].recvProdQty);
+				if(isNaN($scope.stockOrderBean.recItemCount) || $scope.stockOrderBean.recItemCount == ""){
+					$scope.stockOrderBean.recItemCount = "0";
+				}
+				//Calculate Total Grand Total
+				$scope.grandTotal = parseFloat($scope.grandTotal) + parseFloat($scope.stockOrderDetailBeansList[i].recvTotal);
+				if(isNaN($scope.grandTotal)){
+					$scope.grandTotal = "0";
+				}
+			}
+		}
+	};
+
+	/*$scope.arrangeOrder = function(){
 		$scope.counter = 1;
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -485,9 +586,22 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 			}
 		});	
 		$scope.calculateItemCount();
-	};
+	}; */
 
-	$scope.calculateItemCount = function(){
+	$scope.calculateTotalforItem = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				value.total = value.ordrSupplyPrice * value.orderProdQty;
+				if(isNaN(value.total)){
+					value.total = "0";
+				}
+				value.isDirty = true;
+			}
+		});	
+		$scope.AllInOne();
+	}; 
+
+	/*$scope.calculateItemCount = function(){
 		$scope.stockOrderBean.itemCount = 0;
 		$scope.itemCountTotal = "0";
 		if($scope.stockOrderDetailBeansList != null){
@@ -530,9 +644,22 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 		});
 		$scope.calculateGrandTotal();
 		$scope.calculateRecItemCount();
+	}; */
+
+	$scope.calculateRecvTotalforItem = function(productVariantId){
+		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
+			if(value.productVariantId == productVariantId){
+				value.recvTotal = value.recvSupplyPrice * value.recvProdQty;
+				if(isNaN(value.recvTotal)){
+					value.recvTotal = "0";
+				}
+				value.isDirty = true;
+			}
+		});
+		$scope.AllInOne();
 	};
 
-	$scope.calculateGrandTotal = function(){
+	/*$scope.calculateGrandTotal = function(){
 		$scope.grandTotal = "0";
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -546,7 +673,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 			}
 		}
 		$scope.calculateRecItemCount();
-	};
+	}; */
 
 	$scope.checkStockOrderDetailListforRec = function() {
 		if ($scope.stockOrderDetailBeansList.length > 0) { // your question said "more than one element"
@@ -559,7 +686,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 				}		   
 			}
 			return true;
-			$scope.calculateGrandTotal();
+			//$scope.calculateGrandTotal();
 		}
 		else {
 			return false;
@@ -591,13 +718,15 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 				$scope.stockOrderDetailBeansList[i].recvSupplyPrice = "";
 				$scope.stockOrderDetailBeansList[i].recvSupplyPrice = angular.copy($scope.stockOrderDetailBeansList[i].ordrSupplyPrice);
 				$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].recvSupplyPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+				$scope.stockOrderDetailBeansList[i].isDirty = true;
 				if(isNaN($scope.stockOrderDetailBeansList[i].total)){
 					$scope.stockOrderDetailBeansList[i].total = "0";
 				}
 			}
 
 		}
-		$scope.calculateGrandTotal();
+		//$scope.calculateGrandTotal();
+		$scope.AllInOne();
 	};
 
 
@@ -609,17 +738,23 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;
-			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com+'/'+$scope.itemCountTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
+			$http.post('purchaseOrderDetails/updateStockOrderDetail/'+$scope._s_tk_com+'/'+$scope.grandTotal+'/'+$scope.stockOrderBean.itemCount, $scope.stockOrderDetailBeansList)
 			.success(function(Response) {
 				$scope.loading = false;					
 				$scope.responseStatus = Response.status;
 				if ($scope.responseStatus == 'SUCCESSFUL') {
 					$scope.success = true;
-					$scope.successMessage = Response.data;
+					$scope.stockOrderDetailBeansList = Response.data;
+					if ($scope.stockOrderDetailBeansList.length > 0) {
+						for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
+							$scope.stockOrderDetailBeansList[i].isDirty = false; 
+						}
+					}
+					$scope.AllInOne();
 					$cookieStore.put('_e_cOt_pio',"") ;
 					$timeout(function(){
 						$scope.success = false;
-						$window.location = Response.layOutPath;
+						//$window.location = Response.layOutPath;
 					}, 2000);
 				}
 				else if($scope.responseStatus == 'SYSTEMBUSY'
