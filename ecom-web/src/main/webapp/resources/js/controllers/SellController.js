@@ -41,6 +41,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	$scope.totallineItemDiscount = parseFloat(0);
 	$scope.isInvoiceLevelDiscountEnable = false;
 	$scope.isInvoiceDetailLevelDiscountEnable = true;
+	$rootScope.globalPageLoader = true;
 //$scope.totalDiscount = parseFloat(0);
 	$scope.InvoiceMainBean.itemsCount = parseFloat(0);
 	$scope.isValidInvoice = true;
@@ -131,6 +132,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 				{
 					$scope.selectCustomer = true;
 					$scope.selectCustomerName = $scope.InvoiceMainBean.customername;
+					$scope.InvoiceMainBean.laybyamount = parseFloat($scope.InvoiceMainBean.laybyamount);
 				}
 			}
 
@@ -161,12 +163,14 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		});
 
 		$scope.loadingSalePageComplete = false;
+		$rootScope.globalPageLoader = false;
 		
 		
 	}
 	
 	$scope.loadSalesDataAjax = function() {
 		$scope.loadingSalePageComplete = true;
+		$rootScope.globalPageLoader = true;
 		if($rootScope.online){
 			$http.get('sell/getAllProductsOnly/' + $scope._s_tk_com).success(function(Response) {
 				$scope.sellControllerBean = Response;
@@ -960,6 +964,13 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$scope.InvoiceMainBean.transactionType = transactionType;
 
 		$scope.InvoiceMainBean.laybyamount =  parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat($scope.InvoiceMainBean.settledAmt);
+		if($scope.InvoiceMainBean.laybyamount!=null || $scope.selectedItem.item.customerBalance>0){
+			$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.selectedItem.item.customerBalance);
+		}else if($scope.InvoiceMainBean.laybyamount==null){
+			$scope.totalBalance = $scope.selectedItem.item.customerBalance
+		}else if($scope.selectedItem.item.customerBalance==null){
+			$scope.selectedItem.item.customerBalance = 0;
+		}
 		$scope.InvoiceMainBean.settledAmt = 0;
 
 		if(!$scope.InvoiceMainBean.invoiceRefNbr)
@@ -1445,6 +1456,14 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 				$scope.selectCustomerName = $scope.selectedItem.item.firstName + ' ' + $scope.selectedItem.item.lastName;
 				$scope.selectCustomerPhoneNumber = $scope.selectedItem.item.phoneNumber;
 				$scope.InvoiceMainBean.customerId = $scope.selectedItem.item.customerId;
+				$scope.customerBalance=$scope.selectedItem.item.customerBalance;
+				$scope.customerLayBy= $scope.selectedItem.item.customerlaybyAmount;
+				if($scope.selectedItem.item.customerBalance!=null && $scope.selectedItem.item.customerBalance>0){
+					$scope.totalPayable =  parseFloat($scope.InvoiceMainBean.invoiceNetAmt)+ parseFloat($scope.selectedItem.item.customerBalance)-parseFloat($scope.InvoiceMainBean.invoiceGivenAmt);
+					
+				}else if($scope.selectedItem.item.customerBalance=null && $scope.selectedItem.item.customerBalance<0){
+						$scope.totalPayable = parseFloat($scope.selectedItem.item.invoiceNetAmt);
+						}
 
 			}
 	};

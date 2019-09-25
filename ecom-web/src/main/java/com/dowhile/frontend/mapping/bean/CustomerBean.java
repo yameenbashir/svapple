@@ -35,12 +35,27 @@ public class CustomerBean {
     private String updatedBy;
     private String phoneNumber;
     private String contactName;
+	 private String laybyAmount;
 	/**
 	 * @return the customerId
 	 */
 	public String getCustomerId() {
 		return customerId;
 	}
+	/**
+	 * @return the laybyAmount
+	 */
+	public String getLaybyAmount() {
+		return laybyAmount;
+	}
+
+	/**
+	 * @param laybyAmount the laybyAmount to set
+	 */
+	public void setLaybyAmount(String laybyAmount) {
+		this.laybyAmount = laybyAmount;
+	}
+
 	/**
 	 * @param customerId the customerId to set
 	 */

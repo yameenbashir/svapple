@@ -25,7 +25,21 @@ public class SalesHistoryBean {
 	String print;
 	String invoiceId;
 	String itemsCount;
+	String laybayamount;
 	
+	
+	/**
+	 * @return the laybayamount
+	 */
+	public String getLaybayamount() {
+		return laybayamount;
+	}
+	/**
+	 * @param laybayamount the laybayamount to set
+	 */
+	public void setLaybayamount(String laybayamount) {
+		this.laybayamount = laybayamount;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}

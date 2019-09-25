@@ -151,7 +151,7 @@
 														required vd-number-options="" maxlength="10">
 												</div>
 												<div class="col-md-6">
-													<input ng-blur="calculateBill(false,invoiceDetail,'add')"
+													<input ng-change="calculateBill(false,invoiceDetail,'add')"
 														ng-readonly="isInvoiceDetailLevelDiscountEnable"
 														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
 														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
@@ -161,7 +161,7 @@
 														required vd-number-options="" maxlength="10">
 												</div>
 												<div class="col-md-3">
-													<input ng-blur="calculateBill(true,invoiceDetail,'add')"
+													<input ng-change="calculateBill(true,invoiceDetail,'add')"
 														ng-readonly="isInvoiceDetailLevelDiscountEnable"
 														ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
 														class="wr-input wr-input--sell-tendered ng-pristine ng-valid ng-not-empty ng-valid-valid-characters ng-valid-valid-min-value ng-valid-valid-max-value ng-touched"
@@ -205,6 +205,17 @@
 													== null ? 0 : (returnvalue * InvoiceMainBean.invoiceAmt)}}
 												</span>
 											</div></li>
+												<li><span class="handle"> <iclass="fafa-ellipsis-v">
+												</i></span> <!-- todo text --> <!-- todo text --> <span ng-show="InvoiceMainBean.laybyamount>0" ng-cloak>Previous Balance</span>
+											<div class="tools_new">
+
+												<span> <!-- <span
+																ng-bind="customerBalance"></span> -->
+																 <span
+																ng-bind="InvoiceMainBean.laybyamount"></span>
+												</span>
+											</div></li>
+											
 										<li ng-show = "isInvoiceLevelDiscountEnable"><span class="handle"> <iclass="fafa-ellipsis-v">
 												</i></span> <!-- todo text --> <!-- todo text --> <a href=""
 											ng-click="discounts()"><span class="text">Discounts</span></a>
@@ -506,6 +517,20 @@
 															balance | number : 2}}</div>
 													</div>
 												</div>
+														<div ng-if="totalPayable" class="col-xs-8 text-right">
+															Previous Balance
+														</div>
+														<div class="col-xs-4 text-center">
+															<span
+																ng-bind="totalPayable"></span>
+														</div>
+														<div ng-if="totalBalance" class="col-xs-8 text-right">
+															Total Payable
+														</div>
+														<div ng-if="totalBalance" class="col-xs-4 text-center">
+															<span
+																ng-bind="totalBalance"></span>
+														</div>
 
 												<div class="row">
 													<div class="col-xs-12 text-center">

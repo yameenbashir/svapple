@@ -341,6 +341,8 @@ public class CustomersController {
 								customerBean.setFirstName(customer.getId().getFirstName());
 								customerBean.setPhoneNumber(customer.getId().getPhone());
 								customerBean.setLastName(customer.getId().getLastName());
+								customerBean.setCustomerBalance(customer.getId().getBalance().toString());
+								customerBean.setLaybyAmount(customer.getId().getBalance().toString());
 								
 								customerBeansList.add(customerBean);
 							}
