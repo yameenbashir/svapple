@@ -351,9 +351,12 @@ public class SalesHistoryController {
 						{
 							historyBean.setCustomer(customer.getContactId().toString());
 							historyBean.setCustomerName(customer.getLastName()!=null?customer.getFirstName() + " "+ customer.getLastName():customer.getFirstName());
+							if(customer.getContactBalance()!=null)
+								historyBean.setLaybayamount(customer.getContactBalance().toString());
 						}else{
 							historyBean.setCustomer("-");
 							historyBean.setCustomerName("-");
+							historyBean.setLaybayamount("0.00");
 						}
 					}else{
 						historyBean.setCustomer("-");

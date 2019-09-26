@@ -690,6 +690,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$scope.success = false;
 		$scope.showDiscount = false;
 		$scope.invoiceGenerationDteFE = "";
+		$route.reload();
 	};
 	$scope.calculateDiscount = function(isDiscountPrctCahnged) {
 
