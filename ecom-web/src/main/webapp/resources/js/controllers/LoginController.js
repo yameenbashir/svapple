@@ -163,6 +163,8 @@ var LoginController = ['$scope', '$http', '$window', '$cookieStore','$rootScope'
 		$cookieStore.put('companyImagePath', Response.data.companyImagePath);
 		$cookieStore.put('termsAndConditions', Response.data.termsAndConditions);
 		SessionService.setUser($scope.userBean.email);
+		$cookieStore.put('countNotifications', Response.data.countNotifications);
+		$rootScope.showNotofications = false;
 		$rootScope.userName = Response.data.userName;
 		$rootScope.userId = Response.data.userId;
 		localforage.setItem('kk_vv', Response.data.userMap);
@@ -178,6 +180,13 @@ var LoginController = ['$scope', '$http', '$window', '$cookieStore','$rootScope'
 		} else {
 			$rootScope.IsSuperUser = false;
 			$rootScope.IsManager = false;
+		}
+		if(Response.data.countNotifications!=null){
+			//$rootScope.showNotofications = !$scope.showNotofications;
+			$rootScope.countNotifications= Response.data.countNotifications;
+			//console.log($rootScope.countNotifications);
+		}else{
+			$rootScope.countNotifications = null;
 		}
 		$cookieStore.put('IsSuperUser', $rootScope.IsSuperUser);
 		$cookieStore.put('IsManager', $rootScope.IsManager);

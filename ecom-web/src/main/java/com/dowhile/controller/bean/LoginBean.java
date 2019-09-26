@@ -21,6 +21,7 @@ public class LoginBean {
 	private Map<String ,String> userMap;
 	private String companyImagePath;
 	private String termsAndConditions;
+	private int countNotifications;
 	/**
 	 * 
 	 */
@@ -46,7 +47,7 @@ public class LoginBean {
 			String userId, String outletId, String isHeadOffice,
 			String createdDate, String compnayID, String compnayName,
 			Map<String, Boolean> mapMenu, Map<String, String> userMap,
-			String companyImagePath, String termsAndConditions) {
+			String companyImagePath, String termsAndConditions,int countNotifications) {
 		this.userName = userName;
 		this.sessionId = sessionId;
 		this.userRole = userRole;
@@ -60,6 +61,13 @@ public class LoginBean {
 		this.userMap = userMap;
 		this.companyImagePath = companyImagePath;
 		this.termsAndConditions = termsAndConditions;
+		this.countNotifications = countNotifications;
+	}
+	public int getCountNotifications() {
+		return countNotifications;
+	}
+	public void setCountNotifications(int countNotifications) {
+		this.countNotifications = countNotifications;
 	}
 	public String getUserName() {
 		return userName;

@@ -71,4 +71,47 @@ public class NotificationServiceImpl implements NotificationService{
 		// TODO Auto-generated method stub
 		return getNotificationDAO().getAllNotificationsByCompanyId(companyId);
 	}
+
+	@Override
+	public Notification getAllNotificationByID(int notificationId,int outletId) {
+		// TODO Auto-generated method stub
+		return (Notification) getNotificationDAO().getAllNotificationByID(notificationId,outletId);
+	}
+
+	@Override
+	public boolean markAllAsReadByOutletIdCompanyId(int outletId,
+			int companyId) {
+		// TODO Auto-generated method stub
+		return getNotificationDAO().markAllAsReadByOutletIdCompanyId(outletId, companyId);
+	}
+
+	@Override
+	public List<Notification> getAllUnReadNotificationsByOutletIdCompanyId(
+			int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		return getNotificationDAO().getAllUnReadNotificationsByOutletIdCompanyId(outletId, companyId);
+	}
+
+	@Override
+	public List<Notification> getAllReadedNotificationsByOutletIdCompanyId(int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		return getNotificationDAO().getAllReadedNotificationsByOutletIdCompanyId(outletId, companyId);
+	}
+
+	@Override
+	public List<Notification> getAllReadedNotificationsByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		return getNotificationDAO().getAllReadedNotificationsByCompanyId(companyId);
+	}
+
+	@Override
+	public List<Notification> getAllUnReadedNotificationsByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		return getNotificationDAO().getAllUnReadedNotificationsByCompanyId(companyId);
+	}
+
+	
+	
+	
+	
 }

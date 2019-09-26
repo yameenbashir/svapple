@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dowhile.Contact;
 import com.dowhile.Notification;
 import com.dowhile.Outlet;
 import com.dowhile.Tag;
@@ -78,9 +79,9 @@ public class NotificationsController {
 			try {
 				Map<Integer, Outlet> outletMap = outletService.getAllOutletsMapByCompanyId(currentUser.getCompany().getCompanyId());
 				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
-					notificationsList = notificationService.getAllNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
+					notificationsList = notificationService.getAllUnReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
 				}else{
-					notificationsList = notificationService.getAllNotificationsByoutletIdToCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+					notificationsList = notificationService.getAllUnReadNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				}
 				if (notificationsList != null) {
 					for (Notification notification : notificationsList) {
@@ -95,7 +96,11 @@ public class NotificationsController {
 						notificationBean.setCompanyId(notification.getCompany().getCompanyId());
 						notificationBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(notification.getCreatedDate()));
 						notificationBean.setLastUpdated(DateTimeUtil.convertDBDateTimeToGuiFormat(notification.getLastUpdated()));
+						notificationBean.setDescription(notification.getDescription());
+						notificationBean.setMarkAsRead(notification.isMarkAsRead());
+						
 						notificationBeanList.add(notificationBean);
+					   
 
 					}
 					util.AuditTrail(request, currentUser, "NotificationsController.getAllNotifications", 
@@ -126,5 +131,151 @@ public class NotificationsController {
 
 	}
 
+
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/activeInactiveAllNotifications/{sessionId}/{notificationId}", method = RequestMethod.GET)public @ResponseBody
+	Response activeInactiveAllNotifications(@PathVariable("sessionId") String sessionId,@PathVariable("notificationId") int notificationId,
+			HttpServletRequest request) {
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+try {
+				
+				Notification notification= notificationService.getAllNotificationByID(notificationId,currentUser.getOutlet().getOutletId());
+				
+				if(notification.isMarkAsRead()){
+					notification.setMarkAsRead(false);
+				}else{
+					notification.setMarkAsRead(true);
+				}
+				notificationService.updateNotification(notification);
+					util.AuditTrail(request, currentUser, "NotificationsController.activeInactiveAllNotifications", 
+							"User "+ currentUser.getUserEmail()+" updated  Notification successfully ",false);
+					return new Response(MessageConstants.REQUREST_PROCESSED, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+			}catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "NotificationsController.activeInactiveAllNotifications",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.BUSY,
+						LayOutPageConstants.STAY_ON_PAGE);
+			}
+	
+}else{
+	return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 }
+		
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/updateSelectedNotifications/{sessionId}/{notificationId}", method = RequestMethod.GET)
+	public @ResponseBody
+	Response updateSelectedNotifications(@PathVariable("sessionId") String sessionId,@PathVariable("notificationId") int notificationId,
+			HttpServletRequest request) {
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			try {
+				Notification notification= notificationService.getAllNotificationByID(notificationId,currentUser.getOutlet().getOutletId());
+				if(notification.isMarkAsRead()){
+					notification.setMarkAsRead(false);
+				}else{
+					notification.setMarkAsRead(true);
+				}
+				notificationService.updateNotification(notification)	;
+					util.AuditTrail(request, currentUser, "NotificationsController.updateSelectedNotifications", 
+							"User "+ currentUser.getUserEmail()+" updated  Notification successfully ",false);
+					return new Response(MessageConstants.REQUREST_PROCESSED, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "NotificationsController.updateSelectedNotifications",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.BUSY,
+						LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/markAllAsReadByOutletIdCompanyId/{sessionId}", method = RequestMethod.GET)
+	public @ResponseBody
+	Response markAllAsReadByOutletIdCompanyId(@PathVariable("sessionId") String sessionId,
+			HttpServletRequest request) {
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			try {
+				boolean isProcessed = false;
+				isProcessed= notificationService.markAllAsReadByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+				if(isProcessed){
+					util.AuditTrail(request, currentUser, "NotificationsController.markAllAsReadByOutletIdCompanyId", 
+							"User "+ currentUser.getUserEmail()+" updated  Notification successfully ",false);
+					return new Response(MessageConstants.REQUREST_PROCESSED, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+				}else{
+					util.AuditTrail(request, currentUser, "NotificationsController.markAllAsReadByOutletIdCompanyId", 
+							"User "+ currentUser.getUserEmail()+" unable to update notifications ",false);
+					return new Response(MessageConstants.SYSTEM_BUSY, StatusConstants.BUSY,
+							LayOutPageConstants.STAY_ON_PAGE);
+					}
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "NotificationsController.markAllAsReadByOutletIdCompanyId",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.BUSY,
+						LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+	}
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getAllUnReadNotifications/{sessionId}", method = RequestMethod.GET)
+	public @ResponseBody
+	Response getAllUnReadNotifications(@PathVariable("sessionId") String sessionId,
+			HttpServletRequest request) {
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			try {
+				List<Notification> notificationsList= notificationService.getAllUnReadNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+				if(notificationsList!=null && notificationsList.size()>0){
+					
+					return new Response(notificationsList.size(),StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
+				}else{
+					return new Response(0,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.BUSY,
+						LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}
+		else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+		
+	}
+}
+
+	
 

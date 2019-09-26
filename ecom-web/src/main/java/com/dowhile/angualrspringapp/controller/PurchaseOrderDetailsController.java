@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dowhile.Configuration;
 import com.dowhile.Contact;
+import com.dowhile.Notification;
 import com.dowhile.Outlet;
 import com.dowhile.Product;
 import com.dowhile.ProductVariant;
@@ -51,6 +52,8 @@ import com.dowhile.frontend.mapping.bean.StockOrderTypeBean;
 import com.dowhile.frontend.mapping.bean.SupplierBean;
 import com.dowhile.service.ConfigurationService;
 import com.dowhile.service.ContactService;
+import com.dowhile.service.NotificationService;
+import com.dowhile.frontend.mapping.bean.NotificationBean;
 import com.dowhile.service.OutletService;
 import com.dowhile.service.ProductService;
 import com.dowhile.service.ProductVariantService;
@@ -97,6 +100,8 @@ public class PurchaseOrderDetailsController {
 
 	@Resource
 	private ConfigurationService configurationService;
+	@Resource
+	private NotificationService notificationService;
 
 
 	private Map productVariantMap = new HashMap<>();
@@ -1977,6 +1982,44 @@ public class PurchaseOrderDetailsController {
 					stockOrder.setLastUpdated(new Date());
 					stockOrder.setUpdatedBy(currentUser.getUserId());
 					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
+					
+					try { 
+						if(stockOrder!=null){
+							Notification notification = new Notification();
+							
+							Outlet outletByOutletIdFrom = new Outlet();
+							outletByOutletIdFrom.setOutletId(stockOrder.getOutletBySourceOutletAssocicationId().getOutletId());
+							
+							//System.out.println("hello " +outletByOutletIdFrom);
+							
+							notification.setOutletByOutletIdFrom(outletByOutletIdFrom);
+							
+							Outlet outletByOutletIdTo = new Outlet();
+							outletByOutletIdTo.setOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId());
+							
+							//System.out.println(outletByOutletIdTo);
+							
+							notification.setOutletByOutletIdTo(outletByOutletIdTo);
+							notification.setDescription("Stock of worth: "+grandTotal+" has been transferd having total item count: "+itemCount);
+							notification.setCompany(stockOrder.getCompany());
+							notification.setActiveIndicator(true);
+							notification.setCreatedDate(new Date());
+							notification.setCreatedBy(currentUser.getUserId());
+							notification.setLastUpdated(new Date());
+							notification.setUpdatedBy(currentUser.getUserId());
+							notification.setSubject("transfer stock");
+							notificationService.addNotification(notification);
+							
+						}
+						
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+						StringWriter errors = new StringWriter();
+						e.printStackTrace(new PrintWriter(errors));
+					}
+					
+					
 
 					Contact supplier = supplierService.getContactByContactOutletID(stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
 					if(supplier.getContactBalance() == null){

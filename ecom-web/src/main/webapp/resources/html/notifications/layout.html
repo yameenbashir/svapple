@@ -4,13 +4,11 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-         Notifications
+         New Notifications
           </h1>
           <ol class="breadcrumb">
             <li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
-            <!-- <li><a href="#empView">Managed Services</a></li> -->
-            <!--  <li><a href="#products">Products</a></li> -->
-            <li class="active">Notifications</li>
+            <li class="active">New Notifications</li>
           </ol>
         </section>
 	     <section class="content-header">
@@ -26,6 +24,17 @@
 	  <div class="col-md-1">
 	   </div>
 	   <div class="col-md-10">
+	   		<vd-tabs modifier="no-border large"
+					class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
+				<vd-tab type="anchor" active="this.activeTab == 'notifications'"
+					class="po-notifications-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
+					link="'#notifications'"> <a class="vd-tab-button ng-scope"
+					ng-href="#notifications" href="/notifications/"><span class="ng-scope">
+					  New Notifications </span></a> </vd-tab> <vd-tab
+					class="po-notifications-tab ng-scope ng-isolate-scope vd-tab" type="anchor"
+					active="this.activeTab == 'notificationsReaded'" link="'#notificationsReaded'"> <a
+					class="vd-tab-button ng-scope" ng-href="#notificationsReaded"><span
+					class="ng-scope">Marked Notifications </span></a> </vd-tab> </vd-tabs>
 	   
 	  
 			   <vd-section sticky="" type="secondary"
@@ -36,8 +45,19 @@
 							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
 							  
               
-							<span>   A list of all of your Notifications.
+							<span>   A list of all of your Notifications. <b><i ng-hide="userRole==1">Your unread messages count is {{unReadNotifications}}</i></b>
 							</span>
+							<div> 
+								<button class="btn btn-primary btn-lg" ng-hide="userRole==1" ng-click="markAllAsRead()"><span>Mark all as read</span>
+								<i class="fa fa-spinner fa-spin" aria-hidden="true"  ng-if="processing"></i>
+								</button>
+								
+							</div>
+							<!-- <div> 
+								<button class="btn btn-primary btn-sm" ng-click="getAllUnReadNotifications" >
+								<><>
+								</button>
+							</div> -->
 							<!-- <div class="vd-button-group">
 							 <button class="btn  btn-primary btn-lg" ng-click="loadAllNotifications()" ng-show="dataLoading">Load All Notifications</button>
                                 
@@ -58,10 +78,10 @@
 	    	
 	    			<div class="box box-primary newFont">
                 <div class="box-header">
-               <div class="alert alert-success alert-sm" ng-show="tagSuccess"
-								ng-bind="tagSuccessMessage" ng-cloak></div>
-							<div class="alert alert-danger alert-sm" ng-show="tagError"
-								ng-bind="tagErrorMessage" ng-cloak></div>
+               <div class="alert alert-success alert-sm" ng-show="success"
+								ng-bind="successMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="error"
+								ng-bind="errorMessage" ng-cloak></div>
 				 </div><!-- /.box-header -->
 				<div class="box-body">
 				<table id="myTable"  class="display" cellspacing="0" width="100%"  ng-clock ng-if="notificationBeanList.length > 0">
@@ -71,6 +91,7 @@
 				           <th>Notification From</th>
 				           <th>Description</th>
 				           <th>Created Date</th>
+				           <th ng-hide="userRole==1">Mark as read</th>
 				            
 				        </tr>
 				    </thead>
@@ -81,7 +102,11 @@
 				        <td ng-bind="notificationBean.outletByOutletIdFromName"></td>
 				        <td ng-bind="notificationBean.description"></td>
 				        <td ng-bind="notificationBean.createdDate"></td>
-				       
+				        <td><a href="" ng-hide="userRole==1" class="btn btn-sm {{notificationBean.markAsRead ? 'btn-default' : 'btn-success'}}" data-toggle="tooltip" title="{{notificationBean.markAsRead ? 'In Active' : 'Active'}}" ng-click="editNotification(notificationBean)">
+				        <i class="fa fa-power-off" aria-hidden="true"></i>
+				        <i class="fa fa-spinner fa-spin" aria-hidden="true" ng-if="readLoader && notificationsId==notificationBean.notificationId"></i>
+				        </a></td>
+						
 				        </tr>
 				          
 				    </tbody>
@@ -235,7 +260,16 @@
     margin-left: 25%;
 }
 </style>
+<!-- <script>
+var b1 = document.getElementById("btnOUs");
+
+b1.onclick = function() {
+  b1.style.background = "red";  
+}
+</script> -->
     <!-- DataTables -->
+    
+   
      <script src="resources/js/jquery.dataTables.min.js"></script>
     
      <script src="resources/js/dataTables.responsive.min.js"></script>
@@ -300,3 +334,7 @@
 
 
 </style>
+
+
+
+

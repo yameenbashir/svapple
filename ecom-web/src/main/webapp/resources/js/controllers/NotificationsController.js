@@ -4,16 +4,21 @@
  * NotificationsController
  * @constructor
  */
-var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$rootScope','$timeout','$route','SessionService','NotificationsControllerPreLoad',function($scope, $http, $window,$cookieStore,$rootScope,$timeout,$route,SessionService,NotificationsControllerPreLoad) {
+var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$rootScope','$timeout','$route','SessionService','NotificationsControllerPreLoad',function($scope, $http,$window,$cookieStore,$rootScope,$timeout,$route,SessionService,NotificationsControllerPreLoad) {
 	
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
-	$scope.tagSuccess = false;
-	$scope.tagError = false;
+	$scope.success = false;
+	$scope.error = false;
 	$scope.dataLoading = false;
 	$scope.tagBean = {};
 	$scope.notificationBeanList = [];
 	$scope.comparisonNotificationBeanList = [];
+	$scope.readLoader = false;
+	$scope.notificationsId = null;
+	$scope.processing = false;
+	$scope.userRoll == 1;
+	$scope.unReadMessagesCount="";
 	
 	$scope.sessionValidation = function(){
 
@@ -21,6 +26,7 @@ var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$roo
 			$scope._s_tk_com =  $cookieStore.get('_s_tk_com') ;
 			$scope.data = NotificationsControllerPreLoad.loadControllerData();
 			$scope.fetchData();
+			$scope.getAllUnReadNotifications();
 		}
 	};
 
@@ -30,6 +36,8 @@ var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$roo
 
 			$scope.error = true;
 			$scope.errorMessage = "No record found";
+			$cookieStore.put('countNotifications',0);
+			$rootScope.countNotifications = $cookieStore.get('countNotifications');
 		}
 		else if($scope.data == 'SYSTEMBUSY'){
 			$scope.error = true;
@@ -45,6 +53,8 @@ var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$roo
 
 			if($scope.data!=null){
 				$scope.notificationBeanList = $scope.data;
+				$cookieStore.put('countNotifications',$scope.notificationBeanList.length);
+				$rootScope.countNotifications = $cookieStore.get('countNotifications');
 				$scope.comparisonNotificationBeanList = $scope.data;
 				setTimeout(
 						function() 
@@ -70,7 +80,8 @@ var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$roo
 				$scope.dataLoading = true;
 				if ($scope.responseStatus== 'SUCCESSFUL') {
 					$scope.data = Response.data;
-					
+					$scope.success = true;
+					$scope.sucessMessage = Response.data;
 					
 				}else if($scope.responseStatus == 'SYSTEMBUSY'
 					||$scope.responseStatus=='INVALIDUSER'
@@ -91,6 +102,80 @@ var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$roo
 			});
 
 		};
+		
+		
+		
+		
+		
+		
+		$scope.activeInactiveAll = function(isActive) {
+			
+			$scope.loading = true;
+			$http.get('notifications/activeInactiveAllNotifications/'+$scope._s_tk_com+'/'+isActive)
+			.success(function(Response) {
+				
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {
+					notifications = Response.data;
+					localforage.setItem('_e_cOt_jir',notifications);
+					$window.location = "/app/#/manageNoftifications";
+					
+				}else  {
+				
+					$window.location = Response.layOutPath;
+				}
+			}).error(function() {
+				$scope.loading = false;
+				$scope.outletError = true;
+				$scope.outletErrorMessage = $scope.systemBusy;
+			});
+			
+		};
+		
+		
+		
+		
+		$scope.editNotification = function(notification) {
+			$scope.notificationsId = notification.notificationId;
+			$scope.readLoader = true;
+			$http.get('notifications/updateSelectedNotifications/'+$scope._s_tk_com+'/'+notification.notificationId)
+			.success(function(Response) {
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {
+					$scope.success = true;
+					$scope.successMessage = Response.data;
+					$timeout(function(){
+						$scope.success = false;
+						$scope.readLoader = false;
+						$route.reload();
+						
+					    }, 1000);
+				}else if($scope.responseStatus == 'SYSTEMBUSY') {
+						$scope.error = true;
+						$scope.errorMessage = Response.data;
+						$timeout(function(){
+							$scope.error = false;
+						$route.reload();
+						
+					    }, 1500);
+				}else if  ($scope.responseStatus == 'INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+
+				   }else{
+					 	$scope.error = true;
+						$scope.errorMessage = Response.data;
+				}
+				}).error(function() {
+				$scope.loading = false;
+				$scope.error = true;
+				$scope.errorMessage = $scope.systemBusy;
+			});
+			
+		};
+		
+		
 		
 		$scope.loadAllNotifications = function(){
 			$scope.dataLoading = false;
@@ -130,7 +215,51 @@ var NotificationsController = ['$scope', '$http', '$window','$cookieStore','$roo
 				}
 			}
 			return false;
-		}
+		};
+		
+		$scope.markAllAsRead = function(){
+				$scope.processing = true;
+				$scope.userRoll == 1;
+			$http.get('notifications/markAllAsReadByOutletIdCompanyId/'+$scope._s_tk_com)
+					.success(function(Response) {
+						$scope.responseStatus = Response.status;
+						if ($scope.responseStatus == 'SUCCESSFUL'){
+							$scope.success = true;
+							$scope.successMessage = Response.data;
+							$timeout(function(){
+								$scope.success = false;
+								$route.reload();
+								
+							    }, 1000);
+						}else  {
+						
+							$window.location = Response.layOutPath;
+						}
+					}).error(function() {
+						$scope.loading = false;
+						$scope.outletError = true;
+						$scope.outletErrorMessage = $scope.systemBusy;
+					});
+	};
+	
+	$scope.getAllUnReadNotifications = function(){
+		$scope.unReadNotifications = 0;
+		$http.get('notifications/getAllUnReadNotifications/'+$scope._s_tk_com)
+		.success(function(Response) {
+
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL'){
+					$scope.unReadNotifications = Response.data;
+					
+				}
+				
+		}).error(function() {
+			$scope.loading = false;
+			$scope.outletError = true;
+			$scope.outletErrorMessage = $scope.systemBusy;
+		});
+
+	};	
 		
 
 	

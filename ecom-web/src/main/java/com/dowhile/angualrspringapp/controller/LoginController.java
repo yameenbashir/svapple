@@ -46,6 +46,7 @@ import com.dowhile.Configuration;
 import com.dowhile.Contact;
 import com.dowhile.ContactGroup;
 import com.dowhile.Menu;
+import com.dowhile.Notification;
 import com.dowhile.Outlet;
 import com.dowhile.Product;
 import com.dowhile.ProductType;
@@ -68,6 +69,7 @@ import com.dowhile.service.ConfigurationService;
 import com.dowhile.service.ContactGroupService;
 import com.dowhile.service.ContactService;
 import com.dowhile.service.MenuService;
+import com.dowhile.service.NotificationService;
 import com.dowhile.service.OutletService;
 import com.dowhile.service.ProductService;
 import com.dowhile.service.ProductTypeService;
@@ -123,6 +125,8 @@ public class LoginController {
 	private ConfigurationService configurationService;
 	@Resource
 	private ContactService supplierService;
+	@Resource
+	private NotificationService notificationService;
 	@RequestMapping("/layout")
 	public String getLoginControllerPartialPage(ModelMap modelMap) {
 		return "login/layout";
@@ -217,6 +221,28 @@ public class LoginController {
 				if(domianConfiguration!=null){
 					String subDomianName = domianConfiguration.getPropertyValue();
 					session.setAttribute("subDomianName", subDomianName);
+				}
+				//List<Notification> notificationList= notificationService.getAllUnReadNotificationsByOutletIdCompanyId(outlet.getOutletId(),company.getCompanyId());
+				try{
+					if (user.getRole().getRoleId()==1 && user.getOutlet().getIsHeadOffice()!=null && user.getOutlet().getIsHeadOffice().toString()=="true") {
+						List<Notification> notificationList = notificationService.getAllUnReadedNotificationsByCompanyId(user.getCompany().getCompanyId());
+						int count = 0;
+						if(notificationList!=null && notificationList.size()>0){
+							count = notificationList.size();
+							loginBean.setCountNotifications(count);}
+					}else if(user.getRole().getRoleId()!=1 ||user.getOutlet().getIsHeadOffice()==null || user.getOutlet().getIsHeadOffice().toString()!="true"){
+						List<Notification> notificationList1= notificationService.getAllUnReadNotificationsByOutletIdCompanyId(outlet.getOutletId(),company.getCompanyId());
+						int count = 0;
+						if(notificationList1!=null && notificationList1.size()>0){
+							count = notificationList1.size();
+							loginBean.setCountNotifications(count);
+						}
+							}
+					
+				}catch(Exception e){
+					e.printStackTrace();
+					StringWriter errors = new StringWriter();
+					e.printStackTrace(new PrintWriter(errors));
 				}
 				
 				//SynchProductMartInData(user);
