@@ -101,14 +101,17 @@
 														</div>
 													</div>
 													<div class="form-group">
-														<label for="inputEmail3" class="col-sm-4" control-label">Return All Products</label>
-														<select width = 100px class="form-control" data-native-menu="false" 
+													<label for="outlet" class="col-sm-4 control-label">Return All Products</label>
+													<div class="col-sm-8">
+															<select class="form-control " data-native-menu="false" 
 																data-role="listview" ng-change = "returnAllProducts()"
 																data-ng-model="returnAllProductsBean" ng-init="returnAllProductsBean ='0'">
 																<option value="0" >No</option>
 																<option value="1" >Yes</option>
-															</select>
-													</div>
+															</select> 
+														</div>
+												</div>
+													
 													<div class="form-group">
 												<label for="inputEmail3" class="col-sm-6 control-label"><b>Scanner Input</b></label>
 															<div class="col-sm-6" ng-click="inputTypeChk()">
@@ -207,7 +210,6 @@
 											class=" form-control click-to-select unit"
 											id="product_search_quantity" ng-maxlength="50" ng-disabled = "true"
 											style="height: 50px; width: 1000px;">
-									</div>
 									<div class="col-md-3">
 									<button class="btn btn-primary btn  "
 													ng-click="addStockOrderDetail()"
@@ -217,6 +219,7 @@
 													Processing<i
 														class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
 												</button>
+									</div>
 									</div>
 								</div>
 
