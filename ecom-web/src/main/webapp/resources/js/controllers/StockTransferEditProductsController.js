@@ -545,7 +545,7 @@ var StockTransferEditProductsController = ['$scope','$sce', '$http', '$timeout',
 							||$scope.responseStatus =='INVALIDSESSION'){
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
-					$window.location = Response.layOutPath;
+					//$window.location = Response.layOutPath;
 				} else {
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
@@ -597,7 +597,7 @@ var StockTransferEditProductsController = ['$scope','$sce', '$http', '$timeout',
 						||$scope.responseStatus =='INVALIDSESSION'){
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
-				$window.location = Response.layOutPath;
+				//$window.location = Response.layOutPath;
 			} else {
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
