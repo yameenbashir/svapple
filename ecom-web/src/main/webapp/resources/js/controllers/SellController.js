@@ -63,7 +63,6 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			$scope.getAllProducts();
 			$rootScope.globalPageLoader = false;
 			$scope.loadSalesDataAjax();
-			
 		}
 
 
@@ -671,6 +670,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$scope.gobackenable = true;
 		$scope.searchCustomerSelected = false;
 		$scope.selectCustomer = false;
+		$scope.searchCustomer = true;
 		$scope.selectCustomerName ="";
 		$scope.InvoiceMainBean.customerId = "";
 		$scope.readonlyInvoiceDiscount=false;
@@ -680,7 +680,6 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		{$scope.isReturnEnableonSell = false;}
 
 	};
-
 	$scope.ReceiptingDone = function() {
 
 		$scope.ResetSale();
@@ -690,6 +689,8 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$scope.success = false;
 		$scope.showDiscount = false;
 		$scope.invoiceGenerationDteFE = "";
+		$scope.fetchAllCustomers();
+		//$route.reload();
 	};
 	$scope.calculateDiscount = function(isDiscountPrctCahnged) {
 
