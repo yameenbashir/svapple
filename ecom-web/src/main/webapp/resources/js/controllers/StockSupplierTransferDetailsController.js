@@ -554,7 +554,7 @@ var StockSupplierTransferDetailsController = ['$scope', '$sce', '$http', '$timeo
 							||$scope.responseStatus =='INVALIDSESSION'){
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
-					$window.location = Response.layOutPath;
+					//$window.location = Response.layOutPath;
 				} else {
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
@@ -599,7 +599,7 @@ var StockSupplierTransferDetailsController = ['$scope', '$sce', '$http', '$timeo
 							||$scope.responseStatus =='INVALIDSESSION'){
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
-					$window.location = Response.layOutPath;
+					//$window.location = Response.layOutPath;
 				} else {
 					$scope.error = true;
 					$scope.errorMessage = Response.data;

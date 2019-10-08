@@ -763,7 +763,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 							||$scope.responseStatus =='INVALIDSESSION'){
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
-					$window.location = Response.layOutPath;
+					//$window.location = Response.layOutPath;
 				} else {
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
@@ -806,7 +806,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 							||$scope.responseStatus =='INVALIDSESSION'){
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
-					$window.location = Response.layOutPath;
+					//$window.location = Response.layOutPath;
 				} else {
 					$scope.error = true;
 					$scope.errorMessage = Response.data;
