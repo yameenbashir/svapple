@@ -545,7 +545,7 @@ var StockSupplierTransferDetailsController = ['$scope', '$sce', '$http', '$timeo
 					$scope.AllInOne();
 					$timeout(function(){
 						$scope.success = false;
-						//$window.location = Response.layOutPath;
+						$window.location = Response.layOutPath;
 					}, 2000);
 				}
 				else if($scope.responseStatus == 'SYSTEMBUSY'

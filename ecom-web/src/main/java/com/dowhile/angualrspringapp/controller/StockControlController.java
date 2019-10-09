@@ -364,6 +364,7 @@ public class StockControlController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
+			session.setAttribute("redirectCall", null);
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 			try {

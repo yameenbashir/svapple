@@ -95,7 +95,7 @@ public class POCreateandReceiveEditController {
 	private Map productIdsMap = new HashMap<>();
 	private Map productVariantIdsMap = new HashMap<>();
 	private List<Product> products = new ArrayList<>();
-	
+
 	@RequestMapping("/layout")
 	public String getPOCreateandReceiveEditControllerPartialPage(ModelMap modelMap) {
 		return "poCreateandReceiveEdit/layout";
@@ -135,7 +135,7 @@ public class POCreateandReceiveEditController {
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productBeansList = (List<ProductVariantBean>) response.data;
 				}
-				
+
 				response = getProductVariants(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productVariantBeansList = (List<ProductVariantBean>) response.data;
@@ -288,10 +288,10 @@ public class POCreateandReceiveEditController {
 				if (supplierList != null) {
 					for (Contact supplier : supplierList) {
 						if(supplier.getContactType()!=null && supplier.getContactType().contains("SUPPLIER")){
-						SupplierBean supplierBean = new SupplierBean();
-						supplierBean.setSupplierId(supplier.getContactId().toString());
-						supplierBean.setSupplierName(supplier.getContactName().toString());
-						supplierBeansList.add(supplierBean);
+							SupplierBean supplierBean = new SupplierBean();
+							supplierBean.setSupplierId(supplier.getContactId().toString());
+							supplierBean.setSupplierName(supplier.getContactName().toString());
+							supplierBeansList.add(supplierBean);
 						}
 					}
 
@@ -569,7 +569,7 @@ public class POCreateandReceiveEditController {
 		}		
 	}
 
-/*	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/*	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllProductVariants/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response getAllProductVariants(@PathVariable("sessionId") String sessionId,
 			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request){
@@ -710,8 +710,21 @@ public class POCreateandReceiveEditController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			productMap = new HashMap<>();
+			Map productSessionMap = new HashMap<>();
 			try {			
-				products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productIdsMap") != null) {
+						productSessionMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+						products = new ArrayList<Product>(productSessionMap.values());
+					}
+					else {
+						products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+				}
+				
 				if(products != null){
 					for(Product product:products){
 						ProductVariantBean productVariantBean = new ProductVariantBean();
@@ -750,8 +763,8 @@ public class POCreateandReceiveEditController {
 							}
 							productVariantBeansList.add(productVariantBean);
 							productMap.put(product.getSku().toLowerCase(), productVariantBean);
-							productIdsMap.put(product.getProductId(), product);
-						}						
+						}
+						productIdsMap.put(product.getProductId(), product);
 					}				
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
 							currentUser.getUserEmail()+" Get Products and Products",false);
@@ -793,12 +806,35 @@ public class POCreateandReceiveEditController {
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
 			productVariantMap = new HashMap<>();
-			try {			
-				productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+			Map productVariantSessionMap  = new HashMap<>();
+			try {
+				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productVariantIdsMap") != null) {
+						productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
+						productVariantList = new ArrayList<ProductVariant>(productVariantSessionMap.values());
+					}
+					else {
+						productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+				}
 				Map<Integer, Product> productsMap = new HashMap<>();
 				if(products.isEmpty()) {
-					products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-				}
+					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						if(session.getAttribute("productIdsMap") != null) {
+							productsMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+							products = new ArrayList<Product>(productsMap.values());
+						}
+						else {
+							products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+						}
+					}
+					else {
+						products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					}
+				}			
 				if(products!=null){
 					for(Product product:products){
 						productsMap.put(product.getProductId(), product);
@@ -881,8 +917,20 @@ public class POCreateandReceiveEditController {
 			Map recvProductMap = new HashMap<>();
 			productMap = new HashMap<>();
 			productIdsMap = new HashMap<>();
+			Map productSessionMap = new HashMap<>();
 			try {			
-				products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
+				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productIdsMap") != null) {
+						productSessionMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+						products = new ArrayList<Product>(productSessionMap.values());
+					}
+					else {
+						products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
+				}				
 				if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
 					recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
 					for(Product product:recvProductList){
@@ -936,8 +984,8 @@ public class POCreateandReceiveEditController {
 							}
 							productVariantBeansList.add(productVariantBean);
 							productMap.put(product.getSku().toLowerCase(), productVariantBean);
-							productIdsMap.put(product.getProductId(), product);
 						}
+						productIdsMap.put(product.getProductId(), product);
 
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
@@ -982,12 +1030,35 @@ public class POCreateandReceiveEditController {
 			List<ProductVariant> recvProductVariantList = null;
 			Map recvProductVariantMap = new HashMap<>();
 			productVariantMap = new HashMap<>();
+			Map productVariantSessionMap  = new HashMap<>();
 			try {			
-				productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
+				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productVariantIdsMap") != null) {
+						productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
+						productVariantList = new ArrayList<ProductVariant>(productVariantSessionMap.values());
+					}
+					else {
+						productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
+				}
 				Map<Integer, Product> productsMap = new HashMap<>();
 				if(products.isEmpty()) {
-					products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-				}
+					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						if(session.getAttribute("productIdsMap") != null) {
+							productsMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+							products = new ArrayList<Product>(productsMap.values());
+						}
+						else {
+							products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+						}
+					}
+					else {
+						products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					}
+				}			
 				if(products!=null){
 					for(Product product:products){
 						productsMap.put(product.getProductId(), product);
@@ -1089,8 +1160,20 @@ public class POCreateandReceiveEditController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			productMap = new HashMap<>();
+			Map productSessionMap = new HashMap<>();
 			try {		
-				products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
+				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productIdsMap") != null) {
+						productSessionMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+						products = new ArrayList<Product>(productSessionMap.values());
+					}
+					else {
+						products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
+				}				
 				if(products != null){
 					for(Product product:products){
 						ProductVariantBean productVariantBean = new ProductVariantBean();
@@ -1128,8 +1211,8 @@ public class POCreateandReceiveEditController {
 							}
 							productVariantBeansList.add(productVariantBean);
 							productMap.put(product.getSku().toLowerCase(), productVariantBean);
-							productIdsMap.put(product.getProductId(), product);
-						}						
+						}
+						productIdsMap.put(product.getProductId(), product);
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
 							currentUser.getUserEmail()+" Get Products and Products",false);
@@ -1171,12 +1254,35 @@ public class POCreateandReceiveEditController {
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
 			productVariantMap = new HashMap<>();
-			try {			
-				productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
+			Map productVariantSessionMap  = new HashMap<>();
+			try {
+				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productVariantIdsMap") != null) {
+						productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
+						productVariantList = new ArrayList<ProductVariant>(productVariantSessionMap.values());
+					}
+					else {
+						productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
+				}
 				Map<Integer, Product> productsMap = new HashMap<>();
 				if(products.isEmpty()) {
-					products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-				}
+					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						if(session.getAttribute("productIdsMap") != null) {
+							productsMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+							products = new ArrayList<Product>(productsMap.values());
+						}
+						else {
+							products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+						}
+					}
+					else {
+						products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					}
+				}		
 				if(products!=null){
 					for(Product product:products){
 						productsMap.put(product.getProductId(), product);
@@ -1214,7 +1320,7 @@ public class POCreateandReceiveEditController {
 						}
 						productVariantBeansList.add(productVariantBean);
 						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
-						productVariantIdsMap.put(productVariant.getProductVariantId(), product);
+						productVariantIdsMap.put(productVariant.getProductVariantId(), productVariant);
 					}
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
 							currentUser.getUserEmail()+" Get ProductVariants",false);
@@ -1245,8 +1351,6 @@ public class POCreateandReceiveEditController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}	
 	}
-
-
 
 	public Map getProductVariantMap() {
 		return productVariantMap;

@@ -92,6 +92,7 @@ public class PurchaseOrderController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
+			session.setAttribute("redirectCall", null);
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			try {
 

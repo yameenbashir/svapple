@@ -94,7 +94,7 @@ public class PurchaseOrderActionsController {
 			Map<Integer, ProductVariant> productVariantsMap = new HashMap<>();
 			HttpSession session = request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
+			session.setAttribute("redirectCall", null);
 			try {
 
 				stockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
@@ -258,7 +258,7 @@ public class PurchaseOrderActionsController {
 			Map<String, ProductVariant> productVariantWarehouseMap = new HashMap<>();
 			HttpSession session = request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
+			session.setAttribute("redirectCall", null);
 			try {
 
 				stockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
