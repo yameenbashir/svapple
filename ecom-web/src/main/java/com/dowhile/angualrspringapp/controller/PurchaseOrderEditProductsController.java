@@ -262,6 +262,8 @@ public class PurchaseOrderEditProductsController {
 			List<ProductVariant> allProductVariants = null;
 			Map<Integer, Product> productsMap = new HashMap<>();
 			Map<Integer, ProductVariant> productVariantsMap = new HashMap<>();
+			Map<Integer, ProductVariant> productVariantSessionMap = new HashMap<>();
+			Map<Integer, Product> productSessionMap = new HashMap<>();
 			HttpSession session = request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 
@@ -270,13 +272,37 @@ public class PurchaseOrderEditProductsController {
 				stockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
 				int order = 1;
 				if (stockOrderDetailList != null) {
-					List<ProductVariant> recvProductVariantList = null;
+					//List<ProductVariant> recvProductVariantList = null;
 					Map recvProductVariantMap = new HashMap<>();
-					List<Product> recvProductList = null;
+					//List<Product> recvProductList = null;
 					Map recvProductMap = new HashMap<>();
-					allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-					allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+					//allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					//allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 					//recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
+					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						if(session.getAttribute("productIdsMap") != null) {
+							productSessionMap  = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+							allProducts = new ArrayList<Product>(productSessionMap.values());
+						}
+						else {
+							allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+						}
+					}
+					else {
+						allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					}
+					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						if(session.getAttribute("productVariantIdsMap") != null) {
+							productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
+							allProductVariants = new ArrayList<ProductVariant>(productVariantSessionMap.values());
+						}
+						else {
+							allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+						}
+					}
+					else {
+						allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+					}
 					if(allProducts != null){
 						for(Product product:allProducts){
 							productsMap.put(product.getProductId(), product);

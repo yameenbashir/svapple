@@ -325,6 +325,12 @@ public class POCreateandReceiveEditController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			List<StockOrderDetailBean> stockOrderDetailBeansList = new ArrayList<>();
 			List<StockOrderDetail> stockOrderDetailList = null;
+			List<Product> allProducts = null;
+			List<ProductVariant> allProductVariants = null;
+			Map<Integer, Product> productsMap = new HashMap<>();
+			Map<Integer, ProductVariant> productVariantsMap = new HashMap<>();
+			Map<Integer, ProductVariant> productVariantSessionMap = new HashMap<>();
+			Map<Integer, Product> productSessionMap = new HashMap<>();
 			HttpSession session = request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 
@@ -333,29 +339,71 @@ public class POCreateandReceiveEditController {
 				stockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
 				int order = 1;
 				if (stockOrderDetailList != null) {
-					List<ProductVariant> recvProductVariantList = null;
+					//List<ProductVariant> recvProductVariantList = null;
 					Map recvProductVariantMap = new HashMap<>();
-					List<Product> recvProductList = null;
+					//List<Product> recvProductList = null;
 					Map recvProductMap = new HashMap<>();
-					if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
-						recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
-						for(Product product:recvProductList){
-							recvProductMap.put(product.getProductUuid(), product.getCurrentInventory());
+					//allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					//allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+					//recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
+					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						if(session.getAttribute("productIdsMap") != null) {
+							productSessionMap  = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+							allProducts = new ArrayList<Product>(productSessionMap.values());
 						}
-						recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()),currentUser.getCompany().getCompanyId());
-						for(ProductVariant productVariant:recvProductVariantList){
-							recvProductVariantMap.put(productVariant.getProductVariantUuid(), productVariant.getCurrentInventory());
-						}	
+						else {
+							allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+						}
+					}
+					else {
+						allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+					}
+					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						if(session.getAttribute("productVariantIdsMap") != null) {
+							productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
+							allProductVariants = new ArrayList<ProductVariant>(productVariantSessionMap.values());
+						}
+						else {
+							allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+						}
+					}
+					else {
+						allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+					}
+					if(allProducts != null){
+						for(Product product:allProducts){
+							productsMap.put(product.getProductId(), product);
+							if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
+								if(product.getOutlet().getOutletId().toString().equalsIgnoreCase(stockOrderBean.getOutletId())){
+									recvProductMap.put(product.getProductUuid(), product.getCurrentInventory());
+								}
+							}
+						}
+					}
+					//recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()),currentUser.getCompany().getCompanyId());
+					if(allProductVariants != null){
+						for(ProductVariant productVariant:allProductVariants){
+							productVariantsMap.put(productVariant.getProductVariantId(), productVariant);
+							Product product = productsMap.get(productVariant.getProduct().getProductId());
+							if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
+								if(product.getOutlet().getOutletId().toString().equalsIgnoreCase(stockOrderBean.getOutletId())){
+									recvProductVariantMap.put(productVariant.getProductVariantUuid(), productVariant.getCurrentInventory());
+								}
+							}	
+						}
 					}
 					for (StockOrderDetail stockOrderDetail : stockOrderDetailList) {
 						StockOrderDetailBean stockOrderDetailBean = new StockOrderDetailBean();
 						stockOrderDetailBean.setOrderProdQty(Objects.toString(stockOrderDetail.getOrderProdQty(), ""));
-						stockOrderDetailBean.setOrdrSupplyPrice(Objects.toString(stockOrderDetail.getOrdrSupplyPrice(),""));					
+						stockOrderDetailBean.setOrdrSupplyPrice(Objects.toString(stockOrderDetail.getOrdrSupplyPrice(),""));
+						if(stockOrderDetail.getRetailPrice()!= null){
+							stockOrderDetailBean.setRetailPrice(Objects.toString(stockOrderDetail.getRetailPrice(),""));
+						}
 						if(!stockOrderDetail.isIsProduct()){						
-							ProductVariant productVariant = productVariantService.getProductVariantByProductVariantId(stockOrderDetail.getProductVariant().getProductVariantId(),currentUser.getCompany().getCompanyId());
+							ProductVariant productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
 							if(productVariant != null){
 								stockOrderDetailBean.setProductVariantId(Objects.toString(productVariant.getProductVariantId(),""));
-								stockOrderDetailBean.setVariantAttributeName(productService.getProductByProductId(productVariant.getProduct().getProductId(), currentUser.getCompany().getCompanyId()).getProductName() + "-" + Objects.toString(productVariant.getVariantAttributeName(),""));
+								stockOrderDetailBean.setVariantAttributeName(productsMap.get(productVariant.getProduct().getProductId()).getProductName() + "-" + Objects.toString(productVariant.getVariantAttributeName(),""));
 								stockOrderDetailBean.setProductVariantCurrInventory(Objects.toString(productVariant.getCurrentInventory(),""));
 								stockOrderDetailBean.setIsProduct("false");
 								if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
@@ -370,7 +418,7 @@ public class POCreateandReceiveEditController {
 							}
 						}					
 						else{
-							Product product = productService.getProductByProductId(stockOrderDetail.getProduct().getProductId(),currentUser.getCompany().getCompanyId());
+							Product product = productsMap.get(stockOrderDetail.getProduct().getProductId());
 							if(product!= null){
 								stockOrderDetailBean.setProductVariantId(Objects.toString(product.getProductId(),""));
 								stockOrderDetailBean.setVariantAttributeName(Objects.toString(product.getProductName(),""));
@@ -391,12 +439,34 @@ public class POCreateandReceiveEditController {
 						stockOrderDetailBean.setRecvSupplyPrice(Objects.toString(stockOrderDetail.getRecvSupplyPrice(),""));
 						stockOrderDetailBean.setStockOrderDetailId(stockOrderDetail.getStockOrderDetailId().toString());
 						stockOrderDetailBean.setOrder(Integer.toString(order));
-						if(stockOrderDetail.getOrderProdQty() != null &&  stockOrderDetail.getOrdrSupplyPrice() != null)
-						{
-							Double total = stockOrderDetail.getOrderProdQty() * stockOrderDetail.getOrdrSupplyPrice().doubleValue();
-							NumberFormat formatter = new DecimalFormat("###.##");  
-							String strTotal = formatter.format(total);
-							stockOrderDetailBean.setTotal(strTotal);
+						if(stockOrderBean.getRetailPriceBill() != null && stockOrderBean.getRetailPriceBill() != ""){
+							if(!stockOrderBean.getRetailPriceBill().toString().equalsIgnoreCase("true")){
+								if(stockOrderDetail.getOrderProdQty() != null &&  stockOrderDetail.getOrdrSupplyPrice() != null)
+								{
+									Double total = stockOrderDetail.getOrderProdQty() * stockOrderDetail.getOrdrSupplyPrice().doubleValue();
+									NumberFormat formatter = new DecimalFormat("###.##");  
+									String strTotal = formatter.format(total);
+									stockOrderDetailBean.setTotal(strTotal);
+								}
+							}
+							else{
+								if(stockOrderDetail.getOrderProdQty() != null &&  stockOrderDetail.getRetailPrice() != null)
+								{
+									Double total = stockOrderDetail.getOrderProdQty() * stockOrderDetail.getRetailPrice().doubleValue();
+									NumberFormat formatter = new DecimalFormat("###.##");  
+									String strTotal = formatter.format(total);
+									stockOrderDetailBean.setTotal(strTotal);
+								}
+							}
+						}
+						else{
+							if(stockOrderDetail.getOrderProdQty() != null &&  stockOrderDetail.getOrdrSupplyPrice() != null)
+							{
+								Double total = stockOrderDetail.getOrderProdQty() * stockOrderDetail.getOrdrSupplyPrice().doubleValue();
+								NumberFormat formatter = new DecimalFormat("###.##");  
+								String strTotal = formatter.format(total);
+								stockOrderDetailBean.setTotal(strTotal);
+							}
 						}
 						if(stockOrderDetail.getRecvProdQty() != null && stockOrderDetail.getRecvSupplyPrice() != null){
 							Double recTotal = stockOrderDetail.getRecvProdQty() * stockOrderDetail.getRecvSupplyPrice().doubleValue();
@@ -436,7 +506,7 @@ public class POCreateandReceiveEditController {
 		}
 
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/addStockOrder/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response addStockOrder(@PathVariable("sessionId") String sessionId,
