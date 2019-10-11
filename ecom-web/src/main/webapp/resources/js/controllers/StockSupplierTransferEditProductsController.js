@@ -171,7 +171,7 @@ var StockSupplierTransferEditProductsController = ['$sce', '$scope', '$http', '$
 						$scope.stockOrderDetailBeansList.splice(index, 1);
 						productVariantBeantoReplace.isDirty = true;
 						$scope.stockOrderDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});

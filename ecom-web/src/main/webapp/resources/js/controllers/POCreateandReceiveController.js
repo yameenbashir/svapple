@@ -754,7 +754,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 					$cookieStore.put('_e_cOt_pio',"") ;
 					$timeout(function(){
 						$scope.success = false;
-						//$window.location = Response.layOutPath;
+						$window.location = Response.layOutPath;
 					}, 2000);
 				}
 				else if($scope.responseStatus == 'SYSTEMBUSY'
