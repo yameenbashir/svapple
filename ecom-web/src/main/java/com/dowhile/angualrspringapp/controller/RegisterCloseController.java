@@ -114,8 +114,8 @@ public class RegisterCloseController {
 					Outlet outlet = outletService.getOuletByOutletId(register.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
 					controllerBean.setOutletName(outlet.getOutletName());
 
-					/*List<Receipt> receipts = receiptService.getAllReceiptsByDailyRegister(dailyRegister.getDailyRegisterId(), currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
-
+					List<Receipt> receipts = receiptService.getAllReceiptsByDailyRegister(dailyRegister.getDailyRegisterId(), currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+						
 						if(receipts!=null){
 							for(Receipt receipt:receipts){
 								if(receipt.getPaymentType().getPaymentTypeId()==1){
@@ -123,17 +123,18 @@ public class RegisterCloseController {
 								}else{
 									creditAmtExpected = creditAmtExpected + receipt.getReceiptAmount().doubleValue();
 								}
-
+								
 							}
 						}
-						dailyRegisterBean.setPaymentReceived(String.valueOf(cashAmtExpected));*/
+						dailyRegisterBean.setPaymentReceived(String.valueOf(cashAmtExpected));
+						
 
-					cashAmtReceived = saleService.getTodaysRevenue(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(),dailyRegister.getDailyRegisterId());
+					/*cashAmtReceived = saleService.getTodaysRevenue(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(),dailyRegister.getDailyRegisterId());
 
-					dailyRegisterBean.setPaymentReceived(String.valueOf(cashAmtReceived));
+					dailyRegisterBean.setPaymentReceived(String.valueOf(cashAmtReceived));*/
 
 					List<CashManagment> cashManagments = cashManagmentService.getCashManagmentDailyRegister(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(), dailyRegister.getDailyRegisterId());
-					cashAmtExpected = cashAmtReceived;
+					cashAmtReceived = cashAmtExpected;
 					if(cashManagments!=null){
 						for(CashManagment managment: cashManagments){
 							CashManagmenBean managmentControllerBean = new CashManagmenBean();
