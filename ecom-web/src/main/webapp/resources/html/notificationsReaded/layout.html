@@ -1,0 +1,167 @@
+
+<div class="container">
+	<div class="row">
+	  <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+          Marked Notifications
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#home"><i class="fa fa-dashboard"></i> Home</a></li>
+             <li><a href="#notifications">Notifications</a></li>
+            <li class="active">  Marked Notifications</li>
+          </ol>
+        </section>
+	     <section class="content-header">
+   
+    </section>
+		 <div class="top-buffer-contact"> </div>
+	 <div id="mydiv" ng-show="globalPageLoader" ng-cloak>
+		<div class="loader"></div>
+	</div>
+			<!-- Main content -->
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+  			 <div class="row">
+	  <div class="col-md-1">
+	   </div>
+	   <div class="col-md-10">
+	   			<vd-tabs modifier="no-border large" class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
+			 <vd-tab  class="po-notifications-tab ng-scope ng-isolate-scope vd-tab" type="anchor" active="this.activeTab == 'notificationsReaded'" link="'#notifications'">
+				<a  class="vd-tab-button ng-scope" ng-href="#notifications" href="/notifications/notificationsReaded"><span class="ng-scope">
+			      New Notifications
+			    </span></a>
+			</vd-tab>
+			   <vd-tab type="anchor" active="this.activeTab == 'notifications'" class="po-notifications-tab ng-scope ng-isolate-scope vd-tab vd-tab--active" link="'#notificationsReaded'">
+			<a  class="vd-tab-button ng-scope" ng-href="#notificationsReaded"  href="/notifications/"><span class="ng-scope">
+			     Marked Notifications
+			    </span></a>
+			</vd-tab>
+			  </vd-tabs>
+	  
+			   <vd-section sticky="" type="secondary"
+						class="cv-action-bar vd-section vd-section--secondary"
+						role="region">
+					<div class="vd-section-wrap">
+						<div
+							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
+							  
+              
+							<span>   A list of all of your Readed Notifications.<!-- <b><i>Your messages count is {{readedNotifications}}</i></b> --> 
+							</span>
+							<!-- <div> 
+								<button class="btn btn-primary btn-lg" ng-hide="userRole==1" ng-click="markAllAsRead()"><span>Mark all as read</span>
+								<i class="fa fa-spinner fa-spin" aria-hidden="true"  ng-if="processing"></i>
+								</button>
+								
+							</div> -->
+						</div>
+					</div>
+					</vd-section>
+
+	    	
+	    			<div class="box box-primary newFont">
+                <div class="box-header">
+               <div class="alert alert-success alert-sm" ng-show="success"
+								ng-bind="successMessage" ng-cloak></div>
+							<div class="alert alert-danger alert-sm" ng-show="error"
+								ng-bind="errorMessage" ng-cloak></div>
+				 </div><!-- /.box-header -->
+				<div class="box-body">
+				<table id="myTable"  class="display" cellspacing="0" width="100%"  ng-clock ng-if="notificationBeanList.length > 0">
+				    <thead >
+				        <tr >
+				           <th>Notification To</th>
+				           <th>Notification From</th>
+				           <th>Description</th>
+				           <th>Created Date</th>
+				           <th  ng-hide="userRole==1">Status</th>
+				            
+				        </tr>
+				    </thead>
+				    <tbody>
+				          <tr ng-if="notificationBeanList.length > 0" ng-repeat="notificationBean in notificationBeanList">
+						
+				        <td ng-bind="notificationBean.outletByOutletIdToName"></td>
+				        <td ng-bind="notificationBean.outletByOutletIdFromName"></td>
+				        <td ng-bind="notificationBean.description"></td>
+				        <td ng-bind="notificationBean.createdDate"></td>
+				        <td  ng-hide="userRole==1"><a href="" data-toggle="tooltip" title="In Active">
+							<i class="btn btn-default btn-sm fa fa-power-off " aria-hidden="true" ></i></td>
+				       <!--  <td><a href="" ng-hide="userRole==1" class="btn btn-sm {{notificationBean.markAsRead ? 'btn-default' : 'btn-success'}}" data-toggle="tooltip" title="{{notificationBean.markAsRead ? 'In Active' : 'Active'}}" ng-click="editNotification(notificationBean)">
+				        <i class="fa fa-power-off" aria-hidden="true"></i>
+				        <i class="fa fa-spinner fa-spin" aria-hidden="true" ng-if="readLoader && notificationsId==notificationBean.notificationId"></i>
+				        </a></td> -->
+						
+				        </tr>
+				          
+				    </tbody>
+				</table>
+				</div>
+			</div>
+                 <div class="top-buffer-contact"> </div>
+                 
+                         </div>
+               <div class="col-md-2">
+	   </div>
+	</div>
+	</section>
+			</div>
+		<!--  </div>-->
+	</div>
+</div>
+
+        
+
+ <div class="container">
+		<div class="row footer-row">
+			<div class="col-lg-12 text-center">
+				<div class="footerdiv navbar-fixed-bottom">&copy; copyrights ShopVitals
+					2019</div>
+			</div>
+		</div>
+	</div>
+	
+
+	
+
+  
+
+    
+   
+     <script src="resources/js/jquery.dataTables.min.js"></script>
+    
+     <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script>
+<style>
+ .user-block {
+    white-space: nowrap;
+}
+
+@media (min-width: 768px)
+.user-block {
+    width: inherit;
+}
+.avatar {
+    display: inline-block;
+    position: relative;
+}
+ .user-block .user-info {
+    display: inline-block;
+    width: 55%;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.user-block img {
+    width: 40px;
+    height: 40px;
+    float: left;
+    border-radius: 50%;
+}
+
+
+</style>
+
+
+
+

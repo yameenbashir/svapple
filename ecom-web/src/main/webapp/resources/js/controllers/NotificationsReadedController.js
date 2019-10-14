@@ -26,7 +26,6 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 			$scope.fetchData();
 			$scope.getAllReadedNotifications();
 			
-			
 		}
 	};
 

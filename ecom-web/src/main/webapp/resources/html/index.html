@@ -303,7 +303,7 @@
 
 						</ul></li>
 					
-						 <li class="treeview" ng-show="menuMap['salesReport']" ng-class="{'disabled_ecom':!online}"><a my-link="online"  href="#salesReport" ng-class="{'disabled_ecom':!online}"> <i
+						 <li class="treeview" ng-show="menuMap['salesReport']" ng-class="{'disabled_ecom':!online}"><a my-link="online"  href="" ng-class="{'disabled_ecom':!online}"> <i
 							class="fa fa-area-chart text-green fa-2x"></i>
 							<div class="vd-nav-item-label ng-binding ng-scope">Reports</div>
 							<button ng-show="personalInfoProcessing" class="btn"
@@ -312,13 +312,14 @@
 							</button> <span ng-if="online">Reports</span> <i ng-if="online" class="fa fa-angle-left pull-right"></i>
 					</a>
 						<ul class="treeview-menu" ng-if="online" >
-						 <li class="treeview" ng-show="menuMap['salesReport']" ng-class="{'disabled_ecom':!online}"><a my-link="online"  href="#salesReport" ng-class="{'disabled_ecom':!online}"> 
+						 <li class="treeview" ng-show="menuMap['salesReport']" ng-class="{'disabled_ecom':!online}"><a my-link="online"  href="" ng-class="{'disabled_ecom':!online}"> 
 						 	<button ng-show="personalInfoProcessing" class="btn"
 								Style="background: #222d32;">
 								<i class="fa fa-arrow-right fa-spinner fa-spin "></i>
-							</button> <span ng-if="online"><i class="fa fa-area-chart"></i> Sales Reports</span> <i ng-if="online" class="fa fa-angle-left pull-right"></i>
+							</button> <span ng-if="online">       <i class="fa fa-area-chart"></i>Sales Reports</span> <i ng-if="online" class="fa fa-angle-left pull-right"></i>
 					</a>
 						<ul class="treeview-menu" ng-if="online" >
+							<li ng-show="menuMap['salesReport']"><a href="#salesReport"><i class="fa fa-money"></i>Sales Reports</a></li>
 							<li ng-show="menuMap['creditCardSalesReport']"><a href="#creditCardSalesReport"><i class="fa fa-money"></i>Credit Card Sales Reports </a></li>
 							<li ng-show="menuMap['cashSalesReport']"><a href="#cashSalesReport"><i class="fa fa-money"></i>Cash Sales Reports </a></li>
 							<li ng-show="menuMap['salesReport']"><a href="#salesReport"><i class="fa fa-money"></i>Sales Reports (All)</a></li>

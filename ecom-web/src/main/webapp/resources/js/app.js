@@ -3727,6 +3727,50 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	}); 
 	
+	$routeProvider.when('/downloadInventoryReport', {
+		templateUrl: 'resources/html/downloadInventoryReport/layout.html',
+		controller: InventoryReportController,
+		resolve: {
+			"InventoryReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["inventoryReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('inventoryReport/getInventoryReportControllerData/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.inventoryReportOutletName)//+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType)
+					.success(function(Response) {
+						controllerData = Response.data;
+						//$rootScope.salesReportStartDate = "undefined";
+						//$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/inventoryReportProductWise', {
 		templateUrl: 'resources/html/inventoryReportProductWise/layout.html',
 		controller: InventoryReportProductWiseController,
@@ -3900,6 +3944,49 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 			}
 		}
 	}); 
+	$routeProvider.when('/downloadSalesReport', {
+		templateUrl: 'resources/html/downloadSalesReport/layout.html',
+		controller: SalesReportController,
+		resolve: {
+			"SalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesReport/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
 	$routeProvider.when('/salesReportWithOutSale', {
 		templateUrl: 'resources/html/salesReportWithoutSale/layout.html',
 		controller: SalesReportWithOutSaleController,
@@ -3944,8 +4031,96 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	}); 
 	
+	$routeProvider.when('/downloadsSalesReportWithoutSale', {
+		templateUrl: 'resources/html/downloadsSalesReportWithoutSale/layout.html',
+		controller: SalesReportWithOutSaleController,
+		resolve: {
+			"SalesReportWithOutSaleControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReportWithOutSale"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesReportWithOutSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/salesReportWithSale', {
 		templateUrl: 'resources/html/salesReportWithSale/layout.html',
+		controller: SalesReportWithSaleController,
+		resolve: {
+			"SalesReportWithSaleControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReportWithSale"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesReportWithSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
+	$routeProvider.when('/downloadSalesReportWithSale', {
+		templateUrl: 'resources/html/downloadSalesReportWithSale/layout.html',
 		controller: SalesReportWithSaleController,
 		resolve: {
 			"SalesReportWithSaleControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
@@ -4033,8 +4208,96 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	}); 
 	
+	$routeProvider.when('/downloadUserSalesReport', {
+		templateUrl: 'resources/html/downloadUserSalesReport/layout.html',
+		controller: UserSalesReportController,
+		resolve: {
+			"UserSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["userSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('userSalesReport/getUserSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/salesDetailReport', {
 		templateUrl: 'resources/html/salesDetailReport/layout.html',
+		controller: SalesDetailReportController,
+		resolve: {
+			"SalesDetailReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesDetailReport/getSalesDetailReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
+	$routeProvider.when('/downloadSalesDetailReport', {
+		templateUrl: 'resources/html/downloadSalesDetailReport/layout.html',
 		controller: SalesDetailReportController,
 		resolve: {
 			"SalesDetailReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
@@ -4121,8 +4384,96 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	}); 
 	
+	$routeProvider.when('/downloadCreditCardSalesReport', {
+		templateUrl: 'resources/html/downloadCreditCardSalesReport/layout.html',
+		controller: CreditCardSalesReportController,
+		resolve: {
+			"CreditCardSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('creditCardSalesReport/getCreditCardSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/cashSalesReport', {
 		templateUrl: 'resources/html/cashSalesReport/layout.html',
+		controller: CashSalesReportController,
+		resolve: {
+			"CashSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('cashSalesReport/getCashSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
+	$routeProvider.when('/downloadCashSalesReport', {
+		templateUrl: 'resources/html/downloadCashSalesReport/layout.html',
 		controller: CashSalesReportController,
 		resolve: {
 			"CashSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
@@ -4209,8 +4560,96 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	});
 	
+	$routeProvider.when('/downloadOutletSalesReport', {
+		templateUrl: 'resources/html/downloadOutletSalesReport/layout.html',
+		controller: OutletSalesReportController,
+		resolve: {
+			"OutletSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["outletSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('outletSalesReport/getOutletSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
 	$routeProvider.when('/brandSalesReport', {
 		templateUrl: 'resources/html/brandSalesReport/layout.html',
+		controller: BrandSalesReportController,
+		resolve: {
+			"BrandSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["brandSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('brandSalesReport/getBrandSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
+	$routeProvider.when('/downloadBrandSalesReport', {
+		templateUrl: 'resources/html/downloadBrandSalesReport/layout.html',
 		controller: BrandSalesReportController,
 		resolve: {
 			"BrandSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
@@ -4297,8 +4736,96 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	});
 	
+	$routeProvider.when('/downloadProductTypeSalesReport', {
+		templateUrl: 'resources/html/downloadProductTypeSalesReport/layout.html',
+		controller: ProductTypeSalesReportController,
+		resolve: {
+			"ProductTypeSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('productTypeSalesReport/geProductTypeSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
 	$routeProvider.when('/supplierSalesReport', {
 		templateUrl: 'resources/html/supplierSalesReport/layout.html',
+		controller: SupplierSalesReportController,
+		resolve: {
+			"SupplierSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["supplierSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('supplierSalesReport/getSupplierSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
+	$routeProvider.when('/downloadSupplierSalesReport', {
+		templateUrl: 'resources/html/downloadSupplierSalesReport/layout.html',
 		controller: SupplierSalesReportController,
 		resolve: {
 			"SupplierSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
@@ -4429,8 +4956,140 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	});
 	
+	$routeProvider.when('/downloadCustomerGroupSalesReport', {
+		templateUrl: 'resources/html/downloadCustomerGroupSalesReport/layout.html',
+		controller: CustomerGroupSalesReportController,
+		resolve: {
+			"CustomerGroupSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('customerGroupSalesReport/getCustomerGroupSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
+	$routeProvider.when('/downloadCustomerSalesReport', {
+		templateUrl: 'resources/html/downloadCustomerSalesReport/layout.html',
+		controller: CustomerSalesReportController,
+		resolve: {
+			"CustomerSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('customerSalesReport/getCustomerSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
 	$routeProvider.when('/paymentReport', {
 		templateUrl: 'resources/html/paymentReport/layout.html',
+		controller: PaymentReportController,
+		resolve: {
+			"PaymentReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["brandSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('paymentReport/getPaymentReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
+	$routeProvider.when('/downloadPaymentReport', {
+		templateUrl: 'resources/html/downloadPaymentReport/layout.html',
 		controller: PaymentReportController,
 		resolve: {
 			"PaymentReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
@@ -4516,6 +5175,51 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 			}
 		}
 	}); 
+	
+	$routeProvider.when('/downloadRegisterReport', {
+		templateUrl: 'resources/html/downloadRegisterReport/layout.html',
+		controller: RegisterReportController,
+		resolve: {
+			"RegisterReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["registerReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('registerReport/getRegisterReportControllerData/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.inventoryReportOutletName)//+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType)
+					.success(function(Response) {
+						controllerData = Response.data;
+						//$rootScope.salesReportStartDate = "undefined";
+						//$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/stockReturntoWarehouse', {
 		templateUrl: 'resources/html/stockReturntoWarehouse/layout.html',
 		controller: StockReturntoWarehouseController,
@@ -5286,6 +5990,50 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 	
 	$routeProvider.when('/tagSalesReport', {
 		templateUrl: 'resources/html/tagSalesReport/layout.html',
+		controller: TagSalesReportController,
+		resolve: {
+			"TagSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["tagSalesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('tagSalesReport/getTagSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	});
+	
+	$routeProvider.when('/downloadTagSalesReport', {
+		templateUrl: 'resources/html/downloadTagSalesReport/layout.html',
 		controller: TagSalesReportController,
 		resolve: {
 			"TagSalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {

@@ -8,7 +8,7 @@
 				</h1>
 				<ol class="breadcrumb">
 					<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-					<li class="active">Inventory Report</li>
+					<li class="active">Download Inventory Report</li>
 				</ol>
 			</section>
 			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
@@ -22,18 +22,19 @@
 					<vd-tabs modifier="no-border large"
 							class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
 
-						<vd-tab type="anchor" active="this.activeTab == 'inventoryReport'"
-							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
-							link="'#inventoryReport'"> <a class="vd-tab-button ng-scope"
-							ng-href="#inventoryReport" href=""><span class="ng-scope">
-								Inventory Report </span></a> </vd-tab> <vd-tab
+						<vd-tab
 							class="po-users-tab ng-scope ng-isolate-scope vd-tab"
-							type="anchor" active="this.activeTab == 'downloadInventoryReport'"
-							link="'#downloadInventoryReport'"> <a
-							class="vd-tab-button ng-scope" ng-href="#downloadInventoryReport"
-							href="#downloadInventoryReport"><span class="ng-scope">
-								Download Inventory Report </span></a> </vd-tab> 
-						 </vd-tabs>
+							type="anchor" active="this.activeTab == 'inventoryReport'"
+							link="'#inventoryReport'"> <a
+							class="vd-tab-button ng-scope" ng-href="#inventoryReport"
+							href="inventoryReport"><span class="ng-scope">
+								Inventory Report </span></a> </vd-tab>
+						<vd-tab type="anchor" active="this.activeTab == 'downloadInventoryReport'"
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
+							link="'#downloadInventoryReport'"> <a class="vd-tab-button ng-scope"
+							ng-href="#downloadInventoryReport" href=""><span class="ng-scope">
+								Download Inventory Report</span></a> </vd-tab>  
+						 </vd-tabs>	
 					<div class="box box-primary newFont">
 
 
@@ -221,7 +222,7 @@
 </style>
 <script src="resources/js/jquery.dataTables.min.js"></script>
 
-<!-- <script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.responsive.min.js"></script>
 <script src="resources/js/dataTables.buttons.min.js"></script>
 
 <script src="resources/js/buttons.flash.min.js"></script>
@@ -231,22 +232,73 @@
 <script src="resources/js/vfs_fonts.js"></script>
 <script src="resources/js/buttons.html5.min.js"></script>
 <script src="resources/js/buttons.print.min.js"></script>
-<script src="resources/js/dataTables.colReorder.min.js"></script> -->
+<script src="resources/js/dataTables.colReorder.min.js"></script>
 
 
 
 
 <script>
-	$(function() {
-
-  	  setTimeout(
-  			  function() 
-  			  {
-  				$('#myTable').DataTable(
+ setTimeout(
+			  function() 
+			  {
+				$('#myTable').DataTable(
+					{
+						responsive : true,
+						dom : 'Bfrtip',
+						caption : "Mike Smith",
+						buttons : {
+							buttons : [
+									{
+										extend : 'print',
+										text : '<i class="fa fa-print"></i> Print',
+										title : $('h1').text(),
+										key : {
+											key : 'p',
+											altkey : true
+										},
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true,
+										autoPrint : false
+									},
+									{
+										extend : 'excel',
+										text : '<i class="fa fa-book"></i> Excel',
+										title : $('h1').text(),
+										key : {
+											key : 'p',
+											altkey : true
+										},
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true,
+										autoPrint : false
+									},
+									{
+										extend : 'pdf',
+										text : '<i class="fa fa-file-pdf-o"></i> PDF',
+										title : $('h1').text(),
+										exportOptions : {
+											columns : ':not(.no-print)'
+										},
+										footer : true
+									} ],
+							dom : {
+								container : {
+									className : 'dt-buttons'
+								},
+								button : {
+									className : 'btn btn-default'
+								}
+							}
+						}
+					});
+				$('#myTable1').DataTable(
 						{
-							responsive : true
-							 
-							/* dom : 'Bfrtip',
+							responsive : true,
+							dom : 'Bfrtip',
 							caption : "Mike Smith",
 							buttons : {
 								buttons : [
@@ -262,29 +314,7 @@
 												columns : ':not(.no-print)'
 											},
 											footer : true,
-											message : '<b> Sales Summary for for Dates</b>',
-											autoPrint : false,
-											customize : function(win) {
-												$(win.document.body)
-														.css('font-size',
-																'10pt')
-														.prepend(
-																'<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />');
-
-												$(win.document.body).find(
-														'table').addClass(
-														'compact').css(
-														'font-size', 'inherit');
-											}
-										},
-										{
-											extend : 'pdf',
-											text : '<i class="fa fa-file-pdf-o"></i> PDF',
-											title : $('h1').text(),
-											exportOptions : {
-												columns : ':not(.no-print)'
-											},
-											footer : true
+											autoPrint : false
 										},
 										{
 											extend : 'excel',
@@ -299,7 +329,16 @@
 											},
 											footer : true,
 											autoPrint : false
-										}],
+										},
+										{
+											extend : 'pdf',
+											text : '<i class="fa fa-file-pdf-o"></i> PDF',
+											title : $('h1').text(),
+											exportOptions : {
+												columns : ':not(.no-print)'
+											},
+											footer : true
+										} ],
 								dom : {
 									container : {
 										className : 'dt-buttons'
@@ -308,18 +347,8 @@
 										className : 'btn btn-default'
 									}
 								}
-							} */
+							}
 						});
-  				 
-  			  }, 10);
-		
-//		$("div.header").html('Charges list');
-//		$("div.footer").html('Total');
-//		$('#myTable caption').text('Sales Report');
-
-		
-		
-
-
-	});
-</script>
+			  }, 10);
+ 
+    </script>

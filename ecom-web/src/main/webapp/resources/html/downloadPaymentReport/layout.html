@@ -4,11 +4,11 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					Sales Report <small>Sales Report summary</small>
+					Payment Report <small>Payment Report summary</small>
 				</h1>
 				<ol class="breadcrumb">
 					<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-					<li class="active">Sales Report</li>
+					<li class="active">Download Payment Report</li>
 				</ol>
 			</section>
 			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
@@ -23,18 +23,19 @@
 					<vd-tabs modifier="no-border large"
 							class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
 
-						<vd-tab type="anchor" active="this.activeTab == 'salesReport'"
-							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
-							link="'#salesReport'"> <a class="vd-tab-button ng-scope"
-							ng-href="#salesReport" href=""><span class="ng-scope">
-								Sales Report </span></a> </vd-tab> <vd-tab
+						<vd-tab
 							class="po-users-tab ng-scope ng-isolate-scope vd-tab"
-							type="anchor" active="this.activeTab == 'downloadSalesReport'"
-							link="'#downloadSalesReport'"> <a
-							class="vd-tab-button ng-scope" ng-href="#downloadSalesReport"
-							href="#downloadSalesReport"><span class="ng-scope">
-								Download Sales Report </span></a> </vd-tab> 
-						 </vd-tabs>
+							type="anchor" active="this.activeTab == 'paymentReport'"
+							link="'#paymentReport'"> <a
+							class="vd-tab-button ng-scope" ng-href="#paymentReport"
+							href="paymentReport"><span class="ng-scope">
+								Payment Report </span></a> </vd-tab>
+						<vd-tab type="anchor" active="this.activeTab == 'downloadPaymentReport'"
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
+							link="'#downloadPaymentReport'"> <a class="vd-tab-button ng-scope"
+							ng-href="#downloadPaymentReport" href=""><span class="ng-scope">
+								Download Payment Report</span></a> </vd-tab>  
+						 </vd-tabs>	
 					<div class="box box-primary newFont">
 
 
@@ -42,7 +43,7 @@
 							<div class="row">
 							<!-- <div class="col-md-1"></div> -->
 								<div class="col-md-3">
-								<div class="form-group" ng-show="hideSalesDetails">
+								<div class="form-group">
 													<label for="inputPassword3" class="col-sm-5 control-label">Select Outlet</label>
 														
 														<div class="col-sm-7">
@@ -62,31 +63,19 @@
 									<div class="form-group">
 													<label for="inputPassword3" class="col-sm-4 control-label">Report Type</label>
 														
-														<div class="col-sm-8" ng-show="hideSalesDetails">
+														<div class="col-sm-8">
 														 <select class="form-control " data-native-menu="false"
 															data-role="listview" ng-change = "changeReportDataType()"
 															data-ng-model="reportType"
 															ng-init="reportType=reportTypeSelect">
-															<option value="Revenue">Revenue</option>
-															<option value="Cost of Goods">Cost of Goods</option>
+															<option value="Revenue">Amount</option>
+															<!-- <option value="Cost of Goods">Cost of Goods</option>
 															<option value="Gross Profit">Gross Profit</option>
 															<option value="Items Sold">Items Sold</option>
 															<option value="Margin">Margin</option>
 															<option value="Revenue (tax incl)">Revenue (tax incl)</option>
 															<option value="First Sale">First Sale</option>
-															<option value="Last Sale">Last Sale</option>
-														</select>
-													</div>
-													<div class="col-sm-8" ng-show="!hideSalesDetails">
-														 <select class="form-control " data-native-menu="false"
-															data-role="listview" ng-change = "changeReportDataType()"
-															data-ng-model="reportType"
-															ng-init="reportType=reportTypeSelect">
-															<option value="Revenue">Revenue</option>
-															<option value="Items Sold">Items Sold</option>
-															<option value="Revenue (tax incl)">Revenue (tax incl)</option>
-															<option value="First Sale">First Sale</option>
-															<option value="Last Sale">Last Sale</option>
+															<option value="Last Sale">Last Sale</option> -->
 														</select>
 													</div>
 												</div>
@@ -214,7 +203,7 @@
 </style>
 <script src="resources/js/jquery.dataTables.min.js"></script>
 
-<!-- <script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.responsive.min.js"></script>
 <script src="resources/js/dataTables.buttons.min.js"></script>
 
 <script src="resources/js/buttons.flash.min.js"></script>
@@ -224,7 +213,7 @@
 <script src="resources/js/vfs_fonts.js"></script>
 <script src="resources/js/buttons.html5.min.js"></script>
 <script src="resources/js/buttons.print.min.js"></script>
-<script src="resources/js/dataTables.colReorder.min.js"></script> -->
+<script src="resources/js/dataTables.colReorder.min.js"></script>
 
 
 
@@ -237,9 +226,9 @@
   			  {
   				$('#myTable').DataTable(
 						{
-							responsive : true
+							responsive : true,
 							 
-							/* dom : 'Bfrtip',
+							dom : 'Bfrtip',
 							caption : "Mike Smith",
 							buttons : {
 								buttons : [
@@ -278,7 +267,7 @@
 												columns : ':not(.no-print)'
 											},
 											footer : true
-										},
+										} ,
 										{
 											extend : 'excel',
 											text : '<i class="fa fa-book"></i> Excel',
@@ -301,7 +290,7 @@
 										className : 'btn btn-default'
 									}
 								}
-							} */
+							}
 						});
   				 
   			  }, 10);
@@ -310,23 +299,22 @@
 //		$("div.footer").html('Total');
 //		$('#myTable caption').text('Sales Report');
 
-		var start = moment().subtract(0, 'days');
+		var start = moment().subtract(6, 'days');
 		var end = moment();
-		
+
 		function cb(start, end) {
-			if(!localStorage.getItem('startSalesDate') || !localStorage.getItem('endSalesDate')){
+			if(!localStorage.getItem('startPaymentSalesDate') || !localStorage.getItem('endPaymentSalesDate')){
 				$('#reportrange span').html(
 						start.format('MMMM D, YYYY') + ' - '
 								+ end.format('MMMM D, YYYY'));
 			}else{
 				$('#reportrange span').html(
-						localStorage.getItem('startSalesDate')  + ' - '
-								+ localStorage.getItem('endSalesDate'));
+						localStorage.getItem('startPaymentSalesDate')  + ' - '
+								+ localStorage.getItem('endPaymentSalesDate'));
 				
 			}
-			
 		}
-		
+
 		$('#reportrange').daterangepicker(
 				{
 					ranges : {
@@ -343,12 +331,15 @@
 								moment().subtract('month', 1).startOf('month'),
 								moment().subtract('month', 1).endOf('month') ]
 					},
+					
+					/* startDate : moment().subtract('days', 29),
+					endDate : moment() */
 					startDate : start,
 					endDate : end
 				},
 				function(start, end) {
-					localStorage.setItem('startSalesDate',start.format('MMMM D, YYYY'));
-					localStorage.setItem('endSalesDate',end.format('MMMM D, YYYY'));
+					localStorage.setItem('startPaymentSalesDate',start.format('MMMM D, YYYY'));
+					localStorage.setItem('endPaymentSalesDate',end.format('MMMM D, YYYY'));
 					$('#reportrange span').html(
 							start.format('MMMM D, YYYY') + ' - '
 									+ end.format('MMMM D, YYYY'));

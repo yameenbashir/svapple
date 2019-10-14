@@ -20,7 +20,21 @@
 
 				<div class="row">
 
+					<vd-tabs modifier="no-border large"
+							class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
 
+						<vd-tab type="anchor" active="this.activeTab == 'paymentReport'"
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
+							link="'#paymentReport'"> <a class="vd-tab-button ng-scope"
+							ng-href="#paymentReport" href=""><span class="ng-scope">
+								Payment Report </span></a> </vd-tab> <vd-tab
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab"
+							type="anchor" active="this.activeTab == 'downloadPaymentReport'"
+							link="'#downloadPaymentReport'"> <a
+							class="vd-tab-button ng-scope" ng-href="#downloadPaymentReport"
+							href="#downloadPaymentReport"><span class="ng-scope">
+								Download Payment Report </span></a> </vd-tab> 
+						 </vd-tabs>
 					<div class="box box-primary newFont">
 
 
@@ -53,14 +67,14 @@
 															data-role="listview" ng-change = "changeReportDataType()"
 															data-ng-model="reportType"
 															ng-init="reportType=reportTypeSelect">
-															<option value="Revenue">Revenue</option>
-															<option value="Cost of Goods">Cost of Goods</option>
+															<option value="Revenue">Amount</option>
+															<!-- <option value="Cost of Goods">Cost of Goods</option>
 															<option value="Gross Profit">Gross Profit</option>
 															<option value="Items Sold">Items Sold</option>
 															<option value="Margin">Margin</option>
 															<option value="Revenue (tax incl)">Revenue (tax incl)</option>
 															<option value="First Sale">First Sale</option>
-															<option value="Last Sale">Last Sale</option>
+															<option value="Last Sale">Last Sale</option> -->
 														</select>
 													</div>
 												</div>
@@ -188,7 +202,7 @@
 </style>
 <script src="resources/js/jquery.dataTables.min.js"></script>
 
-<script src="resources/js/dataTables.responsive.min.js"></script>
+<!-- <script src="resources/js/dataTables.responsive.min.js"></script>
 <script src="resources/js/dataTables.buttons.min.js"></script>
 
 <script src="resources/js/buttons.flash.min.js"></script>
@@ -198,7 +212,7 @@
 <script src="resources/js/vfs_fonts.js"></script>
 <script src="resources/js/buttons.html5.min.js"></script>
 <script src="resources/js/buttons.print.min.js"></script>
-<script src="resources/js/dataTables.colReorder.min.js"></script>
+<script src="resources/js/dataTables.colReorder.min.js"></script> -->
 
 
 
@@ -211,7 +225,7 @@
   			  {
   				$('#myTable').DataTable(
 						{
-							responsive : true,
+							responsive : true/* ,
 							 
 							dom : 'Bfrtip',
 							caption : "Mike Smith",
@@ -275,7 +289,7 @@
 										className : 'btn btn-default'
 									}
 								}
-							}
+							} */
 						});
   				 
   			  }, 10);

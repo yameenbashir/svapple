@@ -168,55 +168,78 @@ var ProductDetailsController = ['$scope', '$http', '$window','$cookieStore','$ro
 				$scope.printOptionsContinousLarge = false;
 				$scope.printOptionsContinousNew = false;
 				$scope.printOptionsContinousNewZebra = false;
+				$scope.printOptionsContinousDouble = false;
 				$scope.printThisElementA4 = "printThisElement";
 				$scope.printThisElementContinous = "";
 				$scope.printThisElementContinousLarge = "";
 				$scope.printThisElementContinousNew = "";
 				$scope.printThisElementContinousNewZebra = "";
+				$scope.printThisElementContinousDouble = "";
 			}else if($scope.printOptions=="Continous"){
 				$scope.printOptionsA4 = false;
 				$scope.printOptionsContinous = true;
 				$scope.printOptionsContinousLarge = false;
 				$scope.printOptionsContinousNew = false;
 				$scope.printOptionsContinousNewZebra = false;
+				$scope.printOptionsContinousDouble = false;
 				$scope.printThisElementA4 = "";
 				$scope.printThisElementContinous = "printThisElement";
 				$scope.printThisElementContinousLarge = "";
 				$scope.printThisElementContinousNew = "";
 				$scope.printThisElementContinousNewZebra = "";
+				$scope.printThisElementContinousDouble = "";
 			}else if($scope.printOptions=="ContinousNew"){
 				$scope.printOptionsA4 = false;
 				$scope.printOptionsContinous = false;
 				$scope.printOptionsContinousLarge = false;
 				$scope.printOptionsContinousNew = true;
 				$scope.printOptionsContinousNewZebra = false;
+				$scope.printOptionsContinousDouble = false;
 				$scope.printThisElementA4 = "";
 				$scope.printThisElementContinousNew = "printThisElement";
 				$scope.printThisElementContinousLarge = "";
 				$scope.printThisElementContinous = "";
 				$scope.printThisElementContinousNewZebra = "";
+				$scope.printThisElementContinousDouble = "";
 			}else if($scope.printOptions=="ContinousLarge"){
 				$scope.printOptionsA4 = false;
 				$scope.printOptionsContinous = false;
 				$scope.printOptionsContinousLarge = true;
 				$scope.printOptionsContinousNew = false;
 				$scope.printOptionsContinousNewZebra = false;
+				$scope.printOptionsContinousDouble = false;
 				$scope.printThisElementA4 = "";
 				$scope.printThisElementContinous = "";
 				$scope.printThisElementContinousLarge = "printThisElement";
 				$scope.printThisElementContinousNew = "";
 				$scope.printThisElementContinousNewZebra = "";
+				$scope.printThisElementContinousDouble = "";
 			}else if($scope.printOptions=="ContinousNewZebra"){
 				$scope.printOptionsA4 = false;
 				$scope.printOptionsContinous = false;
 				$scope.printOptionsContinousLarge = false;
 				$scope.printOptionsContinousNew = false;
 				$scope.printOptionsContinousNewZebra = true;
+				$scope.printOptionsContinousDouble = false;
 				$scope.printThisElementA4 = "";
 				$scope.printThisElementContinousNew = "";
 				$scope.printThisElementContinousLarge = "";
 				$scope.printThisElementContinous = "";
 				$scope.printThisElementContinousNewZebra = "printThisElement";
+				$scope.printThisElementContinousDouble = "";
+			}else if($scope.printOptions=="ContinousDouble"){
+				$scope.printOptionsA4 = false;
+				$scope.printOptionsContinous = false;
+				$scope.printOptionsContinousLarge = false;
+				$scope.printOptionsContinousNew = false;
+				$scope.printOptionsContinousNewZebra = false;
+				$scope.printOptionsContinousDouble = true;
+				$scope.printThisElementA4 = "";
+				$scope.printThisElementContinousNew = "";
+				$scope.printThisElementContinousLarge = "";
+				$scope.printThisElementContinous = "";
+				$scope.printThisElementContinousNewZebra = "";
+				$scope.printThisElementContinousDouble = "printThisElement";
 			}
 			
 			

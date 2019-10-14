@@ -4,11 +4,11 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					Sales Report <small>Sales Report summary</small>
+					Sales Report With Sale<small>Sales Report summary</small>
 				</h1>
 				<ol class="breadcrumb">
 					<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-					<li class="active">Sales Report</li>
+					<li class="active">Download Sales Report</li>
 				</ol>
 			</section>
 			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
@@ -23,17 +23,18 @@
 					<vd-tabs modifier="no-border large"
 							class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
 
-						<vd-tab type="anchor" active="this.activeTab == 'salesReport'"
-							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
-							link="'#salesReport'"> <a class="vd-tab-button ng-scope"
-							ng-href="#salesReport" href=""><span class="ng-scope">
-								Sales Report </span></a> </vd-tab> <vd-tab
+						<vd-tab
 							class="po-users-tab ng-scope ng-isolate-scope vd-tab"
-							type="anchor" active="this.activeTab == 'downloadSalesReport'"
-							link="'#downloadSalesReport'"> <a
-							class="vd-tab-button ng-scope" ng-href="#downloadSalesReport"
-							href="#downloadSalesReport"><span class="ng-scope">
-								Download Sales Report </span></a> </vd-tab> 
+							type="anchor" active="this.activeTab == 'salesReportWithSale'"
+							link="'#salesReportWithSale'"> <a
+							class="vd-tab-button ng-scope" ng-href="#salesReportWithSale"
+							href="salesReportWithSale"><span class="ng-scope">
+								Sales Report With Sale </span></a> </vd-tab>
+						<vd-tab type="anchor" active="this.activeTab == 'downloadSalesReportWithSale'"
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
+							link="'#downloadSalesReportWithSale'"> <a class="vd-tab-button ng-scope"
+							ng-href="#downloadSalesReportWithSale" href=""><span class="ng-scope">
+								Download Sales Report With Sale </span></a> </vd-tab>  
 						 </vd-tabs>
 					<div class="box box-primary newFont">
 
@@ -214,7 +215,7 @@
 </style>
 <script src="resources/js/jquery.dataTables.min.js"></script>
 
-<!-- <script src="resources/js/dataTables.responsive.min.js"></script>
+<script src="resources/js/dataTables.responsive.min.js"></script>
 <script src="resources/js/dataTables.buttons.min.js"></script>
 
 <script src="resources/js/buttons.flash.min.js"></script>
@@ -224,7 +225,7 @@
 <script src="resources/js/vfs_fonts.js"></script>
 <script src="resources/js/buttons.html5.min.js"></script>
 <script src="resources/js/buttons.print.min.js"></script>
-<script src="resources/js/dataTables.colReorder.min.js"></script> -->
+<script src="resources/js/dataTables.colReorder.min.js"></script>
 
 
 
@@ -237,9 +238,9 @@
   			  {
   				$('#myTable').DataTable(
 						{
-							responsive : true
+							responsive : true,
 							 
-							/* dom : 'Bfrtip',
+							dom : 'Bfrtip',
 							caption : "Mike Smith",
 							buttons : {
 								buttons : [
@@ -301,7 +302,7 @@
 										className : 'btn btn-default'
 									}
 								}
-							} */
+							}
 						});
   				 
   			  }, 10);
@@ -310,7 +311,7 @@
 //		$("div.footer").html('Total');
 //		$('#myTable caption').text('Sales Report');
 
-		var start = moment().subtract(0, 'days');
+		var start = moment().subtract(6, 'days');
 		var end = moment();
 		
 		function cb(start, end) {

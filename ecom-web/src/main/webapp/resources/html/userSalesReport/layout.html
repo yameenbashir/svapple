@@ -20,7 +20,21 @@
 
 				<div class="row">
 
+					<vd-tabs modifier="no-border large"
+							class="ng-scope ng-isolate-scope vd-tabs vd-tabs--no-border vd-tabs--large">
 
+						<vd-tab type="anchor" active="this.activeTab == 'userSalesReport'"
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab vd-tab--active"
+							link="'#userSalesReport'"> <a class="vd-tab-button ng-scope"
+							ng-href="#userSalesReport" href=""><span class="ng-scope">
+								User Sales Report </span></a> </vd-tab> <vd-tab
+							class="po-users-tab ng-scope ng-isolate-scope vd-tab"
+							type="anchor" active="this.activeTab == 'downloadUserSalesReport'"
+							link="'#downloadSalesDetailReport'"> <a
+							class="vd-tab-button ng-scope" ng-href="#downloadUserSalesReport"
+							href="#downloadUserSalesReport"><span class="ng-scope">
+								Download User Sales Report </span></a> </vd-tab> 
+						 </vd-tabs>
 					<div class="box box-primary newFont">
 
 
@@ -199,7 +213,7 @@
 </style>
 <script src="resources/js/jquery.dataTables.min.js"></script>
 
-<script src="resources/js/dataTables.responsive.min.js"></script>
+<!-- <script src="resources/js/dataTables.responsive.min.js"></script>
 <script src="resources/js/dataTables.buttons.min.js"></script>
 
 <script src="resources/js/buttons.flash.min.js"></script>
@@ -209,7 +223,7 @@
 <script src="resources/js/vfs_fonts.js"></script>
 <script src="resources/js/buttons.html5.min.js"></script>
 <script src="resources/js/buttons.print.min.js"></script>
-<script src="resources/js/dataTables.colReorder.min.js"></script>
+<script src="resources/js/dataTables.colReorder.min.js"></script> -->
 
 
 
@@ -222,9 +236,9 @@
   			  {
   				$('#myTable').DataTable(
 						{
-							responsive : true,
+							responsive : true
 							 
-							dom : 'Bfrtip',
+							/* dom : 'Bfrtip',
 							caption : "Mike Smith",
 							buttons : {
 								buttons : [
@@ -263,7 +277,7 @@
 												columns : ':not(.no-print)'
 											},
 											footer : true
-										} ,
+										},
 										{
 											extend : 'excel',
 											text : '<i class="fa fa-book"></i> Excel',
@@ -286,7 +300,7 @@
 										className : 'btn btn-default'
 									}
 								}
-							}
+							} */
 						});
   				 
   			  }, 10);
@@ -297,20 +311,21 @@
 
 		var start = moment().subtract(6, 'days');
 		var end = moment();
-
+		
 		function cb(start, end) {
-			if(!localStorage.getItem('startUserSalesDate') || !localStorage.getItem('endUserSalesDate')){
+			if(!localStorage.getItem('startSalesDate') || !localStorage.getItem('endSalesDate')){
 				$('#reportrange span').html(
 						start.format('MMMM D, YYYY') + ' - '
 								+ end.format('MMMM D, YYYY'));
 			}else{
 				$('#reportrange span').html(
-						localStorage.getItem('startUserSalesDate')  + ' - '
-								+ localStorage.getItem('endUserSalesDate'));
+						localStorage.getItem('startSalesDate')  + ' - '
+								+ localStorage.getItem('endSalesDate'));
 				
 			}
+			
 		}
-
+		
 		$('#reportrange').daterangepicker(
 				{
 					ranges : {
@@ -327,12 +342,12 @@
 								moment().subtract('month', 1).startOf('month'),
 								moment().subtract('month', 1).endOf('month') ]
 					},
-					startDate : moment().subtract('days', 29),
-					endDate : moment()
+					startDate : start,
+					endDate : end
 				},
 				function(start, end) {
-					localStorage.setItem('startUserSalesDate',start.format('MMMM D, YYYY'));
-					localStorage.setItem('endUserSalesDate',end.format('MMMM D, YYYY'));
+					localStorage.setItem('startSalesDate',start.format('MMMM D, YYYY'));
+					localStorage.setItem('endSalesDate',end.format('MMMM D, YYYY'));
 					$('#reportrange span').html(
 							start.format('MMMM D, YYYY') + ' - '
 									+ end.format('MMMM D, YYYY'));

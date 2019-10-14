@@ -16,7 +16,12 @@ insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,C
 insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,CREATED_BY,UPDATED_BY,CREATED_DATE,LAST_UPDATED,ACTIVE_INDICATOR) values ('SALE_SMS','Thanks for shopping on our brand!',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
 insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,CREATED_BY,UPDATED_BY,CREATED_DATE,LAST_UPDATED,ACTIVE_INDICATOR) values ('SMS_ENABLED','false',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
 insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,CREATED_BY,UPDATED_BY,CREATED_DATE,LAST_UPDATED,ACTIVE_INDICATOR) values ('SHOW_PRODCUT_TAG','true',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
-
+insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,CREATED_BY,UPDATED_BY,CREATED_DATE,LAST_UPDATED,ACTIVE_INDICATOR) values ('TERMS_AND_CONDITIONS','<div>
+Thank You For Your Shopping.<br> No Return & Non Refundable.<br>
+No Exchange Of Style <br>
+No Exchange Of Size In Case Of Any Damage Or Worn <br>
+Exchange Of Size Within 3days Of Purchase Along With Receipt And Tag(Based On Availability) <br>
+</div>',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
 -- ---------------Receipt Image ------------------------------
 insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,CREATED_BY,UPDATED_BY,CREATED_DATE,LAST_UPDATED,ACTIVE_INDICATOR) 
 values ('COMPANY_RECEIPT_IMAGE','brand_kites.jpg',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
