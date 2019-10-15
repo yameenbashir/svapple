@@ -209,7 +209,7 @@ public class SendSMS {
 			
 		}
 		
-		public String sendSMSEOcean( String phoneNum,String message,String userName, String password, String mask) {
+		public String sendSMSByEOcean( String phoneNum,String message,String userName, String password, String mask) {
 			String finalResponse = "";
 			message = message.replaceAll("%", "%25");
 			message = message.replaceAll(" ", "%20");
@@ -257,6 +257,7 @@ public class SendSMS {
 			
 			StringBuffer response = new StringBuffer();
 			String url = "https://pk.eocean.us/APIManagement/API/RequestAPI?user="+userName+"&pwd="+password+"&sender="+mask+"&reciever="+phoneNum+"&msg-data="+message+"&response=string";
+			System.out.println("url: "+url);
 			//String url1 = "https://pk.eocean.us/APIManagement/API/RequestAPI?user=vestidoin_1&pwd=AMceTQFvaPczx2IeFF4TTeRDSaXbdQJHSWn96Yz3FZPq94pbgPI5%2fPPZsy4yZywvDA%3d%3d&sender=Vestido%20In&reciever=03214179684&msg-data=Vestido%20In%20Mask%20Testing%20Message&response=string";
 			try{
 				URL obj = new URL(url);
@@ -285,16 +286,16 @@ public class SendSMS {
 	
 	public static void main (String args[]){
 		try{
-			String user = "vestidoin_1";
-			String phoneNum = "03214179684,03046664547";
-			String message = "Testing post method";
-			String userName = "vestidoin_1";
-			String password = "AMceTQFvaPczx2IeFF4TTeRDSaXbdQJHSWn96Yz3FZPq94pbgPI5%2fPPZsy4yZywvDA%3d%3d";
-			String mask = "Vestido%20In";
-			
+			String user = "Kites%20Kids";
+			String phoneNum = "03046664547";
+			String message = "Testing kites mask";
+			String userName = "Kites Kids";
+			String password = "AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d";
+			String mask = "Kites%20Kids";
+			///APIManagement/API/RequestAPI?user=Kites Kids&pwd=AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d&sender=Kites Kids&reciever=Number&msg-data=YOUR DATA HERE&response=string
 			
 			SendSMS sendSms = new SendSMS();
-			String value =sendSms.sendSMSEOcean(phoneNum, message, userName, password, mask);
+			String value =sendSms.sendSMSByEOcean(phoneNum, message, userName, password, mask);
 			System.out.println(value);
 			//sendSms.sendSMSPostEOcean(request, user, phoneNum, message, userName, password, mask);
 			/*StringBuffer response = new StringBuffer();
