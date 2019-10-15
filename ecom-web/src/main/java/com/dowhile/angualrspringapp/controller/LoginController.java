@@ -179,7 +179,7 @@ public class LoginController {
 				Map<String ,Configuration> configurationMap = configurationService.getAllConfigurationsByCompanyId(company.getCompanyId());
 				session.setAttribute("configurationMap", configurationMap);
 				//For Local Installation
-				Configuration configruationForLocal = configurationMap.get("COMPANY_RECEIPT_IMAGE");
+				/*Configuration configruationForLocal = configurationMap.get("COMPANY_RECEIPT_IMAGE");
 				if(configruationForLocal!=null){
 					String companyImagePath = configruationForLocal.getPropertyValue();
 					String encodeString = StringUtils.encode(companyImagePath);
@@ -188,7 +188,7 @@ public class LoginController {
 					System.out.println("Decode: "+decode);
 					
 					
-				}
+				}*/
 				
 				
 				LoginBean loginBean = new LoginBean();

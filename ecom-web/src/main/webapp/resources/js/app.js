@@ -146,7 +146,8 @@ App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeo
 		//$rootScope.userImage = "/app/resources/images/selfie_"+$rootScope.userEmail+".jpg";
 		$rootScope.userImage = "/app/resources/dist/img/avatar5.png";
 	}
-	$rootScope.systemBusy = 'System is busy while handling request. Please try later.'
+	$rootScope.systemBusy = 'System is busy while handling request. Please try later.';
+	$rootScope.complianceTextForReporting = "Report have compliance with Today's 9:00 AM data." ;
 
 	$rootScope.online = true;
 	$rootScope.heartBeat = function() {
@@ -3912,7 +3913,8 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesReport/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesReport/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+
+							$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -3944,6 +3946,97 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 			}
 		}
 	}); 
+	
+	$routeProvider.when('/salesReportLive', {
+		templateUrl: 'resources/html/salesReportLive/layout.html',
+		controller: SalesReportController,
+		resolve: {
+			"SalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesReport/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+
+							$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"true")
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
+	$routeProvider.when('/downloadSalesReportLive', {
+		templateUrl: 'resources/html/downloadSalesReportLive/layout.html',
+		controller: SalesReportController,
+		resolve: {
+			"SalesReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesReport/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+
+							$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"true")
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.salesReportStartDate = "undefined";
+						$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/downloadSalesReport', {
 		templateUrl: 'resources/html/downloadSalesReport/layout.html',
 		controller: SalesReportController,
@@ -3955,7 +4048,8 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesReport/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesReport/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+
+							$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -3998,7 +4092,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReportWithOutSale"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesReportWithOutSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesReportWithOutSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4042,7 +4136,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReportWithOutSale"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesReportWithOutSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesReportWithOutSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4086,7 +4180,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReportWithSale"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesReportWithSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesReportWithSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4130,7 +4224,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReportWithSale"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesReportWithSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesReportWithSale/getSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4175,7 +4269,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["userSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('userSalesReport/getUserSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('userSalesReport/getUserSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4219,7 +4313,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["userSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('userSalesReport/getUserSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('userSalesReport/getUserSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4263,7 +4357,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesDetailReport/getSalesDetailReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesDetailReport/getSalesDetailReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4307,7 +4401,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('salesDetailReport/getSalesDetailReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('salesDetailReport/getSalesDetailReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4351,7 +4445,8 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('creditCardSalesReport/getCreditCardSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('creditCardSalesReport/getCreditCardSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+
+							'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4395,7 +4490,8 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('creditCardSalesReport/getCreditCardSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('creditCardSalesReport/getCreditCardSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+
+							$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4439,7 +4535,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('cashSalesReport/getCashSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('cashSalesReport/getCashSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4483,7 +4579,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesDetailReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('cashSalesReport/getCashSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('cashSalesReport/getCashSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4527,7 +4623,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["outletSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('outletSalesReport/getOutletSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('outletSalesReport/getOutletSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4571,7 +4667,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["outletSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('outletSalesReport/getOutletSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('outletSalesReport/getOutletSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4615,7 +4711,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["brandSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('brandSalesReport/getBrandSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('brandSalesReport/getBrandSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4659,7 +4755,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["brandSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('brandSalesReport/getBrandSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('brandSalesReport/getBrandSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4703,7 +4799,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('productTypeSalesReport/geProductTypeSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('productTypeSalesReport/geProductTypeSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4747,7 +4843,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('productTypeSalesReport/geProductTypeSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('productTypeSalesReport/geProductTypeSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4791,7 +4887,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["supplierSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('supplierSalesReport/getSupplierSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('supplierSalesReport/getSupplierSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4835,7 +4931,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["supplierSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('supplierSalesReport/getSupplierSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('supplierSalesReport/getSupplierSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4879,7 +4975,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('customerSalesReport/getCustomerSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('customerSalesReport/getCustomerSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4923,7 +5019,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('customerGroupSalesReport/getCustomerGroupSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('customerGroupSalesReport/getCustomerGroupSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -4967,7 +5063,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('customerGroupSalesReport/getCustomerGroupSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('customerGroupSalesReport/getCustomerGroupSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -5011,7 +5107,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productTypeSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('customerSalesReport/getCustomerSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('customerSalesReport/getCustomerSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -5055,7 +5151,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["brandSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('paymentReport/getPaymentReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('paymentReport/getPaymentReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -5099,7 +5195,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["brandSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('paymentReport/getPaymentReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('paymentReport/getPaymentReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -5999,7 +6095,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["tagSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('tagSalesReport/getTagSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('tagSalesReport/getTagSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";
@@ -6043,7 +6139,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 
 				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["tagSalesReport"]==true){
 					$rootScope.purchaseOrderLoadedFully = true;
-					controllerData = $http.post('tagSalesReport/getTagSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName)
+					controllerData = $http.post('tagSalesReport/getTagSalesReportByDateRange/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType+"/"+$rootScope.inventoryReportOutletName+"/"+"false")
 					.success(function(Response) {
 						controllerData = Response.data;
 						$rootScope.salesReportStartDate = "undefined";

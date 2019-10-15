@@ -9,7 +9,13 @@
     margin-left: 45%;
     margin-top: 20%;
 }
-
+.blink-two {
+         animation: blinker-two 1.4s linear infinite;
+         color: red;
+       }
+       @keyframes blinker-two {  
+         100% { opacity: 0; }
+       }
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

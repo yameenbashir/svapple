@@ -57,11 +57,11 @@ public class BrandSalesReportController {
 
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getBrandSalesReportByDateRange/{sessionId}/{startDate}/{endDate}/{reportType}/{reportDateType}/{outletName}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getBrandSalesReportByDateRange/{sessionId}/{startDate}/{endDate}/{reportType}/{reportDateType}/{outletName}/{isLiveData}", method = RequestMethod.POST)
 	public @ResponseBody Response getBrandSalesReportByDateRange(@PathVariable("sessionId") String sessionId,
 			@PathVariable("startDate") String startDate,@PathVariable("endDate") String endDate,
 			@PathVariable("reportType") String reportType,@PathVariable("reportDateType") String reportDateType,
-			@PathVariable("outletName") String outletName,HttpServletRequest request) {
+			@PathVariable("outletName") String outletName,@PathVariable("isLiveData") String isLiveData,HttpServletRequest request) {
 
 
 		if(SessionValidator.isSessionValid(sessionId, request)){
@@ -69,6 +69,13 @@ public class BrandSalesReportController {
 			User currentUser = (User) session.getAttribute("user");
 			try {
 				boolean completeReport = false;
+				StringBuilder tableName = null;
+				
+				if(isLiveData!=null && !isLiveData.equalsIgnoreCase("") && isLiveData.equalsIgnoreCase("true")){
+					tableName = new StringBuilder("Brand_Sales_Report");
+				}else{
+					tableName = new StringBuilder("mv_Brand_Sales_Report");
+				}
 				int outletId = 0;
 				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
 					Response response = getOutlets(sessionId, request);
@@ -117,7 +124,7 @@ public class BrandSalesReportController {
 						reportParams.setPrintColumns( reportType+","+ "Cost of Goods,Gross Profit,Margin,Tax");
 						reportParams.setReportDateType(reportDateType);
 						reportParams.setStartDate(startDat);
-						reportParams.setTableName("Brand_Sales_Report");
+						reportParams.setTableName(tableName.toString());
 						reportParams.setTallyColumn(reportType);
 						if(completeReport){
 							reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -138,7 +145,7 @@ public class BrandSalesReportController {
 					reportParams.setPrintColumns( reportType+","+"Revenue,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("Brand_Sales_Report");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Cost_of_Goods");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -159,7 +166,7 @@ public class BrandSalesReportController {
 					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("Brand_Sales_Report");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Gross_Profit");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -180,7 +187,7 @@ public class BrandSalesReportController {
 					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("Brand_Sales_Report");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Items_Sold");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -201,7 +208,7 @@ public class BrandSalesReportController {
 					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("Brand_Sales_Report");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Margin");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -221,7 +228,7 @@ public class BrandSalesReportController {
 					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("Brand_Sales_Report");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Revenue_tax_incl");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -241,7 +248,7 @@ public class BrandSalesReportController {
 					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("Brand_Sales_Report");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Revenue");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -261,7 +268,7 @@ public class BrandSalesReportController {
 					reportParams.setPrintColumns(  reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("Brand_Sales_Report");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Revenue");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());

@@ -88,16 +88,34 @@ mysqldump -h localhost -P 3306 -u root --password=123456  --databases ecom > /tm
 ======================= MYSQL IMPORT ============================================
 mysql> source /var/lib/openshift/5958727e2d5271e688000050/app-root/data/ECOM.SQL;
 ===================================File Merge and JS minifier================================
-cd C:\Users\IBM_ADMIN\git\ecom\ecom-web\src\main\webapp\resources\js\controllers
+cd C:\Users\HafizYameenBashir\git\svapple\ecom-web\src\main\webapp\resources\js\controllers
 Delete File(C:\Users\IBM_ADMIN\git\ecom\ecom-web\src\main\webapp\resources\js\controllers\merged\output.js)
 file-merge -i **/*.js -o merged\merged.js
 cd merged
 uglifyjs merged.js -c -m -o output.js
 
 
-minify  output.js
+
 http://www.minifier.org/
 https://jscompress.com/
+====================================== Commands for file merge and js minifiers new=====================
+
+
+cd C:\Users\HafizYameenBashir\git\svapple\ecom-web\src\main\webapp\resources\js\controllers
+Delete File(C:\Users\IBM_ADMIN\git\ecom\ecom-web\src\main\webapp\resources\js\controllers\merged\output.js)
+file-merge -i C:\Users\HafizYameenBashir\git\svapple\ecom-web\src\main\webapp\resources\js\controllers/*.js -o merged\merged.js
+cd merged
+uglifyjs merged.js -c -m -o output.js
+
+
+
+================== Commands to install======================================
+1- First install node.js
+then restart computer
+2- Open command prompt and check node js installed with command  npm --version
+3- after node js instllation run below commands
+npm install -g uglifyjs
+npm install -g file-merge
 =============================================================================
 ========================SMS Delivery STatus==================================
 http://sendpk.com/api/delivery.php?username=923214823566&password=9183&id=e607e7b1-057f-4cd0-ac7b-266ddd66b601

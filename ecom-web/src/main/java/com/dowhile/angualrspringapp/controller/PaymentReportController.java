@@ -57,11 +57,11 @@ public class PaymentReportController {
 
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getPaymentReportByDateRange/{sessionId}/{startDate}/{endDate}/{reportType}/{reportDateType}/{outletName}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getPaymentReportByDateRange/{sessionId}/{startDate}/{endDate}/{reportType}/{reportDateType}/{outletName}/{isLiveData}", method = RequestMethod.POST)
 	public @ResponseBody Response getPaymentReportByDateRange(@PathVariable("sessionId") String sessionId,
 			@PathVariable("startDate") String startDate,@PathVariable("endDate") String endDate,
 			@PathVariable("reportType") String reportType,@PathVariable("reportDateType") String reportDateType,
-			@PathVariable("outletName") String outletName,HttpServletRequest request) {
+			@PathVariable("outletName") String outletName,@PathVariable("isLiveData") String isLiveData,HttpServletRequest request) {
 
 
 		if(SessionValidator.isSessionValid(sessionId, request)){
@@ -69,6 +69,13 @@ public class PaymentReportController {
 			User currentUser = (User) session.getAttribute("user");
 			try {
 				boolean completeReport = false;
+				StringBuilder tableName = null;
+				
+				if(isLiveData!=null && !isLiveData.equalsIgnoreCase("") && isLiveData.equalsIgnoreCase("true")){
+					tableName = new StringBuilder("Payment_Report");
+				}else{
+					tableName = new StringBuilder("mv_Payment_Report");
+				}
 				int outletId = 0;
 				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
 					Response response = getOutlets(sessionId, request);
@@ -117,7 +124,7 @@ public class PaymentReportController {
 						reportParams.setPrintColumns( "Amount");
 						reportParams.setReportDateType(reportDateType);
 						reportParams.setStartDate(startDat);
-						reportParams.setTableName("Payment_Report");
+						reportParams.setTableName(tableName.toString());
 						reportParams.setTallyColumn("AMOUNT");
 						if(completeReport){
 							reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());

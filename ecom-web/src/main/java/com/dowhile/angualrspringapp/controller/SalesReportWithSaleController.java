@@ -63,11 +63,11 @@ public class SalesReportWithSaleController {
 	@Resource
 	private ConfigurationService configurationService;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getSalesReportByDateRange/{sessionId}/{startDate}/{endDate}/{reportType}/{reportDateType}/{outletName}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getSalesReportByDateRange/{sessionId}/{startDate}/{endDate}/{reportType}/{reportDateType}/{outletName}/{isLiveData}", method = RequestMethod.POST)
 	public @ResponseBody Response getSalesReportByDateRange(@PathVariable("sessionId") String sessionId,
 			@PathVariable("startDate") String startDate,@PathVariable("endDate") String endDate,
 			@PathVariable("reportType") String reportType,@PathVariable("reportDateType") String reportDateType,
-			@PathVariable("outletName") String outletName,HttpServletRequest request) {
+			@PathVariable("outletName") String outletName,@PathVariable("isLiveData") String isLiveData,HttpServletRequest request) {
 
 
 		if(SessionValidator.isSessionValid(sessionId, request)){
@@ -76,6 +76,13 @@ public class SalesReportWithSaleController {
 			try {
 				boolean completeReport = false;
 				boolean isHeadOffice = false;
+				StringBuilder tableName = null;
+				
+				if(isLiveData!=null && !isLiveData.equalsIgnoreCase("") && isLiveData.equalsIgnoreCase("true")){
+					tableName = new StringBuilder("Salereport_withsale");
+				}else{
+					tableName = new StringBuilder("mv_SaleReport_withSale");
+				}
 				//For Xpressions
 				/*if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null){
 					 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
@@ -143,7 +150,7 @@ public class SalesReportWithSaleController {
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn(reportType);
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -165,7 +172,7 @@ public class SalesReportWithSaleController {
 					reportParams.setPrintColumns( reportType+","+"Revenue,Gross Profit,Margin,Tax,Avg Discount");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Cost_of_Goods");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -186,7 +193,7 @@ public class SalesReportWithSaleController {
 					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Margin,Tax,Avg Discount");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Gross_Profit");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -214,7 +221,7 @@ public class SalesReportWithSaleController {
 					//reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Items_Sold");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -235,7 +242,7 @@ public class SalesReportWithSaleController {
 					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Tax,Avg Discount");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Margin");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -262,7 +269,7 @@ public class SalesReportWithSaleController {
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Revenue_tax_incl");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -289,7 +296,7 @@ public class SalesReportWithSaleController {
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Revenue");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
@@ -316,7 +323,7 @@ public class SalesReportWithSaleController {
 					reportParams.setPivotColumn( "CREATED_DATE");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
-					reportParams.setTableName("SaleReport_withSale");
+					reportParams.setTableName(tableName.toString());
 					reportParams.setTallyColumn("Revenue");
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
