@@ -53,7 +53,6 @@ import com.dowhile.frontend.mapping.bean.SupplierBean;
 import com.dowhile.service.ConfigurationService;
 import com.dowhile.service.ContactService;
 import com.dowhile.service.NotificationService;
-import com.dowhile.frontend.mapping.bean.NotificationBean;
 import com.dowhile.service.OutletService;
 import com.dowhile.service.ProductService;
 import com.dowhile.service.ProductVariantService;
@@ -100,9 +99,9 @@ public class PurchaseOrderDetailsController {
 
 	@Resource
 	private ConfigurationService configurationService;
+
 	@Resource
 	private NotificationService notificationService;
-
 
 	private Map productVariantMap = new HashMap<>();
 	private Map productMap = new HashMap<>();
@@ -595,13 +594,14 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariant> outletProductVariantList = new ArrayList<>();
 			List<Product> outletProductList = new ArrayList<>();
-			List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
+			/*List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
 			List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
-			List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
+			List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();*/
 			List<Product> productUpdateList = new ArrayList<>();
 			List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 			try {			
 				if (stockOrderDetailBeansList.size() > 0) {	
+					updateStockOrderDetail(sessionId, grandTotal, recItemCount, stockOrderDetailBeansList, request);
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					//List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					//outletProductVariantList = productVariantService.getAllProductVariantsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId(),currentUser.getCompany().getCompanyId());
@@ -629,10 +629,10 @@ public class PurchaseOrderDetailsController {
 					}
 					//Stock Order Map Region
 					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
-					Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
-					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();
-					stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
-					if(stockOrderDetails!=null){
+					/*Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
+					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();*/
+					stockOrderDetailService.getStockOrderDetailByStockOrderId(stockOrder.getStockOrderId(), currentUser.getCompany().getCompanyId());
+					/*if(stockOrderDetails!=null){
 						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
 							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
 							if(addedstockOrderDetails!=null){
@@ -645,14 +645,14 @@ public class PurchaseOrderDetailsController {
 							}
 							stockOrderDetailsByDetailIDMap.put(stockOrderDetail.getStockOrderDetailId(), stockOrderDetail);
 						}
-					}
+					}*/
 					//End Region
-					List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
-					for(StockOrderDetailBean stockOrderDetailBean : stockOrderDetailBeansList)
+					//List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
+					for(StockOrderDetail stockOrderDetail : stockOrderDetails)
 					{
-						if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
-							StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
-							if(preStockOrderDetailList != null){
+						/*if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
+							StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));*/
+							/*if(preStockOrderDetailList != null){
 								int i = 0;
 								int index = -1;
 								for (StockOrderDetail preStockOrderDetail : preStockOrderDetailList){
@@ -668,18 +668,18 @@ public class PurchaseOrderDetailsController {
 								if(index != -1){
 									preStockOrderDetailList.remove(index);
 								}
-							}
-							stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
+							}*/
+							/*stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
 							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));
 							if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
 								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
 							}
 							if(stockOrderDetailBean.getRecvSupplyPrice() != null && !stockOrderDetailBean.getRecvSupplyPrice().equalsIgnoreCase("")){
 								stockOrderDetail.setRecvSupplyPrice(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));
-							}
-							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
-								stockOrderDetail.setIsProduct(false);
-								ProductVariant productVariant = productVariantsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+							}*/
+							if(!stockOrderDetail.isIsProduct() == true){
+								//stockOrderDetail.setIsProduct(false);
+								ProductVariant productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
 								//check that variant is present in outlet or not
 								boolean found = false;
 								for(ProductVariant outletProductVariant : outletProductVariantList)
@@ -689,7 +689,7 @@ public class PurchaseOrderDetailsController {
 									if(outletProductVariant.getProductVariantUuid().equals(productVariant.getProductVariantUuid())){
 										int preQuantity = outletProductVariant.getCurrentInventory();
 										outletProductVariant.setCurrentInventory(preQuantity + stockOrderDetail.getRecvProdQty());
-										productVariant.setSupplyPriceExclTax(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));
+										productVariant.setSupplyPriceExclTax(stockOrderDetail.getRecvSupplyPrice());
 										productVariant.setLastUpdated(new Date());
 										productVariant.setUserByUpdatedBy(currentUser);
 										productVariant.setLastUpdated(new Date());
@@ -738,7 +738,7 @@ public class PurchaseOrderDetailsController {
 									ProductVariant newProductVariant = productVariant; 
 									newProductVariant.setOutlet(stockOrder.getOutletByOutletAssocicationId());
 									newProductVariant.setCurrentInventory(stockOrderDetail.getRecvProdQty());
-									newProductVariant.setSupplyPriceExclTax(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));
+									newProductVariant.setSupplyPriceExclTax(stockOrderDetail.getRecvSupplyPrice());
 									newProductVariant.setProduct(newProduct);
 									newProductVariant.setCreatedDate(new Date());				
 									newProductVariant.setLastUpdated(new Date());
@@ -747,11 +747,11 @@ public class PurchaseOrderDetailsController {
 									newProductVariant.setCompany(currentUser.getCompany());
 									newProductVariant = productVariantService.addProductVariant(newProductVariant, Actions.CREATE, stockOrderDetail.getRecvProdQty(),currentUser.getCompany(),newProduct.getProductUuid());	
 									outletProductVariantList.add(newProductVariant);
-									stockOrderDetail.setProductVariant(newProductVariant);
+									//stockOrderDetail.setProductVariant(newProductVariant);
 								}
 							}
 							else{
-								Product product = productsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+								Product product = productsMap.get(stockOrderDetail.getProduct().getProductId());
 								stockOrderDetail.setIsProduct(true);
 								boolean found = false;
 								for(Product outletProduct : outletProductList){
@@ -760,13 +760,13 @@ public class PurchaseOrderDetailsController {
 									if(outletProduct.getProductUuid().equals(product.getProductUuid())){
 										int preQuantity = outletProduct.getCurrentInventory();
 										outletProduct.setCurrentInventory(preQuantity + stockOrderDetail.getRecvProdQty());	
-										outletProduct.setSupplyPriceExclTax(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));	
+										outletProduct.setSupplyPriceExclTax(stockOrderDetail.getRecvSupplyPrice());	
 										outletProduct.setLastUpdated(new Date());
 										outletProduct.setUserByUpdatedBy(currentUser);
 										outletProduct.setContact(contact);
 										productUpdateList.add(outletProduct);
 										//productService.updateProduct(outletProduct, Actions.UPDATE, outletProduct.getCurrentInventory(),currentUser.getCompany());
-										stockOrderDetail.setProduct(outletProduct);
+										//stockOrderDetail.setProduct(outletProduct);
 										found = true;
 										break;
 									}
@@ -775,7 +775,7 @@ public class PurchaseOrderDetailsController {
 									Product newProduct = product; 
 									newProduct.setOutlet(stockOrder.getOutletByOutletAssocicationId());
 									newProduct.setCurrentInventory(stockOrderDetail.getRecvProdQty());
-									newProduct.setSupplyPriceExclTax(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));
+									newProduct.setSupplyPriceExclTax(stockOrderDetail.getRecvSupplyPrice());
 									newProduct.setCreatedDate(new Date());				
 									newProduct.setLastUpdated(new Date());
 									newProduct.setUserByCreatedBy(currentUser);
@@ -787,19 +787,19 @@ public class PurchaseOrderDetailsController {
 									newProduct.setAttribute3(product.getAttribute3());
 									newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getRecvProdQty(),currentUser.getCompany());
 									outletProductList.add(newProduct);
-									stockOrderDetail.setProduct(newProduct);
+									//stockOrderDetail.setProduct(newProduct);
 								}
 							}
 
-							stockOrderDetail.setStockOrder(stockOrder);
+							/*stockOrderDetail.setStockOrder(stockOrder);
 							stockOrderDetail.setActiveIndicator(true);					
 							stockOrderDetail.setLastUpdated(new Date());
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
-							stockOrderDetailsUpdateList.add(stockOrderDetail);
+							stockOrderDetailsUpdateList.add(stockOrderDetail);*/
 							/*stockOrderDetailService.updateStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Update StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
-						}
+						}/*
 						else
 						{
 							StockOrderDetail stockOrderDetail = new StockOrderDetail();
@@ -931,12 +931,12 @@ public class PurchaseOrderDetailsController {
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
 							stockOrderDetail.setCompany(currentUser.getCompany());
 							stockOrderDetailsAddList.add(stockOrderDetail);
-							/*stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
+							stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.addStockOrderDetail", 
-									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
+									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);
 						}
-					}
-					if(preStockOrderDetailList != null){
+					}*/
+					/*if(preStockOrderDetailList != null){
 						if(preStockOrderDetailList.size() > 0)
 						{
 							for(StockOrderDetail stockOrderDetail : preStockOrderDetailList)
@@ -945,17 +945,17 @@ public class PurchaseOrderDetailsController {
 								//stockOrderDetailService.deleteStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							}
 						}	
-					}			
+					}*/			
 
-					if(stockOrderDetailsUpdateList.size() > 0){
+					/*if(stockOrderDetailsUpdateList.size() > 0){
 						stockOrderDetailService.updateStockOrderDetailsList(stockOrderDetailsUpdateList, currentUser.getCompany().getCompanyId());
 					}
 					if(stockOrderDetailsAddList.size() > 0){
 						stockOrderDetailService.addStockOrderDetailsList(stockOrderDetailsAddList, currentUser.getCompany().getCompanyId());
-					}
-					if(stockOrderDetailsDeleteList.size() > 0){
+					}*/
+					/*if(stockOrderDetailsDeleteList.size() > 0){
 						stockOrderDetailService.deleteStockOrderDetailsList(stockOrderDetailsDeleteList, currentUser.getCompany().getCompanyId());
-					}
+					}*/
 					if(productUpdateList.size()>0){
 						productService.updateProductList(productUpdateList, currentUser.getCompany());
 					}
@@ -1013,11 +1013,13 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			try {			
 				if (stockOrderDetailBeansList.size() > 0) {	
+					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<Integer, Product> productsMap = new HashMap<>();
+					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-					List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
+					/*List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
 					List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
-					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
+					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();*/
 					List<Product> productUpdateList = new ArrayList<>();
 					List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 					if(products!=null){
@@ -1034,10 +1036,10 @@ public class PurchaseOrderDetailsController {
 					}
 					//Stock Order Map Region
 					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
-					Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
-					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();
-					stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
-					if(stockOrderDetails!=null){
+					/*Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
+					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();*/
+					stockOrderDetails = stockOrderDetailService.getStockOrderDetailByStockOrderId(stockOrder.getStockOrderId(), currentUser.getCompany().getCompanyId());
+					/*if(stockOrderDetails!=null){
 						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
 							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
 							if(addedstockOrderDetails!=null){
@@ -1050,13 +1052,13 @@ public class PurchaseOrderDetailsController {
 							}
 							stockOrderDetailsByDetailIDMap.put(stockOrderDetail.getStockOrderDetailId(), stockOrderDetail);
 						}
-					}
+					}*/
 					//End Region
-					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
-					List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
-					for(StockOrderDetailBean stockOrderDetailBean : stockOrderDetailBeansList)
+					//StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
+					//List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
+					for(StockOrderDetail stockOrderDetail : stockOrderDetails)
 					{
-						if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
+						/*if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
 							StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
 							if(preStockOrderDetailList != null){
 								int i = 0;
@@ -1076,11 +1078,11 @@ public class PurchaseOrderDetailsController {
 								}
 							}
 							stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
-							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));
-							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
-								ProductVariant productVariant = productVariantsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
-								stockOrderDetail.setProductVariant(productVariant);
-								stockOrderDetail.setIsProduct(false);
+							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));*/
+							if(!stockOrderDetail.isIsProduct() == true){
+								ProductVariant productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
+								//stockOrderDetail.setProductVariant(productVariant);
+								//stockOrderDetail.setIsProduct(false);
 								int preQuantity = productVariant.getCurrentInventory();
 								productVariant.setCurrentInventory(preQuantity - stockOrderDetail.getOrderProdQty());
 								productVariant.setLastUpdated(new Date());
@@ -1089,9 +1091,9 @@ public class PurchaseOrderDetailsController {
 								productVariantUpdateList.add(productVariant);
 							}
 							else{
-								Product product = productsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
-								stockOrderDetail.setProduct(product);
-								stockOrderDetail.setIsProduct(true);
+								Product product = productsMap.get(stockOrderDetail.getProduct().getProductId());
+								//stockOrderDetail.setProduct(product);
+								//stockOrderDetail.setIsProduct(true);
 								int preQuantity = product.getCurrentInventory();
 								product.setCurrentInventory(preQuantity - stockOrderDetail.getOrderProdQty());
 								product.setLastUpdated(new Date());
@@ -1099,22 +1101,22 @@ public class PurchaseOrderDetailsController {
 								//productService.updateProduct(product, Actions.INVENTORY_SUBTRACT, product.getCurrentInventory(),currentUser.getCompany());
 								productUpdateList.add(product);
 							}
-							if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
+							/*if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
 								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
 							}
 							if(stockOrderDetailBean.getRecvSupplyPrice() != null && !stockOrderDetailBean.getRecvSupplyPrice().equalsIgnoreCase("")){
 								stockOrderDetail.setRecvSupplyPrice(new BigDecimal(stockOrderDetailBean.getRecvSupplyPrice()));
-							}
-							stockOrderDetail.setStockOrder(stockOrder);
+							}*/
+							/*stockOrderDetail.setStockOrder(stockOrder);
 							stockOrderDetail.setActiveIndicator(true);					
 							stockOrderDetail.setLastUpdated(new Date());
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
-							stockOrderDetailsUpdateList.add(stockOrderDetail);
+							stockOrderDetailsUpdateList.add(stockOrderDetail);*/
 							/*stockOrderDetailService.updateStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Update StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
-						}
-						else
+						//}
+						/*else
 						{
 							StockOrderDetail stockOrderDetail = new StockOrderDetail();
 							//stockOrderDetail.setStockOrderDetailId(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
@@ -1155,13 +1157,13 @@ public class PurchaseOrderDetailsController {
 							stockOrderDetail.setCreatedBy(currentUser.getUserId());
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
 							stockOrderDetail.setCompany(currentUser.getCompany());
-							stockOrderDetailsAddList.add(stockOrderDetail);
+							stockOrderDetailsAddList.add(stockOrderDetail);*/
 							/*stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.addStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
-						}
+						//}
 					}
-					if(preStockOrderDetailList != null){
+					/*if(preStockOrderDetailList != null){
 						if(preStockOrderDetailList.size() > 0)
 						{
 							for(StockOrderDetail stockOrderDetail : preStockOrderDetailList)
@@ -1170,8 +1172,8 @@ public class PurchaseOrderDetailsController {
 								//stockOrderDetailService.deleteStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							}
 						}	
-					}
-					if(stockOrderDetailsUpdateList.size() > 0){
+					}*/
+					/*if(stockOrderDetailsUpdateList.size() > 0){
 						stockOrderDetailService.updateStockOrderDetailsList(stockOrderDetailsUpdateList, currentUser.getCompany().getCompanyId());
 					}
 					if(stockOrderDetailsAddList.size() > 0){
@@ -1179,7 +1181,7 @@ public class PurchaseOrderDetailsController {
 					}
 					if(stockOrderDetailsDeleteList.size() > 0){
 						stockOrderDetailService.deleteStockOrderDetailsList(stockOrderDetailsDeleteList, currentUser.getCompany().getCompanyId());
-					}
+					}*/
 					if(productUpdateList.size()>0){
 						productService.updateProductList(productUpdateList, currentUser.getCompany());
 					}
@@ -1237,14 +1239,15 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			try {			
 				if (stockOrderDetailBeansList.size() > 0) {	
+					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<String, ProductVariant> recvProductVariantList = new HashMap();
 					Map<String, Product> recvProductList = new HashMap();
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					Map<Integer, Product> productsMap = new HashMap<>();
 					List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-					List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
-					List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
-					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
+					//List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
+					//List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
+					//List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
 					List<Product> productUpdateList = new ArrayList<>();
 					List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 					if(products!=null){
@@ -1268,10 +1271,11 @@ public class PurchaseOrderDetailsController {
 					}
 					//Stock Order Map Region
 					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
-					Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
-					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();
-					stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
-					if(stockOrderDetails!=null){
+					//Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
+					//Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();
+					//stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
+					stockOrderDetails = stockOrderDetailService.getStockOrderDetailByStockOrderId(stockOrder.getStockOrderId(), currentUser.getCompany().getCompanyId());
+					/*if(stockOrderDetails!=null){
 						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
 							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
 							if(addedstockOrderDetails!=null){
@@ -1284,22 +1288,23 @@ public class PurchaseOrderDetailsController {
 							}
 							stockOrderDetailsByDetailIDMap.put(stockOrderDetail.getStockOrderDetailId(), stockOrderDetail);
 						}
-					}
+					}*/
 					//End Region
-					List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
+					//List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
 
-					for(StockOrderDetailBean stockOrderDetailBean : stockOrderDetailBeansList)
+					for(StockOrderDetail stockOrderDetail : stockOrderDetails)
 					{
-						if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
-							StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
-							if(preStockOrderDetailList != null){
+						//if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
+							//StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
+							/*if(preStockOrderDetailList != null){
 								int i = 0;
 								int index = -1;
 								for (StockOrderDetail preStockOrderDetail : preStockOrderDetailList){
 									int stockOrderDetailId = stockOrderDetail.getStockOrderDetailId();
 									int preStockOrderDetailId = preStockOrderDetail.getStockOrderDetailId();
 									if(stockOrderDetailId == preStockOrderDetailId)
-									{
+									{ 
+										System.out.println("stockOrderId = " + stockOrderDetailId);
 										index = i;
 										break;
 									}
@@ -1308,13 +1313,16 @@ public class PurchaseOrderDetailsController {
 								if(index != -1){
 									preStockOrderDetailList.remove(index);
 								}
-							}
-							stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
-							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));
+								else {
+									System.out.println("Not matched= "+stockOrderDetailBean.getStockOrderDetailId());
+								}
+							}*/
+							//stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
+							//stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));
 							ProductVariant productVariant = new ProductVariant();
 							Product product = new Product();
-							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
-								productVariant = productVariantsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+							if(!stockOrderDetail.isIsProduct() == true){
+								productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
 								stockOrderDetail.setIsProduct(false);
 								//stockOrderDetail.setProductVariant(productVariant);
 								int preQuantity = productVariant.getCurrentInventory();
@@ -1325,7 +1333,7 @@ public class PurchaseOrderDetailsController {
 								productVariantUpdateList.add(productVariant);
 							}
 							else{
-								product = productsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+								product = productsMap.get(stockOrderDetail.getProduct().getProductId());
 								//stockOrderDetail.setProduct(product);
 								stockOrderDetail.setIsProduct(true);
 								int preQuantity = product.getCurrentInventory();
@@ -1335,7 +1343,7 @@ public class PurchaseOrderDetailsController {
 								//productService.updateProduct(product, Actions.INVENTORY_TRANSFER, product.getCurrentInventory(),currentUser.getCompany());
 								productUpdateList.add(product);
 							}
-							if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
+							/*if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
 								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
 							}
 							if(stockOrderDetailBean.getRecvSupplyPrice() != null && !stockOrderDetailBean.getRecvSupplyPrice().equalsIgnoreCase("")){
@@ -1343,13 +1351,13 @@ public class PurchaseOrderDetailsController {
 							}
 							if(stockOrderDetailBean.getRetailPrice() != null && !stockOrderDetailBean.getRetailPrice().equalsIgnoreCase("")){
 								stockOrderDetail.setRetailPrice(new BigDecimal(stockOrderDetailBean.getRetailPrice()));
-							}
+							}*/
 							boolean found = false;
 							//if(stockOrder.getOutletBySourceOutletAssocicationId() != null){
 							//recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId(),currentUser.getCompany().getCompanyId());
 							//recvProductList = productService.getAllProductsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId());
 							//}
-							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
+							if(!stockOrderDetail.isIsProduct() == true){
 								//for(ProductVariant recProductVariant : recvProductVariantList)
 								//{
 								//									UUID u1 = UUID.fromString(recProductVariant.getProductVariantUuid());
@@ -1582,15 +1590,15 @@ public class PurchaseOrderDetailsController {
 									productsMap.put(recvProduct.getProductId(), recProduct);
 								}
 							}
-							stockOrderDetail.setStockOrder(stockOrder);
+							/*stockOrderDetail.setStockOrder(stockOrder);
 							stockOrderDetail.setActiveIndicator(true);					
 							stockOrderDetail.setLastUpdated(new Date());
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
-							stockOrderDetailsUpdateList.add(stockOrderDetail);
+							stockOrderDetailsUpdateList.add(stockOrderDetail);*/
 							/*stockOrderDetailService.updateStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Update StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
-						}
+						/*}
 						else
 						{
 							StockOrderDetail stockOrderDetail = new StockOrderDetail();
@@ -1631,10 +1639,10 @@ public class PurchaseOrderDetailsController {
 								stockOrderDetail.setRetailPrice(new BigDecimal(stockOrderDetailBean.getRetailPrice()));
 							}
 							boolean found = false;
-							/*if(stockOrder.getOutletBySourceOutletAssocicationId() != null){
+							if(stockOrder.getOutletBySourceOutletAssocicationId() != null){
 								recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId(),currentUser.getCompany().getCompanyId());
 								recvProductList = productService.getAllProductsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId());
-							}*/
+							}
 							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
 								//for(ProductVariant recProductVariant : recvProductVariantList)
 								//{
@@ -1944,12 +1952,12 @@ public class PurchaseOrderDetailsController {
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
 							stockOrderDetail.setCompany(currentUser.getCompany());							
 							stockOrderDetailsAddList.add(stockOrderDetail);
-							/*stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
+*/							/*stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.addStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
 						}
-					}
-					if(preStockOrderDetailList != null){
+					//}
+					/*if(preStockOrderDetailList != null){
 						if(preStockOrderDetailList.size() > 0)
 						{
 							for(StockOrderDetail stockOrderDetail : preStockOrderDetailList)
@@ -1958,16 +1966,16 @@ public class PurchaseOrderDetailsController {
 								//stockOrderDetailService.deleteStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							}
 						}	
-					}								
-					if(stockOrderDetailsUpdateList.size() > 0){
+					}*/								
+					/*if(stockOrderDetailsUpdateList.size() > 0){
 						stockOrderDetailService.updateStockOrderDetailsList(stockOrderDetailsUpdateList, currentUser.getCompany().getCompanyId());
 					}
 					if(stockOrderDetailsAddList.size() > 0){
 						stockOrderDetailService.addStockOrderDetailsList(stockOrderDetailsAddList, currentUser.getCompany().getCompanyId());
-					}
-					if(stockOrderDetailsDeleteList.size() > 0){
-						stockOrderDetailService.deleteStockOrderDetailsList(stockOrderDetailsDeleteList, currentUser.getCompany().getCompanyId());
-					}
+					}*/
+					//if(stockOrderDetailsDeleteList.size() > 0){
+						//stockOrderDetailService.deleteStockOrderDetailsList(stockOrderDetailsDeleteList, currentUser.getCompany().getCompanyId());
+					//}
 					if(productUpdateList.size()>0){
 						productService.updateProductList(productUpdateList, currentUser.getCompany());
 					}
@@ -1981,7 +1989,6 @@ public class PurchaseOrderDetailsController {
 					stockOrder.setLastUpdated(new Date());
 					stockOrder.setUpdatedBy(currentUser.getUserId());
 					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
-					
 					try { 
 						if(stockOrder!=null){
 							Notification notification = new Notification();
@@ -2017,9 +2024,6 @@ public class PurchaseOrderDetailsController {
 						StringWriter errors = new StringWriter();
 						e.printStackTrace(new PrintWriter(errors));
 					}
-					
-					
-
 					Contact supplier = supplierService.getContactByContactOutletID(stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
 					if(supplier.getContactBalance() == null){
 						supplier.setContactBalance(BigDecimal.ZERO);
@@ -2521,7 +2525,7 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			try {			
 				if (stockOrderDetailBeansList.size() > 0) {					
-
+					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<String, ProductVariant> recvProductVariantList = new HashMap();
 					Map<String, Product> recvProductList = new HashMap();
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
@@ -2531,9 +2535,9 @@ public class PurchaseOrderDetailsController {
 					if(configurationStockOrderComplTable == null){
 						configurationStockOrderComplTable = new Configuration(currentUser, currentUser, currentUser.getCompany(), "STOCK_ORDER_COMPL_TABLE", "false", true, new Date(), new Date());
 					}
-					List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
+					/*List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
 					List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
-					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
+					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();*/
 					List<Product> productUpdateList = new ArrayList<>();
 					List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 					if(products!=null){
@@ -2561,10 +2565,10 @@ public class PurchaseOrderDetailsController {
 					}
 					//Stock Order Map Region
 					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
-					Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
-					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();
-					stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
-					if(stockOrderDetails!=null){
+					/*Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
+					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();*/
+					stockOrderDetails = stockOrderDetailService.getStockOrderDetailByStockOrderId(stockOrder.getStockOrderId(),currentUser.getCompany().getCompanyId());
+					/*if(stockOrderDetails!=null){
 						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
 							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
 							if(addedstockOrderDetails!=null){
@@ -2577,13 +2581,13 @@ public class PurchaseOrderDetailsController {
 							}
 							stockOrderDetailsByDetailIDMap.put(stockOrderDetail.getStockOrderDetailId(), stockOrderDetail);
 						}
-					}
+					}*/
 					//End Region
-					List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
+					//List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
 
-					for(StockOrderDetailBean stockOrderDetailBean : stockOrderDetailBeansList)
+					for(StockOrderDetail stockOrderDetail : stockOrderDetails)
 					{
-						if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
+						/*if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
 							StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
 							if(preStockOrderDetailList != null){
 								int i = 0;
@@ -2608,12 +2612,12 @@ public class PurchaseOrderDetailsController {
 								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
 							}else{
 								stockOrderDetail.setRecvProdQty(0);
-							}		
+							}	*/	
 							ProductVariant productVariant = new ProductVariant();
 							Product product = new Product();
-							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
-								productVariant = productVariantsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
-								stockOrderDetail.setIsProduct(false);
+							if(!stockOrderDetail.isIsProduct() == true){
+								productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
+								//stockOrderDetail.setIsProduct(false);
 								//stockOrderDetail.setProductVariant(productVariant);
 								int preQuantity = productVariant.getCurrentInventory();
 								productVariant.setCurrentInventory(preQuantity - stockOrderDetail.getRecvProdQty());						
@@ -2623,9 +2627,9 @@ public class PurchaseOrderDetailsController {
 								productVariantUpdateList.add(productVariant);
 							}
 							else{
-								product = productsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+								product = productsMap.get(stockOrderDetail.getProduct().getProductId());
 								//stockOrderDetail.setProduct(product);
-								stockOrderDetail.setIsProduct(true);
+								//stockOrderDetail.setIsProduct(true);
 								int preQuantity = product.getCurrentInventory();
 								product.setCurrentInventory(preQuantity - stockOrderDetail.getRecvProdQty());						
 								product.setLastUpdated(new Date());
@@ -2633,7 +2637,7 @@ public class PurchaseOrderDetailsController {
 								//productService.updateProduct(product, Actions.INVENTORY_TRANSFER, product.getCurrentInventory(),currentUser.getCompany());
 								productUpdateList.add(product);
 							}
-							if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
+							/*if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
 								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
 							}
 							if(stockOrderDetailBean.getRecvSupplyPrice() != null && !stockOrderDetailBean.getRecvSupplyPrice().equalsIgnoreCase("")){
@@ -2641,13 +2645,13 @@ public class PurchaseOrderDetailsController {
 							}
 							if(stockOrderDetailBean.getRetailPrice() != null && !stockOrderDetailBean.getRetailPrice().equalsIgnoreCase("")){
 								stockOrderDetail.setRetailPrice(new BigDecimal(stockOrderDetailBean.getRetailPrice()));
-							}
+							}*/
 							boolean found = false;
 							//if(stockOrder.getOutletBySourceOutletAssocicationId() != null){
 							//recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId(),currentUser.getCompany().getCompanyId());
 							//recvProductList = productService.getAllProductsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId());
 							//}
-							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
+							if(!stockOrderDetail.isIsProduct() == true){
 								//for(ProductVariant recProductVariant : recvProductVariantList)
 								//{
 								//									UUID u1 = UUID.fromString(recProductVariant.getProductVariantUuid());
@@ -2880,16 +2884,16 @@ public class PurchaseOrderDetailsController {
 									productsMap.put(recvProduct.getProductId(), recProduct);
 								}
 							}
-							stockOrderDetail.setStockOrder(stockOrder);
+							/*stockOrderDetail.setStockOrder(stockOrder);
 							stockOrderDetail.setActiveIndicator(true);					
 							stockOrderDetail.setLastUpdated(new Date());
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
-							stockOrderDetailsUpdateList.add(stockOrderDetail);
+							stockOrderDetailsUpdateList.add(stockOrderDetail);*/
 							/*stockOrderDetailService.updateStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Update StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
 						}
-						else
+						/*else
 						{
 							StockOrderDetail stockOrderDetail = new StockOrderDetail();
 							//stockOrderDetail.setStockOrderDetailId(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
@@ -2934,10 +2938,10 @@ public class PurchaseOrderDetailsController {
 								stockOrderDetail.setRetailPrice(new BigDecimal(stockOrderDetailBean.getRetailPrice()));
 							}
 							boolean found = false;
-							/*if(stockOrder.getOutletBySourceOutletAssocicationId() != null){
+							if(stockOrder.getOutletBySourceOutletAssocicationId() != null){
 								recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId(),currentUser.getCompany().getCompanyId());
 								recvProductList = productService.getAllProductsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId());
-							}*/
+							}
 							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
 								//for(ProductVariant recProductVariant : recvProductVariantList)
 								//{
@@ -3245,14 +3249,14 @@ public class PurchaseOrderDetailsController {
 							stockOrderDetail.setLastUpdated(new Date());
 							stockOrderDetail.setCreatedBy(currentUser.getUserId());
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
-							stockOrderDetail.setCompany(currentUser.getCompany());							
-							stockOrderDetailsAddList.add(stockOrderDetail);
+							stockOrderDetail.setCompany(currentUser.getCompany());						
+							stockOrderDetailsAddList.add(stockOrderDetail); */
 							/*stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.addStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
-						}
-					}
-					if(preStockOrderDetailList != null){
+						//}
+					//} 
+					/*if(preStockOrderDetailList != null){
 						if(preStockOrderDetailList.size() > 0)
 						{
 							for(StockOrderDetail stockOrderDetail : preStockOrderDetailList)
@@ -3261,16 +3265,16 @@ public class PurchaseOrderDetailsController {
 								//stockOrderDetailService.deleteStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							}
 						}	
-					}								
-					if(stockOrderDetailsUpdateList.size() > 0){
+					}*/								
+					/*if(stockOrderDetailsUpdateList.size() > 0){
 						stockOrderDetailService.updateStockOrderDetailsList(stockOrderDetailsUpdateList, currentUser.getCompany().getCompanyId());
 					}
 					if(stockOrderDetailsAddList.size() > 0){
 						stockOrderDetailService.addStockOrderDetailsList(stockOrderDetailsAddList, currentUser.getCompany().getCompanyId());
-					}
-					if(stockOrderDetailsDeleteList.size() > 0){
+					}*/
+					/*if(stockOrderDetailsDeleteList.size() > 0){
 						stockOrderDetailService.deleteStockOrderDetailsList(stockOrderDetailsDeleteList, currentUser.getCompany().getCompanyId());
-					}
+					}*/
 					if(productUpdateList.size()>0){
 						productService.updateProductList(productUpdateList, currentUser.getCompany());
 					}
@@ -3333,11 +3337,13 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			try {			
 				if (stockOrderDetailBeansList.size() > 0) {	
+					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<Integer, Product> productsMap = new HashMap<>();
+					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-					List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
+					/*List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
 					List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
-					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
+					List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();*/
 					List<Product> productUpdateList = new ArrayList<>();
 					List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 					if(products!=null){
@@ -3354,10 +3360,10 @@ public class PurchaseOrderDetailsController {
 					}
 					//Stock Order Map Region
 					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
-					Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
-					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();
-					stockOrderDetails = stockOrderDetailService.getAllStockOrderDetails(currentUser.getCompany().getCompanyId());
-					if(stockOrderDetails!=null){
+					/*Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
+					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();*/
+					stockOrderDetails = stockOrderDetailService.getStockOrderDetailByStockOrderId(stockOrder.getStockOrderId(),currentUser.getCompany().getCompanyId());
+					/*if(stockOrderDetails!=null){
 						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
 							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
 							if(addedstockOrderDetails!=null){
@@ -3370,13 +3376,13 @@ public class PurchaseOrderDetailsController {
 							}
 							stockOrderDetailsByDetailIDMap.put(stockOrderDetail.getStockOrderDetailId(), stockOrderDetail);
 						}
-					}
+					}*/
 					//End Region
-					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
-					List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
-					for(StockOrderDetailBean stockOrderDetailBean : stockOrderDetailBeansList)
+					//StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
+					//List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailsMap.get(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()));
+					for(StockOrderDetail stockOrderDetail : stockOrderDetails)
 					{
-						if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
+						/*if(stockOrderDetailBean.getStockOrderDetailId() != null && !stockOrderDetailBean.getStockOrderDetailId().equalsIgnoreCase("")){
 							StockOrderDetail stockOrderDetail = stockOrderDetailsByDetailIDMap.get(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
 							if(preStockOrderDetailList != null){
 								int i = 0;
@@ -3396,9 +3402,9 @@ public class PurchaseOrderDetailsController {
 								}
 							}
 							stockOrderDetail.setOrderProdQty(Integer.parseInt(stockOrderDetailBean.getOrderProdQty()));
-							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));
-							if(!stockOrderDetailBean.getIsProduct().toString().equalsIgnoreCase("true")){
-								ProductVariant productVariant = productVariantsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+							stockOrderDetail.setOrdrSupplyPrice(new BigDecimal(stockOrderDetailBean.getOrdrSupplyPrice()));*/
+							if(!stockOrderDetail.isIsProduct() == true){
+								ProductVariant productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
 								stockOrderDetail.setProductVariant(productVariant);
 								stockOrderDetail.setIsProduct(false);
 								int preQuantity = productVariant.getCurrentInventory();
@@ -3409,7 +3415,7 @@ public class PurchaseOrderDetailsController {
 								productVariantUpdateList.add(productVariant);
 							}
 							else{
-								Product product = productsMap.get(Integer.parseInt(stockOrderDetailBean.getProductVariantId()));
+								Product product = productsMap.get(stockOrderDetail.getProduct().getProductId());
 								stockOrderDetail.setProduct(product);
 								stockOrderDetail.setIsProduct(true);
 								int preQuantity = product.getCurrentInventory();
@@ -3419,7 +3425,7 @@ public class PurchaseOrderDetailsController {
 								//productService.updateProduct(product, Actions.INVENTORY_SUBTRACT, product.getCurrentInventory(),currentUser.getCompany());
 								productUpdateList.add(product);
 							}
-							if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
+							/*if(stockOrderDetailBean.getRecvProdQty() != null && !stockOrderDetailBean.getRecvProdQty().equalsIgnoreCase("")){
 								stockOrderDetail.setRecvProdQty(Integer.parseInt(stockOrderDetailBean.getRecvProdQty()));
 							}
 							if(stockOrderDetailBean.getRecvSupplyPrice() != null && !stockOrderDetailBean.getRecvSupplyPrice().equalsIgnoreCase("")){
@@ -3432,12 +3438,12 @@ public class PurchaseOrderDetailsController {
 							stockOrderDetail.setActiveIndicator(true);					
 							stockOrderDetail.setLastUpdated(new Date());
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
-							stockOrderDetailsUpdateList.add(stockOrderDetail);
+							stockOrderDetailsUpdateList.add(stockOrderDetail);*/
 							/*stockOrderDetailService.updateStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateStockOrderDetail", 
 									"User "+ currentUser.getUserEmail()+" Update StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
 						}
-						else
+						/*else
 						{
 							StockOrderDetail stockOrderDetail = new StockOrderDetail();
 							//stockOrderDetail.setStockOrderDetailId(Integer.parseInt(stockOrderDetailBean.getStockOrderDetailId()));
@@ -3482,12 +3488,12 @@ public class PurchaseOrderDetailsController {
 							stockOrderDetail.setUpdatedBy(currentUser.getUserId());
 							stockOrderDetail.setCompany(currentUser.getCompany());
 							stockOrderDetailsAddList.add(stockOrderDetail);
-							/*stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
+							stockOrderDetailService.addStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							util.AuditTrail(request, currentUser, "PurchaseOrderDetails.addStockOrderDetail", 
-									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);*/
+									"User "+ currentUser.getUserEmail()+" Added StockOrderDetail+"+stockOrderDetailBean.getStockOrderDetailId()+" successfully ",false);
 						}
-					}
-					if(preStockOrderDetailList != null){
+					}*/
+					/*if(preStockOrderDetailList != null){
 						if(preStockOrderDetailList.size() > 0)
 						{
 							for(StockOrderDetail stockOrderDetail : preStockOrderDetailList)
@@ -3496,16 +3502,16 @@ public class PurchaseOrderDetailsController {
 								//stockOrderDetailService.deleteStockOrderDetail(stockOrderDetail,currentUser.getCompany().getCompanyId());
 							}
 						}	
-					}
-					if(stockOrderDetailsUpdateList.size() > 0){
+					}*/
+					/*if(stockOrderDetailsUpdateList.size() > 0){
 						stockOrderDetailService.updateStockOrderDetailsList(stockOrderDetailsUpdateList, currentUser.getCompany().getCompanyId());
 					}
 					if(stockOrderDetailsAddList.size() > 0){
 						stockOrderDetailService.addStockOrderDetailsList(stockOrderDetailsAddList, currentUser.getCompany().getCompanyId());
-					}
-					if(stockOrderDetailsDeleteList.size() > 0){
+					}*/
+					/*if(stockOrderDetailsDeleteList.size() > 0){
 						stockOrderDetailService.deleteStockOrderDetailsList(stockOrderDetailsDeleteList, currentUser.getCompany().getCompanyId());
-					}
+					}*/
 					if(productUpdateList.size()>0){
 						productService.updateProductList(productUpdateList, currentUser.getCompany());
 					}
