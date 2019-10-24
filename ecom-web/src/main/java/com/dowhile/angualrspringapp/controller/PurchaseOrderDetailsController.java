@@ -631,7 +631,7 @@ public class PurchaseOrderDetailsController {
 					List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
 					/*Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();
 					Map<Integer, StockOrderDetail> stockOrderDetailsByDetailIDMap = new HashMap<>();*/
-					stockOrderDetailService.getStockOrderDetailByStockOrderId(stockOrder.getStockOrderId(), currentUser.getCompany().getCompanyId());
+					stockOrderDetails = stockOrderDetailService.getStockOrderDetailByStockOrderId(stockOrder.getStockOrderId(), currentUser.getCompany().getCompanyId());
 					/*if(stockOrderDetails!=null){
 						for(StockOrderDetail stockOrderDetail:stockOrderDetails){
 							List<StockOrderDetail> addedstockOrderDetails = stockOrderDetailsMap.get(stockOrderDetail.getStockOrder().getStockOrderId());
