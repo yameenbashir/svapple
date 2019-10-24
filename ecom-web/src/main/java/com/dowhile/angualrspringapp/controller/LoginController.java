@@ -33,6 +33,7 @@ import org.apache.poi.util.StringUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +77,7 @@ import com.dowhile.service.ProductTypeService;
 import com.dowhile.service.ProductVariantService;
 import com.dowhile.service.ResourceService;
 import com.dowhile.service.SalesTaxService;
+import com.dowhile.service.TempSaleService;
 import com.dowhile.service.UserOutletsService;
 import com.dowhile.service.VariantAttributeService;
 import com.dowhile.service.VariantAttributeValuesService;
@@ -127,6 +129,11 @@ public class LoginController {
 	private ContactService supplierService;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private TempSaleService tempSaleService;
+	@Autowired
+	BackupController backupController= new BackupController();
+	
 	@RequestMapping("/layout")
 	public String getLoginControllerPartialPage(ModelMap modelMap) {
 		return "login/layout";
@@ -141,7 +148,8 @@ public class LoginController {
 		
 		//if(code.base64decode == currentdate+companyName){pass}
 			
-			
+//		tempSaleService.runDailyScript();
+//		 backupController.runScheduler("session");
 		HttpSession session = request.getSession(true);
 		boolean isExist = false;
 		User user = null;

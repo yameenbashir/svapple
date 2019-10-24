@@ -16,4 +16,5 @@ public interface TempSaleService {
 
 	TableData getAllTempSaleByCompanyId(ReportParams reportParams);
 	TableData getSalesReportByStartDateEndDate(Date startDate,Date endDate,int companyId);
+	boolean runDailyScript();
 }

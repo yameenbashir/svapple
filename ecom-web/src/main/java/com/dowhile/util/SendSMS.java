@@ -286,14 +286,14 @@ public class SendSMS {
 	
 	public static void main (String args[]){
 		try{
-			String user = "Kites%20Kids";
-			String phoneNum = "03046664547";
-			String message = "Testing kites mask";
-			String userName = "Kites Kids";
+			String user = "Kites Kids";
+			String phoneNum = "03046664547,03046664879";
+			String message = "Testing kites mask through Eocean.";
+			String userName = "Kites%20Kids";
 			String password = "AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d";
 			String mask = "Kites%20Kids";
 			///APIManagement/API/RequestAPI?user=Kites Kids&pwd=AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d&sender=Kites Kids&reciever=Number&msg-data=YOUR DATA HERE&response=string
-			
+			//https://pk.eocean.us/APIManagement/API/RequestAPI?user=Kites Kids&pwd=AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d&sender=Kites%20Kids&reciever=03046664547&msg-data=Testing%20kites%20mask&response=string
 			SendSMS sendSms = new SendSMS();
 			String value =sendSms.sendSMSByEOcean(phoneNum, message, userName, password, mask);
 			System.out.println(value);

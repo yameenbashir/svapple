@@ -194,8 +194,8 @@ public class SendSmsController {
 						if(phoneNum.substring(phoneNum.length()-1, phoneNum.length()).equals(",")){
 							phoneNum = phoneNum.substring(0, phoneNum.length()-1);
 						}
-				
-						String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+						String deliverId = sendSMS.sendSMSByEOcean(phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+						//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 						
 						MessageDetail messageDetail = new MessageDetail();
 						messageDetail.setCompany(currentUser.getCompany());
@@ -232,7 +232,8 @@ public class SendSmsController {
 					if(phoneNum.substring(phoneNum.length()-1, phoneNum.length()).equals(",")){
 						phoneNum = phoneNum.substring(0, phoneNum.length()-1);
 					}
-					String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+					String deliverId = sendSMS.sendSMSByEOcean(phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+					//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 					
 					MessageDetail messageDetail = new MessageDetail();
 					messageDetail.setCompany(currentUser.getCompany());
@@ -311,8 +312,9 @@ public class SendSmsController {
 						}
 					}
 
+					String deliverId = sendSMS.sendSMSByEOcean(phoneNum, configuration.getPropertyValue()+" "+"You'r current bill is PKR "+singleSmsBean.getAmount(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 				
-							String deliverId = sendSMS.sendSMS(request,currentUser,phoneNum, configuration.getPropertyValue()+" "+"You'r current bill is PKR "+singleSmsBean.getAmount(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+							//String deliverId = sendSMS.sendSMS(request,currentUser,phoneNum, configuration.getPropertyValue()+" "+"You'r current bill is PKR "+singleSmsBean.getAmount(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 							MessageDetail messageDetail = new MessageDetail();
 							messageDetail.setCompany(currentUser.getCompany());
 							messageDetail.setActiveIndicator(true);
