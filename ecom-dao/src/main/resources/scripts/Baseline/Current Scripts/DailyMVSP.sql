@@ -9,6 +9,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `MVExecution`(
     DETERMINISTIC
     SQL SECURITY INVOKER
 BEGIN
+	SET sql_mode = '';
 	delete from mv_Temp_Sale;
 	insert into mv_Temp_Sale (select * from Temp_Sale);
 	delete from mv_credit_sale;
