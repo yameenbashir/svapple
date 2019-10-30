@@ -245,4 +245,18 @@ public class TempSaleDAOImpl implements TempSaleDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean runDailyScript() {
+		// TODO Auto-generated method stub
+		try{
+			getSessionFactory()
+			.getCurrentSession().createSQLQuery(
+			 "CALL RunDaily()").executeUpdate();
+			return true;
+		}catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 }

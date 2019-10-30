@@ -49,4 +49,10 @@ public class TempSaleServiceImpl implements TempSaleService{
 		return getTempSaleDAO().getAllTempSaleByCompanyId(reportParams);
 	}
 
+	@Override
+	public boolean runDailyScript() {
+		// TODO Auto-generated method stub
+		return getTempSaleDAO().runDailyScript();
+	}
+
 }

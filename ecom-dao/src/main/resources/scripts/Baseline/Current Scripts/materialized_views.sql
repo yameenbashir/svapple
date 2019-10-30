@@ -1,3 +1,4 @@
+SET sql_mode = '';
 USE `ecom`;
 DROP TABLE IF EXISTS `mv_Temp_Sale`;
 CREATE TABLE mv_Temp_Sale(

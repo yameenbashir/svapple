@@ -13,4 +13,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages="com.dowhile.angualrspringapp.controller")
 public class AppConfigController{
+	
 }

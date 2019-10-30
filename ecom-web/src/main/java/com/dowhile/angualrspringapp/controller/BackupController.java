@@ -27,6 +27,7 @@ import com.dowhile.constants.StatusConstants;
 import com.dowhile.controller.bean.Response;
 import com.dowhile.frontend.mapping.bean.BrandBean;
 import com.dowhile.service.ResourceService;
+import com.dowhile.service.TempSaleService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DBUtil;
 import com.dowhile.util.SessionValidator;
@@ -42,6 +43,8 @@ public class BackupController {
 	private ResourceService resourceService;
 	@Resource
 	private ServiceUtil util;
+	@Resource
+	private TempSaleService tempSaleService;
 	
 	@RequestMapping("/layout")
 	public String getBackupControllerPartialPage(ModelMap modelMap) {
@@ -117,6 +120,31 @@ public class BackupController {
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BackupController.reStoreBackup",
 						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/runScheduler/{sessionId}", method = RequestMethod.POST)
+	public @ResponseBody
+	Response runScheduler(@PathVariable("sessionId") String sessionId) {
+
+		if(!sessionId.equalsIgnoreCase("")){
+			
+
+			try{
+				System.out.println("Running schedule");
+				tempSaleService.runDailyScript();
+				System.out.println("schedule run succesfully");
+				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
+			}catch(Exception e){
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
 			}
 		}else{

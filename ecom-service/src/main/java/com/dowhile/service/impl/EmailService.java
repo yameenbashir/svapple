@@ -39,7 +39,7 @@ public class EmailService {
 		 emailSendCCStr = "";
 		 emailSendCCTOStr = "";
 		 emailSendBCCTOStr  = "";
-		 emailSendBCCStr = "umair@shopvitals.com";
+		 emailSendBCCStr = "hafiz.bashir@shopvitals.com";
 		 emailFROMStr = "admin@shopvitals.com";
 		 emailPasswordStr = "abcd1234@";
 	}

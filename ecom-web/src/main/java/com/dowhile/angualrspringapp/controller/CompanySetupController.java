@@ -3,7 +3,6 @@
  */
 package com.dowhile.angualrspringapp.controller;
 
-import java.io.Console;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -15,13 +14,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.MenuElement;
 
-import org.apache.commons.mail.Email;
-import org.hibernate.sql.Update;
-import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import sun.net.www.content.audio.wav;
-import sun.security.util.Password;
 
 import com.dowhile.Address;
 import com.dowhile.Brand;
@@ -55,11 +45,9 @@ import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
 import com.dowhile.controller.bean.Response;
-import com.dowhile.frontend.mapping.bean.AddressBean;
 import com.dowhile.frontend.mapping.bean.CompanyBean;
 import com.dowhile.frontend.mapping.bean.PrinterFormatBean;
 import com.dowhile.frontend.mapping.bean.TimeZoneBean;
-import com.dowhile.frontend.mapping.bean.UserBean;
 import com.dowhile.service.AddressService;
 import com.dowhile.service.BrandService;
 import com.dowhile.service.CompanyService;
@@ -76,7 +64,6 @@ import com.dowhile.service.SalesTaxService;
 import com.dowhile.service.UserOutletsService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 /**
  * @author Yameen Bashir
