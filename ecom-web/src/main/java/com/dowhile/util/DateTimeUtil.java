@@ -50,6 +50,7 @@ public class DateTimeUtil {
 			DateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm a");
 			Date date1 = dateFormat.parse(dbDateTime);
 			String value = DateTimeUtil.convertDBDateTimeToGuiFormat(date1);
+			
 			return value;
 		}catch(Exception ex){
 			ex.printStackTrace();
