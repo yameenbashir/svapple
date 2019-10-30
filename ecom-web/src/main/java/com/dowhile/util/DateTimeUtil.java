@@ -37,6 +37,7 @@ public class DateTimeUtil {
 			
 			DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
