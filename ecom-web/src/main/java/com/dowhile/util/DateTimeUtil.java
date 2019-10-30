@@ -44,6 +44,46 @@ public class DateTimeUtil {
 		return null;
 	}
 	
+	public static String convertDBDateTimeStringToGuiFormat(String dbDateTime){
+		
+		try{
+			DateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm a");
+			Date date1 = dateFormat.parse(dbDateTime);
+			String value = DateTimeUtil.convertDBDateTimeToGuiFormat(date1);
+			return value;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	
+	
+	/*public static String convertDBDateTimeToGuiFormat1(Date dbDateTime){
+		
+		try{
+			
+			Calendar localTIme = new GregorianCalendar(TimeZone.getTimeZone("UTC +7"));
+			localTIme.setTime(dbDateTime);
+			localTIme.add(Calendar.HOUR_OF_DAY, 0);//For Local Deployment
+			 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String dbDateTimeTOString = inputFormat.format(localTIme.getTime()). toString();
+			dbDateTimeTOString = dbDateTimeTOString.substring(0, dbDateTimeTOString.length());
+			
+			DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}*/
+	
+	
+	
+	
+	
 	public static Date convertGuiDateFormatYYYYMMDDToDBDateFormat(String guiDate){
 		
 		try{
@@ -58,6 +98,14 @@ public class DateTimeUtil {
 	public static void main(String args[]){
 		
 		try{
+			String mydate = "Oct 29 2019 04:09 PM";
+			DateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm a");
+			dateFormat.parse(mydate);
+			System.out.println("dateFormat.parse(mydate): "+dateFormat.parse(mydate));
+			Date date1 = dateFormat.parse(mydate);
+			String value = DateTimeUtil.convertDBDateTimeToGuiFormat(date1);
+			System.out.println("value "+value);
+			
 			String clientImageName = "brand_shopvitals.jpg";
 			
 			

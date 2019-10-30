@@ -6,6 +6,7 @@ package com.dowhile.angualrspringapp.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -33,6 +34,7 @@ import com.dowhile.service.OutletService;
 import com.dowhile.service.RegisterReportService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.ControllerUtil;
+import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
 
 /**
@@ -108,7 +110,7 @@ public class RegisterReportController {
 
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 	@RequestMapping(value = "/getRegisterReport/{sessionId}/{outletName}", method = RequestMethod.POST)
 	public @ResponseBody Response getRegisterReport(@PathVariable("sessionId") String sessionId,
 			@PathVariable("outletName") String outletName,HttpServletRequest request) {
@@ -142,7 +144,9 @@ public class RegisterReportController {
 							registrReprotBean.setDailyRegisterId(String.valueOf(registerReport.getId().getDailyRegisterId()));
 							registrReprotBean.setCreditCardAmtActual(registerReport.getId().getCreditCardAmtActual()!=null?registerReport.getId().getCreditCardAmtActual().toPlainString():"");
 							registrReprotBean.setOpenBy(registerReport.getId().getOpenBy());
-							registrReprotBean.setOpeningDate(new String(registerReport.getId().getOpeningDate()));
+							System.out.println("registerReport.getId().getOpeningDate(): "+new String(registerReport.getId().getOpeningDate()));
+							registrReprotBean.setOpeningDate(DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
+							System.out.println("DateTimeUtil.convertDBDateTimeToGuiFormat(new Date(new String(registerReport.getId().getOpeningDate()))) "+DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
 							registrReprotBean.setOutletAssocicationId(registerReport.getId().getOutletAssocicationId().toString());
 							registrReprotBean.setOutletName(registerReport.getId().getOutletName());
 							registrReprotBean.setRegisterClosingNotes(registerReport.getId().getRegisterClosingNotes());
@@ -152,6 +156,7 @@ public class RegisterReportController {
 								registrReprotBean.setClosingDate("-");
 								registrReprotBean.setCloseBy("-");
 							}else{
+								System.out.println("new String(registerReport.getId().getClosingDate()): "+new String(registerReport.getId().getClosingDate()));
 								registrReprotBean.setClosingDate(new String(registerReport.getId().getClosingDate()));
 								registrReprotBean.setCloseBy(new String(registerReport.getId().getCloseBy()));
 							}
