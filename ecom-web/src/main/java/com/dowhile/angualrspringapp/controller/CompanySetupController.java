@@ -48,6 +48,7 @@ import com.dowhile.controller.bean.Response;
 import com.dowhile.frontend.mapping.bean.CompanyBean;
 import com.dowhile.frontend.mapping.bean.PrinterFormatBean;
 import com.dowhile.frontend.mapping.bean.TimeZoneBean;
+import com.dowhile.frontend.mapping.bean.UserBean;
 import com.dowhile.service.AddressService;
 import com.dowhile.service.BrandService;
 import com.dowhile.service.CompanyService;
