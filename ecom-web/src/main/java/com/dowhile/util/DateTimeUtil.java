@@ -51,6 +51,7 @@ public class DateTimeUtil {
 		try{
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			return dateFormat.parse(guiDate);
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
