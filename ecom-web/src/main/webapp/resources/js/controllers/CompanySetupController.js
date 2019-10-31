@@ -13,6 +13,8 @@ var CompanySetupController = ['$scope', '$http', '$window','$cookieStore','$root
  $scope.companyError = false;
  $scope.systemBusy = 'System is Busy Please try again';
  $scope.companyBean = {};
+ $scope.companiesList = [];
+ $scope.userBean = {};
 
  $scope._s_tk_com =  $cookieStore.get('_s_tk_com') ;
  
