@@ -34,11 +34,12 @@ public class DateTimeUtil {
 			 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dbDateTimeTOString = inputFormat.format(localTIme.getTime()). toString();
 			dbDateTimeTOString = dbDateTimeTOString.substring(0, dbDateTimeTOString.length());
-			
 			DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
+			
 		}
 		
 		return null;
@@ -90,6 +91,7 @@ public class DateTimeUtil {
 		try{
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			return dateFormat.parse(guiDate);
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
