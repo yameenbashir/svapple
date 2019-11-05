@@ -956,6 +956,7 @@ public class ManageProductController {
 				stockOrderDetailBean.setStockOrderId(stockOrder.getStockOrderId());
 				stockOrderDetailBean.setRecvProdQty(stockOrderDetailBean.getOrderProdQty());
 				stockOrderDetailBean.setRecvSupplyPrice(stockOrderDetailBean.getOrdrSupplyPrice());
+				stockOrderDetailBean.setIsDirty("true");
 			}
 			//PurchaseOrderDetailsController purchaseOrderDetailsController = new PurchaseOrderDetailsController();
 			String total = grandTotal.toString();
