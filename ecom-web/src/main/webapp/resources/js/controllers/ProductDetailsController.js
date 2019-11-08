@@ -8,6 +8,10 @@ var ProductDetailsController = ['$scope', '$http', '$window','$cookieStore','$ro
 	
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
+	$scope.gui = [];
+	$scope.productHistoryBeansList = [];
+	$scope.gui.dataLoading = true;
+	$scope.gui.dataLoadingCompleted = false;
 	$scope.printCount =  40;
 	$scope.roledId = $cookieStore.get('_s_tk_rId');
 	$scope.bc = { "format": "CODE128", "width": 1, "height": 44, "displayValue": false, "marginRight": 10 }
@@ -18,6 +22,51 @@ var ProductDetailsController = ['$scope', '$http', '$window','$cookieStore','$ro
 			$scope.fetchData();
 		}
 	};	
+
+	$scope.loadProductHistory = function() {
+		
+		$scope.gui.dataLoading = false;
+		$http.post('productDetails/getProductHistoryByProductUuid/'+$scope._s_tk_com+'/'+$scope.product.productUuid)
+		.success(function(Response) {
+			$scope.gui.dataLoading = true;
+			$scope.responseStatus = Response.status;
+			if ($scope.responseStatus == 'SUCCESSFUL') {
+				$scope.gui.dataLoadingCompleted = true;
+				if(Response.data!=null){
+
+					$scope.productHistoryBeansList  = Response.data;
+					var table = $('#myTable1').DataTable();
+					if(table){
+						 table.destroy();
+					}
+					setTimeout(
+							function() 
+							{
+								$('#myTable1').DataTable( {
+									responsive: true/*,
+									paging: true,
+									pageLength: 5,
+									searching:true,
+									bInfo : true,
+									dom : 'Bfrtip',
+									buttons :$rootScope.buttonsView*/
+								} );
+								
+							}, 100);
+				}
+				
+			}else  {
+			
+				//$window.location = Response.layOutPath;
+			}
+		}).error(function() {
+			$scope.gui.dataLoading = true;
+			$scope.outletError = true;
+			$scope.outletErrorMessage = $scope.systemBusy;
+		});
+		
+	};
+	
 	$scope.printLabels =  true;
 	
 	$scope.fetchData = function(){

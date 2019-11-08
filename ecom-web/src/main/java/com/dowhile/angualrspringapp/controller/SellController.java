@@ -57,6 +57,7 @@ import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
 import com.dowhile.controller.bean.Response;
 import com.dowhile.controller.bean.SellControllerBean;
+import com.dowhile.frontend.configuration.bean.ReceiptConfigurationBean;
 import com.dowhile.frontend.mapping.bean.CustomerGroupBean;
 import com.dowhile.frontend.mapping.bean.InvoiceDetailBean;
 import com.dowhile.frontend.mapping.bean.InvoiceMainBean;
@@ -224,6 +225,10 @@ public class SellController  {
 			User currentUser = (User) session.getAttribute("user");
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			try {
+				ReceiptConfigurationBean receiptConfigurationBean = new ReceiptConfigurationBean();
+				/*System.out.println("receiptConfigurationBean: "+receiptConfigurationBean.isStarndardReceipt());
+				System.out.println("receiptConfigurationBean: "+receiptConfigurationBean.isXpressionsReceipt());
+				Configuration configurationReceipt = configurationMap.get("CUSTOM_RECEIPT_COMPANY_ID");*/
 				Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS");
 				if(configurationTermsAndContitions!=null){
 					String termsAndContitions = configurationTermsAndContitions.getPropertyValue();

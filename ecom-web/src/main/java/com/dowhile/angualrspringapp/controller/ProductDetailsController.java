@@ -124,10 +124,10 @@ public class ProductDetailsController {
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productBean = (ProductBean) response.data;
 				}
-				response = getProductHistoryByProductUuid(sessionId,productBean.getProductUuid(), request);
+				/*response = getProductHistoryByProductUuid(sessionId,productBean.getProductUuid(), request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productHistoryBeans = (List<ProductHistoryBean>) response.data;
-				}
+				}*/
 				
 				
 				ProductDetailsControllerBean productDetailsControllerBean = new ProductDetailsControllerBean();

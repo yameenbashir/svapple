@@ -155,6 +155,7 @@ public class SendSmsController {
 	Response sendMessage(@PathVariable("sessionId") String sessionId,
 			@RequestBody SendSMSBean sendSMSBean,
 			HttpServletRequest request) {
+		System.out.println("Inside sendMessage");
 		SendSMS sendSMS = new SendSMS();
 		if (SessionValidator.isSessionValid(sessionId, request)) {
 			HttpSession session = request.getSession(false);
@@ -172,12 +173,14 @@ public class SendSmsController {
 					List<ContactsSummmary> contacts = null;
 					if(currentUser.getOutlet().getIsHeadOffice()){
 						contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyId(currentUser.getCompany().getCompanyId());
+						System.out.println("SMS will be send for all company customers and contacts size is: "+contacts.size());
 						
 					}else{
 						contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());;
-		
+						System.out.println("SMS will be send for  all Outlet customers");
 					}
 					if(messageObj!=null && contacts!=null && messageObj.getMessageBundleCount()>=messageObj.getMessageTextLimit()+contacts.size() && new Date().before(messageObj.getPackageRenewDate())){
+						System.out.println("Send sms bundle have valid limit. messageObj.getMessageBundleCount()"+messageObj.getMessageBundleCount()+" and send bundel count. messageObj.getMessageTextLimit()+contacts.size(): "+messageObj.getMessageTextLimit()+contacts.size());
 						String phoneNum = "";	
 						String receiverId = "";
 						for(ContactsSummmary bean:contacts){
@@ -194,7 +197,48 @@ public class SendSmsController {
 						if(phoneNum.substring(phoneNum.length()-1, phoneNum.length()).equals(",")){
 							phoneNum = phoneNum.substring(0, phoneNum.length()-1);
 						}
-						String deliverId = sendSMS.sendSMSByEOcean(phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+						//to handle bulk sms through get api
+						if(smsCount>=1){
+							int internalSMSCount = 0;
+							for(ContactsSummmary bean:contacts){
+								
+								if(bean.getId().getContactType().equals("CUSTOMER")){
+									if( bean.getId().getPhone()!=null && ! bean.getId().getPhone().equals("")){
+										 // phoneNum = phoneNum + bean.getId().getPhone() +",";
+										  
+										  String deliverId = sendSMS.sendSMSByEOcean(bean.getId().getPhone(), sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+											//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+										  internalSMSCount = internalSMSCount+1;
+										  System.out.println("deliverId: "+deliverId);
+											MessageDetail messageDetail = new MessageDetail();
+											messageDetail.setCompany(currentUser.getCompany());
+											messageDetail.setActiveIndicator(true);
+											messageDetail.setCreatedBy(currentUser.getUserId());
+											messageDetail.setCreatedDate(new Date());
+											messageDetail.setDeliveryId(deliverId.getBytes());
+											messageDetail.setDeliveryStatus("SUCCESS");
+											messageDetail.setLastUpdated(new Date());
+											messageDetail.setMessageDescription(sendSMSBean.getMessage());
+											messageDetail.setOutlet(currentUser.getOutlet());
+											messageDetail.setMessage(messageObj);
+											messageDetail.setReceiverId("ALL");
+											messageDetail.setSenderId(String.valueOf(currentUser.getUserId()));
+											messageDetail.setUpdatedBy(currentUser.getUserId());
+											messageDetails.add(messageDetail);
+											//messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());
+									}
+									//receiverId = receiverId + bean.getId().getContactId() +",";
+									//smsCount = smsCount+1;
+		
+								}
+							}
+							System.out.println("internalSMSCount: "+internalSMSCount+" smsCount: "+smsCount);
+							messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());
+						}else{
+							System.out.println("No Contact was found to send sms");
+						}
+						//Once we received Bulk SMS API we will revert the code
+						/*String deliverId = sendSMS.sendSMSByEOcean(phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 						//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 						
 						MessageDetail messageDetail = new MessageDetail();
@@ -212,7 +256,7 @@ public class SendSmsController {
 						messageDetail.setSenderId(String.valueOf(currentUser.getUserId()));
 						messageDetail.setUpdatedBy(currentUser.getUserId());
 						messageDetails.add(messageDetail);
-						messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());
+						messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());*/
 				}else{
 					util.AuditTrail(request, currentUser, "sendSms.sendMessage","SMS Package Expired ", true);
 					return new Response(MessageConstants.SMS_EXPIRED, StatusConstants.ACCESS_DENIED,LayOutPageConstants.SEND_SMS);
@@ -232,7 +276,49 @@ public class SendSmsController {
 					if(phoneNum.substring(phoneNum.length()-1, phoneNum.length()).equals(",")){
 						phoneNum = phoneNum.substring(0, phoneNum.length()-1);
 					}
-					String deliverId = sendSMS.sendSMSByEOcean(phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+					
+					//to handle bulk sms through get api
+					if(smsCount>=1){
+						int internalCustomSMSCount = 0;
+						for(customerSmsBean bean:sendSMSBean.getCustomerSmsBeans()){
+							
+							if(bean.getPhoneNumber()!=null && ! bean.equals("")){
+								
+									 // phoneNum = phoneNum + bean.getId().getPhone() +",";
+									  
+									  String deliverId = sendSMS.sendSMSByEOcean(bean.getPhoneNumber(), sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+										//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
+									  System.out.println("deliverId: "+deliverId);
+									  internalCustomSMSCount = internalCustomSMSCount+1;
+										MessageDetail messageDetail = new MessageDetail();
+										messageDetail.setCompany(currentUser.getCompany());
+										messageDetail.setActiveIndicator(true);
+										messageDetail.setCreatedBy(currentUser.getUserId());
+										messageDetail.setCreatedDate(new Date());
+										messageDetail.setDeliveryId(deliverId.getBytes());
+										messageDetail.setDeliveryStatus("SUCCESS");
+										messageDetail.setLastUpdated(new Date());
+										messageDetail.setMessageDescription(sendSMSBean.getMessage());
+										messageDetail.setOutlet(currentUser.getOutlet());
+										messageDetail.setMessage(messageObj);
+										messageDetail.setReceiverId("ALL");
+										messageDetail.setSenderId(String.valueOf(currentUser.getUserId()));
+										messageDetail.setUpdatedBy(currentUser.getUserId());
+										messageDetails.add(messageDetail);
+										//messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());
+								
+								//receiverId = receiverId + bean.getId().getContactId() +",";
+								//smsCount = smsCount+1;
+	
+							}
+						}
+						System.out.println("internalCustomSMSCount: "+internalCustomSMSCount+" smsCount: "+smsCount);
+						messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());
+					}else{
+						System.out.println("No Contact was found to send sms");
+					}
+					//Once we received Bulk SMS API we will revert the code
+					/*String deliverId = sendSMS.sendSMSByEOcean(phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 					//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 					
 					MessageDetail messageDetail = new MessageDetail();
@@ -250,7 +336,7 @@ public class SendSmsController {
 					messageDetail.setSenderId(String.valueOf(currentUser.getUserId()));
 					messageDetail.setUpdatedBy(currentUser.getUserId());
 					messageDetails.add(messageDetail);
-					messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());
+					messageDetailService.addMessageDetailList(messageDetails, currentUser.getCompany());*/
 					}else{
 						util.AuditTrail(request, currentUser, "sendSms.sendMessage","SMS Package Expired ", true);
 						return new Response(MessageConstants.SMS_EXPIRED, StatusConstants.ACCESS_DENIED,LayOutPageConstants.SEND_SMS);
