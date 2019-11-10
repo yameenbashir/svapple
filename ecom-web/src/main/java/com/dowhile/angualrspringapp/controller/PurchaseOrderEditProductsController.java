@@ -1,4 +1,5 @@
 package com.dowhile.angualrspringapp.controller;
+import java.io.Console;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -270,6 +271,7 @@ public class PurchaseOrderEditProductsController {
 			try {
 
 				stockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
+				System.out.println("Stock Order Id" +  stockOrderDetailList.get(0).getStockOrderDetailId());
 				int order = 1;
 				if (stockOrderDetailList != null) {
 					//List<ProductVariant> recvProductVariantList = null;
@@ -280,9 +282,11 @@ public class PurchaseOrderEditProductsController {
 					//allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 					//recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
 					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+						System.out.println("redirect Call" +  session.getAttribute("redirectCall"));
 						if(session.getAttribute("productIdsMap") != null) {
 							productSessionMap  = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
 							allProducts = new ArrayList<Product>(productSessionMap.values());
+							System.out.println("All Product from Session" +  allProducts.get(0).getProductName());
 						}
 						else {
 							allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
@@ -295,6 +299,7 @@ public class PurchaseOrderEditProductsController {
 						if(session.getAttribute("productVariantIdsMap") != null) {
 							productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
 							allProductVariants = new ArrayList<ProductVariant>(productVariantSessionMap.values());
+							System.out.println("All Product Variant from Session" +  allProductVariants.get(0).getVariantAttributeName());
 						}
 						else {
 							allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
@@ -334,6 +339,7 @@ public class PurchaseOrderEditProductsController {
 						}
 						if(!stockOrderDetail.isIsProduct()){						
 							ProductVariant productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
+							System.out.println("productVariant" +  productVariant.getVariantAttributeName());
 							if(productVariant != null){
 								stockOrderDetailBean.setProductVariantId(Objects.toString(productVariant.getProductVariantId(),""));
 								stockOrderDetailBean.setVariantAttributeName(productsMap.get(productVariant.getProduct().getProductId()).getProductName() + "-" + Objects.toString(productVariant.getVariantAttributeName(),""));
