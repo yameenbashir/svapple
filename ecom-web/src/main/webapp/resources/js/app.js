@@ -1998,7 +1998,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 				var controllerData ='';
 				$rootScope.globalPageLoader = true;
 
-				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["home"]==true){
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["notifications"]==true){
 					$rootScope.productTagsLoadedFully = true;
 					controllerData = $http.post('notifications/getAllNotifications/'+$cookieStore.get('_s_tk_com')+'/'+"false").success(function(Response) {
 						controllerData = Response.data;
@@ -2038,7 +2038,7 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 				var myDefer = $q.defer();
 				var controllerData ='';
 				$rootScope.globalPageLoader = true;
-				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["home"]==true){
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["notificationsReaded"]==true){
 					$rootScope.productTagsLoadedFully = true;
 					controllerData = $http.post('notificationsReaded/getAllNotifications/'+$cookieStore.get('_s_tk_com')+'/'+"false").success(function(Response) {
 						controllerData = Response.data;
