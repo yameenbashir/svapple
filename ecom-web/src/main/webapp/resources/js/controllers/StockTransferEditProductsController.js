@@ -85,8 +85,12 @@ var StockTransferEditProductsController = ['$scope','$sce', '$http', '$timeout',
 
 			if($scope.data.stockOrderDetailBeansList!=null){
 				$scope.stockOrderDetailBeansList = $scope.data.stockOrderDetailBeansList;
-				console.log($scope.stockOrderDetailBeansList[i].variantAttributeName);
-				//$scope.arrangeOrder();
+				if($scope.stockOrderDetailBeansList.length > 0){
+					console.log($scope.stockOrderDetailBeansList[i].variantAttributeName);
+					//$scope.arrangeOrder();
+				}else{
+					console.log("No data found");
+				}
 			}
 			if($scope.data.productVariantBeansList!=null){
 				$scope.productVariantBeansList = $scope.data.productVariantBeansList;
