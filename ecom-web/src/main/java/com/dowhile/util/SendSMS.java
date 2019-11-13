@@ -260,7 +260,7 @@ public class SendSMS {
 			
 			StringBuffer response = new StringBuffer();
 			String url = "https://pk.eocean.us/APIManagement/API/RequestAPI?user="+userName+"&pwd="+password+"&sender="+mask+"&reciever="+phoneNum+"&msg-data="+message+"&response=string";
-			System.out.println("url: "+url);
+//			System.out.println("url: "+url);
 			//String url1 = "https://pk.eocean.us/APIManagement/API/RequestAPI?user=vestidoin_1&pwd=AMceTQFvaPczx2IeFF4TTeRDSaXbdQJHSWn96Yz3FZPq94pbgPI5%2fPPZsy4yZywvDA%3d%3d&sender=Vestido%20In&reciever=03214179684&msg-data=Vestido%20In%20Mask%20Testing%20Message&response=string";
 			try{
 				URL obj = new URL(url);

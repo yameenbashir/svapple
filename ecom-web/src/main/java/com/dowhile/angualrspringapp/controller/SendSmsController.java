@@ -155,7 +155,7 @@ public class SendSmsController {
 	Response sendMessage(@PathVariable("sessionId") String sessionId,
 			@RequestBody SendSMSBean sendSMSBean,
 			HttpServletRequest request) {
-		System.out.println("Inside sendMessage");
+//		System.out.println("Inside sendMessage");
 		SendSMS sendSMS = new SendSMS();
 		if (SessionValidator.isSessionValid(sessionId, request)) {
 			HttpSession session = request.getSession(false);
@@ -173,14 +173,14 @@ public class SendSmsController {
 					List<ContactsSummmary> contacts = null;
 					if(currentUser.getOutlet().getIsHeadOffice()){
 						contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyId(currentUser.getCompany().getCompanyId());
-						System.out.println("SMS will be send for all company customers and contacts size is: "+contacts.size());
+//						System.out.println("SMS will be send for all company customers and contacts size is: "+contacts.size());
 						
 					}else{
 						contacts = contactsSummmaryService.getActiveContactsSummmaryByCompanyOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());;
-						System.out.println("SMS will be send for  all Outlet customers");
+//						System.out.println("SMS will be send for  all Outlet customers");
 					}
 					if(messageObj!=null && contacts!=null && messageObj.getMessageBundleCount()>=messageObj.getMessageTextLimit()+contacts.size() && new Date().before(messageObj.getPackageRenewDate())){
-						System.out.println("Send sms bundle have valid limit. messageObj.getMessageBundleCount()"+messageObj.getMessageBundleCount()+" and send bundel count. messageObj.getMessageTextLimit()+contacts.size(): "+messageObj.getMessageTextLimit()+contacts.size());
+//						System.out.println("Send sms bundle have valid limit. messageObj.getMessageBundleCount()"+messageObj.getMessageBundleCount()+" and send bundel count. messageObj.getMessageTextLimit()+contacts.size(): "+messageObj.getMessageTextLimit()+contacts.size());
 						String phoneNum = "";	
 						String receiverId = "";
 						for(ContactsSummmary bean:contacts){
@@ -209,7 +209,7 @@ public class SendSmsController {
 										  String deliverId = sendSMS.sendSMSByEOcean(bean.getId().getPhone(), sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 											//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 										  internalSMSCount = internalSMSCount+1;
-										  System.out.println("deliverId: "+deliverId);
+//										  System.out.println("deliverId: "+deliverId);
 											MessageDetail messageDetail = new MessageDetail();
 											messageDetail.setCompany(currentUser.getCompany());
 											messageDetail.setActiveIndicator(true);
@@ -288,7 +288,7 @@ public class SendSmsController {
 									  
 									  String deliverId = sendSMS.sendSMSByEOcean(bean.getPhoneNumber(), sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
 										//String deliverId = sendSMS.sendSMSPost(request,currentUser,phoneNum, sendSMSBean.getMessage(), messageObj.getUserId(), messageObj.getPassword(), messageObj.getMaskName());
-									  System.out.println("deliverId: "+deliverId);
+//									  System.out.println("deliverId: "+deliverId);
 									  internalCustomSMSCount = internalCustomSMSCount+1;
 										MessageDetail messageDetail = new MessageDetail();
 										messageDetail.setCompany(currentUser.getCompany());
