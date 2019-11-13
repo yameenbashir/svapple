@@ -86,7 +86,7 @@ var StockTransferEditProductsController = ['$scope','$sce', '$http', '$timeout',
 			if($scope.data.stockOrderDetailBeansList!=null){
 				$scope.stockOrderDetailBeansList = $scope.data.stockOrderDetailBeansList;
 				if($scope.stockOrderDetailBeansList.length > 0){
-					console.log($scope.stockOrderDetailBeansList[i].variantAttributeName);
+					console.log($scope.stockOrderDetailBeansList[0].variantAttributeName);
 					//$scope.arrangeOrder();
 				}else{
 					console.log("No data found");
