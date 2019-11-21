@@ -11,6 +11,7 @@ public class ReceiptConfigurationBean {
 
 	private boolean starndardReceipt;
 	private boolean xpressionsReceipt;
+	
 	/**
 	 * 
 	 */
