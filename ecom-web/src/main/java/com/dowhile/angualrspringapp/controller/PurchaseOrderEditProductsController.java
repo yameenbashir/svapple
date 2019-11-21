@@ -172,8 +172,8 @@ public class PurchaseOrderEditProductsController {
 				purchaseOrderEditProductsControllerBean.setProductVariantBeansList(productVariantBeansList);
 				purchaseOrderEditProductsControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderEditProductsControllerBean.setProductMap(productMap);
-				session.setAttribute("productIdsMap", productIdsMap);
-				session.setAttribute("productVariantIdsMap", productVariantIdsMap);
+				//session.setAttribute("productIdsMap", productIdsMap);
+				//session.setAttribute("productVariantIdsMap", productVariantIdsMap);
 
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderEditProductsControllerData successfully ",false);
@@ -229,8 +229,8 @@ public class PurchaseOrderEditProductsController {
 				purchaseOrderEditProductsControllerBean.setProductVariantBeansList(productVariantBeansList);
 				purchaseOrderEditProductsControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderEditProductsControllerBean.setProductMap(productMap);
-				session.setAttribute("productIdsMap", productIdsMap);
-				session.setAttribute("productVariantIdsMap", productVariantIdsMap);
+				//session.setAttribute("productIdsMap", productIdsMap);
+				//session.setAttribute("productVariantIdsMap", productVariantIdsMap);
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderEditProductsControllerData successfully ",false);
 				return new Response(purchaseOrderEditProductsControllerBean, StatusConstants.SUCCESS,
@@ -271,13 +271,13 @@ public class PurchaseOrderEditProductsController {
 			try {
 
 				stockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
-				if(stockOrderDetailList.size() > 0) {
+				/*if(stockOrderDetailList.size() > 0) {
 				System.out.println("Stock Order Id" +  stockOrderDetailList.get(0).getStockOrderDetailId());
 				}
 				else
 				{
 					System.out.println("Stock Order Id " +  " not found at line 279");
-				}
+				}*/
 				int order = 1;
 				if (stockOrderDetailList != null) {
 					//List<ProductVariant> recvProductVariantList = null;
@@ -288,19 +288,19 @@ public class PurchaseOrderEditProductsController {
 					//allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 					//recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
 					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-						if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") != "") {
+						/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") != "") {
 						System.out.println("redirect Call" +  session.getAttribute("redirectCall"));
 						}else {
 							System.out.println("redirect Call is empty at line 294");
-						}
+						}*/
 						if(session.getAttribute("productIdsMap") != null) {
 							productSessionMap  = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
 							allProducts = new ArrayList<Product>(productSessionMap.values());
-							if(allProducts.size() > 0 ) {
+							/*if(allProducts.size() > 0 ) {
 							System.out.println("All Product from Session" +  allProducts.get(0).getProductName());
 							}else {
 								System.out.println("All Product from Session is null at line 302");
-							}
+							}*/
 						}
 						else {
 							allProducts = productService.getAllProducts(currentUser.getCompany().getCompanyId());
@@ -313,12 +313,12 @@ public class PurchaseOrderEditProductsController {
 						if(session.getAttribute("productVariantIdsMap") != null) {
 							productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
 							allProductVariants = new ArrayList<ProductVariant>(productVariantSessionMap.values());
-							if(allProductVariants.size() > 0) {
+							/*if(allProductVariants.size() > 0) {
 							System.out.println("All Product Variant from Session" +  allProductVariants.get(0).getVariantAttributeName());
 							}
 							else {
 								System.out.println("All Product Variant from Session" + "Null Return at line 320");
-							}
+							}*/
 						}
 						else {
 							allProductVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
@@ -358,12 +358,12 @@ public class PurchaseOrderEditProductsController {
 						}
 						if(!stockOrderDetail.isIsProduct()){						
 							ProductVariant productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
-							if(productVariant != null) {
+							/*if(productVariant != null) {
 							System.out.println("productVariant" +  productVariant.getVariantAttributeName());
 							}
 							else {
 								System.out.println("productVariant" +  " is not found at line 351");
-							}
+							}*/
 							if(productVariant != null){
 								stockOrderDetailBean.setProductVariantId(Objects.toString(productVariant.getProductVariantId(),""));
 								stockOrderDetailBean.setVariantAttributeName(productsMap.get(productVariant.getProduct().getProductId()).getProductName() + "-" + Objects.toString(productVariant.getVariantAttributeName(),""));
