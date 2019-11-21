@@ -100,7 +100,7 @@ import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
 
 /**
- * imran latif
+ * Yameen Bashir
  */
 @Controller
 @RequestMapping("/newProduct")
