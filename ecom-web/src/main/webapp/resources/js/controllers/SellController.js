@@ -24,6 +24,8 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	$scope.success = false;
 	$scope.error = false;
 	$scope.itemDetailDisable = false;
+	$scope.standardReceipt = true;
+	
 	$scope.returnvalue = parseFloat(1);
 	$scope.listPayments = [];
 	$scope.payment = {};
@@ -60,6 +62,9 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			$scope._s_tk_com = $cookieStore.get('_s_tk_com');
 
 			$scope.sellControllerBean = SellControllerPreLoad.loadControllerData();
+			if(!$scope.sellControllerBean.receiptConfigurationBean.starndardReceipt){
+				$scope.standardReceipt = false;
+			}
 			$scope.getAllProducts();
 			$rootScope.globalPageLoader = false;
 			$scope.loadSalesDataAjax();

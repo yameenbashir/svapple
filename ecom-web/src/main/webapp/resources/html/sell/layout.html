@@ -354,10 +354,10 @@
 					<div class="col-md-4">
 
 						<!-- Profile Image -->
-						<div class="box box-primary newFont">
+						<div class="box box-primary newFont" ng-show="standardReceipt">
 
 							<div class="box-body box-profile ">
-								<h3 class="profile-username text-center">Sale Summary</h3>
+								<h3 class="profile-username text-center">Sale Summary Standard</h3>
 
 								<div class="box-body" style="height: 900px;">
 									<div class="container" >
@@ -458,6 +458,276 @@
 															<span class="text-right"
 																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
 														</div> 
+														
+													</div>
+													<div class="col-xs-7 input-container" >
+
+															<span class="text">Items Count :</span>
+															
+																														
+														</div>
+
+														<div class="col-xs-2 input-container" style="margin-left: 8px !important;">
+															<span ng-bind="InvoiceMainBean.itemsCount" ></span>
+														</div>
+
+														<div class="col-xs-3 input-container" >
+															<span class="text-right"></span>
+														</div>
+													<hr class="dash" style="margin-top:-20px !important;" />
+													
+													<hr class="vd-hr no-print">
+													<div style="font-size: 10px" style="margin-top:-20px; !important;">
+														<div class="col-xs-8 text-right">
+															Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> <br> Tax Amount <br>
+															Total:
+														</div>
+														<div class="col-xs-4 text-center">
+															<span
+																ng-bind="(returnvalue * InvoiceMainBean.invoiceAmt)"></span>
+															<span ng-show="InvoiceMainBean.invoiceDiscountAmt>0"><br></span>
+															 <span class="text-center" ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>{{InvoiceMainBean.invoiceDiscountAmt}}</span> 
+															 <span><br></span>
+															<span class="text-center"
+																ng-bind="(InvoiceMainBean.invoiceTax)"></span> <span><br></span>
+															<span class="text-center" style="font-size: larger;"
+																ng-bind="(returnvalue *InvoiceMainBean.invoiceNetAmt)"></span>
+														</div>
+													</div>
+													<hr class="dash" />
+													<div ng-if="listPayments.length > 0"
+														ng-repeat="payment in listPayments">
+														<div>
+															<div class="col-xs-8 text-right">{{payment.type}}</div>
+															<div class="col-xs-4 text-center"
+																ng-bind="payment.amount"></div>
+														</div>
+
+													</div>
+
+
+													<div ng-show="change > 0" style="font-size: 12px">
+														<div class="col-xs-8 text-right">Change</div>
+														<div class="col-xs-4 text-center">{{change | number
+															: 2}}</div>
+													</div>
+													<div style="font-size: 12px">
+														<div class="col-xs-8 text-right">Balance</div>
+														<div class="col-xs-4 text-center">{{returnvalue *
+															balance | number : 2}}</div>
+													</div>
+												</div>
+														<div ng-if="totalPayable" class="col-xs-8 text-right">
+															Previous Balance
+														</div>
+														<div class="col-xs-4 text-center">
+															<span
+																ng-bind="totalPayable"></span>
+														</div>
+														<div ng-if="totalBalance" class="col-xs-8 text-right">
+															Total Payable
+														</div>
+														<div ng-if="totalBalance" class="col-xs-4 text-center">
+															<span
+																ng-bind="totalBalance"></span>
+														</div>
+
+												<div class="row">
+													<div class="col-xs-12 text-center">
+														<!--<barcode style="margin-top: 15px;" food="barcodeValues"></barcode>  -->
+														<svg class="barcode" jsbarcode-format="CODE128"
+															jsbarcode-value={{InvoiceMainBean.invoiceRefNbr}}
+															jsbarcode-fontSize="10" jsbarcode-height="35"
+															jsbarcode-width="1.9" jsbarcode-marginLeft=""
+															jsbarcode-textmargin="0" jsbarcode-fontoptions="">
+																</svg>
+													</div>
+
+												</div>
+
+												<div class="top-buffer-contact no-print"></div>
+												<!-- Kites -->
+												<!-- <div class="">
+													<div class="col-xs-12 text-center" style="font-size: 9px">
+														Thank you for your Shopping.<br> No Exchange without
+														orignal Invoice.<br> No return, only exchange within
+														5 days <br>SALE ITEMS NO RETURN, NO CHANGE<br>NO
+														EXHANGE, AFTER ALTERATION <br> <br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div>  -->
+												<!-- loom care -->
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size: 9px"
+													 bind-html-unsafe="sellControllerBean.termsAndConditions">
+													
+														
+														
+													</div>
+													<div class="col-xs-12 text-center" style="font-size: 9px"
+													 >
+													
+														
+														<!-- <br> +92-322-6000087 -->  <br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div>   
+												
+												<!-- Xpressions  
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size: 8px">
+														Exchange can be furnished within 3 days if product is not user or altered/<b>No Replaced</b>.
+														<br> Once the dress is sold on "<B>SALE PRICE</B>" can not be exchanged or returned.<br>
+														All claims are subject to the approval of Head office as per the organizational policies.<br>
+														Exchange is not accepted on the product purchased dureing sale period of promotion.<br>
+														Dry Clean Only.<br> 
+														Cliam for defects because of faulty wahsing & improper care are not accepted.<br>
+														Cash not refundable in any case.<br>
+														<br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div> -->
+												<!-- Style & Style  
+												<div class="">
+													<div class="col-xs-12 text-center" style="font-size:10px; font-family: monospaced; font-weight: bolder;">
+														Shoes used in water can't be claimed.
+														<br>
+														Used Item can't be replaced.
+														<br>"<B>Imported /Sale Item</B>"No guarntee, can not be exchanged or returned.<br>
+														Free Reparing can be done within two months of purchase.<br>
+														15 days will be required for reparing.<br>
+														Exchange is possible within 15 days.<br> 
+														No exchange without receipt.<br>
+														Cash not refundable in any case.<br>
+														<br>Powered By<br>
+														---------------------------------------------------- <br>
+														<b style="font-size: 12px"> www.shopvitals.com</b>
+													</div>
+
+												</div> -->
+												
+										</div>
+									</div>
+
+								</div>
+
+
+
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+						<!-- Profile Image -->
+						<div class="box box-primary newFont" ng-show="!standardReceipt">
+
+							<div class="box-body box-profile ">
+								<h3 class="profile-username text-center">Sale Summary for xrpessions</h3>
+
+								<div class="box-body" style="height: 900px;">
+									<div class="container" >
+										<div class="" id="printThisElement" style="font-family: monospaced sans serif; font-weight: 900;">
+											<div class="">
+												<div class="col-xs-2 "></div>
+												<div class="col-xs-8 text-center" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+													
+												<!--  Kites 	
+												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
+														 src="{{sellControllerBean.companyImagePath}}"></img><br>  -->
+												<!-- Style & Style 	 
+												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
+														src="{{sellControllerBean.companyImagePath}}"></img><br> -->
+												<!-- Xpressions 		 -->
+													 <img class="text-left" style="margin-top: 0px;height:120px !important;;  width: 350px !important;" 
+														src="{{sellControllerBean.companyImagePath}}"></img><br> 	
+
+													{{companyAddress}}
+													<br>
+													<span ng-bind="' Ph:'+ phoneNumber"></span>
+													<br>
+													 <span>Facebook: Xpressions.monas<span> 
+												</div>
+												<div class="col-xs-2"></div>
+
+											</div>
+											
+											<hr class="dash" />
+											<hr class="vd-hr no-print">
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="col-md-12"
+													ng-bind="'Receipt #: '+ InvoiceMainBean.invoiceRefNbr"></div>
+											</div>
+											<br>
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="col-md-12"
+													ng-bind="'Date: '+ invoiceGenerationDteFE"></div>
+											</div>
+											
+											<br>
+											<hr class="vd-hr no-print">
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="text-center col-md-12"
+													ng-bind="'Cashier: ' + userName"></div>
+												<div class="text-center col-md-12"
+													ng-bind="'Customer:  ' + selectCustomerName + ' : Num #  ' + selectCustomerPhoneNumber"></div>	
+													
+											</div>
+											
+											<hr class="dash" />
+											
+												<div class="items-table" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+													<div class="header">
+														<div class="col-xs-7 input-container">
+															<span>PARTICULARS</span>
+														</div>
+														<div class="col-xs-2 input-container">
+															<span>QTY</span>
+														</div>
+														<div class="col-xs-3 input-container">
+															<span class="text-right">AMT</span>
+														</div>
+
+													</div>
+													<hr class="dash" />
+													<div ng-if="InvoiceMainBean.invoiceDetails.length>0"
+														ng-repeat="invoiceDetails in InvoiceMainBean.invoiceDetails"
+														ng-animate="'slide-down'" class="row" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+														<hr class="vd-hr no-print">
+														<div class="col-xs-7 input-containe" style="font-size:12px; font-family: monospaced; font-weight: bolder; margin-top:-20px !important;">
+
+															<span class="text"
+																ng-if="invoiceDetails.productVarientName"
+																ng-bind="invoiceDetails.productName +  '  '+ invoiceDetails.productVarientName"></span>
+															<span class="text"
+																ng-if="!invoiceDetails.productVarientName"
+																ng-bind="invoiceDetails.productName"></span>
+															<div class="row">
+															<small>
+															Was: <span class="text" ng-bind="invoiceDetails.itemRetailPrice" > </span>
+															Disc: <span class="text" ng-bind="invoiceDetails.itemDiscountPrct"></span> % :
+															<span class="text" >{{invoiceDetails.itemRetailPrice * (invoiceDetails.itemDiscountPrct/100) | number:2}}</span>
+															</small>
+															</div>																
+														</div>
+
+														<div class="col-xs-2 input-container" style="margin-top:-20px !important; margin-left: 8px !important;">
+															<span ng-bind="invoiceDetails.productQuantity"></span>
+														</div>
+																<!-- Xpressions  -->  
+														<div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 70px !important; ">
+															<span class="text-right"
+																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
+														</div> 
+														<!-- Standard -->
+														<!-- <div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 40px !important; ">
+															<span class="text-right"
+																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
+														</div>  -->
 														
 													</div>
 													<div class="col-xs-7 input-container" >

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dowhile.frontend.configuration.bean.ReceiptConfigurationBean;
 import com.dowhile.frontend.mapping.bean.CustomerBean;
 import com.dowhile.frontend.mapping.bean.CustomerGroupBean;
 import com.dowhile.frontend.mapping.bean.PriceBookBean;
@@ -40,6 +41,7 @@ public class SellControllerBean implements Serializable{
 	private String autoCreateStandardVariant;
 	private String defaultVariantName;
 	private String termsAndConditions;
+	private ReceiptConfigurationBean receiptConfigurationBean;
 	public List<ProductBean> getProductsBean() {
 		return productsBean;
 	}
@@ -168,6 +170,19 @@ public class SellControllerBean implements Serializable{
 	public void setIsInvoiceDetailLevelDiscountEnable(
 			String isInvoiceDetailLevelDiscountEnable) {
 		this.isInvoiceDetailLevelDiscountEnable = isInvoiceDetailLevelDiscountEnable;
+	}
+	/**
+	 * @return the receiptConfigurationBean
+	 */
+	public ReceiptConfigurationBean getReceiptConfigurationBean() {
+		return receiptConfigurationBean;
+	}
+	/**
+	 * @param receiptConfigurationBean the receiptConfigurationBean to set
+	 */
+	public void setReceiptConfigurationBean(
+			ReceiptConfigurationBean receiptConfigurationBean) {
+		this.receiptConfigurationBean = receiptConfigurationBean;
 	}
 
 }

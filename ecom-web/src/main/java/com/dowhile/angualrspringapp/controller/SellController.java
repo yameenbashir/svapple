@@ -226,9 +226,20 @@ public class SellController  {
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			try {
 				ReceiptConfigurationBean receiptConfigurationBean = new ReceiptConfigurationBean();
-				/*System.out.println("receiptConfigurationBean: "+receiptConfigurationBean.isStarndardReceipt());
-				System.out.println("receiptConfigurationBean: "+receiptConfigurationBean.isXpressionsReceipt());
-				Configuration configurationReceipt = configurationMap.get("CUSTOM_RECEIPT_COMPANY_ID");*/
+				System.out.println("receiptConfigurationBean.isStarndardReceipt(): "+receiptConfigurationBean.isStarndardReceipt());
+				System.out.println("receiptConfigurationBean.isXpressionsReceipt(): "+receiptConfigurationBean.isXpressionsReceipt());
+				Configuration configurationReceipt = configurationMap.get("CUSTOM_RECEIPT_NAME");
+				boolean customizedReceipt = false;
+				if(configurationReceipt!=null){
+					if(configurationReceipt.getPropertyValue().equalsIgnoreCase("xpressions")){
+						receiptConfigurationBean.setXpressionsReceipt(true);
+						customizedReceipt = true;
+					}
+				}
+				if(!customizedReceipt){
+					receiptConfigurationBean.setStarndardReceipt(true);
+				}
+				sellControllerBean.setReceiptConfigurationBean(receiptConfigurationBean);
 				Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS");
 				if(configurationTermsAndContitions!=null){
 					String termsAndContitions = configurationTermsAndContitions.getPropertyValue();
