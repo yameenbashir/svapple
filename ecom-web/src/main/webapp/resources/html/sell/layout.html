@@ -354,33 +354,33 @@
 					<div class="col-md-4">
 
 						<!-- Profile Image -->
-						<div class="box box-primary newFont" ng-show="standardReceipt">
+						<div class="box box-primary newFont" ng-show="!standardReceipt">
 
 							<div class="box-body box-profile ">
-								<h3 class="profile-username text-center">Sale Summary Standard</h3>
+								<h3 class="profile-username text-center">Sale Summary Xpressions</h3>
 
 								<div class="box-body" style="height: 900px;">
 									<div class="container" >
-										<div class="" id="printThisElement" style="font-family: monospaced sans serif; font-weight: 900;">
+										<div class="" id="printThisElementNotStandard" style="font-family: monospaced sans serif; font-weight: 900;">
 											<div class="">
 												<div class="col-xs-2 "></div>
 												<div class="col-xs-8 text-center" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
 													
 												<!-- Kites 	 -->
-												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
-														 src="{{sellControllerBean.companyImagePath}}"></img><br> 
+												<!-- <img class="text-center" style="margin-top: 0px;height:50px !important;" 
+														 src="{{sellControllerBean.companyImagePath}}"></img><br>  -->
 												<!-- Style & Style 	 
 												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
 														src="{{sellControllerBean.companyImagePath}}"></img><br> -->
-												<!-- Xpressions 		
+												<!-- Xpressions --> 		
 													 <img class="text-left" style="margin-top: 0px;height:120px !important;;  width: 350px !important;" 
-														src="{{sellControllerBean.companyImagePath}}"></img><br> 	-->
+														src="{{sellControllerBean.companyImagePath}}"></img><br> 	
 
 													{{companyAddress}}
 													<br>
 													<span ng-bind="' Ph:'+ phoneNumber"></span>
 													<br>
-													 <!-- <span>Facebook: Xpressions.monas<span> --> 
+													 <span>Facebook: Xpressions.monas<span> 
 												</div>
 												<div class="col-xs-2"></div>
 
@@ -448,16 +448,16 @@
 														<div class="col-xs-2 input-container" style="margin-top:-20px !important; margin-left: 8px !important;">
 															<span ng-bind="invoiceDetails.productQuantity"></span>
 														</div>
-																<!-- Xpressions   
+																<!-- Xpressions -->   
 														<div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 70px !important; ">
 															<span class="text-right"
 																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
-														</div>  -->
+														</div> 
 														<!-- Standard -->
-														<div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 40px !important; ">
+														<!-- <div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 40px !important; ">
 															<span class="text-right"
 																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
-														</div> 
+														</div>  -->
 														
 													</div>
 													<div class="col-xs-7 input-container" >
@@ -624,10 +624,10 @@
 						</div>
 						<!-- /.box -->
 						<!-- Profile Image -->
-						<div class="box box-primary newFont" ng-show="!standardReceipt">
+						<div class="box box-primary newFont" ng-show="standardReceipt">
 
 							<div class="box-body box-profile ">
-								<h3 class="profile-username text-center">Sale Summary for xrpessions</h3>
+								<h3 class="profile-username text-center">Sale Summary</h3>
 
 								<div class="box-body" style="height: 900px;">
 									<div class="container" >
@@ -636,21 +636,21 @@
 												<div class="col-xs-2 "></div>
 												<div class="col-xs-8 text-center" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
 													
-												<!--  Kites 	
+												 <!-- Kites  -->	
 												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
-														 src="{{sellControllerBean.companyImagePath}}"></img><br>  -->
+														 src="{{sellControllerBean.companyImagePath}}"></img><br> 
 												<!-- Style & Style 	 
 												<img class="text-center" style="margin-top: 0px;height:50px !important;" 
 														src="{{sellControllerBean.companyImagePath}}"></img><br> -->
 												<!-- Xpressions 		 -->
-													 <img class="text-left" style="margin-top: 0px;height:120px !important;;  width: 350px !important;" 
-														src="{{sellControllerBean.companyImagePath}}"></img><br> 	
+													 <!-- <img class="text-left" style="margin-top: 0px;height:120px !important;;  width: 350px !important;" 
+														src="{{sellControllerBean.companyImagePath}}"></img><br> 	 -->
 
 													{{companyAddress}}
 													<br>
 													<span ng-bind="' Ph:'+ phoneNumber"></span>
 													<br>
-													 <span>Facebook: Xpressions.monas<span> 
+													 <!-- <span>Facebook: Xpressions.monas<span> --> 
 												</div>
 												<div class="col-xs-2"></div>
 
@@ -719,15 +719,15 @@
 															<span ng-bind="invoiceDetails.productQuantity"></span>
 														</div>
 																<!-- Xpressions  -->  
-														<div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 70px !important; ">
-															<span class="text-right"
-																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
-														</div> 
-														<!-- Standard -->
-														<!-- <div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 40px !important; ">
+														<!-- <div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 70px !important; ">
 															<span class="text-right"
 																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
 														</div>  -->
+														<!-- Standard -->
+														<div class="col-xs-3 input-container" style="margin-top:-20px !important;  margin-left: 40px !important; ">
+															<span class="text-right"
+																ng-bind="returnvalue * invoiceDetails.itemNetPrice"></span>
+														</div> 
 														
 													</div>
 													<div class="col-xs-7 input-container" >
@@ -921,11 +921,19 @@
 								<hr class="vd-hr">
 								<div class="row">
 									<div class="col-md-4"></div>
-									<div class="col-md-4">
+									<div class="col-md-4" ng-show="standardReceipt">
 										<button class="btn btn-primary btn-block" ng-print
 											print-element-id="printThisElement"
 											ng-click="printReceipt = !printReceipt">
 											<i class="fa fa-print"></i> Print Receipt
+										</button>
+
+									</div>
+									<div class="col-md-4" ng-show="!standardReceipt">
+										<button class="btn btn-primary btn-block" ng-print
+											print-element-id="printThisElementNotStandard"
+											ng-click="printReceipt = !printReceipt">
+											<i class="fa fa-print"></i> Print Xpressions Receipt
 										</button>
 
 									</div>
@@ -961,10 +969,16 @@
 								<hr class="vd-hr">
 								<div class="row">
 									<div class="col-md-3"></div>
-									<div class="col-md-6">
+									<div class="col-md-6" ng-show="standardReceipt">
 										<input type="submit" class="btn btn-success btn-block"
 											ng-print print-element-id="printThisElement"
 											ng-click="ReceiptingDone()" value="Done (ESC)" />
+										</button>
+									</div>
+									<div class="col-md-6" ng-show="!standardReceipt">
+										<input type="submit" class="btn btn-success btn-block"
+											ng-print print-element-id="printThisElementNotStandard"
+											ng-click="ReceiptingDone()" value="Done Xpressions (ESC)" />
 										</button>
 									</div>
 

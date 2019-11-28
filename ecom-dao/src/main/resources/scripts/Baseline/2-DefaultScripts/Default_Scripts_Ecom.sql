@@ -5,7 +5,7 @@
 -- First we query on db and find the last compnayID, userId,outletId,registerId,salesTaxId and contactGroupId and assing these values to below variables thats it.
 -- no need updatedBy on default script we will use createdBy for both
 -- In case of new server set all ***Ids to 1
-SELECT @companyId := 1, @createdBy := 1, @companyName := 'Books Collection' , @defaultUserEmail:='admin@shopvitals.com', @outletId:=1 , @RegisterId:=1 , @saleTaxId:=1, @contactGroupId:=1;
+SELECT @companyId := 1, @createdBy := 1, @companyName := 'Meeras' , @defaultUserEmail:='admin@meeras.com', @outletId:=1 , @RegisterId:=1 , @saleTaxId:=1, @contactGroupId:=1;
 
 -- ----------Company----------------------
 
@@ -51,6 +51,6 @@ INSERT INTO `ecom`.`brand` (`BRAND_NAME`, `BRAND_DESCRIPTION`, `ACTIVE_INDICATOR
 -- INSERT INTO `ecom`.`variant_attribute` (`ATTRIBUTE_NAME`, `ACTIVE_INDICATOR`, `CREATED_DATE`, `LAST_UPDATED`, `CREATED_BY`, `UPDATED_BY`, `VARIANT_ATTRIBUTE_ASSOCIATION_ID`, `COMPANY_ASSOCIATION_ID`) VALUES ( 'Size', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, @createdBy, @createdBy, '0', @companyId);
 -- ----------------------- ECOM USER -----------------------------------------
 
-insert into user (USER_EMAIL,PASSWORD,ROLE_ASSOCIATION_ID,FIRST_NAME,LAST_NAME,CONTACT_ASSOCICATION_ID,OUTLET_ASSOCICATION_ID,ACTIVE_INDICATOR,CREATED_DATE,LAST_UPDATED,CREATED_BY,UPDATED_BY,LAST_LOGIN,COMPANY_ASSOCIATION_ID)
-	values ('ecom_admin@shopvitals.com','ecom_admin','4','Ecom','Admin',null,null,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,@createdBy,@createdBy,CURRENT_TIMESTAMP,@companyId);
+-- insert into user (USER_EMAIL,PASSWORD,ROLE_ASSOCIATION_ID,FIRST_NAME,LAST_NAME,CONTACT_ASSOCICATION_ID,OUTLET_ASSOCICATION_ID,ACTIVE_INDICATOR,CREATED_DATE,LAST_UPDATED,CREATED_BY,UPDATED_BY,LAST_LOGIN,COMPANY_ASSOCIATION_ID)
+--	values ('ecom_admin@shopvitals.com','ecom_admin','4','Ecom','Admin',null,null,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,@createdBy,@createdBy,CURRENT_TIMESTAMP,@companyId);
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dowhile.Configuration;
 import com.dowhile.Outlet;
 import com.dowhile.User;
 import com.dowhile.beans.ReportParams;
 import com.dowhile.beans.TableData;
+import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
@@ -52,7 +55,7 @@ public class CustomerSalesReportController {
 	private TempSaleService tempSaleService;
 	@Resource
 	private OutletService outletService;
-	
+	private Configuration configuration =null;
 	private static List<OutletBean> outletBeans;
 
 	
@@ -69,13 +72,41 @@ public class CustomerSalesReportController {
 			User currentUser = (User) session.getAttribute("user");
 			try {
 				boolean completeReport = false;
+				boolean isHeadOffice = false;
+				boolean isLocalInstance = false;
+				boolean isAdminRestriction = false;
 				StringBuilder tableName = null;
+				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+				Configuration configurationLocalInstance = configurationMap.get("LOCAL_INSTANCE");
+				if(configurationLocalInstance!=null && 
+						!configurationLocalInstance.getPropertyValue().equalsIgnoreCase("")&& configurationLocalInstance.getPropertyValue().equalsIgnoreCase("true")){
+					isLocalInstance = true;
+				}
 				
-				if(isLiveData!=null && !isLiveData.equalsIgnoreCase("") && isLiveData.equalsIgnoreCase("true")){
+				Configuration configurationWarehouseAdminRestriction = configurationMap.get("WAREHOSE_ADMIN_RESTRICTION");
+				if(configurationWarehouseAdminRestriction!=null && 
+						!configurationWarehouseAdminRestriction.getPropertyValue().equalsIgnoreCase("")&& configurationWarehouseAdminRestriction.getPropertyValue().equalsIgnoreCase("true")){
+					isAdminRestriction = true;
+				}
+				
+				if(isLiveData!=null && !isLiveData.equalsIgnoreCase("") && isLiveData.equalsIgnoreCase("true")||isLocalInstance){
 					tableName = new StringBuilder("Customer_Sales_Report");
 				}else{
 					tableName = new StringBuilder("mv_Customer_Sales_Report");
 				}
+				if(isAdminRestriction){
+					if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null){
+						 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
+					}
+				}else{
+					if(currentUser.getOutlet().getIsHeadOffice()!=null){
+						 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
+					}
+				}
+				
+				configuration = configurationMap.get("HIDE_ORIGNAL_PRICE_INFO_REPORTS");
+				//configuration = configurationService.getConfigurationByPropertyNameByCompanyId("HIDE_ORIGNAL_PRICE_INFO_REPORTS",currentUser.getCompany().getCompanyId());
+
 				int outletId = 0;
 				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
 					Response response = getOutlets(sessionId, request);
@@ -92,6 +123,7 @@ public class CustomerSalesReportController {
 				}else{
 					outletId = currentUser.getOutlet().getOutletId();
 				}
+
 				SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
 				Date startDat =  null;
 				Date endDat =  null;
@@ -108,34 +140,68 @@ public class CustomerSalesReportController {
 					endDat = today;
 					startDat  = calendar.getTime();
 				}else{
-					 startDat = (Date) parser.parse(startDate.trim());
-					 endDat = (Date) parser.parse(endDate);
+					startDat = (Date) parser.parse(startDate.trim());
+					endDat = (Date) parser.parse(endDate);
 				}
 				TableData tableData = null;
 				if(reportType.equals("Revenue")){
 					ReportParams reportParams = new ReportParams();
-						reportParams.setBaseColumn("sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Margin,Tax");
-						reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
-						reportParams.setEndDate(endDat);
-						reportParams.setGroupBy("Customer");
-						reportParams.setMainBaseColumn("Customer");
-						reportParams.setOrderBy("");
-						reportParams.setPivotColumn( "CREATED_DATE");
+					if(!isHeadOffice && configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						reportParams.setBaseColumn("sum(Revenue) as Revenue,Tax");
+						reportParams.setPrintColumns( reportType+","+ "Tax");
+					}else{
+						reportParams.setBaseColumn("sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
 						reportParams.setPrintColumns( reportType+","+ "Cost of Goods,Gross Profit,Margin,Tax");
-						reportParams.setReportDateType(reportDateType);
-						reportParams.setStartDate(startDat);
-						reportParams.setTableName(tableName.toString());
-						reportParams.setTallyColumn(reportType);
-						if(completeReport){
-							reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
-						}else{
-							reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId() );
-						}
-						tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
-					
+					}
+					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
+					reportParams.setEndDate(endDat);
+					reportParams.setGroupBy("Customer");
+					reportParams.setMainBaseColumn("Customer");
+					reportParams.setOrderBy("");
+					reportParams.setPivotColumn( "CREATED_DATE");
+					reportParams.setReportDateType(reportDateType);
+					reportParams.setStartDate(startDat);
+					reportParams.setTableName(tableName.toString());
+					reportParams.setTallyColumn(reportType);
+					if(completeReport){
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
+					}else{
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
+					}
+
+					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
+
+				}else if(reportType.equals("Items Sold")){
+					ReportParams reportParams = new ReportParams();
+					if(!isHeadOffice && configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						reportParams.setBaseColumn("sum(Items_Sold) as Items_Sold,Tax");
+						reportParams.setPrintColumns( reportType+","+ "Tax");
+					}else{
+						reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
+						reportParams.setPrintColumns( reportType+","+ "Cost of Goods,Gross Profit,Margin,Tax");
+					}
+					//reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
+					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
+					reportParams.setEndDate(endDat);
+					reportParams.setGroupBy("Customer");
+					reportParams.setMainBaseColumn("Customer");
+					reportParams.setOrderBy("");
+					reportParams.setPivotColumn( "CREATED_DATE");
+					//reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
+					reportParams.setReportDateType(reportDateType);
+					reportParams.setStartDate(startDat);
+					reportParams.setTableName(tableName.toString());
+					reportParams.setTallyColumn("Items_Sold");
+					if(completeReport){
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
+					}else{
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
+					}
+					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
+
 				}else if(reportType.equals("Cost of Goods")){
 					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("sum(Cost_of_Goods) as Cost,sum(Revenue) as Revenue,sum(Gross_Profit) as Profit,Margin,Tax");
+					reportParams.setBaseColumn("sum(Cost_of_Goods) as Cost,sum(Revenue) as Revenue,sum(Gross_Profit) as Profit,avg(Margin),Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
 					reportParams.setGroupBy("Customer");
@@ -150,13 +216,13 @@ public class CustomerSalesReportController {
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
 					}else{
-						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId() );
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
 					}
 					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
-								
+
 				}else if(reportType.equals("Gross Profit")){
 					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("sum(Gross_Profit) as Profit,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,Margin,Tax");
+					reportParams.setBaseColumn("sum(Gross_Profit) as Profit,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,avg(Margin),Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
 					reportParams.setGroupBy("Customer");
@@ -171,34 +237,13 @@ public class CustomerSalesReportController {
 					if(completeReport){
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
 					}else{
-						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId() );
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
 					}
 					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
-							
-				}else if(reportType.equals("Items Sold")){
-					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("sum(Items_Sold),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Margin,Tax");
-					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
-					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Customer");
-					reportParams.setMainBaseColumn("Customer");
-					reportParams.setOrderBy("");
-					reportParams.setPivotColumn( "CREATED_DATE");
-					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
-					reportParams.setReportDateType(reportDateType);
-					reportParams.setStartDate(startDat);
-					reportParams.setTableName(tableName.toString());
-					reportParams.setTallyColumn("Items_Sold");
-					if(completeReport){
-						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
-					}else{
-						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId() );
-					}
-					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
-							
+
 				}else if(reportType.equals("Margin")){
 					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("Margin,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Tax");
+					reportParams.setBaseColumn("avg(Margin),sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
 					reportParams.setGroupBy("Customer");
@@ -218,14 +263,21 @@ public class CustomerSalesReportController {
 					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);		
 				}else if(reportType.equals("Revenue (tax incl)")){
 					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("sum(Revenue_tax_incl) as Revenue_Tax_Incl,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Margin,Tax");
+					if(!isHeadOffice && configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						reportParams.setBaseColumn("sum(Revenue_tax_incl) as Revenue_Tax_Incl,sum(Revenue) as Revenue,Tax");
+						reportParams.setPrintColumns( reportType+","+ "Revenue,Tax");
+						
+					}else{
+						reportParams.setBaseColumn("sum(Revenue_tax_incl) as Revenue_Tax_Incl,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
+						reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
+						
+					}
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
 					reportParams.setGroupBy("Customer");
 					reportParams.setMainBaseColumn("Customer");
 					reportParams.setOrderBy("");
 					reportParams.setPivotColumn( "CREATED_DATE");
-					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
 					reportParams.setTableName(tableName.toString());
@@ -238,34 +290,21 @@ public class CustomerSalesReportController {
 					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);	
 				}else if(reportType.equals("First Sale")){
 					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("min(CREATED_DATE) as First,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Margin,Tax");
-					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
-					reportParams.setEndDate(endDat);
-					reportParams.setGroupBy("Customer");
-					reportParams.setMainBaseColumn("Customer");
-					reportParams.setOrderBy("");
-					reportParams.setPivotColumn( "CREATED_DATE");
-					reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
-					reportParams.setReportDateType(reportDateType);
-					reportParams.setStartDate(startDat);
-					reportParams.setTableName(tableName.toString());
-					reportParams.setTallyColumn("Revenue");
-					if(completeReport){
-						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
+					if(!isHeadOffice && configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						reportParams.setBaseColumn("min(CREATED_DATE) as First,sum(Revenue) as Revenue,Tax");
+						reportParams.setPrintColumns( reportType+","+ "Revenue,Tax");
+							
 					}else{
-						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId() );
+						reportParams.setBaseColumn("min(CREATED_DATE) as First,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
+						reportParams.setPrintColumns( reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
+						
 					}
-					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
-				}else if(reportType.equals("Last Sale")){
-					ReportParams reportParams = new ReportParams();
-					reportParams.setBaseColumn("max(CREATED_DATE) as Last,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,Margin,Tax");
 					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
 					reportParams.setEndDate(endDat);
 					reportParams.setGroupBy("Customer");
 					reportParams.setMainBaseColumn("Customer");
 					reportParams.setOrderBy("");
 					reportParams.setPivotColumn( "CREATED_DATE");
-					reportParams.setPrintColumns(  reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 					reportParams.setReportDateType(reportDateType);
 					reportParams.setStartDate(startDat);
 					reportParams.setTableName(tableName.toString());
@@ -276,19 +315,47 @@ public class CustomerSalesReportController {
 						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
 					}
 					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
+				}else if(reportType.equals("Last Sale")){
+					ReportParams reportParams = new ReportParams();
+					if(!isHeadOffice && configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
+						reportParams.setBaseColumn("max(CREATED_DATE) as Last,sum(Revenue) as Revenue,Tax");
+						reportParams.setPrintColumns(  reportType+","+ "Revenue,Tax");
+								
+					}else{
+						reportParams.setBaseColumn("max(CREATED_DATE) as Last,sum(Revenue) as Revenue,sum(Cost_of_Goods) as Cost,sum(Gross_Profit) as Profit,avg(Margin),Tax");
+						reportParams.setPrintColumns(  reportType+","+ "Revenue,Cost of Goods,Gross Profit,Margin,Tax");
 						
+					}
+					reportParams.setCompanyId(currentUser.getCompany().getCompanyId());
+					reportParams.setEndDate(endDat);
+					reportParams.setGroupBy("Customer");
+					reportParams.setMainBaseColumn("Customer");
+					reportParams.setOrderBy("");
+					reportParams.setPivotColumn( "CREATED_DATE");
+					reportParams.setReportDateType(reportDateType);
+					reportParams.setStartDate(startDat);
+					reportParams.setTableName(tableName.toString());
+					reportParams.setTallyColumn("Revenue");
+					if(completeReport){
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+ " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
+					}else{
+						reportParams.setWhereClause("where CREATED_DATE BETWEEN '"+dt1.format(startDat)+"' and '"+dt1.format(endDat)+"'"+" AND OUTLET_ASSOCICATION_ID ='"+outletId+"'" + " AND COMPANY_ASSOCIATION_ID = "+currentUser.getCompany().getCompanyId());
+					}
+					tableData = tempSaleService.getAllTempSaleByCompanyId(reportParams);
+
 				}
 				if (tableData != null) {
 					ReportControllerBean reportControllerBean = new ReportControllerBean();
 					reportControllerBean.setOutletBeans(outletBeans);
 					reportControllerBean.setTableData(tableData);
-					util.AuditTrail(request, currentUser, "CustomerSalesReportController.getCustomerSalesReportByDateRange", 
-							"User "+ currentUser.getUserEmail()+" retrived brand sales report against date range successfully ",false);
+					reportControllerBean.setHideSalesDetails(isHeadOffice);
+					util.AuditTrail(request, currentUser, "SalesReportController.getSalesReportByDateRange", 
+							"User "+ currentUser.getUserEmail()+" retrived sales report against date range successfully ",false);
 					return new Response(reportControllerBean, StatusConstants.SUCCESS,
 							LayOutPageConstants.STAY_ON_PAGE);
 				} else {
-					util.AuditTrail(request, currentUser, "CustomerSalesReportController.getCustomerSalesReportByDateRange", 
-							" Customer Sales report is not found requested by User "+currentUser.getUserEmail(),false);
+					util.AuditTrail(request, currentUser, "SalesReportController.getSalesReportByDateRange", 
+							" Sales report is not found requested by User "+currentUser.getUserEmail(),false);
 					return new Response(MessageConstants.RECORD_NOT_FOUND,
 							StatusConstants.RECORD_NOT_FOUND,
 							LayOutPageConstants.STAY_ON_PAGE);

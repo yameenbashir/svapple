@@ -226,8 +226,8 @@ public class SellController  {
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			try {
 				ReceiptConfigurationBean receiptConfigurationBean = new ReceiptConfigurationBean();
-				System.out.println("receiptConfigurationBean.isStarndardReceipt(): "+receiptConfigurationBean.isStarndardReceipt());
-				System.out.println("receiptConfigurationBean.isXpressionsReceipt(): "+receiptConfigurationBean.isXpressionsReceipt());
+				/*System.out.println("receiptConfigurationBean.isStarndardReceipt(): "+receiptConfigurationBean.isStarndardReceipt());
+				System.out.println("receiptConfigurationBean.isXpressionsReceipt(): "+receiptConfigurationBean.isXpressionsReceipt());*/
 				Configuration configurationReceipt = configurationMap.get("CUSTOM_RECEIPT_NAME");
 				boolean customizedReceipt = false;
 				if(configurationReceipt!=null){

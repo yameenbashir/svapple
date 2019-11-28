@@ -6,7 +6,7 @@
 -- no need updatedBy on default script we will use createdBy for both
 -- In case of new server set all ***Ids to 1
 USE `ecom`;
-SELECT @companyId := 1, @createdBy := 1, @companyName := 'Shop Vitals' , @defaultUserEmail:='admin@shopvitals.com', @outletId:=1 , @RegisterId:=1 , @saleTaxId:=1, @contactGroupId:=1;
+SELECT @companyId := 1, @createdBy := 1, @companyName := 'Meeras' , @defaultUserEmail:='admin@meeras.com', @outletId:=1 , @RegisterId:=1 , @saleTaxId:=1, @contactGroupId:=1;
 
 -- ----------Company----------------------
 

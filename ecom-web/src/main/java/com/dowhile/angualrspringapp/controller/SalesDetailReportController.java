@@ -76,20 +76,40 @@ public class SalesDetailReportController {
 			try {
 				boolean completeReport = false;
 				boolean isHeadOffice = false;
-
+				boolean isLocalInstance = false;
+				boolean isAdminRestriction = false;
 				StringBuilder tableName = null;
+				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+				Configuration configurationLocalInstance = configurationMap.get("LOCAL_INSTANCE");
+				if(configurationLocalInstance!=null && 
+						!configurationLocalInstance.getPropertyValue().equalsIgnoreCase("")&& configurationLocalInstance.getPropertyValue().equalsIgnoreCase("true")){
+					isLocalInstance = true;
+				}
 				
-				if(isLiveData!=null && !isLiveData.equalsIgnoreCase("") && isLiveData.equalsIgnoreCase("true")){
+				Configuration configurationWarehouseAdminRestriction = configurationMap.get("WAREHOSE_ADMIN_RESTRICTION");
+				if(configurationWarehouseAdminRestriction!=null && 
+						!configurationWarehouseAdminRestriction.getPropertyValue().equalsIgnoreCase("")&& configurationWarehouseAdminRestriction.getPropertyValue().equalsIgnoreCase("true")){
+					isAdminRestriction = true;
+				}
+				
+				if(isLiveData!=null && !isLiveData.equalsIgnoreCase("") && isLiveData.equalsIgnoreCase("true")||isLocalInstance){
 					tableName = new StringBuilder("Sale_Details");
 				}else{
 					tableName = new StringBuilder("mv_Sale_Details");
 				}
-				if(currentUser.getOutlet().getIsHeadOffice()!=null){
-					 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
-					
+				if(isAdminRestriction){
+					if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null){
+						 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
+					}
+				}else{
+					if(currentUser.getOutlet().getIsHeadOffice()!=null){
+						 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
+					}
 				}
-				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+				
 				configuration = configurationMap.get("HIDE_ORIGNAL_PRICE_INFO_REPORTS");
+				//configuration = configurationService.getConfigurationByPropertyNameByCompanyId("HIDE_ORIGNAL_PRICE_INFO_REPORTS",currentUser.getCompany().getCompanyId());
+
 				//configuration = configurationService.getConfigurationByPropertyNameByCompanyId("HIDE_ORIGNAL_PRICE_INFO_REPORTS",currentUser.getCompany().getCompanyId());
 
 				int outletId = 0;
