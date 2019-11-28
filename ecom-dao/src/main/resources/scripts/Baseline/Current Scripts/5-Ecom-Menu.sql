@@ -645,6 +645,18 @@ values ('salesDetailReport', 	2, 	'Page', 1, CURDATE(), CURDATE(), @createdBy,@c
 insert into ecom.menu ( MENU_NAME, ROLE_ASSOCIATION_ID, ACTION_TYPE, ACTIVE_INDICATOR, CREATED_DATE, LAST_UPDATED,CREATED_BY,UPDATED_BY,COMPANY_ASSOCIATION_ID	)
 values ('salesDetailReport', 	3, 	'Page', 1, CURDATE(), CURDATE(), @createdBy,@createdBy,@companyId);
 
+insert into ecom.menu ( MENU_NAME, ROLE_ASSOCIATION_ID, ACTION_TYPE, ACTIVE_INDICATOR, CREATED_DATE, LAST_UPDATED,CREATED_BY,UPDATED_BY,COMPANY_ASSOCIATION_ID	)
+values ('registerDetail', 	1, 'Page', 1, CURDATE(), CURDATE(), @createdBy,@createdBy,@companyId);
+
+insert into ecom.menu ( MENU_NAME, ROLE_ASSOCIATION_ID, ACTION_TYPE, ACTIVE_INDICATOR, CREATED_DATE, LAST_UPDATED,CREATED_BY,UPDATED_BY,COMPANY_ASSOCIATION_ID	)
+values ('registerDetail', 	2, 	'Page', 1, CURDATE(), CURDATE(), @createdBy,@createdBy,@companyId);
+
+
+insert into ecom.menu ( MENU_NAME, ROLE_ASSOCIATION_ID, ACTION_TYPE, ACTIVE_INDICATOR, CREATED_DATE, LAST_UPDATED,CREATED_BY,UPDATED_BY,COMPANY_ASSOCIATION_ID	)
+values ('registerDetail', 	3, 	'Page', 1, CURDATE(), CURDATE(), @createdBy,@createdBy,@companyId);
+
+
+
  delete FROM `ecom`.menu WHERE  MENU_NAME ='outlet';
  delete FROM `ecom`.menu WHERE MENU_NAME = 'companySetup';
 
