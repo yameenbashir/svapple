@@ -9,7 +9,7 @@ var SalesHistoryController = ['$scope', '$http', '$window','$cookieStore','$root
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
 	$rootScope.applyDateRange = false;
-	
+	$scope.standardReceipt = true;
 	
 	$scope.sesssionValidation = function(){
 			if(SessionService.validate()){
@@ -20,7 +20,10 @@ var SalesHistoryController = ['$scope', '$http', '$window','$cookieStore','$root
 			$rootScope.globalPageLoader = false;
 			$scope.InvoiceMainBeans = localStorage.getItem('salesHistory');
 			$scope.InvoiceMainBeans =  JSON.parse($scope.InvoiceMainBeans);
-			
+			if(!$scope.InvoiceMainBeans.receiptConfigurationBean.starndardReceipt){
+				$scope.standardReceipt = false;
+			}
+			$scope.termsAndConditions = $scope.InvoiceMainBeans.termsAndConditions;
 		}
 	};
 	$scope.sesssionValidation();

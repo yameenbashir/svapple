@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dowhile.Address;
+import com.dowhile.Configuration;
 import com.dowhile.Contact;
 import com.dowhile.InvoiceDetail;
 import com.dowhile.InvoiceDetailCustom;
@@ -40,6 +41,7 @@ import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
 import com.dowhile.controller.bean.Response;
+import com.dowhile.frontend.configuration.bean.ReceiptConfigurationBean;
 import com.dowhile.frontend.mapping.bean.InvoiceDetailBean;
 import com.dowhile.frontend.mapping.bean.InvoiceMainBean;
 import com.dowhile.frontend.mapping.bean.ReceiptBean;
@@ -260,6 +262,7 @@ public class SalesHistoryController {
 
 
 	}
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/getData/{sessionId}/{limit}/{startDate}/{endDate}/{applyDateRange}", method = RequestMethod.GET)
 	public @ResponseBody SalesHistory getData(@PathVariable("sessionId") String sessionId,@PathVariable("limit") int limit,
 			@PathVariable("startDate") String startDate,@PathVariable("endDate") String endDate,@PathVariable("applyDateRange") String applyDateRange,
@@ -269,12 +272,35 @@ public class SalesHistoryController {
 		List<ReceiptCustom> receipts =  new ArrayList<ReceiptCustom>();
 		List<InvoiceDetailCustom> details =  new ArrayList<InvoiceDetailCustom>();
 		Address address = null;
+		SalesHistory object= new SalesHistory();
 		if(SessionValidator.isSessionValid(sessionId.replaceAll("\"", ""), request)){
 
 			HttpSession session = request.getSession(false);
 			Map<Integer, List<ReceiptCustom>> receiptMap =  new HashMap<>(); 
 			Map<Integer, List<InvoiceDetailCustom>> invoiceDetailMap = new HashMap<>(); 
 			User currentUser = (User) session.getAttribute("user");
+			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+			ReceiptConfigurationBean receiptConfigurationBean = new ReceiptConfigurationBean();
+			/*System.out.println("receiptConfigurationBean.isStarndardReceipt(): "+receiptConfigurationBean.isStarndardReceipt());
+			System.out.println("receiptConfigurationBean.isXpressionsReceipt(): "+receiptConfigurationBean.isXpressionsReceipt());*/
+			Configuration configurationReceipt = configurationMap.get("CUSTOM_RECEIPT_NAME");
+			boolean customizedReceipt = false;
+			if(configurationReceipt!=null){
+				if(configurationReceipt.getPropertyValue().equalsIgnoreCase("xpressions")){
+					receiptConfigurationBean.setXpressionsReceipt(true);
+					customizedReceipt = true;
+				}
+			}
+			if(!customizedReceipt){
+				receiptConfigurationBean.setStarndardReceipt(true);
+			}
+			object.setReceiptConfigurationBean(receiptConfigurationBean);
+			Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS");
+			if(configurationTermsAndContitions!=null){
+				String termsAndContitions = configurationTermsAndContitions.getPropertyValue();
+				object.setTermsAndConditions(termsAndContitions);
+			}
+			
 			String invoiceRefNo = null;
 			String status = null;
 			Date fromDate = null;
@@ -461,7 +487,7 @@ public class SalesHistoryController {
 
 			}
 		}
-		SalesHistory object= new SalesHistory();
+		
 		if(address!=null){
 			object.setCompanyAddress(address.getStreet() + ", " + address.getCity());
 			object.setPhoneNumber(address.getPhone());
