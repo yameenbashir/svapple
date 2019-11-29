@@ -3,11 +3,14 @@
  */
 package com.dowhile.dao.impl;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 
+import com.dowhile.InvoiceDetailCustom;
 import com.dowhile.Message;
 import com.dowhile.dao.MessageDAO;
 
@@ -111,6 +114,22 @@ public class MessageDAOImpl implements MessageDAO{
 			ex.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean updateMessageTextLimtByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			 getSessionFactory().getCurrentSession()
+			.createSQLQuery("CALL MessageCountManagement('"+companyId+"')" )
+			.executeUpdate();
+			
+			
+			return true;
+		}catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+		return false;
 	}
 	
 

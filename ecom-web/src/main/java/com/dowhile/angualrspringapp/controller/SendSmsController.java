@@ -95,11 +95,13 @@ public class SendSmsController {
 		
 
 		SendSMSControllerBean sellControllerBean = new SendSMSControllerBean();
+		
 		List<CustomerBean> customersBeans = new ArrayList<>();
 		if (SessionValidator.isSessionValid(sessionId, request)) {
 			HttpSession session = request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
+				messageService.updateMessageTextLimtByCompanyId(currentUser.getCompany().getCompanyId());
 				Message messageObj = messageService.getMessageByCompanyId(currentUser.getCompany().getCompanyId().toString());
 				if(messageObj.getPackageRenewDate().before(new Date())){
 					sellControllerBean.setIsExpired("true");
@@ -163,6 +165,7 @@ public class SendSmsController {
 //			Message messageObj = messageService.getMessageByMaskName(sendSMSBean.getUser());
 			List<MessageDetail> messageDetails = new ArrayList<>();
 //			Configuration smsconfiguration = configurationService.getConfigurationByPropertyNameByCompanyId("SMS_ENABLED",currentUser.getCompany().getCompanyId());
+			messageService.updateMessageTextLimtByCompanyId(currentUser.getCompany().getCompanyId());
 			Message messageObj = messageService.getMessageByCompanyId(currentUser.getCompany().getCompanyId().toString());
 			int smsCount = 0;
 			try {
@@ -342,8 +345,9 @@ public class SendSmsController {
 						return new Response(MessageConstants.SMS_EXPIRED, StatusConstants.ACCESS_DENIED,LayOutPageConstants.SEND_SMS);
 						}
 				}
-				messageObj.setMessageTextLimit(smsCount);
-				messageService.updateMessage(messageObj);
+				
+				//messageObj.setMessageTextLimit(smsCount);
+				messageService.updateMessageTextLimtByCompanyId(currentUser.getCompany().getCompanyId());
 				return new Response(MessageConstants.VALID_SESSION, StatusConstants.SUCCESS,
 						LayOutPageConstants.SEND_SMS);
 				
@@ -354,8 +358,7 @@ public class SendSmsController {
 //				}
 				
 			} catch (Exception e) {
-				messageObj.setMessageTextLimit(smsCount);
-				messageService.updateMessage(messageObj);
+				messageService.updateMessageTextLimtByCompanyId(currentUser.getCompany().getCompanyId());
 				e.printStackTrace();
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
@@ -383,6 +386,7 @@ public class SendSmsController {
 //			Message messageObj = messageService.getMessageByMaskName(singleSmsBean.getUser());
 			List<MessageDetail> messageDetails = new ArrayList<>();
 //			Configuration smsconfiguration = configurationService.getConfigurationByPropertyNameByCompanyId("SMS_ENABLED",currentUser.getCompany().getCompanyId());
+			messageService.updateMessageTextLimtByCompanyId(currentUser.getCompany().getCompanyId());
 			Message messageObj = messageService.getMessageByCompanyId(currentUser.getCompany().getCompanyId().toString());
 			
 			try {
@@ -421,7 +425,8 @@ public class SendSmsController {
 							int smsCount= messageObj.getMessageTextLimit()+1;		
 	
 							messageObj.setMessageTextLimit(smsCount);
-							messageService.updateMessage(messageObj);
+							messageService.updateMessageTextLimtByCompanyId(currentUser.getCompany().getCompanyId());
+//							messageService.updateMessage(messageObj);
 					
 				}else{
 					util.AuditTrail(request, currentUser, "sendSms.sendMessage","SMS Package Expired ", true);

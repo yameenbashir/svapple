@@ -62,6 +62,12 @@ public class MessageServiceImpl implements MessageService{
 		return getMessageDAO().getMessageByMaskName(maskName);
 	}
 
+	@Override
+	public boolean updateMessageTextLimtByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		return getMessageDAO().updateMessageTextLimtByCompanyId(companyId);
+	}
+
 
 
 }

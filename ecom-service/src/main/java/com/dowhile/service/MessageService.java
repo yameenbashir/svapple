@@ -16,5 +16,6 @@ public interface MessageService {
 	Message getMessageByMaskName(String maskName);
 	Message updateMessage(Message message);
 	boolean deleteMessage(Message message);
+	boolean updateMessageTextLimtByCompanyId(int companyId);
 	
 }

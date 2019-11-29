@@ -16,4 +16,5 @@ public interface MessageDAO {
 	boolean deleteMessage(Message message);
 	Message getMessageByCompanyId(String companyId);
 	Message getMessageByMaskName(String maskName);
+	boolean updateMessageTextLimtByCompanyId(int companyId);
 }
