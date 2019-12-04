@@ -397,8 +397,9 @@ public class StoreController {
 					company.setTimeZone(timeZone);				
 					Currency currency = currencyService.GetCurrencyById(Integer.parseInt(companyBean.getCurrencyID()));
 					company.setCurrency(currency);				
-					List<Address> addresses =  addressService.getAddressByCompanyId(companyId);
-					if(companyBean != null && !companyBean.getAddresses().isEmpty()){
+//					List<Address> addresses =  addressService.getAddressByCompanyId(companyId);
+					List<Address> addresses = new ArrayList<>();
+					if(companyBean != null && companyBean.getAddresses()!=null &&  !companyBean.getAddresses().isEmpty()){
 						for (AddressBean item : companyBean.getAddresses()) {
 							for (Address address : addresses) {
 								if(item.getAddressId() == address.getAddressId().toString() ) {

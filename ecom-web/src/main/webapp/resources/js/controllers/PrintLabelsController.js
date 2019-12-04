@@ -228,55 +228,80 @@ var PrintLabelsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 			$scope.printOptionsContinousLarge = false;
 			$scope.printOptionsContinousNew = false;
 			$scope.printOptionsContinousNewZebra = false;
+			$scope.printOptionsContinousCustom = false;
 			$scope.printThisElementA4 = "printThisElement";
 			$scope.printThisElementContinous = "";
 			$scope.printThisElementContinousLarge = "";
 			$scope.printThisElementContinousNew = "";
 			$scope.printThisElementContinousNewZebra = "";
+			$scope.printThisElementContinousCustom = "";
 		}else if($scope.printOptions=="Continous"){
 			$scope.printOptionsA4 = false;
 			$scope.printOptionsContinous = true;
 			$scope.printOptionsContinousLarge = false;
 			$scope.printOptionsContinousNew = false;
 			$scope.printOptionsContinousNewZebra = false;
+			$scope.printOptionsContinousCustom = false;
 			$scope.printThisElementA4 = "";
 			$scope.printThisElementContinous = "printThisElement";
 			$scope.printThisElementContinousLarge = "";
 			$scope.printThisElementContinousNew = "";
 			$scope.printThisElementContinousNewZebra = "";
+			$scope.printThisElementContinousCustom = "";
 		}else if($scope.printOptions=="ContinousNew"){
 			$scope.printOptionsA4 = false;
 			$scope.printOptionsContinous = false;
 			$scope.printOptionsContinousLarge = false;
 			$scope.printOptionsContinousNew = true;
 			$scope.printOptionsContinousNewZebra = false;
+			$scope.printOptionsContinousCustom = false;
 			$scope.printThisElementA4 = "";
 			$scope.printThisElementContinousNew = "printThisElement";
 			$scope.printThisElementContinousLarge = "";
 			$scope.printThisElementContinous = "";
 			$scope.printThisElementContinousNewZebra = "";
+			$scope.printThisElementContinousCustom = "";
 		}else if($scope.printOptions=="ContinousLarge"){
 			$scope.printOptionsA4 = false;
 			$scope.printOptionsContinous = false;
 			$scope.printOptionsContinousLarge = true;
 			$scope.printOptionsContinousNew = false;
 			$scope.printOptionsContinousNewZebra = false;
+			$scope.printOptionsContinousCustom = false;
 			$scope.printThisElementA4 = "";
 			$scope.printThisElementContinous = "";
 			$scope.printThisElementContinousLarge = "printThisElement";
 			$scope.printThisElementContinousNew = "";
 			$scope.printThisElementContinousNewZebra = "";
+			$scope.printThisElementContinousCustom = "";
 		}else if($scope.printOptions=="ContinousNewZebra"){
 			$scope.printOptionsA4 = false;
 			$scope.printOptionsContinous = false;
 			$scope.printOptionsContinousLarge = false;
 			$scope.printOptionsContinousNew = false;
 			$scope.printOptionsContinousNewZebra = true;
+			$scope.printOptionsContinousCustom = false;
 			$scope.printThisElementA4 = "";
 			$scope.printThisElementContinousNew = "";
 			$scope.printThisElementContinousLarge = "";
 			$scope.printThisElementContinous = "";
 			$scope.printThisElementContinousNewZebra = "printThisElement";
+			$scope.printThisElementContinousCustom = "";
+		}else if($scope.printOptions=="ContinousCustom"){
+			$scope.printOptionsA4 = false;
+			$scope.printOptionsContinous = false;
+			$scope.printOptionsContinousLarge = false;
+			$scope.printOptionsContinousNew = false;
+			$scope.printOptionsContinousNewZebra = false;
+			$scope.printOptionsContinousDouble = false;
+			$scope.printOptionsContinousCustom = true;
+			$scope.printThisElementA4 = "";
+			$scope.printThisElementContinous = "";
+			$scope.printThisElementContinousLarge = "";
+			$scope.printThisElementContinousNew = "";
+			$scope.printThisElementContinousNewZebra = "";
+			$scope.printThisElementContinousDouble = "";
+			$scope.printThisElementContinousCustom = "printThisElement";
 		}
 		
 		
