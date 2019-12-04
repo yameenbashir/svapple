@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dowhile.StockOrder;
 import com.dowhile.dao.StockOrderDAO;
+import com.dowhile.Company;
 import com.dowhile.service.StockOrderService;
+import com.dowhile.wrapper.StockWrapper;
 
 
 /**
@@ -122,5 +124,11 @@ public class StockOrderServiceImpl implements StockOrderService{
 	public List<StockOrder> GetAllStockReturnOrderForOutlet(int outletId, int companyId) {
 		// TODO Auto-generated method stub
 		return getStockOrderDAO().GetAllStockReturnOrderForOutlet(outletId, companyId);
+	}
+	
+	@Override
+	public boolean UpdateStockComplete(StockWrapper stockWrapper, Company company) {
+		// TODO Auto-generated method stub
+		return getStockOrderDAO().UpdateStockComplete(stockWrapper, company);
 	}
 }

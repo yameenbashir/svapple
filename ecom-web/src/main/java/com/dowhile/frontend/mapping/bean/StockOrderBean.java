@@ -1,6 +1,8 @@
 package com.dowhile.frontend.mapping.bean;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.dowhile.Outlet;
 import com.dowhile.Status;
@@ -43,6 +45,8 @@ public class StockOrderBean {
 	private String lastUpdated;
 	private String createdBy;
 	private String updatedBy;
+	private Map<Object, Object> productVariantIdsMap = new HashMap<>();
+	private Map<Object, Object> productIdsMap = new HashMap<>();
 	
 	public StockOrderBean()
 	{
@@ -515,5 +519,21 @@ public class StockOrderBean {
 
 	public void setItemCountRecv(String itemCountRecv) {
 		this.itemCountRecv = itemCountRecv;
+	}
+
+	public Map<Object, Object> getProductVariantIdsMap() {
+		return productVariantIdsMap;
+	}
+
+	public void setProductVariantIdsMap(Map<Object, Object> productVariantIdsMap) {
+		this.productVariantIdsMap = productVariantIdsMap;
+	}
+
+	public Map<Object, Object> getProductIdsMap() {
+		return productIdsMap;
+	}
+
+	public void setProductIdsMap(Map<Object, Object> productIdsMap) {
+		this.productIdsMap = productIdsMap;
 	}
 }
