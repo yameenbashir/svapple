@@ -288,7 +288,8 @@ public class StoreController {
 			try {
 				Company company = companyService.getCompanyDetailsByCompanyID(currentUser.getCompany().getCompanyId()); 
 				if (company != null ) {
-					List<Address> addresses =  addressService.getAddressByCompanyId(company.getCompanyId());
+//					List<Address> addresses =  addressService.getAddressByCompanyId(company.getCompanyId());
+					List<Address> addresses = new ArrayList<>();
 					companyBean.setCompanyId(company.getCompanyId().toString());
 					if(company.getCurrency()!=null){
 						companyBean.setCurrencyID(company.getCurrency().getCurrencyId().toString());
@@ -339,14 +340,14 @@ public class StoreController {
 						}
 						companyBean.setAddresses(listAddressBean);
 					}
-					else if(addresses == null )
+					/*else if(addresses == null )
 					{
 						AddressBean physicalAddressBean = new AddressBean();
 						AddressBean postalAddressBean = new AddressBean();
 						listAddressBean.add(physicalAddressBean);
 						listAddressBean.add(postalAddressBean);
 						companyBean.setAddresses(listAddressBean);
-					}
+					}*/
 					util.AuditTrail(request, currentUser, "StoreController.getCompanyDetailsByCompanyID", 
 							"User "+ currentUser.getUserEmail()+" retrived company detail successfully ",false);
 					return new Response(companyBean, StatusConstants.SUCCESS,
