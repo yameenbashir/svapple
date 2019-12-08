@@ -152,7 +152,8 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 							else{
 								$scope.globalPageLoader = false;
 							}
-							$scope.AllInOne(); 
+							//$scope.AllInOne(); 
+							$scope.addStockOrderDetail();
 						}
 
 						else if($scope.responseStatus == 'SYSTEMBUSY'
@@ -219,6 +220,7 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 							else{
 								$scope.globalPageLoader = false;
 							}
+							$scope.addStockOrderDetail();
 						}
 
 						else if($scope.responseStatus == 'SYSTEMBUSY'
@@ -671,7 +673,7 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 					$scope.AllInOne();
 					$timeout(function(){
 						$scope.success = false;
-						$window.location = Response.layOutPath;
+						//$window.location = Response.layOutPath;
 					}, 2000);
 				}
 				else if($scope.responseStatus == 'SYSTEMBUSY'
