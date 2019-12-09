@@ -557,6 +557,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 				<value>com.dowhile.ProductPriceHistory</value>
 				<value>com.dowhile.CompositeProductHistory</value>
 				<value>com.dowhile.StockOrderV</value>
+				<value>com.dowhile.StockOrderV</value>
 
 			</list>
 		</property>

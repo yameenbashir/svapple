@@ -65,57 +65,31 @@
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body" style="overflow-x: auto;">
-							<table id="myTable" class="display" cellspacing="0" width="100%" 
-								ng-clock>
+							<table id="myTable" class="display table-curved" cellspacing="0"
+								style="width: 100%; font-size: 12px;">
+								
+								<caption></br></caption>
 								<thead>
-									<tr>
-										<th>Product</th>
-										<th>Outlet</th>
-										<th>SKU</th>
-										<th ng-show="userRole==1">Brand</th>
-										<th ng-show="userRole==1">Supplier</th>
-										<th>Type</th>
-										<!-- <th>Tag</th> -->
-										<th>Current Stock</th>
-										<th>Stock Value</th>
-										<th>Item Value</th>
-										<th>Reorder Point</th>
-										<th>Reorder Amount</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="inventory in inventoryReport">
 
-										<td ng-bind="inventory.varinatAttributeName"></td>
-										<td ng-bind="inventory.outletName"></td>
-										<td ng-bind="inventory.sku"></td>
-										<td ng-show="userRole==1" ng-bind="inventory.brand" ></td>
-										<td ng-show="userRole==1" ng-bind="inventory.supplierName" ></td>
-										<td ng-bind="inventory.type"></td>
-										<!-- <td ng-bind="inventory.tag"></td> -->
-										<td ng-bind="inventory.currentStock"></td>
-										<td ng-bind="inventory.stockValue"></td>
-										<td ng-bind="inventory.itemValue"></td>
-										<td ng-bind="inventory.reorderPoint"></td>
-										<td ng-bind="inventory.reorderAmount"></td>
+									<tr>
+										<th ng-repeat="column in salesReport.columns" ng-bind="column"></th>
+									</tr>
+
+								</thead>
+									
+							
+
+								<tbody>
+									<tr ng-repeat="row in salesReport.rows">
+										<td ng-repeat="data in row.columns track by $index" ng-bind="data"></td>
 									</tr>
 								</tbody>
 								<tfoot>
+
 									<tr>
-										<th></th>
-										<th></th>
-										<th></th>
-										<th></th>
-										<th></th>
-										<th>Total Current Stock</th>
-										<th ng-bind="totalCurrentStock"></th>
-
-										<th>Total Stock Value</th>
-										<th ng-bind="totalCurrentValue"></th>
-										<th></th>
-										<th></th>
-
+										<th ng-repeat="column in salesReport.footer.columns  track by $index" ng-bind="column"></th>
 									</tr>
+
 								</tfoot>
 							</table>
 						</div>

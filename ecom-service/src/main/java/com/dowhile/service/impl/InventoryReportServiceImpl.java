@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dowhile.InventoryReport;
+import com.dowhile.beans.TableData;
 import com.dowhile.dao.InventoryReportDAO;
 import com.dowhile.service.InventoryReportService;
 
@@ -45,6 +46,13 @@ public class InventoryReportServiceImpl implements InventoryReportService{
 			int outletId, int companyId) {
 		// TODO Auto-generated method stub
 		return getInventoryReportDAO().getInventoryReportByOutletIdCompanyId(outletId, companyId);
+	}
+
+	@Override
+	public TableData getInventoryReportByCompanyIdOutletId(int companyId,
+			int outletId,boolean isHeadOffice) {
+		// TODO Auto-generated method stub
+		return getInventoryReportDAO().getInventoryReportByCompanyIdOutletId(companyId, outletId,isHeadOffice);
 	}
 
 }

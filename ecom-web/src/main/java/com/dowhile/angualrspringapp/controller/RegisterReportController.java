@@ -144,9 +144,9 @@ public class RegisterReportController {
 							registrReprotBean.setDailyRegisterId(String.valueOf(registerReport.getId().getDailyRegisterId()));
 							registrReprotBean.setCreditCardAmtActual(registerReport.getId().getCreditCardAmtActual()!=null?registerReport.getId().getCreditCardAmtActual().toPlainString():"");
 							registrReprotBean.setOpenBy(registerReport.getId().getOpenBy());
-							System.out.println("registerReport.getId().getOpeningDate(): "+new String(registerReport.getId().getOpeningDate()));
+//							System.out.println("registerReport.getId().getOpeningDate(): "+new String(registerReport.getId().getOpeningDate()));
 							registrReprotBean.setOpeningDate(DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
-							System.out.println("DateTimeUtil.convertDBDateTimeToGuiFormat(new Date(new String(registerReport.getId().getOpeningDate()))) "+DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
+//							System.out.println("DateTimeUtil.convertDBDateTimeToGuiFormat(new Date(new String(registerReport.getId().getOpeningDate()))) "+DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
 							registrReprotBean.setOutletAssocicationId(registerReport.getId().getOutletAssocicationId().toString());
 							registrReprotBean.setOutletName(registerReport.getId().getOutletName());
 							registrReprotBean.setRegisterClosingNotes(registerReport.getId().getRegisterClosingNotes());

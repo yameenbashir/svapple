@@ -45,10 +45,13 @@ var InventoryReportController = ['$scope', '$http', '$window','$cookieStore','$r
 		}
 		else{
 			if($scope.data!=null){
+				if($scope.data.tableData!=null){
+					$scope.salesReport = $scope.data.tableData;
+				}
 				$scope.hideSalesDetails = $scope.data.hideSalesDetails;
 				if($scope.data.inventoryReportBeansList!=null){
 					$scope.inventoryReport = $scope.data.inventoryReportBeansList;
-					if($scope.inventoryReport.length>0){
+					/*if($scope.inventoryReport.length>0){
 						var totalCurrentStock = 0;
 						var totalCurrentValue = 0;
 						for(var i=0;i<$scope.inventoryReport.length;i++){
@@ -57,7 +60,7 @@ var InventoryReportController = ['$scope', '$http', '$window','$cookieStore','$r
 						}
 						$scope.totalCurrentStock = totalCurrentStock+"";
 						$scope.totalCurrentValue = totalCurrentValue+"";
-					}
+					}*/
 				}
 				if($scope.data.outletBeans!=null){
 					$scope.outlets = $scope.data.outletBeans;

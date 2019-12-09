@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import com.dowhile.Configuration;
 import com.dowhile.InventoryReport;
 import com.dowhile.Outlet;
 import com.dowhile.User;
+import com.dowhile.beans.TableData;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
@@ -72,6 +74,7 @@ public class InventoryReportController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
+				TableData tableData = null;
 				boolean isHeadOffice = false;
 				if(currentUser.getOutlet().getIsHeadOffice()!=null){
 					 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
@@ -85,9 +88,9 @@ public class InventoryReportController {
 						outletBeans = (List<OutletBean>) response.data;
 					}
 				}
-				Response response = getInventoryReport(sessionId, outletName, request);
+				Response response = getInventoryReportCustom(sessionId, outletName, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
-					inventoryReportBeansList = (List<InventoryReportBean>) response.data;
+					tableData = (TableData) response.data;
 				}
 				
 
@@ -95,6 +98,7 @@ public class InventoryReportController {
 				inventoryReportControllerBean.setInventoryReportBeansList(inventoryReportBeansList);
 				inventoryReportControllerBean.setOutletBeans(outletBeans);
 				inventoryReportControllerBean.setHideSalesDetails(isHeadOffice);
+				inventoryReportControllerBean.setTableData(tableData);
 				util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReportControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived InventoryReportControllerData data successfully ",false);
 				return new Response(inventoryReportControllerBean, StatusConstants.SUCCESS,
@@ -116,7 +120,7 @@ public class InventoryReportController {
 
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/*@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getInventoryReport/{sessionId}/{outletName}", method = RequestMethod.POST)
 	public @ResponseBody Response getInventoryReport(@PathVariable("sessionId") String sessionId,
 			@PathVariable("outletName") String outletName,HttpServletRequest request) {
@@ -136,15 +140,18 @@ public class InventoryReportController {
 					if(outletName==null||outletName.equalsIgnoreCase("")||outletName.equalsIgnoreCase("undefined")||outletName.equalsIgnoreCase("All Outlets")){
 						// All Outlet case has been disabled 
 						//inventoryReports = inventoryReportService.getInventoryReportByCompanyId(currentUser.getCompany().getCompanyId());
+						TableData tableData = inventoryReportService.getInventoryReportByCompanyIdOutletId(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
 						inventoryReports = inventoryReportService.getInventoryReportByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 					}else{
 						int outletId = ControllerUtil.getOutletIdByOutletName(outletName,outletBeans);
 						if(outletId==0)
 							outletId = currentUser.getOutlet().getOutletId();
+						TableData tableData = inventoryReportService.getInventoryReportByCompanyIdOutletId(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
 						inventoryReports = inventoryReportService.getInventoryReportByOutletIdCompanyId(outletId, currentUser.getCompany().getCompanyId());
 					}
 					
 				}else{
+					TableData tableData = inventoryReportService.getInventoryReportByCompanyIdOutletId(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId());
 					inventoryReports = inventoryReportService.getInventoryReportByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				}
 				if (inventoryReports != null) {
@@ -191,6 +198,90 @@ public class InventoryReportController {
 					util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReport", 
 							"User "+ currentUser.getUserEmail()+" retrived Inventory report successfully ",false);
 					return new Response(inventoryReportBeansList, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+				} else {
+					util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReport", 
+							" Inventory report is not found requested by User "+currentUser.getUserEmail(),false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,
+							StatusConstants.RECORD_NOT_FOUND,
+							LayOutPageConstants.STAY_ON_PAGE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReport",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.RECORD_NOT_FOUND,
+						LayOutPageConstants.STAY_ON_PAGE);
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+
+	}*/
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getInventoryReportCustom/{sessionId}/{outletName}", method = RequestMethod.POST)
+	public @ResponseBody Response getInventoryReportCustom(@PathVariable("sessionId") String sessionId,
+			@PathVariable("outletName") String outletName,HttpServletRequest request) {
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			List<InventoryReportBean>  inventoryReportBeansList = new ArrayList<>();
+			List<InventoryReport> inventoryReports = null;
+			try {
+				boolean isHeadOffice = false;
+				boolean isLocalInstance = false;
+				boolean isAdminRestriction = false;
+				TableData tableData = null;
+				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+				Configuration configurationLocalInstance = configurationMap.get("LOCAL_INSTANCE");
+				if(configurationLocalInstance!=null && 
+						!configurationLocalInstance.getPropertyValue().equalsIgnoreCase("")&& configurationLocalInstance.getPropertyValue().equalsIgnoreCase("true")){
+					isLocalInstance = true;
+				}
+				
+				Configuration configurationWarehouseAdminRestriction = configurationMap.get("WAREHOSE_ADMIN_RESTRICTION");
+				if(configurationWarehouseAdminRestriction!=null && 
+						!configurationWarehouseAdminRestriction.getPropertyValue().equalsIgnoreCase("")&& configurationWarehouseAdminRestriction.getPropertyValue().equalsIgnoreCase("true")){
+					isAdminRestriction = true;
+				}
+				if(isAdminRestriction){
+					if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null){
+						 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
+					}
+				}else{
+					if(currentUser.getOutlet().getIsHeadOffice()!=null){
+						 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();
+					}
+				}
+
+				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
+					if(outletName==null||outletName.equalsIgnoreCase("")||outletName.equalsIgnoreCase("undefined")||outletName.equalsIgnoreCase("All Outlets")){
+						// All Outlet case has been disabled 
+						//inventoryReports = inventoryReportService.getInventoryReportByCompanyId(currentUser.getCompany().getCompanyId());
+						 tableData = inventoryReportService.getInventoryReportByCompanyIdOutletId(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),isHeadOffice);
+//						inventoryReports = inventoryReportService.getInventoryReportByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+					}else{
+						int outletId = ControllerUtil.getOutletIdByOutletName(outletName,outletBeans);
+						if(outletId==0)
+							outletId = currentUser.getOutlet().getOutletId();
+						 tableData = inventoryReportService.getInventoryReportByCompanyIdOutletId(currentUser.getCompany().getCompanyId(), outletId,isHeadOffice);
+//						inventoryReports = inventoryReportService.getInventoryReportByOutletIdCompanyId(outletId, currentUser.getCompany().getCompanyId());
+					}
+					
+				}else{
+					 tableData = inventoryReportService.getInventoryReportByCompanyIdOutletId(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),isHeadOffice);
+//					inventoryReports = inventoryReportService.getInventoryReportByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				}
+				if (tableData != null) {
+					/*InventoryReportControllerBean inventoryReportControllerBean  = new InventoryReportControllerBean();
+					inventoryReportControllerBean.setTableData(tableData);*/
+					util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReport", 
+							"User "+ currentUser.getUserEmail()+" retrived Inventory report successfully ",false);
+					return new Response(tableData, StatusConstants.SUCCESS,
 							LayOutPageConstants.STAY_ON_PAGE);
 				} else {
 					util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReport", 

@@ -83,7 +83,8 @@ public class InventoryReportProductWiseController {
 						outletBeans = (List<OutletBean>) response.data;
 					}
 				}
-				Response response = getAllProducts(sessionId, outletName, request);
+				Response response = getAllProducts(sessionId, outletName, "false", request);
+						
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productBeanList = (List<ProductBean>) response.data;
 				}
@@ -116,9 +117,9 @@ public class InventoryReportProductWiseController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getAllProducts/{sessionId}/{outletName}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getAllProducts/{sessionId}/{outletName}/{loadAllProducts}", method = RequestMethod.POST)
 	public @ResponseBody Response getAllProducts(@PathVariable("sessionId") String sessionId,@PathVariable("outletName") String outletName,
-			HttpServletRequest request) {
+			@PathVariable("loadAllProducts") String loadAllProducts,HttpServletRequest request) {
 
 		List<ProductBean> productBeanList = new ArrayList<>();
 		List<ProductVariantBean> productVariantBeanList = new ArrayList<>();
@@ -129,16 +130,32 @@ public class InventoryReportProductWiseController {
 			try {
 				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
 					if(outletName==null||outletName.equalsIgnoreCase("")||outletName.equalsIgnoreCase("undefined")||outletName.equalsIgnoreCase("All Outlets")){
-						productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
+						
+						if(loadAllProducts.equalsIgnoreCase("true")){
+							productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
+						}else{
+							productSummmaries = productSummmaryService.getTenNewProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
+						}
+						//productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
 					}else{
 						int outletId = ControllerUtil.getOutletIdByOutletName(outletName,outletBeans);
 						if(outletId==0)
 							outletId = currentUser.getOutlet().getOutletId();
-						productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),outletId);
+						if(loadAllProducts.equalsIgnoreCase("true")){
+							productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),outletId);
+						}else{
+							productSummmaries = productSummmaryService.getTenNewProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),outletId);
+						}
+//						productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),outletId);
 					}
 					
 				}else{
-					productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
+					if(loadAllProducts.equalsIgnoreCase("true")){
+						productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
+					}else{
+						productSummmaries = productSummmaryService.getTenNewProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
+					}
+//					productSummmaries = productSummmaryService.getAllProductSummmaryByCompanyIdOutletId(currentUser.getCompany().getCompanyId(),currentUser.getOutlet().getOutletId());
 				}
 				if (productSummmaries != null) {
 					for (ProductSummmary productSummmary : productSummmaries) {

@@ -5,6 +5,7 @@ package com.dowhile.controller.bean;
 
 import java.util.List;
 
+import com.dowhile.beans.TableData;
 import com.dowhile.frontend.mapping.bean.InventoryReportBean;
 import com.dowhile.frontend.mapping.bean.OutletBean;
 
@@ -17,6 +18,7 @@ public class InventoryReportControllerBean {
 	private List<InventoryReportBean>  inventoryReportBeansList;
 	private List<OutletBean> outletBeans;
 	private boolean hideSalesDetails;
+	private TableData tableData;
 	/**
 	 * 
 	 */
@@ -62,5 +64,17 @@ public class InventoryReportControllerBean {
 	}
 	public void setHideSalesDetails(boolean hideSalesDetails) {
 		this.hideSalesDetails = hideSalesDetails;
+	}
+	/**
+	 * @return the tableData
+	 */
+	public TableData getTableData() {
+		return tableData;
+	}
+	/**
+	 * @param tableData the tableData to set
+	 */
+	public void setTableData(TableData tableData) {
+		this.tableData = tableData;
 	}
 }
