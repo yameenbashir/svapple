@@ -1508,8 +1508,8 @@ public class PurchaseOrderDetailsController {
 											newProduct.setVariantProducts(parentProduct.getVariantProducts());
 										}
 
-										//newProduct = productService.addProduct(newProduct, Actions.CREATE, stockOrderDetail.getOrderProdQty(),currentUser.getCompany());
-										productUpdateList.add(newProduct);
+										newProduct = productService.addProduct(newProduct, Actions.CREATE, Integer.parseInt(stockOrderDetail.getOrderProdQty()),currentUser.getCompany());
+										//productUpdateList.add(newProduct);
 										recvProductList.put(newProduct.getProductUuid(), newProduct);
 										productsMap.put(newProduct.getProductId(), newProduct);
 									}
