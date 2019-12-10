@@ -227,7 +227,7 @@ public class CustomersController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				Map<String, Address> cutomerAddressMap = addressService.getALLAddressByCustomerId(currentUser.getCompany().getCompanyId());
+//				Map<String, Address> cutomerAddressMap = addressService.getALLAddressByCustomerId(currentUser.getCompany().getCompanyId());
 				
 				Contact customer= contactService.getContactByID(customerId, currentUser.getCompany().getCompanyId());
 				
@@ -280,12 +280,12 @@ public class CustomersController {
 							customerBean.setCustomerGroupId(customerGroup.getContactGroupId().toString());
 							customerBean.setCustomerGroupName(customerGroup.getContactGroupName());
 						}			
-						Address customerAddress = cutomerAddressMap.get(customer.getContactId().toString());
+//						Address customerAddress = cutomerAddressMap.get(customer.getContactId().toString());
 						customerBean.setPhoneNumber("");
-						if(customerAddress!=null && addressBeansList!=null){
-							if(customerAddress.getPhone()!=null){
+						if(addressList!=null && addressList!=null){
+							if(addressBeansList.get(0).getPhone()!=null){
 								AddressBean  addressBean = addressBeansList.get(0);
-								addressBean.setPhone(customerAddress.getPhone());
+								addressBean.setPhone(addressBeansList.get(0).getPhone());
 								addressBeansList.set(0, addressBean);
 								
 							}
