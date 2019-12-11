@@ -138,4 +138,11 @@ public class ContactServiceImpl implements ContactService {
 		return getContactDAO().activeInactiveAllContactsByCompanyIdOutletIdUserIdContactTypeIsActive(companyId, outletId, userId, contactType, isActive);
 	}
 
+	@Override
+	public List<Contact> getAllContactsByCompanyIdContactType(int companyId,
+			String contactType) {
+		// TODO Auto-generated method stub
+		return getContactDAO().getAllContactsByCompanyIdContactType(companyId, contactType);
+	}
+
 }

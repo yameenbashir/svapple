@@ -26,4 +26,5 @@ public interface ContactService {
 	Map<Integer,Contact> getContactsByOutletIDMap(int outletID, int companyId);
 	List<Contact> getcustomerByOutletID(int outletID, int companyId);
 	boolean activeInactiveAllContactsByCompanyIdOutletIdUserIdContactTypeIsActive(int companyId,int outletId,int userId,String contactType,boolean isActive);
+	List<Contact> getAllContactsByCompanyIdContactType(int companyId,String contactType);
 }

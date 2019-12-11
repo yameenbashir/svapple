@@ -248,4 +248,24 @@ public class ContactDAOImpl implements ContactDAO{
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Contact> getAllContactsByCompanyIdContactType(int companyId,
+			String contactType) {
+		// TODO Auto-generated method stub
+		try{
+		List<Contact> list = getSessionFactory().getCurrentSession()
+				.createQuery("from Contact where COMPANY_ASSOCIATION_ID=? AND CONTACT_TYPE=? ")
+				.setParameter(0, companyId)
+				.setParameter(1, contactType).list();
+				if(list!=null&& list.size()>0){
+
+					return list;
+				}
+			}catch(HibernateException ex){
+				ex.printStackTrace();
+			}
+		return null;
+	}
+
 }

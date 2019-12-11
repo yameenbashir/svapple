@@ -447,16 +447,26 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 	public int getCountOfMAXSKUForProductVariantByCompanyId(int companyId) {
 		// TODO Auto-generated method stub
 		try{
-			List<ProductVariant> list = getSessionFactory()
+			
+			int count = (int) getSessionFactory().getCurrentSession().createQuery("select max(productVariantId) from ProductVariant where "
+					+ "COMPANY_ASSOCIATION_ID = "+companyId+"").uniqueResult();
+			System.out.println("ProductVariant MaxCount: "+count);
+			return count+1;
+			
+			
+			
+			
+			/*List<ProductVariant> list = getSessionFactory()
 					.getCurrentSession()
 					.createQuery(
-							"FROM ProductVariant WHERE COMPANY_ASSOCIATION_ID=?  ORDER BY PRODUCT_VARIANT_ID DESC LIMIT 1")
+//							"FROM ProductVariant WHERE COMPANY_ASSOCIATION_ID=?  ORDER BY PRODUCT_VARIANT_ID DESC LIMIT 1")
+							"FROM ProductVariant WHERE COMPANY_ASSOCIATION_ID=?")
 							.setParameter(0, companyId).list();
 					if(list!=null && list.size()>0){
 						System.out.println("Product Variant Id: "+list.get(0).getProductVariantId());
 						return list.get(0).getProductVariantId()+1;
 					}
-					return 1;
+					return 1;*/
 		}catch(HibernateException ex){
 			ex.printStackTrace();
 		}

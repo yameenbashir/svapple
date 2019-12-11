@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -211,7 +213,11 @@ public class NewProductController {
 			User currentUser = (User) session.getAttribute("user");
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			try {
+				long start = System.currentTimeMillis();
 				products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get products is " + formatter.format((end - start) / 1000d) + " seconds");
 				if(products!=null){
 					for(Product product:products){
 						productBarCodeMap.put(product.getSku(), true);
@@ -222,10 +228,13 @@ public class NewProductController {
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					supplierBeans = (List<SupplierBean>) response.data;
 				}
+				
 				response = getAllProductTypes(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productTypeBeanList = (List<ProductTypeBean>) response.data;
 				}
+				
+//				System.out.println("totalTime: "+totalTime);
 				response = getAllBrands(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					brandBeanList = (List<BrandBean>) response.data;
@@ -253,7 +262,7 @@ public class NewProductController {
 					}
 				}
 				
-				response  = productTagsController.getAllTags(sessionId, request);
+				response  = getAllTags(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					tagBeanList = (List<TagBean>) response.data;
 				}
@@ -269,8 +278,17 @@ public class NewProductController {
 				newProductControllerBean.setProductBean(productBean);
 				newProductControllerBean.setProductBarCodeMap(productBarCodeMap);
 				newProductControllerBean.setProductVariantBarCodeMap(productVariantBarCodeMap);
+				
+				long startSku = System.currentTimeMillis();
+				
 				newProductControllerBean.setSku(productService.getCountOfMAXSKUForProductByCompanyId(currentUser.getCompany().getCompanyId()));
+				long endSku   = System.currentTimeMillis();
+				System.out.println("Execution time to get getCountOfMAXSKUForProductByCompanyId is " + formatter.format((endSku - startSku) / 1000d) + " seconds");
+				long startgetCountOfMAXSKUForProductVariantByCompanyId = System.currentTimeMillis();
 				newProductControllerBean.setProductVariantSku(productVariantService.getCountOfMAXSKUForProductVariantByCompanyId(currentUser.getCompany().getCompanyId()));
+				
+				long endgetCountOfMAXSKUForProductVariantByCompanyId   = System.currentTimeMillis();
+				System.out.println("Execution time to get getCountOfMAXSKUForProductVariantByCompanyId is " + formatter.format((endgetCountOfMAXSKUForProductVariantByCompanyId - startgetCountOfMAXSKUForProductVariantByCompanyId) / 1000d) + " seconds");
 				Configuration configuration = configurationMap.get("PRODCUT_TEMPLATE_FOR_ALL_OUTLETS");
 				if(configuration==null || configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 					newProductControllerBean.setProductTemplateForAllOutlets(ControllersConstants.TRUE);
@@ -295,6 +313,9 @@ public class NewProductController {
 
 				util.AuditTrail(request, currentUser, "NewProductController.getNewProductControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived NewProductController data successfully ",false);
+				long endTimeTotal   = System.currentTimeMillis();
+//				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get NewProductController.getNewProductControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
 				return new Response(newProductControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
@@ -421,9 +442,9 @@ public class NewProductController {
 					
 					UUID uuidProd = UUID.randomUUID();
 					String randomUUIDProduct = uuidProd.toString();
-					
+					Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 					if(!productBean.getVarientProducts().equalsIgnoreCase("true")){
-						Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+						
 						Configuration configurationAutoCreateSV = configurationMap.get("AUTO_CREATE_STANDARD_VARIANT");
 						if(configurationAutoCreateSV!=null && configurationAutoCreateSV.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 							productBean.setVarientProducts(ControllersConstants.TRUE);
@@ -438,7 +459,7 @@ public class NewProductController {
 					}
 					
 
-					Configuration configuration = configurationService.getConfigurationByPropertyNameByCompanyId("PRODCUT_TEMPLATE_FOR_ALL_OUTLETS",currentUser.getCompany().getCompanyId());
+					Configuration configuration = configurationMap.get("PRODCUT_TEMPLATE_FOR_ALL_OUTLETS");//configurationService.getConfigurationByPropertyNameByCompanyId("PRODCUT_TEMPLATE_FOR_ALL_OUTLETS",currentUser.getCompany().getCompanyId());
 					if(configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 						for(OutletBean outletbean:outletsist){
 							addProuductByOutlet(sessionId, outletbean, productBean, currentUser, outletMap, totalQunatity, outletsist,request,randomUUIDProduct);
@@ -520,12 +541,16 @@ public class NewProductController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addProuductByOutlet(String sessionId, OutletBean outletbean,ProductBean productBean,User currentUser,Map outletMap,int totalQunatity,List<OutletBean> outletsist,HttpServletRequest request
 			,String randomUUIDProduct){
-		Configuration configurationStockOrder = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_ORDER_NEW_PRODUCT",currentUser.getCompany().getCompanyId());
+		HttpSession session =  request.getSession(false);
+		Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+		Configuration configurationStockOrder = configurationMap.get("AUTO_STOCK_ORDER_NEW_PRODUCT");//configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_ORDER_NEW_PRODUCT",currentUser.getCompany().getCompanyId());
 		Product product = new Product();
 		product.setActiveIndicator(true);
 
 		product.setProductUuid(randomUUIDProduct);
-		Brand brand = brandService.getBrandByBrandId(Integer.valueOf(productBean.getBrandId()),currentUser.getCompany().getCompanyId());
+		Brand brand = new Brand();
+		brand.setBrandId(Integer.valueOf(productBean.getBrandId()));
+//		Brand brand = brandService.getBrandByBrandId(Integer.valueOf(productBean.getBrandId()),currentUser.getCompany().getCompanyId());
 		product.setBrand(brand);
 		product.setUserByCreatedBy(currentUser);
 		product.setCreatedDate(new Date());
@@ -533,11 +558,15 @@ public class NewProductController {
 		product.setProductDesc(productBean.getProductDesc());
 		product.setProductHandler(productBean.getProductHandler());
 		product.setProductName(productBean.getProductName());
-		ProductType productType = productTypeService.getProductTypeByProductTypeId(Integer.valueOf(productBean.getProductTypeId()),currentUser.getCompany().getCompanyId());
+		ProductType productType =  new ProductType();
+		productType.setProductTypeId(Integer.valueOf(productBean.getProductTypeId()));
+//		ProductType productType = productTypeService.getProductTypeByProductTypeId(Integer.valueOf(productBean.getProductTypeId()),currentUser.getCompany().getCompanyId());
 		product.setProductType(productType);
 		product.setPurchaseAccountCode(productBean.getPurchaseAccountCode());
 		product.setSalesAccountCode(productBean.getSalesAccountCode());
-		Contact supplier = supplierService.getContactByID(Integer.valueOf(productBean.getSupplierId()),currentUser.getCompany().getCompanyId());
+		Contact supplier = new Contact();
+		supplier.setContactId(Integer.valueOf(productBean.getSupplierId()));
+//		Contact supplier = supplierService.getContactByID(Integer.valueOf(productBean.getSupplierId()),currentUser.getCompany().getCompanyId());
 		product.setContact(supplier);
 		product.setProductCanBeSold(productBean.getProductCanBeSold());
 		product.setStandardProduct(productBean.getStandardProduct());
@@ -550,7 +579,9 @@ public class NewProductController {
 
 		product.setUserByUpdatedBy(currentUser);
 		product.setOutlet((Outlet)outletMap.get(Integer.valueOf(outletbean.getOutletId())));
-		SalesTax salestax = salesTaxService.getSalesTaxBySalesTaxId(Integer.valueOf(outletbean.getSalesTaxId()),currentUser.getCompany().getCompanyId());
+		SalesTax salestax = new SalesTax();
+		salestax.setSalesTaxId(Integer.valueOf(outletbean.getSalesTaxId()));
+//		SalesTax salestax = salesTaxService.getSalesTaxBySalesTaxId(Integer.valueOf(outletbean.getSalesTaxId()),currentUser.getCompany().getCompanyId());
 		product.setSalesTax(salestax);
 
 		product.setMarkupPrct(new BigDecimal(productBean.getMarkupPrct()));
@@ -654,8 +685,8 @@ public class NewProductController {
 			newProduct =productService.addProduct(product,Actions.CREATE,totalQunatity,currentUser.getCompany());
 		}
 		if(newProduct!=null){
-			HttpSession session =  request.getSession(false);
-			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+			
+			
 			Configuration dutyCalculatorConfiguration = configurationMap.get("SHOW_DUTY_CALCULATOR");
 			if(dutyCalculatorConfiguration!=null && dutyCalculatorConfiguration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 				ProductPriceHistoryBean productPriceHistoryBean = productBean.getProductPriceHistoryBean();
@@ -676,7 +707,9 @@ public class NewProductController {
 					productTag.setUserByCreatedBy(currentUser);
 					productTag.setLastUpdated(new Date());
 					productTag.setProduct(newProduct);
-					Tag newtag = tagService.getTagByTagId(Integer.valueOf(tagBean.getTagId()),currentUser.getCompany().getCompanyId());
+					Tag newtag = new Tag();
+					newtag.setTagId(Integer.valueOf(tagBean.getTagId()));
+//					Tag newtag = tagService.getTagByTagId(Integer.valueOf(tagBean.getTagId()),currentUser.getCompany().getCompanyId());
 					productTag.setTag(newtag);
 					productTag.setUserByUpdatedBy(currentUser);
 					productTag.setCreatedDate(new Date());
@@ -819,7 +852,9 @@ public class NewProductController {
 					productVariant.setUserByUpdatedBy(currentUser);
 					Outlet tempOutlet = (Outlet)outletMap.get(Integer.valueOf(variantOutletBean.getOutletId()));
 					productVariant.setOutlet(tempOutlet);
-					SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(Integer.valueOf(tempOutlet.getSalesTax().getSalesTaxId()),currentUser.getCompany().getCompanyId());
+					SalesTax salesTax = new SalesTax();
+					salesTax.setSalesTaxId(Integer.valueOf(tempOutlet.getSalesTax().getSalesTaxId()));
+//					SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(Integer.valueOf(tempOutlet.getSalesTax().getSalesTaxId()),currentUser.getCompany().getCompanyId());
 					productVariant.setSalesTax(salesTax);
 					productVariant.setVariantAttributeName(varientValueBean.getVarientName());
 					productVariant.setVariantAttributeValue1(varientNamesList[0]);
@@ -962,8 +997,12 @@ public class NewProductController {
 
 
 			try {
-
+				long start = System.currentTimeMillis();
+				
 				variantAttributesList = variantAttributeService.getAllVariantAttributes(currentUser.getCompany().getCompanyId());
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get variantAttributesList is " + formatter.format((end - start) / 1000d) + " seconds");
 				if (variantAttributesList != null) {
 					for (VariantAttribute variantAttribute : variantAttributesList) {
 
@@ -1347,7 +1386,11 @@ public class NewProductController {
 			User currentUser = (User) session.getAttribute("user");
 
 			try {
-				List<Contact> suppliers = supplierService.getAllContacts(currentUser.getCompany().getCompanyId());
+				long start = System.currentTimeMillis();
+				List<Contact> suppliers = supplierService.getAllContactsByCompanyIdContactType(currentUser.getCompany().getCompanyId(),"SUPPLIER");
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get suppliers is " + formatter.format((end - start) / 1000d) + " seconds");
 				if (suppliers != null && suppliers.size() > 0) {
 					for (Contact item : suppliers) {
 						if(item.getContactType()!=null && item.getContactType().contains("SUPPLIER")){
@@ -1393,8 +1436,11 @@ public class NewProductController {
 
 
 			try {
-
+				long start = System.currentTimeMillis();
 				productTypeList = productTypeService.getAllProductTypes(currentUser.getCompany().getCompanyId());
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get productTypeList is " + formatter.format((end - start) / 1000d) + " seconds");
 				if (productTypeList != null) {
 					for (ProductType productType : productTypeList) {
 
@@ -1493,8 +1539,13 @@ public class NewProductController {
 
 
 			try {
-
+				long start = System.currentTimeMillis();
+				
+				
 				brandsList = brandService.getAllBrands(currentUser.getCompany().getCompanyId());
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get brandsList is " + formatter.format((end - start) / 1000d) + " seconds");
 				if (brandsList != null) {
 					for (Brand brand : brandsList) {
 
@@ -1546,7 +1597,13 @@ public class NewProductController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
+				//need to fix sales tax retrerival
+				long start = System.currentTimeMillis();
+				
 				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get outlets is " + formatter.format((end - start) / 1000d) + " seconds");
 				if(outlets!=null){
 					for(Outlet outlet:outlets){
 						OutletBean outletBean = new OutletBean();
@@ -1650,6 +1707,7 @@ public class NewProductController {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private Product processImage(ImageData data,Product product, HttpServletRequest request)
 	{
 		HttpSession session =  request.getSession(false);
@@ -1657,6 +1715,9 @@ public class NewProductController {
 		String byteStr = data.getFile().substring(data.getFile().indexOf("base64,")+7, data.getFile().length());
 		ServletContext servletContext = request.getSession().getServletContext();
 		String relativeWebPath = "/resources/images/"+"Company_"+currentUser.getCompany().getCompanyId();
+		Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+		Configuration configuration = configurationMap.get("DOCUMENTS_PATH");//configurationService.getConfigurationByPropertyNameByCompanyId("DOCUMENTS_PATH",currentUser.getCompany().getCompanyId());
+		
 
 		try {
 			String absoluteDiskPath = servletContext.getRealPath(relativeWebPath);
@@ -1676,7 +1737,7 @@ public class NewProductController {
 
 
 			}
-			Configuration configuration = configurationService.getConfigurationByPropertyNameByCompanyId("DOCUMENTS_PATH",currentUser.getCompany().getCompanyId());
+//			Configuration configuration = configurationService.getConfigurationByPropertyNameByCompanyId("DOCUMENTS_PATH",currentUser.getCompany().getCompanyId());
 			util.AuditTrail(request, currentUser, "Backup of Image to Live Server",
 					"Backup of Image path :"+configuration.getPropertyValue()+'/'+product.getProductUuid(),false);
 			product.setImagePath("/app/resources/images/"+"Company_"+currentUser.getCompany().getCompanyId()+"/"+product.getProductUuid()+".jpg");
@@ -1688,9 +1749,10 @@ public class NewProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("Error of Upload Image at path:"+configuration.getPropertyValue() + "/Company_"+currentUser.getCompany().getCompanyId());
 			StringWriter errors = new StringWriter();
-			e.printStackTrace(new PrintWriter(errors));
+//			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
 					"Error of Upload Image  :"+errors,true);
 
@@ -1812,6 +1874,64 @@ public class NewProductController {
 		
 		
 		return null;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getAllTags/{sessionId}", method = RequestMethod.POST)
+	public @ResponseBody Response getAllTags(@PathVariable("sessionId") String sessionId,
+			HttpServletRequest request) {
+
+		List<TagBean> tagBeanList = new ArrayList<>();
+		List<Tag> tagsList = null;
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+
+
+			try {
+				long start = System.currentTimeMillis();
+				
+
+				tagsList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get tagsList is " + formatter.format((end - start) / 1000d) + " seconds");
+				if (tagsList != null) {
+					for (Tag tag : tagsList) {
+
+						TagBean tagBean = new TagBean();
+						tagBean.setTagId(tag.getTagId().toString());
+						tagBean.setTagName(tag.getTagName());
+//						tagBean.setNumberOfProducts(String.valueOf(productTagService.getCountOfProductTagsByTagId(tag.getTagId(),currentUser.getCompany().getCompanyId())));
+						tagBeanList.add(tagBean);
+
+					}
+					util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags", 
+							"User "+ currentUser.getUserEmail()+" retrived all Tags successfully ",false);
+					return new Response(tagBeanList, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+				} else {
+					util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags", 
+							" Tags are not found requested by User "+currentUser.getUserEmail(),false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,
+							StatusConstants.RECORD_NOT_FOUND,
+							LayOutPageConstants.STAY_ON_PAGE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.RECORD_NOT_FOUND,
+						LayOutPageConstants.STAY_ON_PAGE);
+
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+
 	}
 
 }

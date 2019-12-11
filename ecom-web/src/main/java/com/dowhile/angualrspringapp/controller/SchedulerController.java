@@ -52,6 +52,7 @@ public class SchedulerController {
 	    {
 		 //0 0 1 * * *
 		 //* 0/60 * * * *
+		 //0 59 * * * ? execute At second :00 of minute :59 of every hour
 		 //*/90 * * * * ? execute after every 5 minunte
 		 //cron="*/20 * * * * ?" execute at every 20 seconds
 		/* 		 0 0 12 * * ?		Fire at 12:00 PM (noon) every day

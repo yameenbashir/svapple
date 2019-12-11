@@ -455,6 +455,7 @@ public class ProductDAOImpl implements ProductDAO{
 		try{
 			int count = ((Long)getSessionFactory().getCurrentSession().createQuery("select count(*) from Product where "
 					+ "COMPANY_ASSOCIATION_ID = "+companyId+"").uniqueResult()).intValue();
+			System.out.println("Product Count: "+count);
 			return count+1;
 		}catch(HibernateException ex){
 			ex.printStackTrace();

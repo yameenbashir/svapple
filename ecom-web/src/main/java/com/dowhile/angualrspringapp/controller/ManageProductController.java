@@ -871,6 +871,7 @@ public class ManageProductController {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Product processImage(ImageData data,Product product, HttpServletRequest request)
 	{
 		HttpSession session =  request.getSession(false);
@@ -878,7 +879,8 @@ public class ManageProductController {
 		String byteStr = data.getFile().substring(data.getFile().indexOf("base64,")+7, data.getFile().length());
 		ServletContext servletContext = request.getSession().getServletContext();
 		String relativeWebPath = "/resources/images/"+"Company_"+currentUser.getCompany().getCompanyId();
-
+		Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+		Configuration configuration = configurationMap.get("DOCUMENTS_PATH");//configurationService.getConfigurationByPropertyNameByCompanyId("DOCUMENTS_PATH",currentUser.getCompany().getCompanyId());
 		try {
 			String absoluteDiskPath = servletContext.getRealPath(relativeWebPath);
 
@@ -897,7 +899,7 @@ public class ManageProductController {
 
 
 			}
-			Configuration configuration = configurationService.getConfigurationByPropertyNameByCompanyId("DOCUMENTS_PATH",currentUser.getCompany().getCompanyId());
+			
 			util.AuditTrail(request, currentUser, "Backup of Image to Live Server",
 					"Backup of Image path :"+configuration.getPropertyValue()+'/'+product.getProductUuid(),false);
 			product.setImagePath("/app/resources/images/"+"Company_"+currentUser.getCompany().getCompanyId()+"/"+product.getProductUuid()+".jpg");
@@ -909,9 +911,10 @@ public class ManageProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("Error of Upload Image at path:"+configuration.getPropertyValue() + "/Company_"+currentUser.getCompany().getCompanyId());
 			StringWriter errors = new StringWriter();
-			e.printStackTrace(new PrintWriter(errors));
+//			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
 					"Error of Upload Image  :"+errors,true);
 
