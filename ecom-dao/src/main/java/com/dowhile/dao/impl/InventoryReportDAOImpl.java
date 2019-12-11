@@ -140,10 +140,10 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 						for(int i=0;i<data.length;i++){
 							String value = String.valueOf(data[i]);
 							if(i==6){
-								totalCurrentStock = totalCurrentStock+Integer.valueOf(String.valueOf(data[i]));
+								totalCurrentStock = (int) (totalCurrentStock+Double.valueOf(String.valueOf(data[i])));
 							}
 							if(i==7){
-								totalStockValue= totalStockValue+Integer.valueOf(String.valueOf(data[i]));
+								totalStockValue= (int) (totalStockValue+Double.valueOf(String.valueOf(data[i])));
 							}
 							if(!isHeadOffice && i==4){
 								continue;

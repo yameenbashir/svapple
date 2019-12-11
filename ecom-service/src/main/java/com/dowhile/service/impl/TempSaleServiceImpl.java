@@ -55,4 +55,11 @@ public class TempSaleServiceImpl implements TempSaleService{
 		return getTempSaleDAO().runDailyScript();
 	}
 
+	@Override
+	public TableData getTodaySalesByCompanyIdOutletIdDate(int companyId,
+			int outletId, Date date, boolean isHeadOffice) {
+		// TODO Auto-generated method stub
+		return getTempSaleDAO().getTodaySalesByCompanyIdOutletIdDate(companyId, outletId, date, isHeadOffice);
+	}
+
 }

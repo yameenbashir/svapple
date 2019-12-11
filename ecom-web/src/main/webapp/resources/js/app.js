@@ -3683,6 +3683,95 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 
 	}); 
+	
+	$routeProvider.when('/salesReportCurrentDate', {
+		templateUrl: 'resources/html/salesReportCurrentDate/layout.html',
+		controller: SalesReportCurrentDateController,
+		resolve: {
+			"SalesReportCurrentDateControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesReportCurrentDate/getSalesReportCurrentDateControllerData/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.inventoryReportOutletName)//+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType)
+					.success(function(Response) {
+						controllerData = Response.data;
+						//$rootScope.salesReportStartDate = "undefined";
+						//$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
+	$routeProvider.when('/downloadSalesReportCurrentDate', {
+		templateUrl: 'resources/html/downloadSalesReportCurrentDate/layout.html',
+		controller: SalesReportCurrentDateController,
+		resolve: {
+			"SalesReportCurrentDateControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('salesReportCurrentDate/getSalesReportCurrentDateControllerData/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.inventoryReportOutletName)//+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType)
+					.success(function(Response) {
+						controllerData = Response.data;
+						//$rootScope.salesReportStartDate = "undefined";
+						//$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+
 
 	$routeProvider.when('/inventoryReport', {
 		templateUrl: 'resources/html/inventoryReport/layout.html',

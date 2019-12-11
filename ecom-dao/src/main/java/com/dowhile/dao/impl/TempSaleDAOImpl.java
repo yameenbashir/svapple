@@ -3,6 +3,7 @@
  */
 package com.dowhile.dao.impl;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -258,5 +259,163 @@ public class TempSaleDAOImpl implements TempSaleDAO{
 			ex.printStackTrace();
 		}
 		return false;
+	}
+	
+	@SuppressWarnings({"rawtypes" })
+	@Override
+	public TableData getTodaySalesByCompanyIdOutletIdDate(int companyId, int outletId,Date date,boolean isHeadOffice) {
+		// TODO Auto-generated method stub
+		try {
+			TableData tableData = new TableData();
+			List result =  null;
+			try{
+				result = getSessionFactory()
+						.getCurrentSession().createSQLQuery(
+						 "CALL GetTodaySalesByProduct(:param1,:param2,:param3)")
+						 .setParameter("param1", companyId)
+						 .setParameter("param2", outletId)
+						 .setParameter("param3", date)
+						 .list();
+				
+			 
+			}catch(Exception exception){
+				
+			}
+			List<String> columns = new ArrayList<>();
+			List<Row> rows = new ArrayList<>();
+		
+			if(result!=null){
+				if(isHeadOffice){
+					String dbColumns = "Product,Outlet,Date,Revenue,Revenue(tax incl),Cost Of Goods,Gross Profit,Margin,Items Sold,Tax";
+					
+					
+					if(dbColumns!=null){
+						for(String columnName: dbColumns.split(",")){
+							/*if(!isHeadOffice&& columnName.equalsIgnoreCase("Supplier"))
+								continue;*/
+							columns.add(columnName);
+						}
+					}
+				}else{
+					String dbColumns = "Product,Outlet,Date,Revenue,Revenue(tax incl),Items Sold,Tax";
+					
+					
+					if(dbColumns!=null){
+						for(String columnName: dbColumns.split(",")){
+							/*if(!isHeadOffice&& columnName.equalsIgnoreCase("Supplier"))
+								continue;*/
+							columns.add(columnName);
+						}
+					}
+				}
+				
+
+
+				Row footerRow = new Row();
+				double totalRevenue = 0;
+				double totalRevenueIncTax = 0;
+				double totalCostOfGoods = 0;
+				double totalGrossProfit = 0;
+				double totalMargin = 0;
+				double totalItemsSold = 0;
+				for(int index=0; index<result.size(); index++){
+					Row row = new Row();
+					List<String> colums = new ArrayList<>();
+					try{
+//						"Product,Outlet,Date,Revenue,Revenue(tax incl),Cost Of Goods,Gross Profit,Margin,Items Sold,Tax";
+						Object[] data = (Object[]) result.get(index);
+						if(isHeadOffice){
+							colums.add(String.valueOf(data[0]));
+							colums.add(String.valueOf(data[1]));
+							colums.add(String.valueOf(data[2]));
+							colums.add(String.valueOf(data[3]));
+							totalRevenue = totalRevenue+Double.valueOf(String.valueOf(data[3]));
+							colums.add(String.valueOf(data[4]));
+							totalRevenueIncTax = totalRevenueIncTax+Double.valueOf(String.valueOf(data[4]));
+							colums.add(String.valueOf(data[5]));
+							totalCostOfGoods = totalCostOfGoods+Double.valueOf(String.valueOf(data[5]));
+							colums.add(String.valueOf(data[6]));
+							totalGrossProfit = totalGrossProfit+Double.valueOf(String.valueOf(data[6]));
+							colums.add(String.valueOf(data[7]));
+							totalMargin = totalMargin+Double.valueOf(String.valueOf(data[7]));
+							colums.add(String.valueOf(data[8]));
+							totalItemsSold = totalItemsSold+Double.valueOf(String.valueOf(data[8]));
+							colums.add(String.valueOf(data[9]));
+						}else{
+							colums.add(String.valueOf(data[0]));
+							colums.add(String.valueOf(data[1]));
+							colums.add(String.valueOf(data[2]));
+							colums.add(String.valueOf(data[3]));
+							totalRevenue = totalRevenue+Double.valueOf(String.valueOf(data[3]));
+							colums.add(String.valueOf(data[4]));
+							totalRevenueIncTax = totalRevenueIncTax+Double.valueOf(String.valueOf(data[4]));
+							//colums.add(String.valueOf(data[5]));
+							//totalCostOfGoods = totalCostOfGoods+Double.valueOf(String.valueOf(data[5]));
+						//	colums.add(String.valueOf(data[6]));
+						//	totalGrossProfit = totalGrossProfit+Double.valueOf(String.valueOf(data[6]));
+//							colums.add(String.valueOf(data[7]));
+//							totalMargin = totalMargin+Double.valueOf(String.valueOf(data[7]));
+							colums.add(String.valueOf(data[8]));
+							totalItemsSold = totalItemsSold+Double.valueOf(String.valueOf(data[8]));
+							colums.add(String.valueOf(data[9]));
+						}
+						
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}
+					
+					row.setColumns(colums);
+					rows.add(row);
+				}
+				List<String> colums = new ArrayList<>();
+				if(isHeadOffice){
+					colums.add("Sum");
+					colums.add("-");
+					colums.add("-");
+					colums.add(totalRevenue+"");
+					
+					colums.add(totalRevenueIncTax+"");
+					colums.add(totalCostOfGoods+"");
+					colums.add(totalGrossProfit+"");
+					totalMargin = totalMargin/result.size();
+					DecimalFormat fmt = new DecimalFormat ("0.##");
+					colums.add(fmt.format(totalMargin)+"");
+					colums.add(totalItemsSold+"");
+					colums.add("-");
+					footerRow.setColumns(colums);
+					rows.add(footerRow);
+				}else{
+					colums.add("Sum");
+					colums.add("-");
+					colums.add("-");
+					colums.add(totalRevenue+"");
+					
+					colums.add(totalRevenueIncTax+"");
+//					colums.add(totalCostOfGoods+"");
+//					colums.add(totalGrossProfit+"");
+//					colums.add(totalMargin+"");
+					colums.add(totalItemsSold+"");
+					colums.add("-");
+					footerRow.setColumns(colums);
+					rows.add(footerRow);
+				}
+
+			}
+		
+			tableData.setColumns(columns);
+			if(rows.size()>0){
+				
+				tableData.setFooter(rows.get(rows.size()-1));
+				rows.remove(rows.size()-1);
+			}else{
+				tableData.setFooter(new Row());
+			}
+			
+			tableData.setRows(rows);
+			return tableData;
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 }

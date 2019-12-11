@@ -40,6 +40,8 @@ BEGIN
 	insert into mv_Payment_Report (select * from Payment_Report);
 	delete from mv_Customer_Group_Sales_Report;
 	insert into mv_Customer_Group_Sales_Report (select * from Customer_Group_Sales_Report);
+	delete from mv_inventory_report;
+	insert into mv_inventory_report (select * from inventory_report);
     END$$
 
 DELIMITER ;

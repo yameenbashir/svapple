@@ -129,7 +129,7 @@ public class SchedulerController {
 	        	System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  */
 	        	con.close();  
 	        	System.out.println("Method schedulerForMessageCountManagement() execution completed at time :: "+ new Date());
-	        	sendEmailDemo("bashir@shopvitals.com", "Yameen/Zafar","Messages count updated sucessfully");
+//	        	sendEmailDemo("bashir@shopvitals.com", "Yameen/Zafar","Messages count updated sucessfully");
 	        	}catch(Exception e){ System.out.println(e);} 
 	        
 	    }
