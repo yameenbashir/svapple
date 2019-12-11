@@ -15,6 +15,7 @@ var PurchaseOrderEditProductsController = ['$scope', '$http','$timeout', '$windo
 	$scope.stockOrderDetailBeansList = [];	
 	$scope.hideRefValues = false;
 	
+	
 	$scope.sessionValidation = function(){
 
 		if(SessionService.validate()){
