@@ -275,6 +275,7 @@ public class LoginController {
 							LayOutPageConstants.STAY_ON_PAGE);
 					
 				}
+				System.out.println("Authorization completed for user: "+appuser.getEmail()+" against companyId: "+company.getCompanyId()+" with company Name: "+company.getCompanyName());
 				util.AuditTrail(request, user, "LoginController.doLogin", "User:  "+ appuser.getEmail()+" Login Successfuly ",false);
 				if(user.getRole().getRoleId()==1){
 					return new Response(loginBean, StatusConstants.SUCCESS,

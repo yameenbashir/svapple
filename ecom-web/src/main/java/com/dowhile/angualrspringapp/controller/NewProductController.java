@@ -389,7 +389,11 @@ public class NewProductController {
 				List<OutletBean> outletsist = productBean.getOutletList();
 				//To check duplicate bar code start
 				Map productBarCodeMap = new HashMap<>();
+				long start = System.currentTimeMillis();
 				products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+				long end   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get products is " + formatter.format((end - start) / 1000d) + " seconds");
 				if(products!=null){
 					for(Product product:products){
 						productBarCodeMap.put(product.getSku(), product);
@@ -399,8 +403,11 @@ public class NewProductController {
 						||productBarCodeMap.get(productBean.getSku())!=null){
 					return new Response(MessageConstants.DUPLICATE_PRODCUT_BAR_CODE,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
 				}
-				
+				long startVariant = System.currentTimeMillis();
 				List<ProductVariant> productVariantsList = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+				long endVariant   = System.currentTimeMillis();
+//				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get products Variants is " + formatter.format((endVariant - startVariant) / 1000d) + " seconds");
 				Map productVariantMap = new HashMap<>();
 				if(productVariantsList!=null){
 					
@@ -429,7 +436,10 @@ public class NewProductController {
 						}
 					}
 				}
-				
+				long endFetching   = System.currentTimeMillis();
+//				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to verify duplication and fetching product and variants is " + formatter.format((endFetching - start) / 1000d) + " seconds");
+				System.out.println();
 				//To check duplicate bar code end
 				if(outletsist!=null){
 

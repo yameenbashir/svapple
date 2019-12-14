@@ -156,7 +156,7 @@ public class RegisterReportController {
 								registrReprotBean.setClosingDate("-");
 								registrReprotBean.setCloseBy("-");
 							}else{
-								System.out.println("new String(registerReport.getId().getClosingDate()): "+new String(registerReport.getId().getClosingDate()));
+//								System.out.println("new String(registerReport.getId().getClosingDate()): "+new String(registerReport.getId().getClosingDate()));
 								registrReprotBean.setClosingDate(new String(registerReport.getId().getClosingDate()));
 								registrReprotBean.setCloseBy(new String(registerReport.getId().getCloseBy()));
 							}

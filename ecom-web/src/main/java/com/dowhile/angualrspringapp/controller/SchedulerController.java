@@ -37,14 +37,14 @@ public class SchedulerController {
 	 String emailSendBCCStr ;
 	 String emailFROMStr;
 	public  void populatEmailConfig(){
-		 emailUserStr  = "bashir@shopvitals.com";
+		 emailUserStr  = "script@shopvitals.com";
 		 emailSubjectStr  = "Script Execution";
-		 emailSendCCStr = "zafar@shopvitals.com";
+		 emailSendCCStr = "ali@shopvitals.com";
 		 emailSendCCTOStr = "Y";
 		 emailSendBCCTOStr  = "";
 		 emailSendBCCStr = "";
-		 emailFROMStr = "bashir@shopvitals.com";
-		 emailPasswordStr = "abcd1234@";
+		 emailFROMStr = "script@shopvitals.com";
+		 emailPasswordStr = "Abcd1234@@";
 	}
 	
 	 @Scheduled(cron="0 50 23 * * ?")
@@ -86,7 +86,7 @@ public class SchedulerController {
 	        	System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  */
 	        	con.close();  
 	        	System.out.println("Method schedulerForMVExecution() execution completed at time :: "+ new Date());
-	        	sendEmailDemo("bashir@shopvitals.com", "Yameen/Zafar","Scipt Executed Successfully");
+	        	sendEmailDemo("bashir@shopvitals.com", "Bashir/Ali","Scipt Executed Successfully");
 	        	}catch(Exception e){ System.out.println(e);} 
 	        
 	    }
@@ -217,11 +217,11 @@ public class SchedulerController {
 		        	System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  */
 		        	con.close();  
 		        	System.out.println("Method schedulerForMessageCountManagement() execution completed at time :: "+ new Date());
-		        	//sendEmailDemo("bashir@shopvitals.com", "Yameen/Zafar","Messages count updated sucessfully");
+		        	SchedulerController obj = new SchedulerController();
+		   		 obj.sendEmailDemo("bashir@shopvitals.com", "Bashir/Ali","Messages count updated sucessfully");
 		        	}catch(Exception e){ System.out.println(e);} 
 		        
      	
-		 SchedulerController obj = new SchedulerController();
-//		 obj.sendEmailDemo("bashir@shopvitals.com", "Yameen/Zafar","Messages count updated sucessfully");
+		 
 	 }
 }
