@@ -140,8 +140,6 @@ public class PurchaseOrderDetailsController {
 				purchaseOrderControllerBean.setProductVariantBeansList(productVariantBeansList);
 				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderControllerBean.setProductMap(productMap);
-				//session.setAttribute("productIdsMap", productIdsMap);
-				//session.setAttribute("productVariantIdsMap", productVariantIdsMap);
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -194,8 +192,6 @@ public class PurchaseOrderDetailsController {
 				purchaseOrderControllerBean.setStockTransferOrderBeansList(stockTransferOrderBeansList);
 				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderControllerBean.setProductMap(productMap);
-				//session.setAttribute("productIdsMap", productIdsMap);
-				//session.setAttribute("productVariantIdsMap", productVariantIdsMap);
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -242,8 +238,6 @@ public class PurchaseOrderDetailsController {
 				purchaseOrderControllerBean.setProductVariantBeansList(productVariantBeansList);
 				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderControllerBean.setProductMap(productMap);
-				//session.setAttribute("productIdsMap", productIdsMap);
-				//session.setAttribute("productVariantIdsMap", productVariantIdsMap);
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -550,7 +544,6 @@ public class PurchaseOrderDetailsController {
 					stockOrder.setTotalItems(new BigDecimal(itemCount));					
 					stockOrder.setUpdatedBy(currentUser.getUserId());				
 					stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
-					//session.setAttribute("redirectCall", "1");
 					String layOutPath = LayOutPageConstants.STOCKCONTROL;
 					if(stockOrder.getStockOrderType().getStockOrderTypeId() == 1){
 						layOutPath = LayOutPageConstants.PO_Create_RECV_EDIT;
@@ -689,6 +682,7 @@ public class PurchaseOrderDetailsController {
 								boolean found = false;
 								for(ProductVariant outletProductVariant : outletProductVariantList)
 								{
+									
 									//									UUID u1 = UUID.fromString(outletProductVariant.getProductVariantUuid());
 									//									UUID u2 = UUID.fromString(productVariant.getProductVariantUuid());
 									if(outletProductVariant.getProductVariantUuid().equals(productVariant.getProductVariantUuid())){
@@ -3670,6 +3664,7 @@ public class PurchaseOrderDetailsController {
 						int stockOrderId = stockOrder.getStockOrderId();						
 						stockOrderBean.setStockOrderId(Integer.toString(stockOrderId));
 						stockOrderBean.setStockOrderTypeId(Integer.toString(stockOrder.getStockOrderType().getStockOrderTypeId()));
+						stockOrderBean.setOutlet(Integer.toString(stockOrder.getOutletByOutletAssocicationId().getOutletId()));
 						stockOrderBeansList.add(stockOrderBean);
 					}
 

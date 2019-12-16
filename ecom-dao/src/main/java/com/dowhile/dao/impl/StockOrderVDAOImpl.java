@@ -138,12 +138,12 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 		List<StockOrderV> list = new ArrayList();
 		try{
 			listStockTransfer = getSessionFactory().getCurrentSession()
-					.createQuery("from StockOrderV where (OUTLET_ASSOCICATION_ID =? OR SOURCE_OUTLET_ASSOCICATION_ID = ?) AND STATUS_ASSOCICATION_ID = 3 AND STOCK_ORDER_TYPE_ASSOCICATION_ID = 3 AND COMPANY_ASSOCIATION_ID=? ORDER BY STOCK_ORDER_ID DESC")
+					.createQuery("from StockOrderV where (OUTLET_ASSOCICATION_ID =? OR SOURCE_OUTLET_ASSOCICATION_ID = ?) AND STATUS_ASSOCICATION_ID = 3 AND STOCK_ORDER_TYPE_ASSOCICATION_ID = 3 AND COMPANY_ASSOCIATION_ID=? ORDER BY STOCK_ORDER_ID DESC").setMaxResults(10)
 			.setParameter(0, outletID)
 			.setParameter(1, outletID)
 			.setParameter(2, companyId).list();
 			list = getSessionFactory().getCurrentSession()
-					.createQuery("from StockOrderV where (OUTLET_ASSOCICATION_ID =? OR SOURCE_OUTLET_ASSOCICATION_ID = ?) AND STOCK_ORDER_TYPE_ASSOCICATION_ID <> 3 AND COMPANY_ASSOCIATION_ID=? ORDER BY STOCK_ORDER_ID DESC")
+					.createQuery("from StockOrderV where (OUTLET_ASSOCICATION_ID =? OR SOURCE_OUTLET_ASSOCICATION_ID = ?) AND STOCK_ORDER_TYPE_ASSOCICATION_ID <> 3 AND COMPANY_ASSOCIATION_ID=? ORDER BY STOCK_ORDER_ID DESC").setMaxResults(10)
 			.setParameter(0, outletID)
 			.setParameter(1, outletID)
 			.setParameter(2, companyId).list();

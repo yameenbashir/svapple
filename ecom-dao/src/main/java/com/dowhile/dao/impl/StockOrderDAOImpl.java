@@ -9,17 +9,24 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 import com.dowhile.ProductHistory;
 import com.dowhile.ProductVariant;
 import com.dowhile.StockOrder;
+import com.dowhile.StockOrderType;
 import com.dowhile.constant.Actions;
 import com.dowhile.dao.StockOrderDAO;
+import com.dowhile.wrapper.StockBasicDataWrapper;
+import com.dowhile.wrapper.StockDataProductsWrapper;
 import com.dowhile.wrapper.StockWrapper;
 import com.dowhile.Company;
+import com.dowhile.Contact;
+import com.dowhile.Outlet;
 import com.dowhile.Product;
 
 
@@ -432,4 +439,82 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 		return true;
 	}
 
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public StockBasicDataWrapper GetStockBasicData(int companyId) {
+		try {
+			StockBasicDataWrapper stockBasicDataWrapper = new StockBasicDataWrapper();
+			List<Outlet> list = getSessionFactory().getCurrentSession()
+					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?")
+					.setParameter(0, companyId).list();
+					if(list != null&& list.size() > 0){
+						stockBasicDataWrapper.setOutletList(list);
+					}
+					List<StockOrderType> stockOrderTypeList = getSessionFactory().getCurrentSession().createCriteria(StockOrderType.class).list();
+					if(stockOrderTypeList != null) {
+						stockBasicDataWrapper.setStockOrderTypeList(stockOrderTypeList);
+					}
+					Criteria criteria = getSessionFactory().getCurrentSession()
+							.createCriteria(Contact.class);
+					criteria.add(Restrictions.eq("company.companyId", companyId));
+					criteria.add(Restrictions.eq("contactOutletId", null));
+					List<Contact> contact = criteria.list();
+					if(contact != null) {
+						stockBasicDataWrapper.setSupplierList(contact);
+					}
+					return stockBasicDataWrapper;
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public StockDataProductsWrapper GetStockWithProductsData(int companyId) {
+		try {
+			StockDataProductsWrapper stockDataProductsWrapper = new StockDataProductsWrapper();
+			List<Outlet> list = getSessionFactory().getCurrentSession()
+					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?")
+					.setParameter(0, companyId).list();
+					if(list != null&& list.size() > 0){
+						stockDataProductsWrapper.setOutletList(list);
+					}
+					List<StockOrderType> stockOrderTypeList = getSessionFactory().getCurrentSession().createCriteria(StockOrderType.class).list();
+					if(stockOrderTypeList != null) {
+						stockDataProductsWrapper.setStockOrderTypeList(stockOrderTypeList);
+					}
+					Criteria criteria = getSessionFactory().getCurrentSession()
+							.createCriteria(Contact.class);
+					criteria.add(Restrictions.eq("company.companyId", companyId));
+					criteria.add(Restrictions.eq("contactOutletId", null));
+					List<Contact> contact = criteria.list();
+					if(contact != null) {
+						stockDataProductsWrapper.setSupplierList(contact);
+					}
+					List<Product> productList = getSessionFactory().getCurrentSession()
+							.createQuery("from Product where COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1 GROUP BY PRODUCT_UUID ")			
+							.setParameter(0, companyId).list();
+					if(productList !=null && productList.size()>0){
+
+						stockDataProductsWrapper.setProductList(productList);
+					}
+					List<ProductVariant> productVariantList = getSessionFactory()
+							.getCurrentSession()
+							.createQuery(
+									"from ProductVariant where COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1 GROUP BY PRODUCT_VARIANT_UUID ORDER BY PRODUCT_VARIANT_ID")
+									.setParameter(0, companyId).list();
+					if(productVariantList !=null && productVariantList.size()>0){
+
+						stockDataProductsWrapper.setProductVariantList(productVariantList);
+					}
+					return stockDataProductsWrapper;
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
 }

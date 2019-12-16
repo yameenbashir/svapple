@@ -11,6 +11,8 @@ import com.dowhile.StockOrder;
 import com.dowhile.dao.StockOrderDAO;
 import com.dowhile.Company;
 import com.dowhile.service.StockOrderService;
+import com.dowhile.wrapper.StockBasicDataWrapper;
+import com.dowhile.wrapper.StockDataProductsWrapper;
 import com.dowhile.wrapper.StockWrapper;
 
 
@@ -130,5 +132,17 @@ public class StockOrderServiceImpl implements StockOrderService{
 	public boolean UpdateStockComplete(StockWrapper stockWrapper, Company company) {
 		// TODO Auto-generated method stub
 		return getStockOrderDAO().UpdateStockComplete(stockWrapper, company);
+	}
+	
+	@Override
+	public StockBasicDataWrapper GetStockBasicData(int companyId) {
+		// TODO Auto-generated method stub
+		return getStockOrderDAO().GetStockBasicData(companyId);
+	}
+	
+	@Override
+	public StockDataProductsWrapper GetStockWithProductsData(int companyId) {
+		// TODO Auto-generated method stub
+		return getStockOrderDAO().GetStockWithProductsData(companyId);
 	}
 }

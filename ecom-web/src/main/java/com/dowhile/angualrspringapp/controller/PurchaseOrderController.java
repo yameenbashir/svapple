@@ -47,6 +47,7 @@ import com.dowhile.service.StockOrderTypeService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.StockBasicDataWrapper;
 
 /**
  * Zafar Shakeel
@@ -75,6 +76,8 @@ public class PurchaseOrderController {
 	@Resource
 	private ConfigurationService configurationService;
 
+	private StockBasicDataWrapper stockBasicDataWrapper = new StockBasicDataWrapper();
+	
 	@RequestMapping("/layout")
 	public String getPurchaseOrderControllerPartialPage(ModelMap modelMap) {
 		return "purchaseOrder/layout";
@@ -92,10 +95,9 @@ public class PurchaseOrderController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			session.setAttribute("redirectCall", null);
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
-			try {
-
+			try {				
+				stockBasicDataWrapper = stockOrderService.GetStockBasicData(currentUser.getCompany().getCompanyId());
 				Response response = getAllOutlets(sessionId,request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					outletBeansList = (List<OutletBean>) response.data;
@@ -145,7 +147,6 @@ public class PurchaseOrderController {
 		}
 
 	}
-
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/stockSupplierTransferRetailPrice/{sessionId}", method = RequestMethod.POST)
@@ -209,7 +210,8 @@ public class PurchaseOrderController {
 
 			try {
 
-				outletList = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				//outletList = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				outletList = stockBasicDataWrapper.getOutletList();
 				if (outletList != null) {
 					for (Outlet outlet : outletList) {
 
@@ -257,7 +259,8 @@ public class PurchaseOrderController {
 			User currentUser = (User) session.getAttribute("user");
 
 			try {
-				stockOrderTypeList = stockOrderTypeService.getAllStockOrderType();
+				//stockOrderTypeList = stockOrderTypeService.getAllStockOrderType();
+				stockOrderTypeList = stockBasicDataWrapper.getStockOrderTypeList();
 				if (stockOrderTypeList != null) {
 					for (StockOrderType stockOrderType : stockOrderTypeList) {
 
@@ -301,11 +304,9 @@ public class PurchaseOrderController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
-
 			try {
-
-				supplierList = supplierService.getAllContacts(currentUser.getCompany().getCompanyId());
+				//supplierList = supplierService.getAllContacts(currentUser.getCompany().getCompanyId());
+				supplierList = stockBasicDataWrapper.getSupplierList();
 				if (supplierList != null) {
 					for (Contact supplier : supplierList) {
 						if(supplier.getContactType()!=null && supplier.getContactType().contains("SUPPLIER")){
@@ -318,7 +319,6 @@ public class PurchaseOrderController {
 							supplierBeansList.add(supplierBean);
 						}
 					}
-
 					util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllSuppliers", 
 							"User "+ currentUser.getUserEmail()+" fetched all suppliers successfully ",false);
 					return new Response(supplierBeansList,StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);

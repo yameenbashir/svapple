@@ -52,6 +52,7 @@ import com.dowhile.service.StockOrderService;
 import com.dowhile.service.StockOrderTypeService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.StockDataProductsWrapper;
 
 /**
  * Zafar Shakeel
@@ -86,7 +87,7 @@ public class POCreateandReceiveController {
 
 	@Resource
 	private ProductService productService;
-
+	private StockDataProductsWrapper stockDataProductsWrapper = new StockDataProductsWrapper();
 	private Map productVariantMap = new HashMap<>();
 	private Map productMap = new HashMap<>();
 	private Map productIdsMap = new HashMap<>();
@@ -111,9 +112,8 @@ public class POCreateandReceiveController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
 			try {
-
+				stockDataProductsWrapper = stockOrderService.GetStockWithProductsData(currentUser.getCompany().getCompanyId());
 				Response response = getAllOutlets(sessionId,request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					outletBeansList = (List<OutletBean>) response.data;
@@ -131,7 +131,6 @@ public class POCreateandReceiveController {
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productBeansList = (List<ProductVariantBean>) response.data;
 				}
-
 				response = getProductVariants(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productVariantBeansList = (List<ProductVariantBean>) response.data;
@@ -144,8 +143,6 @@ public class POCreateandReceiveController {
 				POCreateandReceiveControllerBean.setProductVariantBeansList(productVariantBeansList);
 				POCreateandReceiveControllerBean.setProductVariantMap(productVariantMap);
 				POCreateandReceiveControllerBean.setProductMap(productMap);
-				session.setAttribute("productIdsMap", productIdsMap);
-				session.setAttribute("productVariantIdsMap", productVariantIdsMap);
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getPOCreateandReceiveControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived POCreateandReceiveControllerData successfully ",false);
 				return new Response(POCreateandReceiveControllerBean, StatusConstants.SUCCESS,
@@ -182,7 +179,8 @@ public class POCreateandReceiveController {
 
 			try {
 
-				outletList = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				//outletList = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				outletList = stockDataProductsWrapper.getOutletList();
 				if (outletList != null) {
 					for (Outlet outlet : outletList) {
 
@@ -227,7 +225,8 @@ public class POCreateandReceiveController {
 			User currentUser = (User) session.getAttribute("user");
 
 			try {
-				stockOrderTypeList = stockOrderTypeService.getAllStockOrderType();
+				//stockOrderTypeList = stockOrderTypeService.getAllStockOrderType();
+				stockOrderTypeList = stockDataProductsWrapper.getStockOrderTypeList();
 				if (stockOrderTypeList != null) {
 					for (StockOrderType stockOrderType : stockOrderTypeList) {
 
@@ -271,11 +270,9 @@ public class POCreateandReceiveController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
-
 			try {
-
-				supplierList = supplierService.getAllContacts(currentUser.getCompany().getCompanyId());
+				//supplierList = supplierService.getAllContacts(currentUser.getCompany().getCompanyId());
+				supplierList = stockDataProductsWrapper.getSupplierList();
 				if (supplierList != null) {
 					for (Contact supplier : supplierList) {
 						if(supplier.getContactType()!=null && supplier.getContactType().contains("SUPPLIER")){
@@ -284,10 +281,7 @@ public class POCreateandReceiveController {
 							supplierBean.setSupplierName(supplier.getContactName().toString());
 							supplierBeansList.add(supplierBean);
 						}
-
-
 					}
-
 					util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllSuppliers", 
 							"User "+ currentUser.getUserEmail()+" fetched all suppliers successfully ",false);
 					return new Response(supplierBeansList,StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
@@ -442,590 +436,7 @@ public class POCreateandReceiveController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		
 	}
-
-	/*	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getAllProductVariants/{sessionId}", method = RequestMethod.POST)
-	public @ResponseBody Response getAllProductVariants(@PathVariable("sessionId") String sessionId,
-			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request){
-		if(SessionValidator.isSessionValid(sessionId, request)){
-			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
-			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			List<ProductVariant> productVariantList = null;
-			List<ProductVariant> recvProductVariantList = null;
-			List<Product> productListSource = null;
-			List<Product> productListDest = null;
-			Map recvProductVariantMap = new HashMap<>();
-			Map recvProductMap = new HashMap<>();
-			Map productMap = new HashMap<>();
-			productVariantMap = new HashMap<>();
-			int outletId = Integer.parseInt(stockOrderBean.getOutletId());
-			if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase(""))
-			{
-				outletId = Integer.parseInt(stockOrderBean.getSourceOutletId());
-			}
-			try {
-
-
-				productVariantList = productVariantService.getAllProductVariantsByOutletId(outletId,currentUser.getCompany().getCompanyId());
-				productListSource = productService.getAllProductsByOutletId(outletId); //Should come in one query for performance optimization
-				productListDest = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId())); //Should come in one query for performance optimization
-				if(productListDest!=null && stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
-					for(Product product:productListDest){
-						recvProductMap.put(product.getProductUuid(), product.getCurrentInventory());
-					}	
-				}
-				for(Product product:productListSource){
-					productMap.put(product.getProductId(), product.getProductName());
-					List<ProductVariant> productVariants = productVariantService.getVarientsByProductId(product.getProductId(), currentUser.getCompany().getCompanyId());
-					if(productVariants==null || productVariants.size()==0){
-						ProductVariantBean productVariantBean = new ProductVariantBean();
-						productVariantBean.setIsProduct("true");
-						productVariantBean.setProductVariantId(product.getProductId().toString());					
-						productVariantBean.setVariantAttributeName(product.getProductName());
-						if(product.getCurrentInventory() != null){
-							productVariantBean.setCurrentInventory(product.getCurrentInventory().toString());
-						}
-						else
-						{
-							productVariantBean.setCurrentInventory("0");
-						}
-						productVariantBean.setProductName((String)productMap.get(product.getProductId()));
-						//productVariantBean.setVariantAttributeName(productVariantBean.getProductName() + " - " + productVariantBean.getVariantAttributeName());
-						if(product.getSupplyPriceExclTax() != null){
-							productVariantBean.setSupplyPriceExclTax(String.valueOf(product.getSupplyPriceExclTax().intValue()));
-						}
-						if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
-							String recvCurrInventory = String.valueOf(recvProductMap.get(product.getProductUuid()));
-							if(!recvCurrInventory.equalsIgnoreCase("null")){
-								productVariantBean.setRecCurrentInventory(recvCurrInventory);
-							}
-							else{
-								productVariantBean.setRecCurrentInventory("0");
-							}
-						}						
-						productVariantBeansList.add(productVariantBean);
-
-					}
-
-				}
-				if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
-					recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()),currentUser.getCompany().getCompanyId());
-					for(ProductVariant productVariant:recvProductVariantList){
-						recvProductVariantMap.put(productVariant.getProductVariantUuid(), productVariant.getCurrentInventory());
-					}	
-				}
-				if (productVariantList != null) {
-					for (ProductVariant productVariant : productVariantList) {
-
-						ProductVariantBean productVariantBean = new ProductVariantBean();
-						productVariantBean.setIsProduct("false");
-						productVariantBean.setProductVariantId(productVariant.getProductVariantId().toString());					
-						productVariantBean.setVariantAttributeName(productVariant.getVariantAttributeName());
-						if(productVariant.getCurrentInventory() != null){
-							productVariantBean.setCurrentInventory(productVariant.getCurrentInventory().toString());
-						}
-						else
-						{
-							productVariantBean.setCurrentInventory("0");
-						}
-						productVariantBean.setProductName((String)productMap.get(productVariant.getProduct().getProductId()));
-						productVariantBean.setVariantAttributeName(productVariantBean.getProductName() + " - " + productVariantBean.getVariantAttributeName());
-						if(productVariant.getSupplyPriceExclTax() != null){
-							productVariantBean.setSupplyPriceExclTax(String.valueOf(productVariant.getSupplyPriceExclTax().intValue()));
-						}
-						if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
-							String recvCurrInventory = String.valueOf(recvProductVariantMap.get(productVariant.getProductVariantUuid()));
-							if(!recvCurrInventory.equalsIgnoreCase("null")){
-								productVariantBean.setRecCurrentInventory(recvCurrInventory);
-							}
-							else{
-								productVariantBean.setRecCurrentInventory("0");
-							}
-						}
-						productVariantBeansList.add(productVariantBean);
-						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
-						productVariantIdsMap.put(productVariant.getProductVariantId(), productVariant);
-					}
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProductVariants", "User "+ 
-							currentUser.getUserEmail()+" Get Products and ProductVariants",false);
-					return new Response(productVariantBeansList, StatusConstants.SUCCESS,
-							LayOutPageConstants.STAY_ON_PAGE);
-				} else {
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProductVariants", "User "+ 
-							currentUser.getUserEmail()+" Get Products and ProductVariants",false);
-					return new Response(MessageConstants.RECORD_NOT_FOUND,
-							StatusConstants.RECORD_NOT_FOUND,
-							LayOutPageConstants.STAY_ON_PAGE);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				StringWriter errors = new StringWriter();
-				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProductVariants",
-						"Error Occured " + errors.toString(),true);
-				return new Response(MessageConstants.SYSTEM_BUSY,
-						StatusConstants.RECORD_NOT_FOUND,
-						LayOutPageConstants.STAY_ON_PAGE);
-
-			}
-		}
-		else{
-			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
-		}	
-	}*/
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getAllProductsByOutletId/{sessionId}", method = RequestMethod.POST)
-	public @ResponseBody Response getAllProductsByOutletId(@PathVariable("sessionId") String sessionId, 
-			@RequestBody String outletId, HttpServletRequest request){
-		if(SessionValidator.isSessionValid(sessionId, request)){
-			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
-			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			productMap = new HashMap<>();
-			Map productSessionMap = new HashMap<>();
-			try {			
-				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-					if(session.getAttribute("productIdsMap") != null) {
-						productSessionMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
-						products = new ArrayList<Product>(productSessionMap.values());
-					}
-					else {
-						products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
-					}
-				}
-				else {
-					products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
-				}
-				
-				if(products != null){
-					for(Product product:products){
-						ProductVariantBean productVariantBean = new ProductVariantBean();
-						productVariantBean.setProductId(product.getProductId().toString());
-						productVariantBean.setOutletId(product.getOutlet().getOutletId().toString());
-						productVariantBean.setSku(product.getSku());
-						if (product.getVariantProducts().equalsIgnoreCase("true")){
-							productVariantBean.setIsProduct("false");
-						}
-						else
-						{
-							productVariantBean.setIsProduct("true");
-							productVariantBean.setIsVariant("false");
-							productVariantBean.setProductVariantId(product.getProductId().toString());					
-							productVariantBean.setVariantAttributeName(product.getProductName());
-							if(product.getCurrentInventory() != null){
-								productVariantBean.setCurrentInventory(product.getCurrentInventory().toString());
-							}
-							else
-							{
-								productVariantBean.setCurrentInventory("0");
-							}
-							productVariantBean.setProductName(product.getProductName());
-							if(product.getSupplyPriceExclTax() != null){
-								productVariantBean.setSupplyPriceExclTax(product.getSupplyPriceExclTax().toString());
-							}
-							if(product.getMarkupPrct() != null){
-								/*Double retailPrice = product.getSupplyPriceExclTax().doubleValue() * (product.getMarkupPrct().doubleValue()/100) + product.getSupplyPriceExclTax().doubleValue();
-								NumberFormat formatter = new DecimalFormat("###.##");  
-								String strRetailPrice = formatter.format(retailPrice);
-								productVariantBean.setRetailPriceExclTax(strRetailPrice);*/
-								BigDecimal netPrice = (product.getSupplyPriceExclTax().multiply(product.getMarkupPrct().divide(new BigDecimal(100)))).add(product.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
-								BigDecimal retailPrice =netPrice.setScale(2,RoundingMode.HALF_EVEN);
-								productVariantBean.setRetailPriceExclTax(retailPrice.toString());
-
-							}
-							productVariantBeansList.add(productVariantBean);
-							productMap.put(product.getSku().toLowerCase(), productVariantBean);
-						}
-						productIdsMap.put(product.getProductId(), product);
-					}				
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
-							currentUser.getUserEmail()+" Get Products and Products",false);
-					return new Response(productVariantBeansList, StatusConstants.SUCCESS,
-							LayOutPageConstants.STAY_ON_PAGE);
-				} 
-				else {
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
-							currentUser.getUserEmail()+" Get Products",false);
-					return new Response(MessageConstants.RECORD_NOT_FOUND,
-							StatusConstants.RECORD_NOT_FOUND,
-							LayOutPageConstants.STAY_ON_PAGE);
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				StringWriter errors = new StringWriter();
-				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
-						"Error Occured " + errors.toString(),true);
-				return new Response(MessageConstants.SYSTEM_BUSY,
-						StatusConstants.RECORD_NOT_FOUND,
-						LayOutPageConstants.STAY_ON_PAGE);
-
-			}
-		}
-		else{
-			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
-		}	
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getProductVariantsByOutletId/{sessionId}", method = RequestMethod.POST)
-	public @ResponseBody Response getProductVariantsByOutletId(@PathVariable("sessionId") String sessionId,
-			@RequestBody String outletId, HttpServletRequest request){
-		if(SessionValidator.isSessionValid(sessionId, request)){
-			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
-			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			List<ProductVariant> productVariantList = null;
-			productVariantMap = new HashMap<>();
-			Map productVariantSessionMap  = new HashMap<>();
-			try {
-				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-					if(session.getAttribute("productVariantIdsMap") != null) {
-						productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
-						productVariantList = new ArrayList<ProductVariant>(productVariantSessionMap.values());
-					}
-					else {
-						productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
-					}
-				}
-				else {
-					productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
-				}
-				Map<Integer, Product> productsMap = new HashMap<>();
-				if(products.isEmpty()) {
-					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-						if(session.getAttribute("productIdsMap") != null) {
-							productsMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
-							products = new ArrayList<Product>(productsMap.values());
-						}
-						else {
-							products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-						}
-					}
-					else {
-						products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-					}
-				}			
-				if(products!=null){
-					for(Product product:products){
-						productsMap.put(product.getProductId(), product);
-					}
-				}
-				if(productVariantList != null){
-					for(ProductVariant productVariant:productVariantList){
-						ProductVariantBean productVariantBean = new ProductVariantBean();
-						productVariantBean.setIsProduct("false");
-						productVariantBean.setIsVariant("true");
-						productVariantBean.setSku(productVariant.getSku());
-						productVariantBean.setProductVariantId(productVariant.getProductVariantId().toString());
-						if(productVariant.getCurrentInventory() != null){
-							productVariantBean.setCurrentInventory(productVariant.getCurrentInventory().toString());
-						}
-						else
-						{
-							productVariantBean.setCurrentInventory("0");
-						}
-						Product product = productsMap.get(productVariant.getProduct().getProductId());
-						productVariantBean.setProductName(product.getProductName());					
-						productVariantBean.setVariantAttributeName(product.getProductName() + "-" + productVariant.getVariantAttributeName());
-						productVariantBean.setProductId(product.getProductId().toString());
-						if(productVariant.getSupplyPriceExclTax() != null){
-							productVariantBean.setSupplyPriceExclTax(productVariant.getSupplyPriceExclTax().toString());
-						}
-						if(productVariant.getMarkupPrct() != null){
-							/*Double retailPrice = productVariant.getSupplyPriceExclTax().doubleValue() * (productVariant.getMarkupPrct().doubleValue()/100) + productVariant.getSupplyPriceExclTax().doubleValue();
-							NumberFormat formatter = new DecimalFormat("###.##");  
-							String strRetailPrice = formatter.format(retailPrice);
-							productVariantBean.setRetailPriceExclTax(strRetailPrice);*/
-							BigDecimal netPrice = (productVariant.getSupplyPriceExclTax().multiply(productVariant.getMarkupPrct().divide(new BigDecimal(100)))).add(productVariant.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
-							BigDecimal retailPrice =netPrice.setScale(2,RoundingMode.HALF_EVEN);
-							productVariantBean.setRetailPriceExclTax(retailPrice.toString());							
-
-						}
-						productVariantBeansList.add(productVariantBean);
-						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
-						productVariantIdsMap.put(productVariant.getProductVariantId(), productVariant);
-					}
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
-							currentUser.getUserEmail()+" Get ProductVariants",false);
-					return new Response(productVariantBeansList, StatusConstants.SUCCESS,
-							LayOutPageConstants.STAY_ON_PAGE);
-				} 
-				else {
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
-							currentUser.getUserEmail()+" Get ProductVariants",false);
-					return new Response(MessageConstants.RECORD_NOT_FOUND,
-							StatusConstants.RECORD_NOT_FOUND,
-							LayOutPageConstants.STAY_ON_PAGE);
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				StringWriter errors = new StringWriter();
-				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",
-						"Error Occured " + errors.toString(),true);
-				return new Response(MessageConstants.SYSTEM_BUSY,
-						StatusConstants.RECORD_NOT_FOUND,
-						LayOutPageConstants.STAY_ON_PAGE);
-
-			}
-		}
-		else{
-			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
-		}	
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getAllProductsforTransfer/{sessionId}", method = RequestMethod.POST)
-	public @ResponseBody Response getAllProductsforTransfer(@PathVariable("sessionId") String sessionId, 
-			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request){
-		if(SessionValidator.isSessionValid(sessionId, request)){
-			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
-			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			List<Product> recvProductList = null;
-			Map recvProductMap = new HashMap<>();
-			productMap = new HashMap<>();
-			productIdsMap = new HashMap<>();
-			Map productSessionMap = new HashMap<>();
-			try {			
-				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-					if(session.getAttribute("productIdsMap") != null) {
-						productSessionMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
-						products = new ArrayList<Product>(productSessionMap.values());
-					}
-					else {
-						products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
-					}
-				}
-				else {
-					products = productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
-				}				
-				if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
-					recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
-					for(Product product:recvProductList){
-						recvProductMap.put(product.getProductUuid(), product.getCurrentInventory());
-					}	
-				}
-
-				if(products != null){
-					for(Product product:products){
-						ProductVariantBean productVariantBean = new ProductVariantBean();
-						productVariantBean.setProductId(product.getProductId().toString());
-						productVariantBean.setOutletId(product.getOutlet().getOutletId().toString());
-						productVariantBean.setSku(product.getSku());
-						if (product.getVariantProducts().equalsIgnoreCase("true")){
-							productVariantBean.setIsProduct("false");
-						}
-						else
-						{
-							productVariantBean.setIsProduct("true");
-							productVariantBean.setIsVariant("false");
-							productVariantBean.setProductVariantId(product.getProductId().toString());					
-							productVariantBean.setVariantAttributeName(product.getProductName());
-							if(product.getCurrentInventory() != null){
-								productVariantBean.setCurrentInventory(product.getCurrentInventory().toString());
-							}
-							else
-							{
-								productVariantBean.setCurrentInventory("0");
-							}
-							productVariantBean.setProductName(product.getProductName());
-							if(product.getSupplyPriceExclTax() != null){
-								productVariantBean.setSupplyPriceExclTax(product.getSupplyPriceExclTax().toString());
-							}
-							if(product.getMarkupPrct() != null){
-								/*Double retailPrice = product.getSupplyPriceExclTax().doubleValue() * (product.getMarkupPrct().doubleValue()/100) + product.getSupplyPriceExclTax().doubleValue();
-								NumberFormat formatter = new DecimalFormat("###.##");  
-								String strRetailPrice = formatter.format(retailPrice);
-								productVariantBean.setRetailPriceExclTax(strRetailPrice);*/
-								BigDecimal netPrice = (product.getSupplyPriceExclTax().multiply(product.getMarkupPrct().divide(new BigDecimal(100)))).add(product.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
-								BigDecimal retailPrice =netPrice.setScale(2,RoundingMode.HALF_EVEN);
-								productVariantBean.setRetailPriceExclTax(retailPrice.toString());
-							}
-							if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
-								String recvCurrInventory = String.valueOf(recvProductMap.get(product.getProductUuid()));
-								if(!recvCurrInventory.equalsIgnoreCase("null")){
-									productVariantBean.setRecCurrentInventory(recvCurrInventory);
-								}
-								else{
-									productVariantBean.setRecCurrentInventory("0");
-								}
-							}
-							productVariantBeansList.add(productVariantBean);
-							productMap.put(product.getSku().toLowerCase(), productVariantBean);
-						}
-						productIdsMap.put(product.getProductId(), product);
-
-					}
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
-							currentUser.getUserEmail()+" Get Products and Products",false);
-					return new Response(productVariantBeansList, StatusConstants.SUCCESS,
-							LayOutPageConstants.STAY_ON_PAGE);
-				} 
-				else {
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getAllProducts", "User "+ 
-							currentUser.getUserEmail()+" Get Products",false);
-					return new Response(MessageConstants.RECORD_NOT_FOUND,
-							StatusConstants.RECORD_NOT_FOUND,
-							LayOutPageConstants.STAY_ON_PAGE);
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				StringWriter errors = new StringWriter();
-				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
-						"Error Occured " + errors.toString(),true);
-				return new Response(MessageConstants.SYSTEM_BUSY,
-						StatusConstants.RECORD_NOT_FOUND,
-						LayOutPageConstants.STAY_ON_PAGE);
-
-			}
-		}
-		else{
-			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
-		}	
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/getProductVariantsforTransfer/{sessionId}", method = RequestMethod.POST)
-	public @ResponseBody Response getProductVariantsforTransfer(@PathVariable("sessionId") String sessionId,
-			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request){
-		if(SessionValidator.isSessionValid(sessionId, request)){
-			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
-			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			List<ProductVariant> productVariantList = null;
-			List<ProductVariant> recvProductVariantList = null;
-			Map recvProductVariantMap = new HashMap<>();
-			productVariantMap = new HashMap<>();
-			Map productVariantSessionMap  = new HashMap<>();
-			try {			
-				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-					if(session.getAttribute("productVariantIdsMap") != null) {
-						productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
-						productVariantList = new ArrayList<ProductVariant>(productVariantSessionMap.values());
-					}
-					else {
-						productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
-					}
-				}
-				else {
-					productVariantList = productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
-				}
-				Map<Integer, Product> productsMap = new HashMap<>();
-				if(products.isEmpty()) {
-					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-						if(session.getAttribute("productIdsMap") != null) {
-							productsMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
-							products = new ArrayList<Product>(productsMap.values());
-						}
-						else {
-							products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-						}
-					}
-					else {
-						products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-					}
-				}			
-				if(products!=null){
-					for(Product product:products){
-						productsMap.put(product.getProductId(), product);
-					}
-				}
-				if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
-					recvProductVariantList = productVariantService.getAllProductVariantsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()),currentUser.getCompany().getCompanyId());
-					for(ProductVariant productVariant:recvProductVariantList){
-						recvProductVariantMap.put(productVariant.getProductVariantUuid(), productVariant.getCurrentInventory());
-					}	
-				}
-				if(productVariantList != null){
-					for(ProductVariant productVariant:productVariantList){
-						ProductVariantBean productVariantBean = new ProductVariantBean();
-						productVariantBean.setIsProduct("false");
-						productVariantBean.setIsVariant("true");
-						productVariantBean.setSku(productVariant.getSku());
-						productVariantBean.setProductVariantId(productVariant.getProductVariantId().toString());
-						if(productVariant.getCurrentInventory() != null){
-							productVariantBean.setCurrentInventory(productVariant.getCurrentInventory().toString());
-						}
-						else
-						{
-							productVariantBean.setCurrentInventory("0");
-						}
-						Product product = productsMap.get(productVariant.getProduct().getProductId());
-						productVariantBean.setProductName(product.getProductName());					
-						productVariantBean.setVariantAttributeName(product.getProductName() + "-" + productVariant.getVariantAttributeName());
-						productVariantBean.setProductId(product.getProductId().toString());
-						if(productVariant.getSupplyPriceExclTax() != null){
-							productVariantBean.setSupplyPriceExclTax(productVariant.getSupplyPriceExclTax().toString());
-						}
-						if(productVariant.getMarkupPrct() != null){
-							/*Double retailPrice = productVariant.getSupplyPriceExclTax().doubleValue() * (productVariant.getMarkupPrct().doubleValue()/100) + productVariant.getSupplyPriceExclTax().doubleValue();
-							NumberFormat formatter = new DecimalFormat("###.##");  
-							String strRetailPrice = formatter.format(retailPrice);
-							productVariantBean.setRetailPriceExclTax(strRetailPrice);*/
-							BigDecimal netPrice = (productVariant.getSupplyPriceExclTax().multiply(productVariant.getMarkupPrct().divide(new BigDecimal(100)))).add(productVariant.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
-							BigDecimal retailPrice =netPrice.setScale(2,RoundingMode.HALF_EVEN);
-							productVariantBean.setRetailPriceExclTax(retailPrice.toString());
-						}
-						if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
-							String recvCurrInventory = String.valueOf(recvProductVariantMap.get(productVariant.getProductVariantUuid()));
-							if(!recvCurrInventory.equalsIgnoreCase("null")){
-								productVariantBean.setRecCurrentInventory(recvCurrInventory);
-							}
-							else{
-								productVariantBean.setRecCurrentInventory("0");
-							}
-						}
-						if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){
-							String recvCurrInventory = String.valueOf(recvProductVariantMap.get(productVariant.getProductVariantUuid()));
-							if(!recvCurrInventory.equalsIgnoreCase("null")){
-								productVariantBean.setRecCurrentInventory(recvCurrInventory);
-							}
-							else{
-								productVariantBean.setRecCurrentInventory("0");
-							}
-						}
-						productVariantBeansList.add(productVariantBean);
-						productVariantMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
-						productVariantIdsMap.put(productVariant.getProductVariantId(), productVariant);
-					}
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
-							currentUser.getUserEmail()+" Get ProductVariants",false);
-					return new Response(productVariantBeansList, StatusConstants.SUCCESS,
-							LayOutPageConstants.STAY_ON_PAGE);
-				} 
-				else {
-					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.getProductVariants", "User "+ 
-							currentUser.getUserEmail()+" Get ProductVariants",false);
-					return new Response(MessageConstants.RECORD_NOT_FOUND,
-							StatusConstants.RECORD_NOT_FOUND,
-							LayOutPageConstants.STAY_ON_PAGE);
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				StringWriter errors = new StringWriter();
-				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",
-						"Error Occured " + errors.toString(),true);
-				return new Response(MessageConstants.SYSTEM_BUSY,
-						StatusConstants.RECORD_NOT_FOUND,
-						LayOutPageConstants.STAY_ON_PAGE);
-
-			}
-		}
-		else{
-			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
-		}	
-	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllProducts/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response getAllProducts(@PathVariable("sessionId") String sessionId, HttpServletRequest request){
@@ -1034,20 +445,8 @@ public class POCreateandReceiveController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			productMap = new HashMap<>();
-			Map productSessionMap = new HashMap<>();
 			try {		
-				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-					if(session.getAttribute("productIdsMap") != null) {
-						productSessionMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
-						products = new ArrayList<Product>(productSessionMap.values());
-					}
-					else {
-						products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
-					}
-				}
-				else {
-					products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
-				}				
+					products = stockDataProductsWrapper.getProductList();			
 				if(products != null){
 					for(Product product:products){
 						ProductVariantBean productVariantBean = new ProductVariantBean();
@@ -1128,20 +527,8 @@ public class POCreateandReceiveController {
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
 			productVariantMap = new HashMap<>();
-			Map productVariantSessionMap  = new HashMap<>();
 			try {
-				if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
-					if(session.getAttribute("productVariantIdsMap") != null) {
-						productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
-						productVariantList = new ArrayList<ProductVariant>(productVariantSessionMap.values());
-					}
-					else {
-						productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
-					}
-				}
-				else {
-					productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
-				}
+				productVariantList = stockDataProductsWrapper.getProductVariantList();
 				Map<Integer, Product> productsMap = new HashMap<>();
 				if(products.isEmpty()) {
 					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {

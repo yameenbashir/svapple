@@ -109,6 +109,7 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 			angular.forEach($scope.stockTransferOrderBeansList, function(value,key){
 				if(value.stockOrderId == $scope.stockTransferOrderBean.stockOrderId){
 					$scope.stockTransferOrderBean.stockOrderTypeId = angular.copy(value.stockOrderTypeId);
+					$scope.stockTransferOrderBean.outletId = angular.copy(value.outletId);
 				}
 			});
 			if($scope.stockTransferOrderBean.stockOrderTypeId == "3"){
@@ -128,7 +129,7 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 										$scope.productVariantBean.productVariantId = angular.copy($scope.stockTransferDetailBeansList[j].productVariantId);
 										$scope.stockOrderDetailBean.orderProdQty = angular.copy($scope.stockTransferDetailBeansList[j].orderProdQty);
 										$scope.productVariantBean.isProduct = angular.copy($scope.stockTransferDetailBeansList[j].isProduct);
-										if($scope.productVariantBean.isProduct == true){
+										if($scope.productVariantBean.isProduct.toString() == "true"){
 											for (var i = 0; i < $scope.productBeansList.length; i++) {
 												if($scope.productVariantBean.productVariantId == $scope.productBeansList[i].productVariantId){
 													$scope.productVariantBean = angular.copy($scope.productBeansList[i]);
@@ -152,7 +153,7 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 							else{
 								$scope.globalPageLoader = false;
 							}
-							//$scope.AllInOne(); 
+							$scope.AllInOne(); 
 							$scope.addStockOrderDetail();
 						}
 
@@ -196,7 +197,7 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 										$scope.productVariantBean.productVariantId = angular.copy($scope.stockTransferDetailBeansList[j].productVariantId);
 										$scope.stockOrderDetailBean.orderProdQty = angular.copy($scope.stockTransferDetailBeansList[j].orderProdQty);
 										$scope.productVariantBean.isProduct = angular.copy($scope.stockTransferDetailBeansList[j].isProduct);
-										if($scope.productVariantBean.isProduct == true){
+										if($scope.productVariantBean.isProduct.toString() == "true"){
 											for (var i = 0; i < $scope.productBeansList.length; i++) {
 												if($scope.productVariantBean.productVariantId == $scope.productBeansList[i].productVariantId){
 													$scope.productVariantBean = angular.copy($scope.productBeansList[i]);
@@ -220,6 +221,7 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 							else{
 								$scope.globalPageLoader = false;
 							}
+							$scope.AllInOne(); 
 							$scope.addStockOrderDetail();
 						}
 

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.dowhile.StockOrderDetail;
+import com.dowhile.StockOrderDetailCustom;
 /**
  * @author Zafar Shakeel
  *
@@ -26,4 +27,5 @@ public interface StockOrderDetailService {
 	List<StockOrderDetail> getStockOrderDetailByProductId(int productId, Date startDate, Date endDate, int companyId);
 	List<StockOrderDetail> getStockOrderDetailByProductVariantId(int productVariantId, Date startDate, Date endDate, int companyId);
 	List<StockOrderDetail> getStockOrderDetailByProductVariantsId(List<Integer> productVariantsId, Date startDate, Date endDate, int companyId);
+	List<StockOrderDetailCustom> getStockOrderDetailCustom(int stockOrderId, int outletId);
 }

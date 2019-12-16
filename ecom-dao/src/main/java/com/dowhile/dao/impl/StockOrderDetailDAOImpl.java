@@ -10,10 +10,13 @@ import java.util.Date;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 
+import com.dowhile.InvoiceMainCustom;
 import com.dowhile.PriceBookDetail;
 import com.dowhile.StockOrder;
 import com.dowhile.StockOrderDetail;
+import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.Product;
 import com.dowhile.ProductVariant;
 import com.dowhile.dao.StockOrderDetailDAO;
@@ -329,6 +332,30 @@ public class StockOrderDetailDAOImpl implements StockOrderDetailDAO{
 		}
 
 
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+public List<StockOrderDetailCustom> getStockOrderDetailCustom(int stockOrderId, int outletId) {
+		
+		List<StockOrderDetailCustom> list = null;
+		try{
+		 
+			list= getSessionFactory().getCurrentSession()
+			.createSQLQuery("CALL StockOrderActions(?,?)" )
+			.setParameter(0, stockOrderId)
+			.setParameter(1, outletId)
+			.setResultTransformer(Transformers.aliasToBean(StockOrderDetailCustom.class))
+			.list();
+			
+		 if(list!=null&& list.size()>0){
+
+				return list;
+			}			
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
 		return null;
 	}
 }

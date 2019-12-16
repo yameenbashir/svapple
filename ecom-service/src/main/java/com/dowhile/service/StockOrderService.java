@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.dowhile.StockOrder;
 import com.dowhile.Company;
+import com.dowhile.wrapper.StockBasicDataWrapper;
+import com.dowhile.wrapper.StockDataProductsWrapper;
 import com.dowhile.wrapper.StockWrapper;;
 
 /**
@@ -31,4 +33,6 @@ public interface StockOrderService {
 	List<StockOrder> GetAllStockReturntoWarehouseOrder(int companyId);
 	List<StockOrder> GetAllStockReturnOrderForOutlet(int outletId, int companyId);
 	boolean UpdateStockComplete(StockWrapper stockWrapper, Company company);
+	StockBasicDataWrapper GetStockBasicData(int companyId);
+	StockDataProductsWrapper GetStockWithProductsData(int companyId);
 }

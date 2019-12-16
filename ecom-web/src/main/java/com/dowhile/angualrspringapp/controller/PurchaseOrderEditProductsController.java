@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dowhile.Product;
 import com.dowhile.ProductVariant;
 import com.dowhile.StockOrderDetail;
+import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.User;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
@@ -104,7 +105,7 @@ public class PurchaseOrderEditProductsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				Response response = getAllDetailsByStockOrderId(sessionId, stockOrderBean, request);
+				Response response = getAllDetailsByStockOrderIdCustom(sessionId, stockOrderBean, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					stockOrderDetailBeansList = (List<StockOrderDetailBean>) response.data;
 				}
@@ -152,7 +153,7 @@ public class PurchaseOrderEditProductsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				Response response = getAllDetailsByStockOrderId(sessionId, stockOrderBean, request);
+				Response response = getAllDetailsByStockOrderIdCustom(sessionId, stockOrderBean, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					stockOrderDetailBeansList = (List<StockOrderDetailBean>) response.data;
 				}
@@ -209,7 +210,7 @@ public class PurchaseOrderEditProductsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				Response response = getAllDetailsByStockOrderId(sessionId, stockOrderBean, request);
+				Response response = getAllDetailsByStockOrderIdCustom(sessionId, stockOrderBean, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					stockOrderDetailBeansList = (List<StockOrderDetailBean>) response.data;
 				}
@@ -470,6 +471,116 @@ public class PurchaseOrderEditProductsController {
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getAllDetailsByStockOrderIdCustom/{sessionId}", method = RequestMethod.POST)
+	public @ResponseBody Response getAllDetailsByStockOrderIdCustom(@PathVariable("sessionId") String sessionId,
+			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request) {
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			List<StockOrderDetailBean> stockOrderDetailBeansList = new ArrayList<>();
+			//List<StockOrderDetail> stockOrderDetailList = null;
+			List<StockOrderDetailCustom> stockOrderDetailCustomList = new ArrayList<>();
+			HttpSession session = request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			try {
+
+				stockOrderDetailCustomList = stockOrderDetailService.getStockOrderDetailCustom(Integer.parseInt(stockOrderBean.getStockOrderId()), Integer.parseInt(stockOrderBean.getOutletId()));				
+				int order = 1;
+				if (stockOrderDetailCustomList != null) {
+					for (StockOrderDetailCustom stockOrderDetailCustom : stockOrderDetailCustomList) {
+						StockOrderDetailBean stockOrderDetailBean = new StockOrderDetailBean();
+						stockOrderDetailBean.setOrderProdQty(Objects.toString(stockOrderDetailCustom.getORDER_PROD_QTY(), ""));
+						stockOrderDetailBean.setOrdrSupplyPrice(Objects.toString(stockOrderDetailCustom.getORDR_SUPPLY_PRICE(),""));
+						if(stockOrderDetailCustom.getRETAIL_PRICE() != null){
+							stockOrderDetailBean.setRetailPrice(Objects.toString(stockOrderDetailCustom.getRETAIL_PRICE(),""));
+						}
+						if(!stockOrderDetailCustom.isIS_PRODUCT()){						
+							stockOrderDetailBean.setProductVariantId(Objects.toString(stockOrderDetailCustom.getPRODUCT_VARIANT_ASSOCICATION_ID(),""));
+							stockOrderDetailBean.setVariantAttributeName(Objects.toString(stockOrderDetailCustom.getVariantAttributeName(),""));
+							stockOrderDetailBean.setProductVariantCurrInventory(Objects.toString(stockOrderDetailCustom.getProduct_variant_current_inventory(),""));
+							stockOrderDetailBean.setIsProduct("false");
+							stockOrderDetailBean.setProductVariantRecvOutletInventory(Objects.toString(stockOrderDetailCustom.getProduct_variant_destination_inventory(),""));
+								
+						}					
+						else{
+							stockOrderDetailBean.setProductVariantId(Objects.toString(stockOrderDetailCustom.getPRODUCT_ASSOCIATION_ID(),""));
+							stockOrderDetailBean.setVariantAttributeName(Objects.toString(stockOrderDetailCustom.getProduct_name(),""));
+							stockOrderDetailBean.setProductVariantCurrInventory(Objects.toString(stockOrderDetailCustom.getProduct_current_inventory(),""));
+							stockOrderDetailBean.setIsProduct("true");
+							stockOrderDetailBean.setProductVariantRecvOutletInventory(Objects.toString(stockOrderDetailCustom.getProduct_destination_current_inventory(),""));
+									
+						}
+						stockOrderDetailBean.setRecvProdQty(Objects.toString(stockOrderDetailCustom.getRECV_PROD_QTY(),""));
+						stockOrderDetailBean.setRecvSupplyPrice(Objects.toString(stockOrderDetailCustom.getRECV_SUPPLY_PRICE(),""));
+						stockOrderDetailBean.setStockOrderDetailId(Objects.toString(stockOrderDetailCustom.getSTOCK_ORDER_DETAIL_ID(),""));
+						stockOrderDetailBean.setOrder(Integer.toString(order));
+						if(stockOrderBean.getRetailPriceBill() != null && stockOrderBean.getRetailPriceBill() != ""){
+							if(!stockOrderBean.getRetailPriceBill().toString().equalsIgnoreCase("true")){
+								if(stockOrderDetailCustom.getORDER_PROD_QTY() != null &&  stockOrderDetailCustom.getORDR_SUPPLY_PRICE() != null)
+								{
+									Double total = stockOrderDetailCustom.getORDER_PROD_QTY() * stockOrderDetailCustom.getORDR_SUPPLY_PRICE().doubleValue();
+									NumberFormat formatter = new DecimalFormat("###.##");  
+									String strTotal = formatter.format(total);
+									stockOrderDetailBean.setTotal(strTotal);
+								}
+							}
+							else{
+								if(stockOrderDetailCustom.getORDER_PROD_QTY() != null &&  stockOrderDetailCustom.getRETAIL_PRICE() != null)
+								{
+									Double total = stockOrderDetailCustom.getORDER_PROD_QTY() * stockOrderDetailCustom.getRETAIL_PRICE().doubleValue();
+									NumberFormat formatter = new DecimalFormat("###.##");  
+									String strTotal = formatter.format(total);
+									stockOrderDetailBean.setTotal(strTotal);
+								}
+							}
+						}
+						else{
+							if(stockOrderDetailCustom.getORDER_PROD_QTY() != null &&  stockOrderDetailCustom.getORDR_SUPPLY_PRICE() != null)
+							{
+								Double total = stockOrderDetailCustom.getORDER_PROD_QTY() * stockOrderDetailCustom.getORDR_SUPPLY_PRICE().doubleValue();
+								NumberFormat formatter = new DecimalFormat("###.##");  
+								String strTotal = formatter.format(total);
+								stockOrderDetailBean.setTotal(strTotal);
+							}
+						}
+						if(stockOrderDetailCustom.getRECV_PROD_QTY() != null && stockOrderDetailCustom.getRECV_SUPPLY_PRICE() != null){
+							Double recTotal = stockOrderDetailCustom.getRECV_PROD_QTY() * stockOrderDetailCustom.getRECV_SUPPLY_PRICE().doubleValue();
+							NumberFormat formatter = new DecimalFormat("###.##");  
+							String strRecTotal = formatter.format(recTotal);
+							stockOrderDetailBean.setRecvTotal(strRecTotal);
+						}					
+						stockOrderDetailBean.setStockOrderId(stockOrderBean.getStockOrderId());
+						order++;
+						stockOrderDetailBeansList.add(stockOrderDetailBean);
+					}
+					util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getAllDetailsByStockOrderId", "User "+ 
+							currentUser.getUserEmail()+" Get All Stock Order Details",false);
+					return new Response(stockOrderDetailBeansList, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+				} else {
+					util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getAllDetailsByStockOrderId", "User "+ 
+							currentUser.getUserEmail()+"  Get All Stock Order Details",false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,
+							StatusConstants.RECORD_NOT_FOUND,
+							LayOutPageConstants.STAY_ON_PAGE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByStockOrderId",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.RECORD_NOT_FOUND,
+						LayOutPageConstants.STAY_ON_PAGE);
+
+			}
+		}
+		else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+
+	}
+	
 	/*@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllProductVariants/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response getAllProductVariants(@PathVariable("sessionId") String sessionId,
