@@ -12,17 +12,21 @@ import org.springframework.stereotype.Component;
  * @author Hafiz Yameen Bashir
  *
  */
+
 @Component
 public class ApplicationInitializeListner implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Autowired
 	private ApplicationCacheController applicationCacheController;
+	@Autowired
+	SchedulerController schedulerController = new SchedulerController();
 	
     public void onApplicationEvent(final ContextRefreshedEvent event) {
    //   ApplicationContext ctx = event.getApplicationContext();
       System.out.println("On server Startup insdie onApplicationEvent");
 		try {
 			//applicationCacheController.load();
+//			schedulerController.schedulerForMVInventoryExecution();
 			
 		}catch(Exception ex) {
 			ex.printStackTrace();

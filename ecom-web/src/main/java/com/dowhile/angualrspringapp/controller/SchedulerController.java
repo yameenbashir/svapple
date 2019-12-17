@@ -133,6 +133,28 @@ public class SchedulerController {
 	        	}catch(Exception e){ System.out.println(e);} 
 	        
 	    }
+	 
+	 @Scheduled(cron="0 59 * * * ?")
+	    public void schedulerForMVInventoryExecution()
+	    {
+		 //0 59 * * * ? execute At second :00 of minute :59 of every hour
+	        System.out.println("Method schedulerForMVInventoryExecution() execution started at time :: "+ new Date());
+	        try{  
+	        	Class.forName("com.mysql.jdbc.Driver");  
+	        	Connection con=(Connection) DriverManager.getConnection(  
+	        	"jdbc:mysql://localhost:3306/ecom","root","123456");  
+	        	//here ecom is database name, root is username and password  
+	        	Statement stmt=(Statement) con.createStatement();  
+	        	ResultSet rs=stmt.executeQuery("CALL MVInventoryExecution()");  
+	        	/*while(rs.next())  
+	        	System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  */
+	        	con.close();  
+	        	System.out.println("Method schedulerForMVInventoryExecution() execution completed at time :: "+ new Date());
+//	        	sendEmailDemo("bashir@shopvitals.com", "Bashir/Ali","Scipt Executed Successfully");
+	        	}catch(Exception e){ System.out.println(e);} 
+	        
+	    }
+	 
 	 public  boolean sendEmailDemo (String toEmail,String name,String message) {
 			populatEmailConfig();
 			Email email = new SimpleEmail();

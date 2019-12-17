@@ -147,8 +147,9 @@ App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeo
 		$rootScope.userImage = "/app/resources/dist/img/avatar5.png";
 	}
 	$rootScope.systemBusy = 'System is busy while handling request. Please try later.';
-	$rootScope.complianceTextForReporting = "Report have compliance with Today's 9:00 AM data." ;
-
+	$rootScope.complianceTextForReporting = "Report have compliance with Today's 9:00 AM Data." ;
+	$rootScope.complianceTextForInventoryReport = "Report Data have compliance with every 59th Minute of clock." ;
+	                                              
 	$rootScope.online = true;
 	$rootScope.heartBeat = function() {
 		$http.get('session/heartBeat').success(function(Response) {
