@@ -223,6 +223,11 @@ public class NewProductController {
 						productBarCodeMap.put(product.getSku(), true);
 					}
 				}
+				long startVariant = System.currentTimeMillis();
+				List<ProductVariant> productVariantsList = productVariantService.getAllActiveProductVariantsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+				long endVariant   = System.currentTimeMillis();
+//				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get products Variants is " + formatter.format((endVariant - startVariant) / 1000d) + " seconds");
 
 				Response response = getAllSuppliers(sessionId,request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
@@ -315,7 +320,7 @@ public class NewProductController {
 						"User "+ currentUser.getUserEmail()+" retrived NewProductController data successfully ",false);
 				long endTimeTotal   = System.currentTimeMillis();
 //				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get NewProductController.getNewProductControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
+				System.out.println("For User "+ currentUser.getUserEmail()+ "Execution time to get NewProductController.getNewProductControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
 				return new Response(newProductControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
@@ -404,7 +409,8 @@ public class NewProductController {
 					return new Response(MessageConstants.DUPLICATE_PRODCUT_BAR_CODE,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
 				}
 				long startVariant = System.currentTimeMillis();
-				List<ProductVariant> productVariantsList = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+				List<ProductVariant> productVariantsList = productVariantService.getAllActiveProductVariantsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+//				List<ProductVariant> productVariantsList = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 				long endVariant   = System.currentTimeMillis();
 //				NumberFormat formatter = new DecimalFormat("#0.00000");
 				System.out.println("Execution time to get products Variants is " + formatter.format((endVariant - startVariant) / 1000d) + " seconds");
@@ -439,7 +445,6 @@ public class NewProductController {
 				long endFetching   = System.currentTimeMillis();
 //				NumberFormat formatter = new DecimalFormat("#0.00000");
 				System.out.println("Execution time to verify duplication and fetching product and variants is " + formatter.format((endFetching - start) / 1000d) + " seconds");
-				System.out.println();
 				//To check duplicate bar code end
 				if(outletsist!=null){
 
@@ -483,7 +488,10 @@ public class NewProductController {
 							}
 						}
 					}
-
+					long endProductAdd   = System.currentTimeMillis();
+//					NumberFormat formatter = new DecimalFormat("#0.00000");
+					System.out.println("For User "+ currentUser.getUserEmail()+" Execution time to complete add product Process is " + formatter.format((endProductAdd - start) / 1000d) + " seconds");
+					
 					util.AuditTrail(request, currentUser, "NewProductController.addProduct", 
 							"User "+ currentUser.getUserEmail()+"For all outlets Added Product/s +"+productBean.getProductName()+" successfully ",false);
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.PRODUCTS);
@@ -793,7 +801,12 @@ public class NewProductController {
 					StockOrderBean stockOrderBean = new StockOrderBean();
 					stockOrderBean.setOutlet(outletbean.getOutletId());
 					stockOrderBean.setSupplierId(productBean.getSupplierId());
+					long start = System.currentTimeMillis();
 					AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, request);
+					long end   = System.currentTimeMillis();
+					NumberFormat formatter = new DecimalFormat("#0.00000");
+					System.out.println("Execution time to complete AddStockOrder is " + formatter.format((end - start) / 1000d) + " seconds");
+					
 				}
 
 			}else{

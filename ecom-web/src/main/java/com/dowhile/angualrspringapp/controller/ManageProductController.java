@@ -234,18 +234,24 @@ public class ManageProductController {
 					}
 					//finish
 					for(Product product:productList){
-						Brand brand = brandService.getBrandByBrandId(Integer.valueOf(productBean.getBrandId()),currentUser.getCompany().getCompanyId());
+//						Brand brand = brandService.getBrandByBrandId(Integer.valueOf(productBean.getBrandId()),currentUser.getCompany().getCompanyId());
+						Brand brand = new Brand();
+						brand.setBrandId(Integer.valueOf(productBean.getBrandId()));
 						product.setBrand(brand);
 						product.setUserByUpdatedBy(currentUser);
 						product.setLastUpdated(new Date());
 						product.setProductDesc(productBean.getProductDesc());
 						product.setProductHandler(productBean.getProductHandler());
 						product.setProductName(productBean.getProductName());
-						ProductType productType = productTypeService.getProductTypeByProductTypeId(Integer.valueOf(productBean.getProductTypeId()),currentUser.getCompany().getCompanyId());
+//						ProductType productType = productTypeService.getProductTypeByProductTypeId(Integer.valueOf(productBean.getProductTypeId()),currentUser.getCompany().getCompanyId());
+						ProductType productType = new ProductType();
+						productType.setProductTypeId(Integer.valueOf(productBean.getProductTypeId()));
 						product.setProductType(productType);
 						product.setPurchaseAccountCode(productBean.getPurchaseAccountCode());
 						product.setSalesAccountCode(productBean.getSalesAccountCode());
-						Contact supplier = supplierService.getContactByID(Integer.valueOf(productBean.getSupplierId()),currentUser.getCompany().getCompanyId());
+//						Contact supplier = supplierService.getContactByID(Integer.valueOf(productBean.getSupplierId()),currentUser.getCompany().getCompanyId());
+						Contact supplier = new Contact();
+						supplier.setContactId(Integer.valueOf(productBean.getSupplierId()));
 						product.setContact(supplier);
 						product.setProductCanBeSold(productBean.getProductCanBeSold());
 						product.setStandardProduct(productBean.getStandardProduct());
@@ -657,7 +663,9 @@ public class ManageProductController {
 					productVariant.setUserByUpdatedBy(currentUser);
 					Outlet tempOutlet = (Outlet)outletMap.get(Integer.valueOf(variantOutletBean.getOutletId()));
 					productVariant.setOutlet(tempOutlet);
-					SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(Integer.valueOf(tempOutlet.getSalesTax().getSalesTaxId()),currentUser.getCompany().getCompanyId());
+//					SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(Integer.valueOf(tempOutlet.getSalesTax().getSalesTaxId()),currentUser.getCompany().getCompanyId());
+					SalesTax salesTax = new SalesTax();
+					salesTax.setSalesTaxId(Integer.valueOf(tempOutlet.getSalesTax().getSalesTaxId()));
 					productVariant.setSalesTax(salesTax);
 					productVariant.setVariantAttributeName(varientValueBean.getVarientName());
 					productVariant.setVariantAttributeValue1(varientNamesList[0]);
@@ -671,26 +679,32 @@ public class ManageProductController {
 					VariantAttribute attributeTwo = new VariantAttribute();
 					VariantAttribute attributeThree = new VariantAttribute();
 					if(productBean.getProductVariantAttributeCollection()!=null && productBean.getProductVariantAttributeCollection().size() >= 2){
-						attributeOne = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+						attributeOne.setVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()));
+//						attributeOne = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
 						productVariant.setVariantAttributeByVariantAttributeAssocicationId1(attributeOne);
 						if(productBean.getProductVariantAttributeCollection().size()>=2){
-							attributeTwo = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(1).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+							attributeTwo.setVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(1).getVarientAttributeId()));
+//							attributeTwo = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(1).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
 							productVariant.setVariantAttributeByVariantAttributeAssocicationId2(attributeTwo);
 						}
 						if(productBean.getProductVariantAttributeCollection().size()>=3){
-							attributeThree = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(2).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+							attributeThree.setVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(2).getVarientAttributeId()));
+//							attributeThree = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(2).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
 							productVariant.setVariantAttributeByVariantAttributeAssocicationId3(attributeThree);
 						}
 					}
 					else if(productBean.getProductVariantAttributeCollection()!=null && productBean.getProductVariantAttributeCollection().size() > 1){
-						attributeOne = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+//						attributeOne = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+						attributeOne.setVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()));
 						productVariant.setVariantAttributeByVariantAttributeAssocicationId1(attributeOne);
 
-						attributeTwo = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(1).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+//						attributeTwo = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(1).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+						attributeTwo.setVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(1).getVarientAttributeId()));
 						productVariant.setVariantAttributeByVariantAttributeAssocicationId2(attributeTwo);
 					}
 					else if(productBean.getProductVariantAttributeCollection()!=null && productBean.getProductVariantAttributeCollection().size() == 1){
-						attributeOne = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+//						attributeOne = variantAttributeService.getVariantAttributeByVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()),currentUser.getCompany().getCompanyId());
+						attributeOne.setVariantAttributeId(Integer.parseInt(productBean.getProductVariantAttributeCollection().get(0).getVarientAttributeId()));
 						productVariant.setVariantAttributeByVariantAttributeAssocicationId1(attributeOne);
 					}
 					if(variantOutletBean.getCurrentInventory()==null || variantOutletBean.getCurrentInventory().equals("")){
@@ -716,6 +730,7 @@ public class ManageProductController {
 					productVariant.setCompany(currentUser.getCompany());
 					ProductVariant variantProduct = productVariantService.addProductVariant(productVariant,Actions.CREATE,productVariant.getCurrentInventory(),currentUser.getCompany(),newProduct.getProductUuid());
 					productVariantId = variantProduct.getProductVariantId();
+					List<VariantAttributeValues> variantAttributeValuesList =  new ArrayList<>(); 
 					if(productBean.getProductVariantValuesCollectionOne()!=null ){
 						for(VarientAttributeValueBean attributeValue : productBean.getProductVariantValuesCollectionOne()){
 							VariantAttributeValues variantAttributeValues = new VariantAttributeValues();
@@ -729,7 +744,8 @@ public class ManageProductController {
 							variantAttributeValues.setProduct(newProduct);
 							variantAttributeValues.setProductUuid(newProduct.getProductUuid());
 							variantAttributeValues.setCompany(currentUser.getCompany());
-							variantAttributeValuesService.addVariantAttributeValues(variantAttributeValues,currentUser.getCompany().getCompanyId());
+							variantAttributeValuesList.add(variantAttributeValues);
+//							variantAttributeValuesService.addVariantAttributeValues(variantAttributeValues,currentUser.getCompany().getCompanyId());
 						}
 					}
 					if(productBean.getProductVariantValuesCollectionTwo()!=null ){
@@ -745,7 +761,8 @@ public class ManageProductController {
 							variantAttributeValues.setProduct(newProduct);
 							variantAttributeValues.setProductUuid(newProduct.getProductUuid());
 							variantAttributeValues.setCompany(currentUser.getCompany());
-							variantAttributeValuesService.addVariantAttributeValues(variantAttributeValues,currentUser.getCompany().getCompanyId());
+							variantAttributeValuesList.add(variantAttributeValues);
+//							variantAttributeValuesService.addVariantAttributeValues(variantAttributeValues,currentUser.getCompany().getCompanyId());
 						}
 					}
 					if(productBean.getProductVariantValuesCollectionThree()!=null ){
@@ -761,9 +778,11 @@ public class ManageProductController {
 							variantAttributeValues.setProduct(newProduct);
 							variantAttributeValues.setProductUuid(newProduct.getProductUuid());
 							variantAttributeValues.setCompany(currentUser.getCompany());
-							variantAttributeValuesService.addVariantAttributeValues(variantAttributeValues,currentUser.getCompany().getCompanyId());
+							variantAttributeValuesList.add(variantAttributeValues);
+//							variantAttributeValuesService.addVariantAttributeValues(variantAttributeValues,currentUser.getCompany().getCompanyId());
 						}
 					}
+					variantAttributeValuesService.addVariantAttributeValuesList(variantAttributeValuesList);
 				}
 			}
 		}

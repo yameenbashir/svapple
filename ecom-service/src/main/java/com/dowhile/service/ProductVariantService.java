@@ -38,5 +38,6 @@ public interface ProductVariantService {
 	Map<String, List<ProductVariant>>  getAllProductsVariantMapByUuid(int companyId);
 	List<ProductVariant> getAllActiveProductVariants();
 	Map<Integer, ProductVariant> getAllActiveProductsVariantMapByOutletIdCompanyId(int outletId,int companyId);
+	List<ProductVariant> getAllActiveProductVariantsByOutletIdCompanyId(int outletId, int companyId);
 	
 }

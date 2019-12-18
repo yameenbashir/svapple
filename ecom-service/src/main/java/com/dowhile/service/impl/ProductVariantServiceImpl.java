@@ -211,4 +211,11 @@ public class ProductVariantServiceImpl implements ProductVariantService{
 		}
 		return map;
 	}
+
+	@Override
+	public List<ProductVariant> getAllActiveProductVariantsByOutletIdCompanyId(
+			int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		return getProductVariantDAO().getAllActiveProductVariantsByOutletIdCompanyId(outletId, companyId);
+	}
 }
