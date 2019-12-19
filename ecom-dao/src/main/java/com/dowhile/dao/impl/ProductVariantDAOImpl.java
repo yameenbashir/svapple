@@ -469,6 +469,8 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					return 1;*/
 		}catch(HibernateException ex){
 			ex.printStackTrace();
+		}catch(Exception ex){
+			
 		}
 		return 0;
 	}
