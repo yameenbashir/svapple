@@ -518,20 +518,31 @@
 															balance | number : 2}}</div>
 													</div>
 												</div>
-														<div ng-if="totalPayable" class="col-xs-8 text-right">
+												
+													<div >
+															<div ng-if="previousBalance" class="col-xs-8 text-right"><b>Previous Balance</b></div>
+															<div ng-if="previousBalance" class="col-xs-4 text-center">{{previousBalance}}</div>
+														</div>
+														
+														<div >
+															<div ng-if="totalBalance" class="col-xs-8 text-right"><b>Total Payable</b></div>
+														<div ng-if="totalBalance" class="col-xs-4 text-center">{{totalBalance}}</div>
+														</div>
+												
+													<!-- 	<div ng-if="previousBalance " class="col-xs-8 text-right">
 															Previous Balance
 														</div>
 														<div class="col-xs-4 text-center">
 															<span
-																ng-bind="totalPayable"></span>
+																ng-bind="previousBalance"></span>
 														</div>
 														<div ng-if="totalBalance" class="col-xs-8 text-right">
-															Total Payable
+															Total payable
 														</div>
-														<div ng-if="totalBalance" class="col-xs-4 text-center">
+														<div  class="col-xs-4 text-center">
 															<span
 																ng-bind="totalBalance"></span>
-														</div>
+														</div> -->
 
 												<div class="row">
 													<div class="col-xs-12 text-center">
@@ -740,20 +751,16 @@
 															balance | number : 2}}</div>
 													</div>
 												</div>
-														<div ng-if="totalPayable" class="col-xs-8 text-right">
-															Previous Balance
+														<div >
+															<div ng-if="previousBalance" class="col-xs-8 text-right"><b>Previous Balance</b></div>
+															<div  ng-if="previousBalance" class="col-xs-4 text-center" ng-bind="previousBalance"></div>
 														</div>
-														<div class="col-xs-4 text-center">
-															<span
-																ng-bind="totalPayable"></span>
+														
+														<div >
+															<div ng-if="totalBalance" class="col-xs-8 text-right"><b>Total Payable</b></div>
+														<div ng-if="totalBalance" class="col-xs-4 text-center">{{totalBalance}}</div>
 														</div>
-														<div ng-if="totalBalance" class="col-xs-8 text-right">
-															Total Payable
-														</div>
-														<div ng-if="totalBalance" class="col-xs-4 text-center">
-															<span
-																ng-bind="totalBalance"></span>
-														</div>
+														
 
 												<div class="row">
 													<div class="col-xs-12 text-center">
@@ -905,6 +912,12 @@
 								</div>
 								<div class="top-buffer-contact"></div>
 								<div class="row">
+									<div class="alert alert-success alert-sm"
+											ng-show="success" ng-bind="successMessage"
+											ng-cloak></div>
+											<div class="alert alert-danger alert-sm" ng-show="error"
+											ng-bind="errorMessage" ng-cloak></div>
+											
 									<div class="col-md-3" ng-show="returnvalue >= 0">
 										<h2>Pay</h2>
 									</div>
@@ -994,6 +1007,7 @@
 											{{selectCustomerName}}</a>
 										<hr class="vd-hr">
 										<a href="" 
+											ng-show="!selectCustomer"
 											ng-click="deleteCustomerOrCreate()"><i class="fa fa-remove" ></i>
 											Click Here to Remove Customer</a>
 									</div>
@@ -1180,7 +1194,7 @@
 							<div class="inner-addon right-addon">
 
 								<i class="glyphicon glyphicon-search"></i> <input type="text" ng-disabled = "returnvalue < 1"
-									focus="false" ng-model="CustomerName"
+									focus="true" ng-model="CustomerName"
 									style="width: 100%; height: 50px"
 									placeholder="Start typing or scanning..."
 									auto-complete="autoCompleteOptionsCustomers" />

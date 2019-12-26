@@ -1173,7 +1173,7 @@ public class SellController  {
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash","Error Occured " + errors.toString(), true);
-				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
+				return new Response(MessageConstants.INVALID_REQUEST,StatusConstants.WARNING,LayOutPageConstants.SELL);
 			}
 		} else {
 			return new Response(MessageConstants.INVALID_SESSION,
