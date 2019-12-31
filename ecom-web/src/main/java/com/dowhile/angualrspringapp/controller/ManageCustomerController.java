@@ -104,8 +104,8 @@ public class ManageCustomerController {
 						address.setAddressId(Integer.parseInt(addressBean.getAddressId()));
 						address.setContact(customer);
 						address.setAddressType(addressBean.getAddressType());
-						address.setFirstName(addressBean.getFirstName());
-						address.setLastName(addressBean.getLastName());
+						address.setFirstName(customerBean.getFirstName());
+						address.setLastName(customerBean.getLastName());
 						address.setContactName(addressBean.getContactName());
 						address.setEmail(addressBean.getEmail());
 						address.setPhone(addressBean.getPhone());

@@ -68,8 +68,7 @@
 													<div class="col-sm-8" >
 														 <input type="text" class="form-control"
 																id="inputstoreName" placeholder="Company..."
-																data-ng-model="customerBean.companyName" maxlength="25"
-																>
+																data-ng-model="customerBean.companyName" maxlength="25">
 													</div>
 												</div>
 												<div class="form-group">
@@ -113,9 +112,10 @@
 												<div class="form-group">
 												<label for="inputEmail3" class="col-sm-4 control-label">Date of birth</label>
 												<div class="col-sm-8">
-												<input type="date" class="form-control"
+												<input type="text" datetime="yyyy-MM-dd" class="form-control"
 															id="inputbirthDate" placeholder="Date of Birth..."
-															data-ng-model="customerBean.customerDob" maxlength="25" >
+															data-ng-model="customerBean.customerDob"  maxlength="25"ng-pattern='/^[a-zA-Z0-9\s\-]+$/' >
+															
 												</div>
 											<!-- 			<div class="row">
 															<div class="col-sm-2">
@@ -199,7 +199,7 @@
 													<div class="col-sm-8">
 														<input type="text" class="form-control"
 															id="inputstoreName" placeholder="Contact Name..."
-															data-ng-model="customerBean.addressBeanList[0].contactName"
+															data-ng-model="customerBean.contactName"
 															maxlength="25" >
 													</div>
 												</div>
@@ -243,10 +243,10 @@
 													<label for="inputEmail3" class="col-sm-4 control-label">Web
 														Site </label>
 													<div class="col-sm-8">
-														<input type="url" class="form-control" id="inputURL"
+														<input type="text" class="form-control" id="inputURL"
 															placeholder="Web Site..."
 															data-ng-model="customerBean.addressBeanList[0].website"
-															maxlength="25">
+															maxlength="25" ng-pattern='/^(http:\/\/|https:\/\/)?[_a-z0-9]+(\.[_a-z0-9]+)*[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,7})$/'>
 													</div>
 												</div>
 												<div class="form-group">
