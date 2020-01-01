@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dowhile.InventoryCountDetail;
+import com.dowhile.InventoryCountDetailCustom;
 import com.dowhile.dao.InventoryCountDetailDAO;
 import com.dowhile.service.InventoryCountDetailService;
 
@@ -44,6 +45,12 @@ public class InventoryCountDetailServiceImpl implements InventoryCountDetailServ
 	}
 	
 	@Override
+	public void addorUpdateInventoryCountDetailsList(List<InventoryCountDetail> inventoryCountDetail,int companyId) {
+		// TODO Auto-generated method stub
+		getInventoryCountDetailDAO().addorUpdateInventoryCountDetailsList(inventoryCountDetail,companyId);
+	}
+	
+	@Override
 	public InventoryCountDetail updateInventoryCountDetail(InventoryCountDetail inventoryCountDetail,int companyId) {
 		// TODO Auto-generated method stub
 		return getInventoryCountDetailDAO().updateInventoryCountDetail(inventoryCountDetail,companyId);
@@ -79,8 +86,20 @@ public class InventoryCountDetailServiceImpl implements InventoryCountDetailServ
 		return getInventoryCountDetailDAO().getInventoryCountDetailByInventoryCountId(inventoryCountID,companyId);
 	}
 	@Override
+	public List<InventoryCountDetailCustom> getInventoryCountDetailByInventoryCountIdCustom(int inventoryCountID,int companyId){
+		// TODO Auto-generated method stub
+		return getInventoryCountDetailDAO().getInventoryCountDetailByInventoryCountIdCustom(inventoryCountID,companyId);
+	}
+	@Override
 	public List<InventoryCountDetail> getAllInventoryCountDetails(int companyId){
 		// TODO Auto-generated method stub
 		return getInventoryCountDetailDAO().getAllInventoryCountDetails(companyId);
 	}
+	
+	@Override
+	public List<InventoryCountDetailCustom> createFullInventoryCount(int outletId, int inventory_count_id, int userId, int companyId){
+		// TODO Auto-generated method stub
+		return getInventoryCountDetailDAO().createFullInventoryCount(outletId, inventory_count_id, userId, companyId);
+	}
+	
 }

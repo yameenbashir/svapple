@@ -16,17 +16,21 @@ public class InventoryCountDetailBean {
 	 private String inventoryCountDetailId;
      private String inventoryCountId;
      private String productVariantId;
+     private String productId;
      private String variantAttributeName;
      private String expProdQty;
      private String countedProdQty;
      private String isProduct;
      private String supplyPriceExp;
      private String retailPriceExp;
+     private String retailPriceExclTax;
+     private String supplyPriceExclTax;
      private String supplyPriceCounted;
      private String retailPriceCounted;
      private String countDiff;
      private String priceDiff;
      private String order;
+     private String isDirty;
      private String auditTransfer;
      private String activeIndicator;
      private String createdDate;
@@ -311,5 +315,37 @@ public class InventoryCountDetailBean {
 
 	public void setAuditTransfer(String auditTransfer) {
 		this.auditTransfer = auditTransfer;
+	}
+
+	public String getRetailPriceExclTax() {
+		return retailPriceExclTax;
+	}
+
+	public void setRetailPriceExclTax(String retailPriceExclTax) {
+		this.retailPriceExclTax = retailPriceExclTax;
+	}
+
+	public String getSupplyPriceExclTax() {
+		return supplyPriceExclTax;
+	}
+
+	public void setSupplyPriceExclTax(String supplyPriceExclTax) {
+		this.supplyPriceExclTax = supplyPriceExclTax;
+	}
+
+	public String getIsDirty() {
+		return isDirty;
+	}
+
+	public void setIsDirty(String isDirty) {
+		this.isDirty = isDirty;
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}	
 }

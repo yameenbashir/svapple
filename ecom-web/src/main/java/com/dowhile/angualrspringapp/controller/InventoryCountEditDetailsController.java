@@ -34,6 +34,7 @@ import com.dowhile.ProductVariant;
 import com.dowhile.Status;
 import com.dowhile.InventoryCount;
 import com.dowhile.InventoryCountDetail;
+import com.dowhile.InventoryCountDetailCustom;
 import com.dowhile.InventoryCountType;
 import com.dowhile.InventoryCountDetail;
 import com.dowhile.User;
@@ -174,7 +175,7 @@ public class InventoryCountEditDetailsController {
 						allProductVariantBeansList = (List<ProductVariantBean>) response.data;
 					}					
 				}
-				response = getAllDetailsByInventoryCountId(sessionId, inventoryCountBean, request);
+				response = getAllDetailsByInventoryCountIdCustom(sessionId, inventoryCountBean, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					inventoryCountDetailBeansList = (List<InventoryCountDetailBean>) response.data;
 				}
@@ -537,7 +538,6 @@ public class InventoryCountEditDetailsController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}	
 	}
-
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllDetailsByInventoryCountId/{sessionId}", method = RequestMethod.POST)
@@ -674,6 +674,80 @@ public class InventoryCountEditDetailsController {
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getAllDetailsByInventoryCountIdCustom/{sessionId}", method = RequestMethod.POST)
+	public @ResponseBody Response getAllDetailsByInventoryCountIdCustom(@PathVariable("sessionId") String sessionId,
+			@RequestBody InventoryCountBean inventoryCountBean, HttpServletRequest request) {
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			List<InventoryCountDetailBean> inventoryCountDetailBeansList = new ArrayList<>();
+			List<InventoryCountDetailCustom> inventoryCountDetailCustomList = null;
+			HttpSession session = request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			try {
+				inventoryCountDetailCustomList = inventoryCountDetailService.getInventoryCountDetailByInventoryCountIdCustom(Integer.parseInt(inventoryCountBean.getInventoryCountId()),currentUser.getCompany().getCompanyId());
+				if(inventoryCountDetailCustomList != null) {
+					int order = 1;
+					for (InventoryCountDetailCustom ic : inventoryCountDetailCustomList) {
+						InventoryCountDetailBean i = new InventoryCountDetailBean();
+						if(ic.getAudit_transfer() == 0) {
+							i.setAuditTransfer("false");
+						}
+						else {
+							i.setAuditTransfer("true");
+						}
+						i.setCountDiff(Objects.toString(ic.getCOUNT_DIFF()));
+						i.setCreatedBy(Objects.toString(ic.getCREATED_BY()));
+						i.setCountedProdQty(Objects.toString(ic.getCOUNTED_PROD_QTY()));
+						i.setExpProdQty(Objects.toString(ic.getEXPECTED_PROD_QTY()));
+						i.setInventoryCountDetailId(Objects.toString(ic.getINVENTORY_COUNT_DETAIL_ID()));
+						i.setInventoryCountId(Objects.toString(ic.getINVENTORY_COUNT_ASSOCICATION_ID()));
+						if(!ic.isIS_PRODUCT()) {
+							i.setIsProduct("false");
+							i.setProductVariantId(Objects.toString(ic.getPRODUCT_VARIANT_ASSOCICATION_ID()));
+							i.setVariantAttributeName(Objects.toString(ic.getVariantAttributeName()));
+						}else {
+							i.setIsProduct("true");
+							i.setProductId(Objects.toString(ic.getPRODUCT_ASSOCIATION_ID()));
+							i.setVariantAttributeName(Objects.toString(ic.getProduct_name()));							
+						}
+						i.setPriceDiff(Objects.toString(ic.getPRICE_DIFF()));
+						i.setRetailPriceCounted(Objects.toString(ic.getRETAIL_PRICE_COUNTED()));
+						i.setRetailPriceExp(Objects.toString(ic.getRETAIL_PRICE_EXP()));
+						i.setSupplyPriceCounted(Objects.toString(ic.getSUPPLY_PRICE_COUNTED()));
+						i.setSupplyPriceExp(Objects.toString(ic.getSUPPLY_PRICE_EXP()));
+						i.setOrder(String.valueOf(order));
+						order++;
+						inventoryCountDetailBeansList.add(i);
+					}
+					util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getAllDetailsByInventoryCountId", "User "+ 
+							currentUser.getUserEmail()+" Get All Stock Order Details",false);
+					return new Response(inventoryCountDetailBeansList, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+				} else {
+					util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getAllDetailsByInventoryCountId", "User "+ 
+							currentUser.getUserEmail()+"  Get All Stock Order Details",false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,
+							StatusConstants.RECORD_NOT_FOUND,
+							LayOutPageConstants.STAY_ON_PAGE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByInventoryCountId",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.RECORD_NOT_FOUND,
+						LayOutPageConstants.STAY_ON_PAGE);
+
+			}
+		}
+		else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+
+	}
+	
 	/**
 	 * @return the productList
 	 */

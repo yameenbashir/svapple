@@ -5,8 +5,11 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 
 import com.dowhile.InventoryCountDetail;
+import com.dowhile.InventoryCountDetailCustom;
+import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.dao.InventoryCountDetailDAO;
 
 /**
@@ -63,6 +66,18 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 		}
 	}
 
+	@Override
+	public void addorUpdateInventoryCountDetailsList(List<InventoryCountDetail> inventoryCountDetailsList,int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			for(InventoryCountDetail inventoryCountDetail: inventoryCountDetailsList){
+				getSessionFactory().getCurrentSession().saveOrUpdate(inventoryCountDetail);
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+	}
+	
 	@Override
 	public InventoryCountDetail updateInventoryCountDetail(InventoryCountDetail inventoryCountDetail,int companyId) {
 		// TODO Auto-generated method stub
@@ -140,8 +155,9 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 	@Override
 	public List<InventoryCountDetail> getInventoryCountDetailByInventoryCountId(int inventoryCountID,int companyId) {
 		// TODO Auto-generated method stub
+		List<InventoryCountDetail> list = null;
 		try{
-			List<InventoryCountDetail> list = getSessionFactory().getCurrentSession()
+			list = getSessionFactory().getCurrentSession()
 					.createQuery("From InventoryCountDetail WHERE INVENTORY_COUNT_ASSOCICATION_ID =? AND COMPANY_ASSOCIATION_ID=?")
 					.setParameter(0, inventoryCountID)
 					.setParameter(1, companyId).list();
@@ -161,6 +177,32 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<InventoryCountDetailCustom> getInventoryCountDetailByInventoryCountIdCustom(int inventoryCountID,int companyId) {
+		// TODO Auto-generated method stub
+		List<InventoryCountDetailCustom> list = null;
+		try{
+			list= getSessionFactory().getCurrentSession()
+			.createSQLQuery("CALL InventoryCountActions(?,?)" )
+			.setParameter(0, inventoryCountID)
+			.setParameter(1, companyId)
+			.setResultTransformer(Transformers.aliasToBean(InventoryCountDetailCustom.class))
+			.list();
+			if (list != null && list.size() > 0) {
+
+				return list;
+			}
+
+
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+
+
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<InventoryCountDetail> getAllInventoryCountDetails(int companyId) {
 		// TODO Auto-generated method stub
 		try{
@@ -178,6 +220,30 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 		}
 
 
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<InventoryCountDetailCustom> createFullInventoryCount(int outletId, int inventory_count_id, int userId, int companyId){
+		List<InventoryCountDetailCustom> list = null;
+		try{
+			list= getSessionFactory().getCurrentSession()
+			.createSQLQuery("CALL CreateFullInventoryCount(?,?,?,?)" )
+			.setParameter(0, outletId)
+			.setParameter(1, inventory_count_id)
+			.setParameter(2, userId)
+			.setParameter(3, companyId)
+			.setResultTransformer(Transformers.aliasToBean(InventoryCountDetailCustom.class))
+			.list();
+			
+		 if(list!=null&& list.size()>0){
+
+				return list;
+			}			
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
 		return null;
 	}
 }

@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dowhile.Company;
 import com.dowhile.InventoryCount;
 import com.dowhile.dao.InventoryCountDAO;
 import com.dowhile.service.InventoryCountService;
+import com.dowhile.wrapper.InventoryCountWrapper;
 
 
 /**
@@ -42,8 +44,14 @@ public class InventoryCountServiceImpl implements InventoryCountService{
 	public InventoryCount updateInventoryCount(InventoryCount inventoryCount,int companyId) {
 		// TODO Auto-generated method stub
 		return getInventoryCountDAO().updateInventoryCount(inventoryCount,companyId);
-	}
+	} 
 
+	@Override
+	public boolean updateInventoryCountComplete(InventoryCountWrapper inventoryCountWrapper,Company company) {
+		// TODO Auto-generated method stub
+		return getInventoryCountDAO().updateInventoryCountComplete(inventoryCountWrapper,company);
+	}
+	
 	@Override
 	public boolean deleteInventoryCount(InventoryCount inventoryCount,int companyId) {
 		// TODO Auto-generated method stub

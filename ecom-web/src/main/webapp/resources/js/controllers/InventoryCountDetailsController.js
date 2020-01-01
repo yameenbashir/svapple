@@ -91,10 +91,6 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 					for (var i = 0; i < $scope.allProductVariantBeansList.length; i++) {
 						$scope.allProductBeansList.push($scope.allProductVariantBeansList[i]);
 					}
-					$scope.hideTransferInfo = false;
-				}
-				else{
-					$scope.hideTransferInfo = true;
 				}
 				if($scope.data.inventoryCountDetailBeansList!=null){
 					$scope.inventoryCountDetailBeansList = $scope.data.inventoryCountDetailBeansList;
@@ -110,7 +106,8 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 								$scope.inventoryCountDetailBean.countedProdQty = null;
 							}
 						}
-						$scope.addInventoryCountDetail();
+						$scope.addFullInventoryCount();
+						//$scope.AllInOne();
 					}
 				}
 			}
@@ -126,24 +123,12 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 
 	$scope.checkProductStatus = function(){
 		var quantity = $scope.inventoryCountDetailBean.countedProdQty;
-		if($scope.productVariantBean.isVariant.toString() == "true"){
-			if($scope.productVariantBean.auditTransfer == "true"){
-				$scope.inventoryCountDetailBean.auditTransfer = "true"
-			}
-			else{
-				$scope.inventoryCountDetailBean.auditTransfer = "false";
-			}
+		if($scope.productVariantBean.isVariant.toString() == "true"){			
 			$scope.addProduct();
 		}
 		else{
 			$scope.hit = 0;
 			if($scope.productVariantBean.isProduct.toString() == "true"){
-				if($scope.productVariantBean.auditTransfer == "true"){
-					$scope.inventoryCountDetailBean.auditTransfer = "true"
-				}
-				else{
-					$scope.inventoryCountDetailBean.auditTransfer = "false";
-				}
 				$scope.addProduct();
 				$scope.hit++;
 			}
@@ -155,12 +140,6 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 							productVariant = angular.copy($scope.productVariantBean);
 							$scope.productVariantBean = angular.copy($scope.allProductVariantBeansList[i]);
 							$scope.inventoryCountDetailBean.countedProdQty = angular.copy(quantity);
-							if($scope.productVariantBean.auditTransfer == "true"){
-								$scope.inventoryCountDetailBean.auditTransfer = "true"
-							}
-							else{
-								$scope.inventoryCountDetailBean.auditTransfer = "false";
-							}
 							$scope.addProduct();
 							$scope.productVariantBean = angular.copy(productVariant);
 							$scope.hit++;
@@ -173,12 +152,6 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 							productVariant = angular.copy($scope.productVariantBean);
 							$scope.productVariantBean = angular.copy($scope.productVariantBeansList[i]);
 							$scope.inventoryCountDetailBean.countedProdQty = angular.copy(quantity);
-							if($scope.productVariantBean.auditTransfer == "true"){
-								$scope.inventoryCountDetailBean.auditTransfer = "true"
-							}
-							else{
-								$scope.inventoryCountDetailBean.auditTransfer = "false";
-							}
 							$scope.addProduct();
 							$scope.productVariantBean = angular.copy(productVariant);
 							$scope.hit++;
@@ -191,7 +164,7 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				$scope.addProduct();
 			}
 		}	
-		$scope.calculateItemCount();
+		$scope.AllInOne(); 
 	};
 
 	$scope.addProduct  = function() {
@@ -223,22 +196,16 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 						}
 						else{
 							value.supplyPriceCounted = "0";
-						}
-						if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
-							if(parseInt(value.countedProdQty) > parseInt(value.expProdQty)){
-								value.auditTransfer = true;
-							}
-							else{
-								value.auditTransfer = false;
-							}
-						}else{
-							value.auditTransfer = false;
-						}
-						productVariantBeantoReplace =angular.copy(value);;
+						}						
+						productVariantBeantoReplace =angular.copy(value);
+						productVariantBeantoReplace.isDirty = true;
 						var index = $scope.inventoryCountDetailBeansList.indexOf(value);
+						productVariantBeantoReplace.retailPriceExclTax = obj.retailPriceExclTax;
+						productVariantBeantoReplace.supplyPriceExclTax = obj.supplyPriceExclTax;
+						productVariantBeantoReplace.countDiff = productVariantBeantoReplace.countedProdQty - productVariantBeantoReplace.expProdQty;
+						productVariantBeantoReplace.priceDiff = productVariantBeantoReplace.retailPriceCounted - productVariantBeantoReplace.retailPriceExp;
 						$scope.inventoryCountDetailBeansList.splice(index, 1);
 						$scope.inventoryCountDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -271,17 +238,12 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 					}
 					$scope.inventoryCountDetailBean.order = $scope.counter;
 					$scope.counter++;
+					$scope.inventoryCountDetailBean.isDirty = true;
+					$scope.inventoryCountDetailBean.retailPriceExclTax = obj.retailPriceExclTax;
+					$scope.inventoryCountDetailBean.supplyPriceExclTax = obj.supplyPriceExclTax;
+					$scope.inventoryCountDetailBean.countDiff = $scope.inventoryCountDetailBean.countedProdQty - $scope.inventoryCountDetailBean.expProdQty;
+					$scope.inventoryCountDetailBean.priceDiff = $scope.inventoryCountDetailBean.retailPriceCounted - $scope.inventoryCountDetailBean.retailPriceExp;
 					$scope.inventoryCountDetailBean.inventoryCountId = $scope.inventoryCountBean.inventoryCountId;
-					if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
-						if(parseInt($scope.inventoryCountDetailBean.countedProdQty) > parseInt($scope.inventoryCountDetailBean.expProdQty)){
-							$scope.inventoryCountDetailBean.auditTransfer = true;
-						}
-						else{
-							$scope.inventoryCountDetailBean.auditTransfer = false;
-						}
-					}else{
-						$scope.inventoryCountDetailBean.auditTransfer = false;
-					}
 					$scope.inventoryCountDetailBeansList.unshift($scope.inventoryCountDetailBean);
 					$scope.dualEntry = false;
 				}
@@ -311,17 +273,12 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 						else{
 							value.supplyPriceCounted = "0";
 						}
-						if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
-							if(parseInt(value.countedProdQty) > parseInt(value.expProdQty)){
-								value.auditTransfer = true;
-							}
-							else{
-								value.auditTransfer = false;
-							}
-						}else{
-							value.auditTransfer = false;
-						}
-						productVariantBeantoReplace =angular.copy(value);;
+						productVariantBeantoReplace =angular.copy(value);
+						productVariantBeantoReplace.isDirty = true;
+						productVariantBeantoReplace.retailPriceExclTax = obj.retailPriceExclTax;
+						productVariantBeantoReplace.supplyPriceExclTax = obj.supplyPriceExclTax;
+						productVariantBeantoReplace.countDiff = productVariantBeantoReplace.countedProdQty - productVariantBeantoReplace.expProdQty;
+						productVariantBeantoReplace.priceDiff = productVariantBeantoReplace.retailPriceCounted - productVariantBeantoReplace.retailPriceExp;
 						var index = $scope.inventoryCountDetailBeansList.indexOf(value);
 						$scope.inventoryCountDetailBeansList.splice(index, 1);
 						$scope.inventoryCountDetailBeansList.unshift(productVariantBeantoReplace);
@@ -358,17 +315,12 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 					}
 					$scope.inventoryCountDetailBean.order = $scope.counter;
 					$scope.counter++;
+					$scope.inventoryCountDetailBean.retailPriceExclTax = obj.retailPriceExclTax;
+					$scope.inventoryCountDetailBean.supplyPriceExclTax = obj.supplyPriceExclTax;
+					$scope.inventoryCountDetailBean.countDiff = $scope.inventoryCountDetailBean.countedProdQty - $scope.inventoryCountDetailBean.expProdQty;
+					$scope.inventoryCountDetailBean.priceDiff = $scope.inventoryCountDetailBean.retailPriceCounted - $scope.inventoryCountDetailBean.retailPriceExp;
+					$scope.inventoryCountDetailBean.isDirty = true;
 					$scope.inventoryCountDetailBean.inventoryCountId = $scope.inventoryCountBean.inventoryCountId;
-					if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
-						if(parseInt($scope.inventoryCountDetailBean.countedProdQty) > parseInt($scope.inventoryCountDetailBean.expProdQty)){
-							$scope.inventoryCountDetailBean.auditTransfer = true;
-						}
-						else{
-							$scope.inventoryCountDetailBean.auditTransfer = false;
-						}
-					}else{
-						$scope.inventoryCountDetailBean.auditTransfer = false;
-					}
 					$scope.inventoryCountDetailBeansList.unshift($scope.inventoryCountDetailBean);
 					$scope.dualEntry = false;
 				}
@@ -403,25 +355,20 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 			}
 			$scope.inventoryCountDetailBean.order = $scope.counter;
 			$scope.counter++;
+			$scope.inventoryCountDetailBean.retailPriceExclTax = obj.retailPriceExclTax;
+			$scope.inventoryCountDetailBean.supplyPriceExclTax = obj.supplyPriceExclTax;
+			$scope.inventoryCountDetailBean.countDiff = $scope.inventoryCountDetailBean.countedProdQty - $scope.inventoryCountDetailBean.expProdQty;
+			$scope.inventoryCountDetailBean.priceDiff = $scope.inventoryCountDetailBean.retailPriceCounted - $scope.inventoryCountDetailBean.retailPriceExp;
+			$scope.inventoryCountDetailBean.isDirty = true;
 			$scope.inventoryCountDetailBean.inventoryCountId = $scope.inventoryCountBean.inventoryCountId;
-			if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == true){
-				if(parseInt($scope.inventoryCountDetailBean.countedProdQty) > parseInt($scope.inventoryCountDetailBean.expProdQty)){
-					$scope.inventoryCountDetailBean.auditTransfer = true;
-				}
-				else{
-					$scope.inventoryCountDetailBean.auditTransfer = false;
-				}
-			}else{
-				$scope.inventoryCountDetailBean.auditTransfer = false;
-			}
 			$scope.inventoryCountDetailBeansList.unshift($scope.inventoryCountDetailBean);
 		}
-		$scope.calculateTotal($scope.productVariantBean);
+		//$scope.calculateTotal($scope.productVariantBean);
 		$scope.inventoryCountDetailBean = {};
 		$scope.airportName = [];
 	};
 
-	$scope.changeQuantity = function(inventoryCountDetailBean){
+	/*$scope.changeQuantity = function(inventoryCountDetailBean){
 		var hit = false;
 		if(inventoryCountDetailBean.isProduct.toString() == "true" ){
 			for (var i = 0; i < $scope.productBeansList.length; i++) {
@@ -467,10 +414,11 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				}
 			}
 		}
+		$scope.inventoryCountDetailBean.isDirty = true;
 		$scope.calculateItemCount();
 	};
 
-	$scope.calculateTotal = function(productVariantBean){
+	/*$scope.calculateTotal = function(productVariantBean){
 		angular.forEach($scope.inventoryCountDetailBeansList, function(value,key){
 			if(value.productVariantId == productVariantBean.productVariantId && value.isProduct == productVariantBean.isProduct){
 				if(value.retailPriceExp != null){
@@ -511,9 +459,54 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				value.priceDiff = value.retailPriceCounted - value.retailPriceExp;
 			}
 		});
-	};
+	}; */
 
-	$scope.calculateItemCount = function(){
+	$scope.calculateTotalforItem = function(inventoryCountDetailBean){
+		angular.forEach($scope.inventoryCountDetailBeansList, function(value,key){
+			if(value.productVariantId == inventoryCountDetailBean.productVariantId && value.isProduct == inventoryCountDetailBean.isProduct){
+				if(value.retailPriceExp != null){
+					value.retailPriceExp = inventoryCountDetailBean.retailPriceExclTax * value.expProdQty;
+					if(isNaN(value.retailPriceExp)){
+						value.retailPriceExp = "0";
+					}
+				}
+				if(value.retailPriceExp != null){
+					value.retailPriceCounted = inventoryCountDetailBean.retailPriceExclTax * value.countedProdQty;
+					if(isNaN(value.retailPriceCounted)){
+						value.retailPriceCounted = "0";
+					}
+				}
+				if(value.supplyPriceExp != null){
+					value.supplyPriceExp = inventoryCountDetailBean.supplyPriceExclTax * value.expProdQty;
+					if(isNaN(value.supplyPriceExp)){
+						value.supplyPriceExp = "0";
+					}
+				}
+				if(value.supplyPriceCounted != null){
+					value.supplyPriceCounted = inventoryCountDetailBean.supplyPriceExclTax * value.countedProdQty;
+					if(isNaN(value.supplyPriceCounted)){
+						value.supplyPriceCounted = "0";
+					}
+				}
+				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+					if(parseInt(value.countedProdQty) > parseInt(value.expProdQty)){
+						value.auditTransfer = true;
+					}
+					else{
+						value.auditTransfer = false;
+					}
+				}else{
+					value.auditTransfer = false;
+				}
+				value.countDiff = value.countedProdQty - value.expProdQty;
+				value.priceDiff = value.retailPriceCounted - value.retailPriceExp;
+				value.isDirty = true;
+			}
+		});
+		$scope.AllInOne();
+	};
+	
+/*	$scope.calculateItemCount = function(){
 		$scope.inventoryCountBean.itemCountCounted = 0;
 		$scope.inventoryCountBean.itemCountExp = 0;
 		$scope.inventoryCountBean.countDiff = 0;
@@ -566,8 +559,8 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				}
 			}
 		}
-	};
-
+	}; */
+	
 	$scope.showConfirmDelete = function(inventoryCountDetailBean){
 		$scope.delInventoryCountDetailBean = {};
 		$scope.delInventoryCountDetailBean = angular.copy(inventoryCountDetailBean);
@@ -608,12 +601,95 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				$scope.inventoryCountDetailBeansList.splice(index, 1);
 			}
 		});	
-		$scope.showConfirmDeletePopup = false; 
-		$scope.delInventoryCountDetailBean = {};
-		$scope.arrangeOrder();
+		$scope.AllInOne();
 	};
 	
-	$scope.arrangeOrder = function(){
+	
+	$scope.AllInOne = function(){
+		$scope.counter = 1;
+		$scope.inventoryCountBean.itemCountCounted = 0;
+		$scope.inventoryCountBean.itemCountExp = 0;
+		$scope.inventoryCountBean.countDiff = 0;
+		$scope.inventoryCountBean.priceDiff = 0;
+		$scope.inventoryCountBean.retailPriceExp = 0;
+		$scope.inventoryCountBean.retailPriceCounted = 0;		
+		if($scope.inventoryCountDetailBeansList != null){
+			for (var i = 0; i < $scope.inventoryCountDetailBeansList.length; i++) {
+				$scope.inventoryCountDetailBeansList[i].order = $scope.counter; 
+				$scope.counter++;
+				$scope.inventoryCountBean.itemCountCounted = parseInt($scope.inventoryCountBean.itemCountCounted) + parseInt($scope.inventoryCountDetailBeansList[i].countedProdQty);
+				if(isNaN($scope.inventoryCountBean.itemCountCounted)){
+					$scope.inventoryCountBean.itemCountCounted = "0";
+				}				
+				$scope.inventoryCountBean.itemCountExp = parseInt($scope.inventoryCountBean.itemCountExp) + parseInt($scope.inventoryCountDetailBeansList[i].expProdQty);
+				if(isNaN($scope.inventoryCountBean.itemCountExp)){
+					$scope.inventoryCountBean.itemCountExp = "0";
+				}
+				$scope.inventoryCountBean.countDiff = parseInt($scope.inventoryCountBean.countDiff) + parseInt($scope.inventoryCountDetailBeansList[i].countDiff);
+				if(isNaN($scope.inventoryCountBean.countDiff)){
+					$scope.inventoryCountBean.countDiff = "0";
+				}
+				$scope.inventoryCountBean.priceDiff = parseInt($scope.inventoryCountBean.priceDiff) + parseInt($scope.inventoryCountDetailBeansList[i].priceDiff);
+				if(isNaN($scope.inventoryCountBean.priceDiff)){
+					$scope.inventoryCountBean.priceDiff = "0";
+				}
+				$scope.inventoryCountBean.retailPriceExp = parseInt($scope.inventoryCountBean.retailPriceExp) + parseInt($scope.inventoryCountDetailBeansList[i].retailPriceExp);
+				if(isNaN($scope.inventoryCountBean.retailPriceExp)){
+					$scope.inventoryCountBean.retailPriceExp = "0";
+				}
+				$scope.inventoryCountBean.retailPriceCounted = parseInt($scope.inventoryCountBean.retailPriceCounted) + parseInt($scope.inventoryCountDetailBeansList[i].retailPriceCounted);
+				if(isNaN($scope.inventoryCountBean.retailPriceCounted)){
+					$scope.inventoryCountBean.retailPriceCounted = "0";
+				}
+				$scope.inventoryCountBean.supplyPriceExp = parseInt($scope.inventoryCountBean.supplyPriceExp) + parseInt($scope.inventoryCountDetailBeansList[i].supplyPriceExp);
+				if(isNaN($scope.inventoryCountBean.supplyPriceExp)){
+					$scope.inventoryCountBean.supplyPriceExp = "0";
+				}
+				$scope.inventoryCountBean.supplyPriceCounted = parseInt($scope.inventoryCountBean.supplyPriceCounted) + parseInt($scope.inventoryCountDetailBeansList[i].supplyPriceCounted);
+				if(isNaN($scope.inventoryCountBean.supplyPriceCounted)){
+					$scope.inventoryCountBean.supplyPriceCounted = "0";
+				}
+				if($scope.inventoryCountDetailBeansList[i].retailPriceExp != null){
+					$scope.inventoryCountDetailBeansList[i].retailPriceExp = $scope.inventoryCountDetailBeansList[i].retailPriceExclTax * $scope.inventoryCountDetailBeansList[i].expProdQty;
+					if(isNaN($scope.inventoryCountDetailBeansList[i].retailPriceExp)){
+						$scope.inventoryCountDetailBeansList[i].retailPriceExp = "0";
+					}
+				}
+				if($scope.inventoryCountDetailBeansList[i].retailPriceExp != null){
+					$scope.inventoryCountDetailBeansList[i].retailPriceCounted = $scope.inventoryCountDetailBeansList[i].retailPriceExclTax * $scope.inventoryCountDetailBeansList[i].countedProdQty;
+					if(isNaN($scope.inventoryCountDetailBeansList[i].retailPriceCounted)){
+						$scope.inventoryCountDetailBeansList[i].retailPriceCounted = "0";
+					}
+				}
+				$scope.inventoryCountDetailBeansList[i].countDiff = $scope.inventoryCountDetailBeansList[i].countedProdQty - $scope.inventoryCountDetailBeansList[i].expProdQty;
+				$scope.inventoryCountDetailBeansList[i].priceDiff = $scope.inventoryCountDetailBeansList[i].retailPriceCounted - $scope.inventoryCountDetailBeansList[i].retailPriceExp;
+				if($scope.inventoryCountDetailBeansList[i].supplyPriceExp != null){
+					$scope.inventoryCountDetailBeansList[i].supplyPriceExp = $scope.inventoryCountDetailBeansList[i].supplyPriceExclTax * $scope.inventoryCountDetailBeansList[i].expProdQty;
+					if(isNaN($scope.inventoryCountDetailBeansList[i].supplyPriceExp)){
+						$scope.inventoryCountDetailBeansList[i].supplyPriceExp = "0";
+					}
+				}
+				if($scope.inventoryCountDetailBeansList[i].supplyPriceCounted != null){
+					$scope.inventoryCountDetailBeansList[i].supplyPriceCounted = $scope.inventoryCountDetailBeansList[i].supplyPriceExclTax * $scope.inventoryCountDetailBeansList[i].countedProdQty;
+					if(isNaN($scope.inventoryCountDetailBeansList[i].supplyPriceCounted)){
+						$scope.inventoryCountDetailBeansList[i].supplyPriceCounted = "0";
+					}
+				}
+				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+					if(parseInt($scope.inventoryCountDetailBeansList[i].countedProdQty) > parseInt($scope.inventoryCountDetailBeansList[i].expProdQty)){
+						$scope.inventoryCountDetailBeansList[i].auditTransfer = true;
+					}
+					else{
+						$scope.inventoryCountDetailBeansList[i].auditTransfer = false;
+					}
+				}else{
+					$scope.inventoryCountDetailBeansList[i].auditTransfer = false;
+				}
+			}
+		}
+	};
+	
+	/*$scope.arrangeOrder = function(){
 		$scope.counter = 1;
 		if ($scope.inventoryCountDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.inventoryCountDetailBeansList.length; i++) {
@@ -621,7 +697,7 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				$scope.counter++;
 			}
 		}
-	};
+	}; */
 
 	$scope.checkInventoryCountDetailList = function() {
 		if($scope.isFull = false){
@@ -642,6 +718,62 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 		}
 	};	
 
+	
+	$scope.addFullInventoryCount = function(){
+		if ($scope.inventoryCountDetailBeansList.length > 0) {
+			$scope.success = false;
+			$scope.error = false;
+			$scope.loading = true;
+			//$scope.inventoryCountBean.inventoryCountDetailBeansList = angular.copy($scope.inventoryCountDetailBeansList);
+			$http.post('inventoryCountDetails/addFullInventoryCount/'+$scope._s_tk_com, $scope.inventoryCountBean)
+			.success(function(Response) {
+				$scope.loading = false;					
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {
+					$scope.success = true;
+					$scope.successMessage = "Saved Successfully";
+					//$cookieStore.put('_ct_sc_ost',"") ;
+					$scope.inventoryCountBean = Response.data;
+					$scope.inventoryCountDetailBeansList = angular.copy($scope.inventoryCountBean.inventoryCountDetailBeansList);
+					if ($scope.inventoryCountDetailBeansList.length > 0) {
+						for (var i = 0; i < $scope.inventoryCountDetailBeansList.length; i++) {
+							$scope.inventoryCountDetailBeansList[i].isDirty = false; 
+						}
+					}
+					$scope.AllInOne();
+					$timeout(function(){
+						$scope.success = false;
+						$scope.successMessage = "";
+						//$window.location = Response.layOutPath;
+					}, 2000);
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} 
+				else if($scope.responseStatus == 'WARNING'){
+					$scope.warning = true;
+					$scope.warningMessage = Response.data;
+					//$window.location = Response.layOutPath;
+				} 
+				else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
+
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}
+
+	};
+	
 	$scope.addInventoryCountDetail = function(){
 		if ($scope.inventoryCountDetailBeansList.length > 0) {
 			$scope.success = false;
@@ -654,11 +786,20 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				$scope.responseStatus = Response.status;
 				if ($scope.responseStatus == 'SUCCESSFUL') {
 					$scope.success = true;
-					$scope.successMessage = Response.data;
+					$scope.successMessage = "Saved Successfully";
 					//$cookieStore.put('_ct_sc_ost',"") ;
+					$scope.inventoryCountBean = Response.data;
+					$scope.inventoryCountDetailBeansList = $scope.inventoryCountBean.inventoryCountDetailBeansList;
+					if ($scope.inventoryCountDetailBeansList.length > 0) {
+						for (var i = 0; i < $scope.inventoryCountDetailBeansList.length; i++) {
+							$scope.inventoryCountDetailBeansList[i].isDirty = false; 
+						}
+					}
+					$scope.AllInOne();
 					$timeout(function(){
 						$scope.success = false;
-						$window.location = Response.layOutPath;
+						$scope.successMessage = "";
+						//$window.location = Response.layOutPath;
 					}, 2000);
 				}
 				else if($scope.responseStatus == 'SYSTEMBUSY'
@@ -704,7 +845,6 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 					$cookieStore.put('_ct_sc_ost',"") ;
 					$timeout(function(){
 						$scope.success = false;
-
 						$window.location = Response.layOutPath;
 					}, 2000);
 				}
