@@ -26,4 +26,7 @@ public class MessageConstants {
 	public static final String DUPLICATE_PRODCUT_VARIANT_BAR_CODE = "Duplicate product variant bar code found, please change the product variant barcode!";
 	public static final String OUTLET_CLOSED = "You can not login. Outlet is closed, please contact Administrator";
 	public static final String PATH_NOT_FOUND = "Backup path was not found !";
+	public static final String INVALID_TEXT = "Text length is too long to add into details limit is 200 characters";
+	public static final String INVALID_REQUEST = "Need to pay complete bill , without complete amount you can not proceed";
+	
 }
