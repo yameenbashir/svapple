@@ -1034,7 +1034,8 @@ public class InventoryCountDetailsController {
 						inventoryCount.setExpectedProdQty(Integer.parseInt(inventoryCountBean.getItemCountExp()));
 						inventoryCount.setCountedProdQty(Integer.parseInt(inventoryCountBean.getItemCountCounted()));
 						inventoryCount.setLastUpdated(new Date());
-						inventoryCount.setUpdatedBy(currentUser.getUserId());				
+						inventoryCount.setUpdatedBy(currentUser.getUserId());	
+						inventoryCountWrapper.setInventoryCount(inventoryCount);
 						inventoryCountService.updateInventoryCountComplete(inventoryCountWrapper ,currentUser.getCompany());						
 						return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.INVENTORY_COUNT);
 					}else{
