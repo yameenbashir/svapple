@@ -41,8 +41,10 @@ var StockControlController = ['$scope', '$http', '$window','$cookieStore','$root
 		$window.location = "/app/#/inventoryCount";
 	};
 	$scope.purchaseOrderActions = function(stockOrderBean) {
-		$cookieStore.put('_ct_bl_ost',stockOrderBean);
+		$cookieStore.put('_ct_bl_ost',"");
+		
 		if(stockOrderBean.stockOrderTypeId == "1"){ //supplier Order
+			$cookieStore.put('_ct_bl_ost',stockOrderBean);
 			$window.location = "/app/#/purchaseOrderActions";
 		}
 		else if(stockOrderBean.stockOrderTypeId == "2"||stockOrderBean.stockOrderTypeId == "7"){ //Return Order
@@ -64,9 +66,11 @@ var StockControlController = ['$scope', '$http', '$window','$cookieStore','$root
 			$window.location = "/app/#/stockSupplierTransferActions";
 		}		
 		else if(stockOrderBean.stockOrderTypeId == "3"){  //Transfer Order
+			$cookieStore.put('_ct_bl_ost',stockOrderBean);
 			$window.location = "/app/#/stockTransferActions";
 		}
 		else if(stockOrderBean.stockOrderTypeId == "4"){  //Return to Warehouse
+			$cookieStore.put('_ct_bl_ost',stockOrderBean);
 			$window.location = "/app/#/stockReturntoWarehouseActions";
 		}
 	};
@@ -90,6 +94,7 @@ var StockControlController = ['$scope', '$http', '$window','$cookieStore','$root
 				$window.location = "/app/#/stockReturnEditDetails";
 			}		
 			else if(stockOrderBean.stockOrderTypeId == "3" ){  //Transfer Order
+				
 				$cookieStore.put('_ct_bl_ost',stockOrderBean);
 				$window.location = "/app/#/stockTransferEditDetails";
 			}
