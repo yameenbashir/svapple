@@ -28,9 +28,9 @@ public class InventoryCountControllerBean {
 	private List<ProductVariantBean> allProductBeansList;
 	private List<ProductVariantBean> allProductVariantBeansList;
 	private Map<String, ProductVariantBean> productVariantMap = new HashMap<>();
-	private Map<String, ProductBean> productMap = new HashMap<>();
+	private Map<String, ProductVariantBean> productMap = new HashMap<>();
 	private Map<String, ProductVariantBean> allProductVariantMap = new HashMap<>();
-	private Map<String, ProductBean> allProductMap = new HashMap<>();
+	private Map<String, ProductVariantBean> allProductMap = new HashMap<>();
 	private List<InventoryCountDetailBean> inventoryCountDetailBeansList;
 	private boolean auditTransfer;
 	/**
@@ -188,10 +188,10 @@ public class InventoryCountControllerBean {
 	public void setProductVariantMap(Map<String, ProductVariantBean> productVariantMap) {
 		this.productVariantMap = productVariantMap;
 	}
-	public Map<String, ProductBean> getProductMap() {
+	public Map<String, ProductVariantBean> getProductMap() {
 		return productMap;
 	}
-	public void setProductMap(Map<String, ProductBean> productMap) {
+	public void setProductMap(Map<String, ProductVariantBean> productMap) {
 		this.productMap = productMap;
 	}
 	public Map<String, ProductVariantBean> getAllProductVariantMap() {
@@ -200,10 +200,10 @@ public class InventoryCountControllerBean {
 	public void setAllProductVariantMap(Map<String, ProductVariantBean> allProductVariantMap) {
 		this.allProductVariantMap = allProductVariantMap;
 	}
-	public Map<String, ProductBean> getAllProductMap() {
+	public Map<String, ProductVariantBean> getAllProductMap() {
 		return allProductMap;
 	}
-	public void setAllProductMap(Map<String, ProductBean> allProductMap) {
+	public void setAllProductMap(Map<String, ProductVariantBean> allProductMap) {
 		this.allProductMap = allProductMap;
 	}
 }

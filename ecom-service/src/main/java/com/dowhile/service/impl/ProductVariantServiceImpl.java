@@ -218,4 +218,10 @@ public class ProductVariantServiceImpl implements ProductVariantService{
 		// TODO Auto-generated method stub
 		return getProductVariantDAO().getAllActiveProductVariantsByOutletIdCompanyId(outletId, companyId);
 	}
+	
+	@Override
+	public List<ProductVariant> getAllProductVariantsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		return getProductVariantDAO().getAllProductVariantsWarehouseandOutlet(warehouseOutletId, outletId, companyId);
+	}
 }

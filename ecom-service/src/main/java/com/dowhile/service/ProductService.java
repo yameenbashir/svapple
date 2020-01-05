@@ -9,6 +9,7 @@ import java.util.Map;
 import com.dowhile.Company;
 import com.dowhile.Product;
 import com.dowhile.constant.Actions;
+import com.dowhile.wrapper.ProductListsWrapper;
 
 /**
  * @author Yameen Bashir
@@ -43,5 +44,6 @@ public interface ProductService {
 	List<Product> getAllActiveProducts();
 	Map<Integer, Product> getAllActiveProductsMapByOutletIdCompanyId(int outletId,int companyId);
 	List<Product> getAllActiveProductsByOutletIdCompanyId(int outletId,int companyId);
+	ProductListsWrapper getAllProductsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId);
 }
  

@@ -3,6 +3,8 @@
  */
 package com.dowhile.dao.impl;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +17,10 @@ import org.hibernate.criterion.Restrictions;
 import com.dowhile.Company;
 import com.dowhile.Product;
 import com.dowhile.ProductHistory;
+import com.dowhile.ProductVariant;
 import com.dowhile.constant.Actions;
 import com.dowhile.dao.ProductDAO;
+import com.dowhile.wrapper.ProductListsWrapper;
 
 /**
  * @author Yameen Bashir
@@ -537,5 +541,65 @@ public class ProductDAOImpl implements ProductDAO{
 		}
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ProductListsWrapper getAllProductsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			ProductListsWrapper productListsWrapper = new ProductListsWrapper();
+			long start = System.currentTimeMillis();
+			List<Product> list = getSessionFactory().getCurrentSession()
+					.createQuery("from Product where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
+			if(list != null && list.size() > 0) {
+				System.out.println("Outlet Product size: " + list.size());
+			}else {
+				System.out.println("Outlet Product size: 0");
+			}			
+			List<Product> list1 = getSessionFactory().getCurrentSession()
+					.createQuery("from Product where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, warehouseOutletId)
+					.setParameter(1, companyId).list();
+			if(list1 != null && list1.size() > 0) {
+				System.out.println("Warehouse Product size: " + list1.size());
+			}else {
+				System.out.println("Warehouse Product size: 0");
+			}
+			List<ProductVariant> list2 = getSessionFactory().getCurrentSession()
+					.createQuery("from ProductVariant where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
+			if(list2 != null && list2.size() > 0) {
+				System.out.println("Outlet Product Variant size: " + list2.size());
+			}else {
+				System.out.println("Outlet Product Variant size: 0");
+			}
+			List<ProductVariant> list3 = getSessionFactory().getCurrentSession()
+					.createQuery("from ProductVariant where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, warehouseOutletId)
+					.setParameter(1, companyId).list();
+			if(list3 != null && list3.size() > 0) {
+				System.out.println("Warehouse Product Variant size: " + list3.size());
+			}else {
+				System.out.println("Warehouse Product Variant size: 0");
+			}
+			productListsWrapper.setOutletProducts(list);
+			productListsWrapper.setWarehouseProducts(list1);
+			productListsWrapper.setOutletProductVariants(list2);
+			productListsWrapper.setWarehouseProductVariants(list3);		
+			long end   = System.currentTimeMillis();
+			NumberFormat formatter = new DecimalFormat("#0.00000");
+			System.out.println("Execution time to get All Product + Product Variant is " + formatter.format((end - start) / 1000d) + " seconds");
+			if(productListsWrapper!=null){
 
+				return productListsWrapper;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
 }

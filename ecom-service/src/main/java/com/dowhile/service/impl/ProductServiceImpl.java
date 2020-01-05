@@ -15,6 +15,7 @@ import com.dowhile.Product;
 import com.dowhile.constant.Actions;
 import com.dowhile.dao.ProductDAO;
 import com.dowhile.service.ProductService;
+import com.dowhile.wrapper.ProductListsWrapper;
 
 /**
  * @author Yameen Bashir
@@ -242,5 +243,11 @@ public class ProductServiceImpl implements ProductService{
 			int companyId) {
 		// TODO Auto-generated method stub
 		return getProductDAO().getAllActiveProductsByOutletIdCompanyId(outletId, companyId);
+	}
+	
+	@Override
+	public ProductListsWrapper getAllProductsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		return getProductDAO().getAllProductsWarehouseandOutlet(warehouseOutletId, outletId, companyId);
 	}
 }

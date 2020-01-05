@@ -272,7 +272,7 @@
 							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
 				       	    </button>
 				       	    <button class="btn btn-primary btn  "
-									ng-click="addAndUpdateInventoryCountDetail()" ng-disabled="warning || !checkInventoryCountDetailList()" ng-show="!loading">Complete</button>
+									ng-click="showConfirmInventoryCount()" ng-disabled="warning || !checkInventoryCountDetailList()" ng-show="!loading">Complete</button>
 								<button  ng-show="loading" class="btn btn-primary btn">
 							    	Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
 				       	    </button>
@@ -331,6 +331,34 @@
 
 	<!-- Modal end -->	
 	
+	
+	<!-- Modal -->
+<modal title="Confirm Complete Inventory Count (Audit)!"
+	visible="showConfirmInventoryCountPopup" ng-cloak>
+
+<div class="registerForm popup-transparent">
+	<li class="list-group-item">
+		<form class="form-horizontal" name="myForm">
+			<div class="box-body">
+
+				<button
+					class="btn btn-primary btn-sm pull-right btn-primary-spacing"
+					ng-click="addAndUpdateInventoryCountDetail()" ng-show="!loading">Yes</button>
+					<button ng-show="loading" class="btn btn-primary btn">
+					Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+					</button>
+
+				<button class="btn btn-default btn-sm pull-left btn-primary-spacing"
+					data-dismiss="modal">No</button>
+			</div>
+</div>
+</form>
+</li>
+</div>
+
+</modal>
+
+<!-- Modal end -->
 	
     <style>
 .center {

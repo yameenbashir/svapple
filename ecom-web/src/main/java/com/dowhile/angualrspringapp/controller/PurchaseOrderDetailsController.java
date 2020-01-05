@@ -2093,11 +2093,11 @@ public class PurchaseOrderDetailsController {
 	
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value = "/updateAndAutoTransferStockOrderDetails/{sessionId}/{grandTotal}/{itemCount}", method = RequestMethod.POST)
-		public @ResponseBody Response updateAndAutoTransferStockOrderDetails(@PathVariable("sessionId") String sessionId,
+	public @ResponseBody Response updateAndAutoTransferStockOrderDetails(@PathVariable("sessionId") String sessionId,
 				@PathVariable("grandTotal") String grandTotal,
 				@PathVariable("itemCount") String itemCount,
 				@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList,
-				Map<Integer, Product> productsMap, Map<Integer, ProductVariant> productVariantsMap,
+				List<Product> products, List<ProductVariant> productVariants,
 				HttpServletRequest request){
 			if(SessionValidator.isSessionValid(sessionId, request)){
 				HttpSession session =  request.getSession(false);
@@ -2108,14 +2108,14 @@ public class PurchaseOrderDetailsController {
 						Map<String, ProductVariant> recvProductVariantList = new HashMap();
 						Map<String, Product> recvProductList = new HashMap();
 						StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
-						//Map<Integer, Product> productsMap = new HashMap<>();
+						Map<Integer, Product> productsMap = new HashMap<>();
 						//List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
 						//List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
 						//List<StockOrderDetail> stockOrderDetailsDeleteList = new ArrayList<>();
 						//List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
 						List<Product> productUpdateList = new ArrayList<>();
 						List<ProductVariant> productVariantUpdateList = new ArrayList<>();
-						/*if(products!=null){
+						if(products!=null){
 							for(Product product:products){
 								productsMap.put(product.getProductId(), product);
 								if(product.getOutlet().getOutletId() == stockOrder.getOutletByOutletAssocicationId().getOutletId()){
@@ -2125,7 +2125,7 @@ public class PurchaseOrderDetailsController {
 						}
 						Map<Integer, ProductVariant> productVariantsMap = new HashMap<>();
 						//Map<Integer, ProductVariant> 
-						List<ProductVariant> productVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+						//List<ProductVariant> productVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 						if(productVariants!=null){
 							for(ProductVariant productVariant:productVariants){
 								productVariantsMap.put(productVariant.getProductVariantId(), productVariant);
@@ -2133,7 +2133,7 @@ public class PurchaseOrderDetailsController {
 									recvProductVariantList.put(productVariant.getProductVariantUuid(), productVariant);
 								}
 							}
-						}*/
+						}
 						//Stock Order Map Region
 						//List<StockOrderDetail> stockOrderDetails = new ArrayList<>();
 						//Map<Integer, List<StockOrderDetail>> stockOrderDetailsMap = new HashMap<>();

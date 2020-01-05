@@ -491,7 +491,24 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 		}
 		return null;
 	}
-
-
+	
+	@Override
+	public List<ProductVariant> getAllProductVariantsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		try {
+			@SuppressWarnings("unchecked")
+			List<ProductVariant> list = getSessionFactory()
+			.getCurrentSession()
+			.createQuery(
+					"from ProductVariant where OUTLET_ASSOCICATION_ID in (?,?) AND COMPANY_ASSOCIATION_ID = ?")
+					.setParameter(0, warehouseOutletId)
+					.setParameter(1, outletId)
+					.setParameter(2, companyId).list();
+			return list;
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
 
 }

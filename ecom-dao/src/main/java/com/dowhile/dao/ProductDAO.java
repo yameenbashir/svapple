@@ -8,6 +8,7 @@ import java.util.List;
 import com.dowhile.Company;
 import com.dowhile.Product;
 import com.dowhile.constant.Actions;
+import com.dowhile.wrapper.ProductListsWrapper;
 
 /**
  * @author Yameen Bashir
@@ -39,4 +40,5 @@ public interface ProductDAO {
 	public List<Product> getTopProductsByCategory(int compant, int productType,int count,int pageNum);
 	List<Product> getAllActiveProducts();
 	List<Product> getAllActiveProductsByOutletIdCompanyId(int outletId,int companyId);
+	ProductListsWrapper getAllProductsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId);
 }

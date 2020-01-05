@@ -34,6 +34,6 @@ public interface ProductVariantDAO {
 	int getCountOfInventoryByProductVariantUuIdOutletId(String productVariantUuId ,int outletId, int companyId);
 	int getCountOfMAXSKUForProductVariantByCompanyId(int companyId);
 	List<ProductVariant> getAllActiveProductVariants();
-	
+	List<ProductVariant> getAllProductVariantsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId);
 	
 }

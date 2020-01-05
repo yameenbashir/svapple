@@ -282,7 +282,7 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 						var index = $scope.inventoryCountDetailBeansList.indexOf(value);
 						$scope.inventoryCountDetailBeansList.splice(index, 1);
 						$scope.inventoryCountDetailBeansList.unshift(productVariantBeantoReplace);
-						$scope.arrangeOrder();
+						//$scope.arrangeOrder();
 						$scope.dualEntry = true;
 					}
 				});
@@ -488,7 +488,7 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 						value.supplyPriceCounted = "0";
 					}
 				}
-				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer.toString() == "true"){
 					if(parseInt(value.countedProdQty) > parseInt(value.expProdQty)){
 						value.auditTransfer = true;
 					}
@@ -675,7 +675,7 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 						$scope.inventoryCountDetailBeansList[i].supplyPriceCounted = "0";
 					}
 				}
-				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer == "true"){
+				if($scope.inventoryCountBean.auditTransfer != null && $scope.inventoryCountBean.auditTransfer.toString() == "true"){
 					if(parseInt($scope.inventoryCountDetailBeansList[i].countedProdQty) > parseInt($scope.inventoryCountDetailBeansList[i].expProdQty)){
 						$scope.inventoryCountDetailBeansList[i].auditTransfer = true;
 					}
@@ -842,6 +842,7 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 				if ($scope.responseStatus == 'SUCCESSFUL') {
 					$scope.success = true;
 					$scope.successMessage = Response.data;
+					$scope.showConfirmInventoryCountPopup = false;
 					$cookieStore.put('_ct_sc_ost',"") ;
 					$timeout(function(){
 						$scope.success = false;
@@ -874,7 +875,11 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 		}
 
 	};
-
+	
+	$scope.showConfirmInventoryCount = function(){
+		$scope.showConfirmInventoryCountPopup = true;
+	};
+	
 	$scope.autoCompleteOptions = {
 			minimumChars : 1,
 			dropdownHeight : '105px',
