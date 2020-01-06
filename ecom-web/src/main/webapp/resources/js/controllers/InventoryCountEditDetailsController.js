@@ -914,10 +914,28 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 				$scope.productSKU = '';
 				$scope.skudisable = false;
 			}
+			else if($scope.productMap[$scope.productSKU.toLowerCase()] != null){
+				$scope.skudisable = true;
+				$scope.inventoryCountDetailBean.countedProdQty = 1;
+				$scope.productVariantBean = $scope.ProductMap[$scope.productSKU.toLowerCase()];
+				//console.log($scope.productVariantMap[$scope.productSKU]);			
+				$scope.checkProductStatus();
+				$scope.productSKU = '';
+				$scope.skudisable = false;				
+			}
 			else if($scope.allProductVariantMap[$scope.productSKU.toLowerCase()] != null){
 				$scope.skudisable = true;
 				$scope.inventoryCountDetailBean.countedProdQty = 1;
 				$scope.productVariantBean = $scope.allProductVariantMap[$scope.productSKU.toLowerCase()];
+				//console.log($scope.productVariantMap[$scope.productSKU]);			
+				$scope.checkProductStatus();
+				$scope.productSKU = '';
+				$scope.skudisable = false;				
+			}
+			else if($scope.allProductMap[$scope.productSKU.toLowerCase()] != null){
+				$scope.skudisable = true;
+				$scope.inventoryCountDetailBean.countedProdQty = 1;
+				$scope.productVariantBean = $scope.allProductMap[$scope.productSKU.toLowerCase()];
 				//console.log($scope.productVariantMap[$scope.productSKU]);			
 				$scope.checkProductStatus();
 				$scope.productSKU = '';

@@ -20,6 +20,7 @@ var InventoryCountController = ['$scope', '$http', '$window','$cookieStore','$ro
 	};
 
 	$scope.inventoryCountActions = function(inventoryCountBean) {
+		$cookieStore.put('_ct_sc_ost',"");
 		$cookieStore.put('_ct_sc_ost',inventoryCountBean);
 		$window.location = "/app/#/inventoryCountActions";
 	};

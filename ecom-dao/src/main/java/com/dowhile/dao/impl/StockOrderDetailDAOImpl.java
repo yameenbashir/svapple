@@ -3,22 +3,18 @@
  */
 package com.dowhile.dao.impl;
 
-import java.util.List;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 
-import com.dowhile.InvoiceMainCustom;
-import com.dowhile.PriceBookDetail;
-import com.dowhile.StockOrder;
-import com.dowhile.StockOrderDetail;
-import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.Product;
 import com.dowhile.ProductVariant;
+import com.dowhile.StockOrderDetail;
+import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.dao.StockOrderDetailDAO;
 
 /**

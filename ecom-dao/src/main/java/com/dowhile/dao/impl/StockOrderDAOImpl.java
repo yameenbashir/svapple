@@ -15,6 +15,10 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
+import com.dowhile.Company;
+import com.dowhile.Contact;
+import com.dowhile.Outlet;
+import com.dowhile.Product;
 import com.dowhile.ProductHistory;
 import com.dowhile.ProductVariant;
 import com.dowhile.StockOrder;
@@ -24,10 +28,6 @@ import com.dowhile.dao.StockOrderDAO;
 import com.dowhile.wrapper.StockBasicDataWrapper;
 import com.dowhile.wrapper.StockDataProductsWrapper;
 import com.dowhile.wrapper.StockWrapper;
-import com.dowhile.Company;
-import com.dowhile.Contact;
-import com.dowhile.Outlet;
-import com.dowhile.Product;
 
 
 /**
@@ -384,7 +384,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 	public boolean UpdateStockComplete(StockWrapper stockWrapper, Company company) {
 		try {
 			if(stockWrapper.getStockOrder() != null) {
-				getSessionFactory().getCurrentSession().update(stockWrapper.getStockOrder());
+				getSessionFactory().getCurrentSession().saveOrUpdate(stockWrapper.getStockOrder());
 			}
 			if(stockWrapper.getProductUpdateList().size() > 0 ) {
 				for(Product product: stockWrapper.getProductUpdateList()){

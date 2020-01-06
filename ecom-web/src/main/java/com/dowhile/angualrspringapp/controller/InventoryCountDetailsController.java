@@ -764,8 +764,11 @@ public class InventoryCountDetailsController {
 										ProductVariant productVariant;
 										if(productVariantsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId())) != null) {
 											productVariant = productVariantsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId()));
-											if(productVariant.getOutlet().getOutletId() == outletId) {
+											if(!inventoryCountDetailBean.getAuditTransfer().equalsIgnoreCase("true")){
 												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()));
+												productVariantUpdateList.add(productVariant);
+											}else {
+												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
 												productVariantUpdateList.add(productVariant);
 											}
 										}										
@@ -785,8 +788,13 @@ public class InventoryCountDetailsController {
 										if(productsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId())) != null){
 											product = productsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId()));
 											if(product.getOutlet().getOutletId() == outletId) {
+												if(!inventoryCountDetailBean.getAuditTransfer().equalsIgnoreCase("true")){
 												product.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()));
 												productUpdateList.add(product);
+												}else {
+													product.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
+													productUpdateList.add(product);
+												}
 											}
 										}
 										/*}
@@ -806,8 +814,13 @@ public class InventoryCountDetailsController {
 									if(productVariantsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId())) != null) {
 										productVariant = productVariantsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId()));
 										if(productVariant.getOutlet().getOutletId() == outletId) {
-											productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()));
-											productVariantUpdateList.add(productVariant);
+											if(!inventoryCountDetailBean.getAuditTransfer().equalsIgnoreCase("true")){
+												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()));
+												productVariantUpdateList.add(productVariant);
+											}else {
+												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
+												productVariantUpdateList.add(productVariant);
+											}
 										}
 									}
 									/*}
@@ -878,23 +891,23 @@ public class InventoryCountDetailsController {
 												stockOrderDetailBean.setRetailPrice(retailPrice.toString());
 											}
 											else {
-											Product product = productsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId()));
-											//stockOrderDetailBean.setProductVariantId(String.valueOf(productsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId())).getProductId()));
-											if(product.getOutlet().getOutletId() == sourceOutletId){
-												stockOrderDetailBean.setProductVariantId(String.valueOf(product.getProductId()));
-											}
-											else{
-												Product pv = warehouseProductsMap.get(product.getProductUuid());
-												if(pv != null){
-													stockOrderDetailBean.setProductVariantId(String.valueOf(pv.getProductId()));
+												Product product = productsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId()));
+												//stockOrderDetailBean.setProductVariantId(String.valueOf(productsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId())).getProductId()));
+												if(product.getOutlet().getOutletId() == sourceOutletId){
+													stockOrderDetailBean.setProductVariantId(String.valueOf(product.getProductId()));
 												}
+												else{
+													Product pv = warehouseProductsMap.get(product.getProductUuid());
+													if(pv != null){
+														stockOrderDetailBean.setProductVariantId(String.valueOf(pv.getProductId()));
+													}
+												}
+												stockOrderDetailBean.setIsProduct("true");
+												BigDecimal netPrice = (product.getSupplyPriceExclTax().multiply(product.getMarkupPrct().divide(new BigDecimal(100)))).add(product.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
+												BigDecimal retailPrice =netPrice.setScale(2,RoundingMode.HALF_EVEN);
+												stockOrderDetailBean.setOrdrSupplyPrice(retailPrice.toString());
+												stockOrderDetailBean.setRetailPrice(retailPrice.toString());
 											}
-											stockOrderDetailBean.setIsProduct("true");
-											BigDecimal netPrice = (product.getSupplyPriceExclTax().multiply(product.getMarkupPrct().divide(new BigDecimal(100)))).add(product.getSupplyPriceExclTax()).setScale(5,RoundingMode.HALF_EVEN);
-											BigDecimal retailPrice =netPrice.setScale(2,RoundingMode.HALF_EVEN);
-											stockOrderDetailBean.setOrdrSupplyPrice(retailPrice.toString());
-											stockOrderDetailBean.setRetailPrice(retailPrice.toString());
-										}
 										}
 										/*else{
 											ProductVariant productVariant = productVariantsMap.get(Integer.parseInt(inventoryCountDetailBean.getProductVariantId()));
@@ -916,7 +929,7 @@ public class InventoryCountDetailsController {
 											stockOrderDetailBean.setOrdrSupplyPrice(retailPrice.toString());
 											stockOrderDetailBean.setRetailPrice(retailPrice.toString());
 										}*/	
-										stockOrderDetailBean.setOrderProdQty(String.valueOf(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()) - Integer.parseInt(inventoryCountDetailBean.getExpProdQty())));
+										stockOrderDetailBean.setOrderProdQty(inventoryCountDetailBean.getCountDiff());
 										grandTotal = grandTotal + (Double.parseDouble(stockOrderDetailBean.getOrderProdQty()) * Double.parseDouble(stockOrderDetailBean.getOrdrSupplyPrice()));
 										itemCount = itemCount + Double.parseDouble(stockOrderDetailBean.getOrderProdQty());
 										stockOrderDetailBean.setIsDirty("true");
@@ -1095,12 +1108,6 @@ public class InventoryCountDetailsController {
 						if(inventoryCountDetailsDeleteList.size() > 0){
 							inventoryCountDetailService.deleteInventoryCountDetailsList(inventoryCountDetailsDeleteList, currentUser.getCompany().getCompanyId());
 						}*/
-						if(stockOrderDetialBeansList!=null && stockOrderDetialBeansList.size()>0){
-							StockOrderBean stockOrderBean = new StockOrderBean();												
-							stockOrderBean.setSourceOutletId(String.valueOf(sourceOutletId));
-							stockOrderBean.setOutlet(String.valueOf(inventoryCount.getOutlet().getOutletId()));
-							AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, products, productVariants, request);
-						}
 						InventoryCountWrapper inventoryCountWrapper = new InventoryCountWrapper();
 						inventoryCountWrapper.setProductList(productUpdateList);
 						//if(productUpdateList.size()>0){
@@ -1124,7 +1131,13 @@ public class InventoryCountDetailsController {
 						inventoryCount.setLastUpdated(new Date());
 						inventoryCount.setUpdatedBy(currentUser.getUserId());
 						inventoryCountWrapper.setInventoryCount(inventoryCount);
-						inventoryCountService.updateInventoryCountComplete(inventoryCountWrapper ,currentUser.getCompany());						
+						inventoryCountService.updateInventoryCountComplete(inventoryCountWrapper ,currentUser.getCompany());
+						if(stockOrderDetialBeansList!=null && stockOrderDetialBeansList.size()>0){
+							StockOrderBean stockOrderBean = new StockOrderBean();												
+							stockOrderBean.setSourceOutletId(String.valueOf(sourceOutletId));
+							stockOrderBean.setOutlet(String.valueOf(inventoryCount.getOutlet().getOutletId()));
+							AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, products, productVariants, request);
+						}
 						return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.INVENTORY_COUNT);
 					}else{
 						util.AuditTrail(request, currentUser, "InventoryCountDetails.addandUpdateInventoryCountDetail", "User "+ 
@@ -1132,11 +1145,11 @@ public class InventoryCountDetailsController {
 						return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 					}
 				}
-					else{
-						util.AuditTrail(request, currentUser, "InventoryCountController.addandUpdateInventoryCount", "User "+ 
-								currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
-						return new Response(stockDetails,StatusConstants.WARNING,LayOutPageConstants.STAY_ON_PAGE);
-					}
+				else{
+					util.AuditTrail(request, currentUser, "InventoryCountController.addandUpdateInventoryCount", "User "+ 
+							currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
+					return new Response(stockDetails,StatusConstants.WARNING,LayOutPageConstants.STAY_ON_PAGE);
+				}
 			}catch(Exception e){
 				e.printStackTrace();
 				StringWriter errors = new StringWriter();

@@ -81,7 +81,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 	public boolean updateInventoryCountComplete(InventoryCountWrapper inventoryCountWrapper, Company company) {
 		try {
 			if(inventoryCountWrapper.getInventoryCount() != null) {
-				getSessionFactory().getCurrentSession().update(inventoryCountWrapper.getInventoryCount());
+				getSessionFactory().getCurrentSession().saveOrUpdate(inventoryCountWrapper.getInventoryCount());
 			}
 			if(inventoryCountWrapper.getProductList().size() > 0 ) {
 				for(Product product: inventoryCountWrapper.getProductList()){
