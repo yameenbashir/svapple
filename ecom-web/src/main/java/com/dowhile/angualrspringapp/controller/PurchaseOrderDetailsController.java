@@ -2115,13 +2115,15 @@ public class PurchaseOrderDetailsController {
 						//List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
 						List<Product> productUpdateList = new ArrayList<>();
 						List<ProductVariant> productVariantUpdateList = new ArrayList<>();
+						List<Product> products = new ArrayList<>();
+						List<ProductVariant> productVariants = new ArrayList<>();
 						ProductListsWrapper productListsWrapper1 = productService.getAllProductsWarehouseandOutlet(stockOrder.getOutletBySourceOutletAssocicationId().getOutletId(), stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
-						productUpdateList.addAll(productListsWrapper1.getWarehouseProducts());
-						productUpdateList.addAll(productListsWrapper1.getOutletProducts());
-						productVariantUpdateList.addAll(productListsWrapper1.getWarehouseProductVariants());
-						productVariantUpdateList.addAll(productListsWrapper1.getOutletProductVariants());
-						if(productUpdateList!=null){
-							for(Product product:productUpdateList){
+						products.addAll(productListsWrapper1.getWarehouseProducts());
+						products.addAll(productListsWrapper1.getOutletProducts());
+						productVariants.addAll(productListsWrapper1.getWarehouseProductVariants());
+						productVariants.addAll(productListsWrapper1.getOutletProductVariants());
+						if(products!=null){
+							for(Product product:products){
 								productsMap.put(product.getProductId(), product);
 								if(product.getOutlet().getOutletId() == stockOrder.getOutletByOutletAssocicationId().getOutletId()){
 									recvProductList.put(product.getProductUuid(), product);
@@ -2131,8 +2133,8 @@ public class PurchaseOrderDetailsController {
 						Map<Integer, ProductVariant> productVariantsMap = new HashMap<>();
 						//Map<Integer, ProductVariant> 
 						//List<ProductVariant> productVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
-						if(productVariantUpdateList!=null){
-							for(ProductVariant productVariant:productVariantUpdateList){
+						if(productVariants!=null){
+							for(ProductVariant productVariant:productVariants){
 								productVariantsMap.put(productVariant.getProductVariantId(), productVariant);
 								if(productVariant.getOutlet().getOutletId() == stockOrder.getOutletByOutletAssocicationId().getOutletId()){
 									recvProductVariantList.put(productVariant.getProductVariantUuid(), productVariant);

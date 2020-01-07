@@ -768,8 +768,10 @@ public class InventoryCountDetailsController {
 												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()));
 												productVariantUpdateList.add(productVariant);
 											}else {
-												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
-												productVariantUpdateList.add(productVariant);
+												if(productVariant.getOutlet().getOutletId()==outletId){
+													productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
+													productVariantUpdateList.add(productVariant);
+												}
 											}
 										}										
 										/*}
@@ -792,8 +794,11 @@ public class InventoryCountDetailsController {
 												product.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()));
 												productUpdateList.add(product);
 												}else {
-													product.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
-													productUpdateList.add(product);
+													if(product.getOutlet().getOutletId()==outletId){
+														product.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
+														productUpdateList.add(product);
+													}
+													
 												}
 											}
 										}
@@ -818,8 +823,11 @@ public class InventoryCountDetailsController {
 												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getCountedProdQty()));
 												productVariantUpdateList.add(productVariant);
 											}else {
-												productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
-												productVariantUpdateList.add(productVariant);
+												if(productVariant.getOutlet().getOutletId()==outletId){
+													productVariant.setCurrentInventory(Integer.parseInt(inventoryCountDetailBean.getExpProdQty()));
+													productVariantUpdateList.add(productVariant);
+												}
+												
 											}
 										}
 									}
