@@ -63,6 +63,7 @@ import com.dowhile.service.StockOrderTypeService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.ProductListsWrapper;
 import com.dowhile.wrapper.StockWrapper;
 
 /**
@@ -2097,7 +2098,6 @@ public class PurchaseOrderDetailsController {
 				@PathVariable("grandTotal") String grandTotal,
 				@PathVariable("itemCount") String itemCount,
 				@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList,
-				List<Product> products, List<ProductVariant> productVariants,
 				HttpServletRequest request){
 			if(SessionValidator.isSessionValid(sessionId, request)){
 				HttpSession session =  request.getSession(false);
@@ -2115,8 +2115,13 @@ public class PurchaseOrderDetailsController {
 						//List<StockOrderDetail> stockOrderDetailsAddList = new ArrayList<>();
 						List<Product> productUpdateList = new ArrayList<>();
 						List<ProductVariant> productVariantUpdateList = new ArrayList<>();
-						if(products!=null){
-							for(Product product:products){
+						ProductListsWrapper productListsWrapper1 = productService.getAllProductsWarehouseandOutlet(stockOrder.getOutletBySourceOutletAssocicationId().getOutletId(), stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
+						productUpdateList.addAll(productListsWrapper1.getWarehouseProducts());
+						productUpdateList.addAll(productListsWrapper1.getOutletProducts());
+						productVariantUpdateList.addAll(productListsWrapper1.getWarehouseProductVariants());
+						productVariantUpdateList.addAll(productListsWrapper1.getOutletProductVariants());
+						if(productUpdateList!=null){
+							for(Product product:productUpdateList){
 								productsMap.put(product.getProductId(), product);
 								if(product.getOutlet().getOutletId() == stockOrder.getOutletByOutletAssocicationId().getOutletId()){
 									recvProductList.put(product.getProductUuid(), product);
@@ -2126,8 +2131,8 @@ public class PurchaseOrderDetailsController {
 						Map<Integer, ProductVariant> productVariantsMap = new HashMap<>();
 						//Map<Integer, ProductVariant> 
 						//List<ProductVariant> productVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
-						if(productVariants!=null){
-							for(ProductVariant productVariant:productVariants){
+						if(productVariantUpdateList!=null){
+							for(ProductVariant productVariant:productVariantUpdateList){
 								productVariantsMap.put(productVariant.getProductVariantId(), productVariant);
 								if(productVariant.getOutlet().getOutletId() == stockOrder.getOutletByOutletAssocicationId().getOutletId()){
 									recvProductVariantList.put(productVariant.getProductVariantUuid(), productVariant);

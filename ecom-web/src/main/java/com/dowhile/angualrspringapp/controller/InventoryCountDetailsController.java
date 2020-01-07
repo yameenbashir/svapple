@@ -1136,7 +1136,7 @@ public class InventoryCountDetailsController {
 							StockOrderBean stockOrderBean = new StockOrderBean();												
 							stockOrderBean.setSourceOutletId(String.valueOf(sourceOutletId));
 							stockOrderBean.setOutlet(String.valueOf(inventoryCount.getOutlet().getOutletId()));
-							AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, products, productVariants, request);
+							AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, request);
 						}
 						return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.INVENTORY_COUNT);
 					}else{
@@ -1165,7 +1165,7 @@ public class InventoryCountDetailsController {
 
 
 	@SuppressWarnings("rawtypes")
-	private boolean AddStockOrder(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, Double itemCount, List<Product> products, List<ProductVariant> productVariants, HttpServletRequest request)
+	private boolean AddStockOrder(String sessionId, StockOrderBean stockOrderBean, List<StockOrderDetailBean> stockOrderDetailBeanList, Double grandTotal, Double itemCount, HttpServletRequest request)
 	{
 		boolean added = false;
 		if(stockOrderDetailBeanList.size() > 0){				
@@ -1204,7 +1204,7 @@ public class InventoryCountDetailsController {
 			//PurchaseOrderDetailsController purchaseOrderDetailsController = new PurchaseOrderDetailsController();
 			String total = grandTotal.toString();
 			String items = itemCount.toString();
-			purchaseOrderDetailsController.updateAndAutoTransferStockOrderDetails(sessionId, total, items, stockOrderDetailBeanList, products, productVariants, request);
+			purchaseOrderDetailsController.updateAndAutoTransferStockOrderDetails(sessionId, total, items, stockOrderDetailBeanList, request);
 			//StockOrderDetail Finish
 			added = true;
 		}

@@ -82,6 +82,7 @@ var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$
 								$scope.inventoryCountBean.inventoryCountTypeDesc = value.inventoryCountTypeDesc;
 							}
 						});
+						$cookieStore.put('_ct_sc_ost','');
 						$cookieStore.put('_ct_sc_ost',$scope.inventoryCountBean);
 						$window.location = Response.layOutPath;
 					    }, 3000);
