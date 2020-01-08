@@ -604,7 +604,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 						$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].retailPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
 					}
 					else{
-						$scope.stockOrderDetailBeansList[i].recvTotal = value.ordrSupplyPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
+						$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].ordrSupplyPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
 					}				
 					if(isNaN($scope.stockOrderDetailBeansList[i].recvTotal)){
 						$scope.stockOrderDetailBeansList[i].recvTotal = "0";
