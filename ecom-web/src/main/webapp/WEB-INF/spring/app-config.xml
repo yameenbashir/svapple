@@ -35,10 +35,14 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		<property name="companyDAO" ref="CompanyDAO" />
 	</bean>
 
+
+	<!-- <bean id="ProductControllerWrapperService" class="com.dowhile.service.impl.ProductControllerWrapperServiceImpl">
+		<property name="productControllerWrapperDAO" ref="ProductControllerWrapperDAO" />
+	</bean> -->
+	
 	<bean id="OutletService" class="com.dowhile.service.impl.OutletServiceImpl">
 		<property name="outletDAO" ref="OutletDAO" />
 	</bean>
-
 	<bean id="RegisterService" class="com.dowhile.service.impl.RegisterServiceImpl">
 		<property name="registerDAO" ref="RegisterDAO" />
 	</bean>
@@ -465,6 +469,9 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="StockOrderVDAO" class="com.dowhile.dao.impl.StockOrderVDAOImpl">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
+	<!-- <bean id="ProductControllerWrapperDAO" class="com.dowhile.dao.impl.ProductControllerWrapperDAOImpl">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean> -->
 	
 		
 	<!-- <bean id="ContactUsDAO" class="com.dowhile.dao.impl.ContactUsDAOImpl">
