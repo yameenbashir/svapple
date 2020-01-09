@@ -267,6 +267,7 @@ public class LoginController {
 				System.out.println("Authorizing user for domain: "+domianConfiguration.getPropertyValue());
 				if(!SessionValidator.isSessionValid(session.getId(), request)){
 					System.out.println("Authorization failde for user : "+loginBean.getUserName()+" against companyId : "+company.getCompanyId()+" with company Name: "+company.getCompanyName());
+					System.out.println("User associated with outlet Id: "+outlet.getOutletId()+" having outlet name: "+outlet.getOutletName());
 					util.AuditTrail(request, user, "LoginController.doLogin", "Authorization failde for user : "+
 					loginBean.getUserName()+" against companyId : "+company.getCompanyId()+
 					" with company Name: "+company.getCompanyName(),false);
