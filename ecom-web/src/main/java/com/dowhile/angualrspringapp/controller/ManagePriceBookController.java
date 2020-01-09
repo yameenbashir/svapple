@@ -3,6 +3,8 @@ package com.dowhile.angualrspringapp.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -100,8 +102,7 @@ public class ManagePriceBookController {
 	private Map contactGroupMap = new HashMap<>();
 	@SuppressWarnings("rawtypes")
 	private Map productMap = new HashMap<>();
-	@SuppressWarnings("rawtypes")
-	private Map tagMap = new HashMap<>();
+	private Map<Integer,Tag> tagMap = new HashMap<>();
 
 	@RequestMapping("/layout")
 	public String getManagePriceBookControllerPartialPage(ModelMap modelMap) {
@@ -156,7 +157,7 @@ public class ManagePriceBookController {
 					 productTagBeanList = (List<ProductTagBean>) response.data;
 				}
 				
-				response = ProductTagsController.getAllTags(sessionId, request);
+				response = getAllTags(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					tagBeanList = (List<TagBean>) response.data;
 				}
@@ -1198,6 +1199,55 @@ public class ManagePriceBookController {
 			}
 		}
 		return null;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/getAllTags/{sessionId}", method = RequestMethod.POST)
+	public @ResponseBody Response getAllTags(@PathVariable("sessionId") String sessionId,
+			HttpServletRequest request) {
+
+		List<TagBean> tagBeanList = new ArrayList<>();
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+
+
+			try {
+				if(tagMap!=null && !tagMap.isEmpty()){
+					for (Map.Entry<Integer,Tag> entry : tagMap.entrySet()){
+						Tag tag = entry.getValue();
+						TagBean tagBean = new TagBean();
+						tagBean.setTagId(tag.getTagId().toString());
+						tagBean.setTagName(tag.getTagName());
+						tagBeanList.add(tagBean);
+					}
+				
+					util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags", 
+							"User "+ currentUser.getUserEmail()+" retrived all Tags successfully ",false);
+					return new Response(tagBeanList, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+				} else {
+					util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags", 
+							" Tags are not found requested by User "+currentUser.getUserEmail(),false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,
+							StatusConstants.RECORD_NOT_FOUND,
+							LayOutPageConstants.STAY_ON_PAGE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
+						StatusConstants.RECORD_NOT_FOUND,
+						LayOutPageConstants.STAY_ON_PAGE);
+
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+		}
+
 	}
 }
 
