@@ -658,10 +658,6 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			$scope.InvoiceMainBean = {};
 			$scope.InvoiceMainBean.invoiceDetails = [];
 			$scope.listPayments = [];
-			$scope.previousBalance = 0;
-			$scope.totalBalance = 0;
-			$scope.balance = 0;
-			
 			$scope.InvoiceMainBean.invoiceNetAmt=0;
 			$scope.InvoiceMainBean.invoiceAmt = 0;
 			$scope.InvoiceMainBean.invoiceGivenAmt = 0;
@@ -776,7 +772,17 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 
 			$scope.InvoiceMainBean.settledAmt = parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat($scope.InvoiceMainBean.settledAmt);
 			$scope.balance = 0;
-		} else if (parseFloat($scope.InvoiceMainBean.invoiceGivenAmt) <= (parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat($scope.InvoiceMainBean.settledAmt))) {
+		}
+		
+		
+		else if (parseFloat($scope.InvoiceMainBean.invoiceNetAmt) != 0 && ($scope.InvoiceMainBean.invoiceGivenAmt == '' || $scope.InvoiceMainBean.invoiceGivenAmt == undefined ||$scope.InvoiceMainBean.invoiceGivenAmt == 'undefined' || parseFloat($scope.InvoiceMainBean.invoiceGivenAmt) == 0 ))
+		{
+		$scope.error = true;
+		$scope.errorMessage = 'Sale with 0 Amount is not allowed.';
+		return;
+		
+		}
+		else if (parseFloat($scope.InvoiceMainBean.invoiceGivenAmt) <= (parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat($scope.InvoiceMainBean.settledAmt))) {
 			$scope.InvoiceMainBean.settledAmt = parseFloat($scope.InvoiceMainBean.invoiceGivenAmt);
 
 
@@ -821,19 +827,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 
 		}
 
-		if(parseFloat($scope.InvoiceMainBean.invoiceGivenAmt) == '0' || parseFloat($scope.InvoiceMainBean.invoiceGivenAmt) == null ){
-			$scope.error = true;
-			$scope.errorMessage = 'Sale of Product with Zero Amount Not Allowed';
-			$timeout(function() {
-				$scope.error = false;
-				$scope.cashloading = false;
-				$scope.creditloading = false;
-				
-			}, 2000);
-			$scope.autoCompleteOptionsCustomers();
-			//$scope.fetchAllCustomers();
-		
-		}
+
 		$scope.payment.amount = parseFloat($scope.InvoiceMainBean.invoiceGivenAmt);
 
 //		if($scope.returnvalue <= 0)
@@ -885,28 +879,13 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 
 				$scope.sendMessage($scope.InvoiceMainBean.invoiceNetAmt);
 			} else if ($scope.responseStatus == 'INVALIDSESSION'
-				|| $scope.responseStatus == 'SYSTEMBUSY' || $scope.responseStatus == 'WARNING') {
-				
-				
+				|| $scope.responseStatus == 'SYSTEMBUSY') {
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
-				$timeout(function(){
-					$scope.error = false;
-					$window.location = Response.layOutPath;
-					$scope.cashloading = false;
-					$scope.creditloading = false;
-				    }, 1500);
-				
+				$window.location = Response.layOutPath;
 			} else {
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
-				$timeout(function(){
-					$scope.error = false;
-					$window.location = Response.layOutPath;
-					$scope.cashloading = false;
-					$scope.creditloading = false;
-									
-				    }, 1500);
 			}
 		}).error(function(Response) {
 			$rootScope.online = false;
@@ -958,7 +937,6 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$scope.balance = parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat($scope.InvoiceMainBean.settledAmt);
 
 		$scope.change = parseFloat(	$scope.InvoiceMainBean.invoiceGivenAmt ) - parseFloat($scope.InvoiceMainBean.settledAmt);
-		
 		$scope.InvoiceMainBean.invoiceGivenAmt =  parseFloat($scope.balance);
 		if($scope.balance == 0)
 		{
@@ -1496,13 +1474,11 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 				$scope.InvoiceMainBean.customerId = $scope.selectedItem.item.customerId;
 				$scope.customerBalance=$scope.selectedItem.item.customerBalance;
 				$scope.customerLayBy= $scope.selectedItem.item.customerlaybyAmount;
-				if($scope.selectedItem.item.customerBalance!=null && $scope.selectedItem.item.customerBalance>0 && $scope.InvoiceMainBean.settledAmt>0){
-					/*$scope.previousBalance =  parseFloat($scope.InvoiceMainBean.invoiceNetAmt)+ parseFloat($scope.selectedItem.item.customerBalance)-parseFloat($scope.InvoiceMainBean.settledAmt);*/
-					  $scope.previousBalance = parseFloat($scope.selectedItem.item.customerBalance);
-				}else if($scope.selectedItem.item.customerBalance!=null && $scope.selectedItem.item.customerBalance>0){
-						$scope.previousBalance = parseFloat($scope.selectedItem.item.customerBalance);
-						}else{
-							$scope.previousBalance = 0;
+				if($scope.selectedItem.item.customerBalance!=null && $scope.selectedItem.item.customerBalance>0){
+					$scope.totalPayable =  parseFloat($scope.InvoiceMainBean.invoiceNetAmt)+ parseFloat($scope.selectedItem.item.customerBalance)-parseFloat($scope.InvoiceMainBean.invoiceGivenAmt);
+					
+				}else if($scope.selectedItem.item.customerBalance=null && $scope.selectedItem.item.customerBalance<0){
+						$scope.totalPayable = parseFloat($scope.selectedItem.item.invoiceNetAmt);
 						}
 
 			}
@@ -1702,8 +1678,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	$scope.selectCustomerOrCreate = function() {
 		//$scope.selectCustomer = true;
 		$scope.searchCustomer = true;
-		$scope.showCustomerModal = true;		
-		 $scope.fetchAllCustomers();
+		$scope.showCustomerModal = true;
 	};
 	
 	
