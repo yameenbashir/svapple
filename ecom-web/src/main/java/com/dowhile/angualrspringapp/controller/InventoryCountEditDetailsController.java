@@ -104,6 +104,7 @@ public class InventoryCountEditDetailsController {
 	private Map<String, ProductVariantBean> warehouseProductBeansSKUMap = new HashMap<>();
 	private Map<String, ProductVariantBean> warehouseProductVariantBeansSKUMap = new HashMap<>();
 	private int headOfficeOutletId; //= 1;
+	private int outletId;
 	ProductListsWrapper productListsWrapper;
 	
 	@RequestMapping("/layout")
@@ -131,8 +132,13 @@ public class InventoryCountEditDetailsController {
 			User currentUser = (User) session.getAttribute("user");
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			headOfficeOutletId = outletService.getHeadOfficeOutlet(currentUser.getCompany().getCompanyId()).getOutletId();
+			outletId = currentUser.getOutlet().getOutletId();
 			try {
-				productListsWrapper = productService.getAllProductsWarehouseandOutlet(headOfficeOutletId, currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				if(outletId != headOfficeOutletId) {
+					productListsWrapper = productService.getAllProductsWarehouseandOutlet(headOfficeOutletId, currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				}else {
+					productListsWrapper = productService.getAllProductsOutlet(outletId, currentUser.getCompany().getCompanyId());
+				}
 				Response response = getAllProductsByOutletId(sessionId, headOfficeOutletId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					//productBeansList = (List<ProductVariantBean>) response.data;
@@ -171,7 +177,6 @@ public class InventoryCountEditDetailsController {
 				else{
 					autoTransfer = false;
 				}
-				int outletId = currentUser.getOutlet().getOutletId();
 				if(outletId == headOfficeOutletId){
 					autoTransfer = false;
 				}
@@ -198,6 +203,13 @@ public class InventoryCountEditDetailsController {
 					if(response.status.equals(StatusConstants.SUCCESS)){
 						allProductVariantBeansList = (List<ProductVariantBean>) response.data;
 					}	*/				
+				}else {
+					for(ProductVariantBean product:complProductBeansList){
+						outletProductBeansList.add(product);
+					}
+					for(ProductVariantBean productVariant:complProductVariantBeansList){
+						outletProductVariantBeansList.add(productVariant);
+					}
 				}
 				response = getAllDetailsByInventoryCountIdCustom(sessionId, inventoryCountBean, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
@@ -212,18 +224,22 @@ public class InventoryCountEditDetailsController {
 				System.out.println("outletProductVariantBeansList size: " + outletProductVariantBeansList.size());
 				inventoryCountControllerBean.setInventoryCountDetailBeansList(inventoryCountDetailBeansList);
 				//System.out.println("inventoryCountDetailBeansList size: " + inventoryCountDetailBeansList.size());
-				inventoryCountControllerBean.setAllProductBeansList(warehouseProductBeansList); // Warehouse Products Beans
-				System.out.println("allProductBeansList size: " + warehouseProductBeansList.size());
-				inventoryCountControllerBean.setAllProductVariantBeansList(warehouseProductVariantBeansList); //warehouse ProductVariant Beans
-				System.out.println("allProductVariantBeansList size: " + warehouseProductVariantBeansList.size());
+				if(outletId != headOfficeOutletId) {
+					inventoryCountControllerBean.setAllProductBeansList(warehouseProductBeansList); // Warehouse Products Beans
+					System.out.println("allProductBeansList size: " + warehouseProductBeansList.size());
+					inventoryCountControllerBean.setAllProductVariantBeansList(warehouseProductVariantBeansList); //warehouse ProductVariant Beans
+					System.out.println("allProductVariantBeansList size: " + warehouseProductVariantBeansList.size());
+				}
 				inventoryCountControllerBean.setProductVariantMap(productVariantBeansSKUMap); // outlet ProductVariants
 				System.out.println("productVariantMap size: " + productVariantBeansSKUMap.size());
 				inventoryCountControllerBean.setProductMap(productBeansSKUMap); //outlet Products
 				System.out.println("productMap size: " + productBeansSKUMap.size());
-				inventoryCountControllerBean.setAllProductMap(warehouseProductBeansSKUMap); // Warehouse Products
-				System.out.println("allProductMap size: " + warehouseProductBeansSKUMap.size());
-				inventoryCountControllerBean.setAllProductVariantMap(warehouseProductVariantBeansSKUMap); // Warehouse ProductVariants
-				System.out.println("allProductVariantMap size: " + warehouseProductVariantBeansSKUMap.size());
+				if(outletId != headOfficeOutletId) {
+					inventoryCountControllerBean.setAllProductMap(warehouseProductBeansSKUMap); // Warehouse Products
+					System.out.println("allProductMap size: " + warehouseProductBeansSKUMap.size());
+					inventoryCountControllerBean.setAllProductVariantMap(warehouseProductVariantBeansSKUMap); // Warehouse ProductVariants
+					System.out.println("allProductVariantMap size: " + warehouseProductVariantBeansSKUMap.size());
+				}
 				util.AuditTrail(request, currentUser, "InventoryCountController.getInventoryCountControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived InventoryCountControllerData successfully ",false);
 				return new Response(inventoryCountControllerBean, StatusConstants.SUCCESS,
@@ -245,7 +261,6 @@ public class InventoryCountEditDetailsController {
 
 	}
 
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllProductsByOutletId/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response getAllProductsByOutletId(@PathVariable("sessionId") String sessionId, int warehousOutlletId, HttpServletRequest request){
@@ -259,8 +274,10 @@ public class InventoryCountEditDetailsController {
 			try {			
 				productList.addAll(productListsWrapper.getOutletProducts());
 				System.out.println("Product size: " + productList.size());
-				productList.addAll(productListsWrapper.getWarehouseProducts());
-				System.out.println("Product Warehosue Added size: " + productList.size());
+				if(outletId != headOfficeOutletId) {
+					productList.addAll(productListsWrapper.getWarehouseProducts());
+					System.out.println("Product Warehosue Added size: " + productList.size());
+				}
 				//productList = productService.getAllProductsWarehouseandOutlet(warehousOutlletId, currentUser.getOutlet().getOutletId() ,currentUser.getCompany().getCompanyId());
 				if(productList != null){
 					for(Product product:productList){
@@ -300,9 +317,11 @@ public class InventoryCountEditDetailsController {
 							if(product.getOutlet().getOutletId() == currentUser.getOutlet().getOutletId()) {
 								productBeansSKUMap.put(product.getSku().toLowerCase(), productVariantBean);
 							}
-							if(product.getOutlet().getOutletId() == warehousOutlletId) {
-								productVariantBean.setAuditTransfer("true");
-								warehouseProductBeansSKUMap.put(product.getSku().toLowerCase(), productVariantBean);
+							if(outletId != headOfficeOutletId) {
+								if(product.getOutlet().getOutletId() == warehousOutlletId) {
+									productVariantBean.setAuditTransfer("true");
+									warehouseProductBeansSKUMap.put(product.getSku().toLowerCase(), productVariantBean);
+								}
 							}
 							productVariantBeansList.add(productVariantBean);
 						}		
@@ -433,8 +452,10 @@ public class InventoryCountEditDetailsController {
 				//productVariantList = productVariantService.getAllProductVariantsWarehouseandOutlet(warehouseOutletId, currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				productVariantList.addAll(productListsWrapper.getOutletProductVariants());
 				System.out.println("outlet ProductVariant size: " + productVariantList.size());
-				productVariantList.addAll(productListsWrapper.getWarehouseProductVariants());
-				System.out.println("Warehouse ProductVariant size: " + productVariantList.size());
+				if(outletId != headOfficeOutletId) {
+					productVariantList.addAll(productListsWrapper.getWarehouseProductVariants());
+					System.out.println("Warehouse ProductVariant size: " + productVariantList.size());
+				}
 				/*Map<Integer, Product> productsMap1 = new HashMap<>();
 				List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
 				if(products!=null){
@@ -478,9 +499,11 @@ public class InventoryCountEditDetailsController {
 						if(productVariant.getOutlet().getOutletId() == currentUser.getOutlet().getOutletId()) {
 							productVariantBeansSKUMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
 						}
-						if(productVariant.getOutlet().getOutletId() == warehouseOutletId) {
-							productVariantBean.setAuditTransfer("true");
-							warehouseProductVariantBeansSKUMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
+						if(outletId != headOfficeOutletId) {
+							if(productVariant.getOutlet().getOutletId() == warehouseOutletId) {
+								productVariantBean.setAuditTransfer("true");
+								warehouseProductVariantBeansSKUMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
+							}
 						}
 						productVariantBeansList.add(productVariantBean);
 					}

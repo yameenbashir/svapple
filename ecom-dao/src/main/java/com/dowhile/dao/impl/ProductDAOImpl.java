@@ -600,6 +600,46 @@ public class ProductDAOImpl implements ProductDAO{
 			ex.printStackTrace();
 		}
 		return null;
+	} 
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ProductListsWrapper getAllProductsOutlet(int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			ProductListsWrapper productListsWrapper = new ProductListsWrapper();
+			long start = System.currentTimeMillis();
+			List<Product> list = getSessionFactory().getCurrentSession()
+					.createQuery("from Product where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
+			if(list != null && list.size() > 0) {
+				System.out.println("Outlet Product size: " + list.size());
+			}else {
+				System.out.println("Outlet Product size: 0");
+			}
+			List<ProductVariant> list2 = getSessionFactory().getCurrentSession()
+					.createQuery("from ProductVariant where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
+			if(list2 != null && list2.size() > 0) {
+				System.out.println("Outlet Product Variant size: " + list2.size());
+			}else {
+				System.out.println("Outlet Product Variant size: 0");
+			}			
+			productListsWrapper.setOutletProducts(list);
+			productListsWrapper.setOutletProductVariants(list2);		
+			long end   = System.currentTimeMillis();
+			NumberFormat formatter = new DecimalFormat("#0.00000");
+			System.out.println("Execution time to get All Product + Product Variant is " + formatter.format((end - start) / 1000d) + " seconds");
+			if(productListsWrapper!=null){
+
+				return productListsWrapper;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return null;
 	}
 	
 }

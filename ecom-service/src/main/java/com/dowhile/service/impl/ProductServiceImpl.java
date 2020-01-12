@@ -250,4 +250,10 @@ public class ProductServiceImpl implements ProductService{
 		// TODO Auto-generated method stub
 		return getProductDAO().getAllProductsWarehouseandOutlet(warehouseOutletId, outletId, companyId);
 	}
+	
+	@Override
+	public ProductListsWrapper getAllProductsOutlet(int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		return getProductDAO().getAllProductsOutlet(outletId, companyId);
+	}
 }

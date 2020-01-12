@@ -41,4 +41,5 @@ public interface ProductDAO {
 	List<Product> getAllActiveProducts();
 	List<Product> getAllActiveProductsByOutletIdCompanyId(int outletId,int companyId);
 	ProductListsWrapper getAllProductsWarehouseandOutlet(int warehouseOutletId, int outletId, int companyId);
+	ProductListsWrapper getAllProductsOutlet(int outletId, int companyId);
 }
