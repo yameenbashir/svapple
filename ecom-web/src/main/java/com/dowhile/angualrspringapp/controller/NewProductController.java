@@ -240,6 +240,7 @@ public class NewProductController {
 			System.out.println("getNewProductControllerData request received for user: "+currentUser.getUserEmail()+" for companyId / company : "+currentUser.getCompany().getCompanyId()+" / "+currentUser.getCompany().getCompanyName()
 					+ " against outletId / outlet:"+currentUser.getOutlet().getOutletId()+" / "+currentUser.getOutlet().getOutletName());
 			try {
+				initializeClassObjects();
 				long start = System.currentTimeMillis();
 				productControllerWrapper = productControllerWrapperService.getProductControllerWrapperDataByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
 				long endWrapper   = System.currentTimeMillis();
@@ -342,6 +343,7 @@ public class NewProductController {
 						"User "+ currentUser.getUserEmail()+" retrived NewProductController data successfully ",false);
 				long endTimeTotal   = System.currentTimeMillis();
 				System.out.println("For User "+ currentUser.getUserEmail()+ "Execution time to get NewProductController.getNewProductControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
+				destroyClassObjects();
 				return new Response(newProductControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
@@ -411,6 +413,7 @@ public class NewProductController {
 			User currentUser = (User) session.getAttribute("user");
 
 			try{
+				initializeClassObjects();
 				int totalQunatity = 0;
 				List<OutletBean> outletsist = productBean.getOutletList();
 				//To check duplicate bar code start
@@ -512,7 +515,7 @@ public class NewProductController {
 					long endProductAdd   = System.currentTimeMillis();
 //					NumberFormat formatter = new DecimalFormat("#0.00000");
 					System.out.println("For User "+ currentUser.getUserEmail()+" Execution time to complete add product Process is " + formatter.format((endProductAdd - start) / 1000d) + " seconds");
-					
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "NewProductController.addProduct", 
 							"User "+ currentUser.getUserEmail()+"For all outlets Added Product/s +"+productBean.getProductName()+" successfully ",false);
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.PRODUCTS);
@@ -1041,8 +1044,15 @@ public class NewProductController {
 
 
 			try {
-//				variantAttributesList = variantAttributeService.getAllVariantAttributes(currentUser.getCompany().getCompanyId());
-				variantAttributesList = productControllerWrapper.getVariantAttributesList();
+				if(productControllerWrapper==null){
+					variantAttributesList = variantAttributeService.getAllVariantAttributes(currentUser.getCompany().getCompanyId());
+//					variantAttributesList = productControllerWrapper.getVariantAttributesList();
+
+				}else{
+//					variantAttributesList = variantAttributeService.getAllVariantAttributes(currentUser.getCompany().getCompanyId());
+					variantAttributesList = productControllerWrapper.getVariantAttributesList();
+
+				}
 				if (variantAttributesList != null) {
 					for (VariantAttribute variantAttribute : variantAttributesList) {
 
@@ -1050,7 +1060,9 @@ public class NewProductController {
 						variantAttributeBean.setVarientAttributeId(variantAttribute.getVariantAttributeId().toString());
 						variantAttributeBean.setAttributeName(variantAttribute.getAttributeName());
 						variantAttributeBeanList.add(variantAttributeBean);
+						variantAttributeBean = null;
 					}
+					variantAttributesList = null;
 					util.AuditTrail(request, currentUser, "NewProductController.getAllVariantAttributes", 
 							"User "+ currentUser.getUserEmail()+" retrived all Variant attributes successfully ",false);
 					return new Response(variantAttributeBeanList, StatusConstants.SUCCESS,
@@ -1432,8 +1444,15 @@ public class NewProductController {
 			User currentUser = (User) session.getAttribute("user");
 
 			try {
-//				List<Contact> suppliers = supplierService.getAllContactsByCompanyIdContactType(currentUser.getCompany().getCompanyId(),"SUPPLIER");
-				List<Contact> suppliers =productControllerWrapper.getContactsList();
+				List<Contact> suppliers = null;
+				if(productControllerWrapper==null){
+					 suppliers = supplierService.getAllContactsByCompanyIdContactType(currentUser.getCompany().getCompanyId(),"SUPPLIER");
+//					List<Contact> suppliers =productControllerWrapper.getContactsList();
+				}else{
+//					List<Contact> suppliers = supplierService.getAllContactsByCompanyIdContactType(currentUser.getCompany().getCompanyId(),"SUPPLIER");
+					suppliers =productControllerWrapper.getContactsList();
+				}
+
 				if (suppliers != null && suppliers.size() > 0) {
 					for (Contact item : suppliers) {
 						if(item.getContactType()!=null && item.getContactType().contains("SUPPLIER")){
@@ -1441,8 +1460,10 @@ public class NewProductController {
 							bean.setSupplierName(item.getContactName());
 							bean.setSupplierId(item.getContactId().toString());
 							supplierBeans.add(bean);
+							bean =  null;
 						}
 					}
+					suppliers = null;
 					return new Response(supplierBeans, StatusConstants.SUCCESS,
 							LayOutPageConstants.STAY_ON_PAGE);
 				} else {
@@ -1479,8 +1500,15 @@ public class NewProductController {
 
 
 			try {
-//				productTypeList = productTypeService.getAllProductTypes(currentUser.getCompany().getCompanyId());
-				productTypeList =productControllerWrapper.getProductTypeList();
+				if(productControllerWrapper==null){
+					productTypeList = productTypeService.getAllProductTypes(currentUser.getCompany().getCompanyId());
+//					productTypeList =productControllerWrapper.getProductTypeList();
+	
+				}else{
+//					productTypeList = productTypeService.getAllProductTypes(currentUser.getCompany().getCompanyId());
+					productTypeList =productControllerWrapper.getProductTypeList();
+
+				}
 				if (productTypeList != null) {
 					for (ProductType productType : productTypeList) {
 
@@ -1491,6 +1519,7 @@ public class NewProductController {
 						productTypeBeanList.add(productTypeBean);
 
 					}
+					productTypeList = null;
 					util.AuditTrail(request, currentUser, "NewProductController.getAllProductTypes", 
 							"User "+ currentUser.getUserEmail()+" retrived all Product Types successfully ",false);
 					return new Response(productTypeBeanList, StatusConstants.SUCCESS,
@@ -1579,8 +1608,15 @@ public class NewProductController {
 
 
 			try {
-//				brandsList = brandService.getAllBrands(currentUser.getCompany().getCompanyId());
-				brandsList = productControllerWrapper.getBrandsList();
+				if(productControllerWrapper==null){
+					brandsList = brandService.getAllBrands(currentUser.getCompany().getCompanyId());
+//					brandsList = productControllerWrapper.getBrandsList();
+
+				}else{
+//					brandsList = brandService.getAllBrands(currentUser.getCompany().getCompanyId());
+					brandsList = productControllerWrapper.getBrandsList();
+
+				}
 				if (brandsList != null) {
 					for (Brand brand : brandsList) {
 
@@ -1589,8 +1625,10 @@ public class NewProductController {
 						brandBean.setBrandName(brand.getBrandName());
 						brandBean.setBrandDescription(brand.getBrandDescription());
 						brandBeanList.add(brandBean);
+						brandBean = null;
 
 					}
+					brandsList = null;
 					util.AuditTrail(request, currentUser, "NewProductController.getAllBrands", 
 							"User "+ currentUser.getUserEmail()+" retrived all Brands successfully ",false);
 					return new Response(brandBeanList, StatusConstants.SUCCESS,
@@ -1632,8 +1670,15 @@ public class NewProductController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-//				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
-				outlets = productControllerWrapper.getOutlets();
+				if(productControllerWrapper==null){
+					outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+//					outlets = productControllerWrapper.getOutlets();
+
+				}else{
+//					outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+					outlets = productControllerWrapper.getOutlets();
+
+				}
 				if(outlets!=null){
 					for(Outlet outlet:outlets){
 						OutletBean outletBean = new OutletBean();
@@ -1716,7 +1761,9 @@ public class NewProductController {
 
 
 						outletBeans.add(outletBean);
+						outletBean = null;
 					}
+					outlets = null;
 					return new Response(outletBeans,StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
 				}
 				else{
@@ -1919,8 +1966,14 @@ public class NewProductController {
 
 
 			try {
-//				tagsList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
-				tagsList = productControllerWrapper.getTagsList();
+				if(productControllerWrapper==null){
+					tagsList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
+
+				}else{
+//					tagsList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
+					tagsList = productControllerWrapper.getTagsList();
+
+				}
 				if (tagsList != null) {
 					for (Tag tag : tagsList) {
 
@@ -1929,8 +1982,10 @@ public class NewProductController {
 						tagBean.setTagName(tag.getTagName());
 //						tagBean.setNumberOfProducts(String.valueOf(productTagService.getCountOfProductTagsByTagId(tag.getTagId(),currentUser.getCompany().getCompanyId())));
 						tagBeanList.add(tagBean);
+						tagBean = null;
 
 					}
+					tagsList = null;
 					util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags", 
 							"User "+ currentUser.getUserEmail()+" retrived all Tags successfully ",false);
 					return new Response(tagBeanList, StatusConstants.SUCCESS,
@@ -2021,6 +2076,39 @@ public class NewProductController {
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of NewProductController");
+		products = null;
+		productVariantBarCodeMap = new HashMap<>();
+		variantAttributeMap = new HashMap<>();
+		productControllerWrapper = null;
+		productsMap = new HashMap<>();
+		productVariantMap = new HashMap<>();
+		contactsMap = new HashMap<>();
+		productTypeMap = new HashMap<>();
+		brandsMap = new HashMap<>();
+		outletsMap = new HashMap<>();
+		variantAttributesMap = new HashMap<>();
+		tagsMap = new HashMap<>();
+		salesTaxMap = new HashMap<>();
+		salesTaxMap = new HashMap<>();
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of NewProductController");
+		products = null;
+		productVariantBarCodeMap  = null; 
+		variantAttributeMap = null;
+		productControllerWrapper = null;
+		productsMap = null;
+		productVariantMap = null;
+		contactsMap = null;
+		productTypeMap = null;
+		brandsMap = null;
+		outletsMap = null;
+		variantAttributesMap = null;
+		tagsMap = null;
+		salesTaxMap = null;
 	}
 
 }

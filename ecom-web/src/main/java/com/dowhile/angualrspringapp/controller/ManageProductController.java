@@ -160,15 +160,19 @@ public class ManageProductController {
 				//variants should only be added 1 time for warehouse
 				boolean variantsAddedForWarehouse = false;
 				//added by Zafar for autoStockOrder
-				stockOrderDetialBeansList = new ArrayList<>();
+/*				stockOrderDetialBeansList = new ArrayList<>();
 				grandTotal = 0.0;
 				itemCount = 0.0;
 				stockReturnDetialBeansList = new ArrayList<>();
 				grandTotalReturn = 0.0;
 				itemCountReturn = 0.0;
-				headOfficeId = 0;			
-				configurationStockOrder = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_ORDER_NEW_PRODUCT",currentUser.getCompany().getCompanyId());
-				configurationReturnStock = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_RETURN_MANAGE_PRODUCT",currentUser.getCompany().getCompanyId());
+				headOfficeId = 0;	*/		
+				initializeClassObjects();
+				Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+				configurationStockOrder = configurationMap.get("AUTO_STOCK_ORDER_NEW_PRODUCT");
+				configurationReturnStock = configurationMap.get("AUTO_STOCK_RETURN_MANAGE_PRODUCT");
+//				configurationStockOrder = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_ORDER_NEW_PRODUCT",currentUser.getCompany().getCompanyId());
+//				configurationReturnStock = configurationService.getConfigurationByPropertyNameByCompanyId("AUTO_STOCK_RETURN_MANAGE_PRODUCT",currentUser.getCompany().getCompanyId());
 				//Finish 
 				
 				
@@ -515,7 +519,7 @@ public class ManageProductController {
 								}
 							}
 						}
-						Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+//						Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 						Configuration dutyCalculatorConfiguration = configurationMap.get("SHOW_DUTY_CALCULATOR");
 						if(dutyCalculatorConfiguration!=null && dutyCalculatorConfiguration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 							ProductPriceHistoryBean productPriceHistoryBean = productBean.getProductPriceHistoryBean();
@@ -629,6 +633,7 @@ public class ManageProductController {
 						stockOrderBean.setSupplierId(productBean.getSupplierId());
 						AddStockReturn(sessionId, stockOrderBean, stockReturnDetialBeansList, grandTotalReturn, itemCountReturn, request);
 					}
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "ManageProductController.updateProduct", 
 							"User "+ currentUser.getUserEmail()+"Product updated +"+productBean.getProductName()+" successfully ",false);
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.PRODUCTS);
@@ -1102,6 +1107,30 @@ public class ManageProductController {
 		
 		
 		return null;
+	}
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of ManageProductController");
+		stockOrderDetialBeansList = new ArrayList<>();
+		grandTotal = 0.0;
+		itemCount = 0.0;
+		stockReturnDetialBeansList = new ArrayList<>();
+		grandTotalReturn = 0.0;
+		itemCountReturn = 0.0;
+		headOfficeId = 0;	
+		productControllerWrapper = null;
+		
+		
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of ManageProductController");
+		stockOrderDetialBeansList = null;
+		grandTotal = 0.0;
+		itemCount = 0.0;
+		stockReturnDetialBeansList = null;
+		grandTotalReturn = 0.0;
+		itemCountReturn = 0.0;
+		headOfficeId = 0;	
+		productControllerWrapper = null;
 	}
 
 
