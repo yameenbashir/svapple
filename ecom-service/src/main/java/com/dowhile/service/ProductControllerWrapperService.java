@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dowhile.dao;
+package com.dowhile.service;
 
 import com.dowhile.wrapper.ProductControllerWrapper;
 
@@ -9,7 +9,7 @@ import com.dowhile.wrapper.ProductControllerWrapper;
  * @author HafizYameenBashir
  *
  */
-public interface ProductControllerWrapperDAO {
+public interface ProductControllerWrapperService {
 
 	public ProductControllerWrapper getProductControllerWrapperDataByOutletIdCompanyId(int outletId,int companyId);
 	public ProductControllerWrapper getProductControllerWrapperDataForManageProductByOutletIdCompanyId(int outletId,int companyId);

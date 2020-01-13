@@ -67,6 +67,7 @@ import com.dowhile.service.CompositeProductService;
 import com.dowhile.service.ConfigurationService;
 import com.dowhile.service.ContactService;
 import com.dowhile.service.OutletService;
+import com.dowhile.service.ProductControllerWrapperService;
 import com.dowhile.service.ProductPriceHistoryService;
 import com.dowhile.service.ProductService;
 import com.dowhile.service.ProductTagService;
@@ -79,6 +80,7 @@ import com.dowhile.service.VariantAttributeService;
 import com.dowhile.service.VariantAttributeValuesService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.ProductControllerWrapper;
 
 /**
  * @author Yameen Bashir
@@ -120,6 +122,8 @@ public class ManageProductController {
 	private ConfigurationService configurationService;
 	@Resource
 	private ProductPriceHistoryService productPriceHistoryService;
+	@Resource
+	private ProductControllerWrapperService productControllerWrapperService;
 	//Added by Zafar for auto StockOrder
 	@Autowired
 	private PurchaseOrderController purchaseOrderController;
@@ -134,6 +138,7 @@ public class ManageProductController {
 	private Double grandTotalReturn;
 	private Double itemCountReturn;
 	private int headOfficeId;
+	private ProductControllerWrapper productControllerWrapper;
 	//finish
 
 	@RequestMapping("/layout")
@@ -167,12 +172,13 @@ public class ManageProductController {
 				//Finish 
 				
 				
-				
+				productControllerWrapper = productControllerWrapperService.getProductControllerWrapperDataByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
 				
 				
 				//To check duplicate bar code start
 				Map productBarCodeMap = new HashMap<>();
-				List<Product>products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+				List<Product>products = productControllerWrapper.getProductList();
+//				List<Product>products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
 				if(products!=null){
 					for(Product product:products){
 						productBarCodeMap.put(product.getSku(), product);
@@ -186,7 +192,8 @@ public class ManageProductController {
 					return new Response(MessageConstants.DUPLICATE_PRODCUT_BAR_CODE,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
 				}
 				
-				List<ProductVariant> productVariantsList = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+				List<ProductVariant> productVariantsList = productControllerWrapper.getProductVariantList();
+//				List<ProductVariant> productVariantsList = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 				Map productVariantMap = new HashMap<>();
 				if(productVariantsList!=null){
 					
@@ -224,7 +231,8 @@ public class ManageProductController {
 				int totalQunatity = 0;
 				productList = productService.getAllProductsByUuid(productBean.getProductUuid(),currentUser.getCompany().getCompanyId());
 				if(productList!=null){
-					List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+					List<Outlet> outlets = productControllerWrapper.getOutlets();
+//					List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 					Map outletMap = new HashMap<>();
 					for(Outlet outlet:outlets){
 						outletMap.put(outlet.getOutletId(), outlet);

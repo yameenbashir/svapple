@@ -79,6 +79,7 @@ import com.dowhile.service.ConfigurationService;
 import com.dowhile.service.ContactService;
 import com.dowhile.service.CountryService;
 import com.dowhile.service.OutletService;
+import com.dowhile.service.ProductControllerWrapperService;
 import com.dowhile.service.ProductPriceHistoryService;
 import com.dowhile.service.ProductService;
 import com.dowhile.service.ProductTagService;
@@ -100,6 +101,7 @@ import com.dowhile.util.ConfigurationUtil;
 import com.dowhile.util.ControllerUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.ProductControllerWrapper;
 
 /**
  * Yameen Bashir
@@ -155,7 +157,9 @@ public class NewProductController {
 	@Resource
 	private ProductPriceHistoryService productPriceHistoryService;
 	@Resource
-	private StockOrderDetailService stockOrderDetailService;	
+	private StockOrderDetailService stockOrderDetailService;
+	@Resource
+	private ProductControllerWrapperService productControllerWrapperService;
 	@Autowired
 	private PurchaseOrderController purchaseOrderController;
 	@Autowired
@@ -170,6 +174,27 @@ public class NewProductController {
 	static Map productVariantBarCodeMap = new HashMap<>();
 	@SuppressWarnings("rawtypes")
 	static Map variantAttributeMap = new HashMap<>();
+	private ProductControllerWrapper productControllerWrapper;
+	@SuppressWarnings({ "rawtypes" })
+	private Map productsMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map productVariantMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map contactsMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map productTypeMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map brandsMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map outletsMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map variantAttributesMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map tagsMap = new HashMap<>();
+	@SuppressWarnings({ "rawtypes" })
+	private Map salesTaxMap = new HashMap<>();
+	
+	
 	/**
 	 * @return the products
 	 */
@@ -212,22 +237,25 @@ public class NewProductController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+			System.out.println("getNewProductControllerData request received for user: "+currentUser.getUserEmail()+" for companyId / company : "+currentUser.getCompany().getCompanyId()+" / "+currentUser.getCompany().getCompanyName()
+					+ " against outletId / outlet:"+currentUser.getOutlet().getOutletId()+" / "+currentUser.getOutlet().getOutletName());
 			try {
 				long start = System.currentTimeMillis();
-				products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
-				long end   = System.currentTimeMillis();
+				productControllerWrapper = productControllerWrapperService.getProductControllerWrapperDataByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+				long endWrapper   = System.currentTimeMillis();
 				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get products is " + formatter.format((end - start) / 1000d) + " seconds");
+				System.out.println("Execution time to get productControllerWrapper is " + formatter.format((endWrapper - start) / 1000d) + " seconds");
+//				products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
+				products = productControllerWrapper.getProductList();
 				if(products!=null){
 					for(Product product:products){
 						productBarCodeMap.put(product.getSku(), true);
+						productsMap.put(product.getProductId(), product);
 					}
 				}
-				long startVariant = System.currentTimeMillis();
-				List<ProductVariant> productVariantsList = productVariantService.getAllActiveProductVariantsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
-				long endVariant   = System.currentTimeMillis();
-//				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get products Variants is " + formatter.format((endVariant - startVariant) / 1000d) + " seconds");
+				populateNewProductControllersMap(request);
+//				List<ProductVariant> productVariantsList = productVariantService.getAllActiveProductVariantsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+//				List<ProductVariant> productVariantsList = productControllerWrapper.getProductVariantList();
 
 				Response response = getAllSuppliers(sessionId,request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
@@ -239,7 +267,6 @@ public class NewProductController {
 					productTypeBeanList = (List<ProductTypeBean>) response.data;
 				}
 				
-//				System.out.println("totalTime: "+totalTime);
 				response = getAllBrands(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					brandBeanList = (List<BrandBean>) response.data;
@@ -284,16 +311,11 @@ public class NewProductController {
 				newProductControllerBean.setProductBarCodeMap(productBarCodeMap);
 				newProductControllerBean.setProductVariantBarCodeMap(productVariantBarCodeMap);
 				
-				long startSku = System.currentTimeMillis();
 				
-				newProductControllerBean.setSku(productService.getCountOfMAXSKUForProductByCompanyId(currentUser.getCompany().getCompanyId()));
-				long endSku   = System.currentTimeMillis();
-				System.out.println("Execution time to get getCountOfMAXSKUForProductByCompanyId is " + formatter.format((endSku - startSku) / 1000d) + " seconds");
-				long startgetCountOfMAXSKUForProductVariantByCompanyId = System.currentTimeMillis();
-				newProductControllerBean.setProductVariantSku(productVariantService.getCountOfMAXSKUForProductVariantByCompanyId(currentUser.getCompany().getCompanyId()));
-				
-				long endgetCountOfMAXSKUForProductVariantByCompanyId   = System.currentTimeMillis();
-				System.out.println("Execution time to get getCountOfMAXSKUForProductVariantByCompanyId is " + formatter.format((endgetCountOfMAXSKUForProductVariantByCompanyId - startgetCountOfMAXSKUForProductVariantByCompanyId) / 1000d) + " seconds");
+//				newProductControllerBean.setSku(productService.getCountOfMAXSKUForProductByCompanyId(currentUser.getCompany().getCompanyId()));
+				newProductControllerBean.setSku(productControllerWrapper.getSku());
+//				newProductControllerBean.setProductVariantSku(productVariantService.getCountOfMAXSKUForProductVariantByCompanyId(currentUser.getCompany().getCompanyId()));
+				newProductControllerBean.setProductVariantSku(productControllerWrapper.getProductVariantSku());
 				Configuration configuration = configurationMap.get("PRODCUT_TEMPLATE_FOR_ALL_OUTLETS");
 				if(configuration==null || configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 					newProductControllerBean.setProductTemplateForAllOutlets(ControllersConstants.TRUE);
@@ -319,7 +341,6 @@ public class NewProductController {
 				util.AuditTrail(request, currentUser, "NewProductController.getNewProductControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived NewProductController data successfully ",false);
 				long endTimeTotal   = System.currentTimeMillis();
-//				NumberFormat formatter = new DecimalFormat("#0.00000");
 				System.out.println("For User "+ currentUser.getUserEmail()+ "Execution time to get NewProductController.getNewProductControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
 				return new Response(newProductControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
@@ -1020,12 +1041,8 @@ public class NewProductController {
 
 
 			try {
-				long start = System.currentTimeMillis();
-				
-				variantAttributesList = variantAttributeService.getAllVariantAttributes(currentUser.getCompany().getCompanyId());
-				long end   = System.currentTimeMillis();
-				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get variantAttributesList is " + formatter.format((end - start) / 1000d) + " seconds");
+//				variantAttributesList = variantAttributeService.getAllVariantAttributes(currentUser.getCompany().getCompanyId());
+				variantAttributesList = productControllerWrapper.getVariantAttributesList();
 				if (variantAttributesList != null) {
 					for (VariantAttribute variantAttribute : variantAttributesList) {
 
@@ -1143,17 +1160,21 @@ public class NewProductController {
 					productBean.setProductName(product.getProductName());
 					productBean.setProductDesc(product.getProductDesc());
 					productBean.setProductHandler(product.getProductHandler());
-					ProductType productType = productTypeService.getProductTypeByProductTypeId(product.getProductType().getProductTypeId(),currentUser.getCompany().getCompanyId());
+					ProductType productType = (ProductType) productTypeMap.get(product.getProductType().getProductTypeId());
+//					ProductType productType = productTypeService.getProductTypeByProductTypeId(product.getProductType().getProductTypeId(),currentUser.getCompany().getCompanyId());
 					productBean.setProductTypeId(productType.getProductTypeId().toString());
 					productBean.setProductTypeName(productType.getProductTypeName());
-					Contact supplier = supplierService.getContactByID(product.getContact().getContactId(),currentUser.getCompany().getCompanyId());
+					Contact supplier = (Contact) contactsMap.get(product.getContact().getContactId());
+//					Contact supplier = supplierService.getContactByID(product.getContact().getContactId(),currentUser.getCompany().getCompanyId());
 					productBean.setSupplierId(supplier.getContactId().toString());
 					productBean.setSupplierName(supplier.getContactName());
-					Brand brand = brandService.getBrandByBrandId(product.getBrand().getBrandId(),currentUser.getCompany().getCompanyId());
+					Brand brand = (Brand) brandsMap.get(product.getBrand().getBrandId());
+//					Brand brand = brandService.getBrandByBrandId(product.getBrand().getBrandId(),currentUser.getCompany().getCompanyId());
 					productBean.setBrandId(brand.getBrandId().toString());
 					productBean.setBrandName(brand.getBrandName());
 					productBean.setSalesAccountCode(product.getSalesAccountCode());
-					Outlet outlett = outletService.getOuletByOutletId(product.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+					Outlet outlett = (Outlet) outletsMap.get(product.getOutlet().getOutletId());
+//					Outlet outlett = outletService.getOuletByOutletId(product.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
 					productBean.setOutletId(outlett.getOutletId().toString());
 					productBean.setOutletName(outlett.getOutletName());
 					productBean.setPurchaseAccountCode(product.getPurchaseAccountCode());
@@ -1170,25 +1191,26 @@ public class NewProductController {
 					productBean.setOldInventory(product.getCurrentInventory().toString());
 					
 					if(product.getStandardProduct().equalsIgnoreCase("true")){
-						List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
-						Map outletMap = new HashMap<>();
+//						List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+//						Map outletMap = new HashMap<>();
 
-						for(Outlet outlet:outlets){
+					/*	for(Outlet outlet:outlets){
 							outletMap.put(outlet.getOutletId(), outlet);
-						}
+						}*/
 						List<Product> productsList = productService.getAllProductsByUuid(product.getProductUuid(),currentUser.getCompany().getCompanyId());
 						if(!product.getVariantProducts().equalsIgnoreCase("true")){
 							if(productsList!=null){
 								for(Product productt:productsList){
 									OutletBean outletBean = new OutletBean();
-									Outlet tempOutlet = (Outlet)outletMap.get(productt.getOutlet().getOutletId());
+									Outlet tempOutlet = (Outlet)outletsMap.get(productt.getOutlet().getOutletId());
 									outletBean.setOutletId(tempOutlet.getOutletId().toString());
 									outletBean.setOutletName(tempOutlet.getOutletName());
 									outletBean.setCurrentInventory(productt.getCurrentInventory().toString());
 									outletBean.setOldInventory(productt.getCurrentInventory().toString());
 									outletBean.setReorderAmount(productt.getReorderAmount().toString());
 									outletBean.setReorderPoint(productt.getReorderPoint().toString());
-									SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(tempOutlet.getSalesTax().getSalesTaxId(), currentUser.getCompany().getCompanyId());
+									SalesTax salesTax = (SalesTax) salesTaxMap.get(tempOutlet.getSalesTax().getSalesTaxId());
+//									SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(tempOutlet.getSalesTax().getSalesTaxId(), currentUser.getCompany().getCompanyId());
 									outletBean.setSalesTaxId(salesTax.getSalesTaxId().toString());
 									outletBean.setDefaultTax(salesTax.getSalesTaxPercentage().toString());
 									outletBean.setSalesTaxName(salesTax.getSalesTaxName()+"("+salesTax.getSalesTaxPercentage().toString()+")");
@@ -1209,7 +1231,7 @@ public class NewProductController {
 										//productVariantBean.setProductName(product.getProductName());
 										productVariantBean.setVariantAttributeName(productVariant.getVariantAttributeName());
 										
-										Outlet tempOutlet = (Outlet)outletMap.get(productVariant.getOutlet().getOutletId());
+										Outlet tempOutlet = (Outlet)outletsMap.get(productVariant.getOutlet().getOutletId());
 										productVariantBean.setOutletId(tempOutlet.getOutletId().toString());
 										productVariantBean.setOutletName(tempOutlet.getOutletName());
 										productVariantBean.setSupplierCode(productt.getContact().getContactId().toString());
@@ -1298,7 +1320,8 @@ public class NewProductController {
 							productTagBean.setProductTagId(productTag.getProductTagId().toString());
 							productTagBean.setTagId(productTagBean.getProductTagId());
 							productTagBean.setProductId(productId);
-							productTagBean.setProductTagName(tagService.getTagByTagId(productTag.getTag().getTagId(),currentUser.getCompany().getCompanyId()).getTagName());
+							Tag tag = (Tag) tagsMap.get(productTag.getTag().getTagId());
+							productTagBean.setProductTagName(tag.getTagName());
 							productTagBean.setTagName(productTagBean.getProductTagName());
 							productTagBeanList.add(productTagBean);
 						}
@@ -1409,11 +1432,8 @@ public class NewProductController {
 			User currentUser = (User) session.getAttribute("user");
 
 			try {
-				long start = System.currentTimeMillis();
-				List<Contact> suppliers = supplierService.getAllContactsByCompanyIdContactType(currentUser.getCompany().getCompanyId(),"SUPPLIER");
-				long end   = System.currentTimeMillis();
-				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get suppliers is " + formatter.format((end - start) / 1000d) + " seconds");
+//				List<Contact> suppliers = supplierService.getAllContactsByCompanyIdContactType(currentUser.getCompany().getCompanyId(),"SUPPLIER");
+				List<Contact> suppliers =productControllerWrapper.getContactsList();
 				if (suppliers != null && suppliers.size() > 0) {
 					for (Contact item : suppliers) {
 						if(item.getContactType()!=null && item.getContactType().contains("SUPPLIER")){
@@ -1459,11 +1479,8 @@ public class NewProductController {
 
 
 			try {
-				long start = System.currentTimeMillis();
-				productTypeList = productTypeService.getAllProductTypes(currentUser.getCompany().getCompanyId());
-				long end   = System.currentTimeMillis();
-				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get productTypeList is " + formatter.format((end - start) / 1000d) + " seconds");
+//				productTypeList = productTypeService.getAllProductTypes(currentUser.getCompany().getCompanyId());
+				productTypeList =productControllerWrapper.getProductTypeList();
 				if (productTypeList != null) {
 					for (ProductType productType : productTypeList) {
 
@@ -1562,13 +1579,8 @@ public class NewProductController {
 
 
 			try {
-				long start = System.currentTimeMillis();
-				
-				
-				brandsList = brandService.getAllBrands(currentUser.getCompany().getCompanyId());
-				long end   = System.currentTimeMillis();
-				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get brandsList is " + formatter.format((end - start) / 1000d) + " seconds");
+//				brandsList = brandService.getAllBrands(currentUser.getCompany().getCompanyId());
+				brandsList = productControllerWrapper.getBrandsList();
 				if (brandsList != null) {
 					for (Brand brand : brandsList) {
 
@@ -1620,13 +1632,8 @@ public class NewProductController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				//need to fix sales tax retrerival
-				long start = System.currentTimeMillis();
-				
-				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
-				long end   = System.currentTimeMillis();
-				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get outlets is " + formatter.format((end - start) / 1000d) + " seconds");
+//				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				outlets = productControllerWrapper.getOutlets();
 				if(outlets!=null){
 					for(Outlet outlet:outlets){
 						OutletBean outletBean = new OutletBean();
@@ -1912,13 +1919,8 @@ public class NewProductController {
 
 
 			try {
-				long start = System.currentTimeMillis();
-				
-
-				tagsList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
-				long end   = System.currentTimeMillis();
-				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get tagsList is " + formatter.format((end - start) / 1000d) + " seconds");
+//				tagsList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
+				tagsList = productControllerWrapper.getTagsList();
 				if (tagsList != null) {
 					for (Tag tag : tagsList) {
 
@@ -1955,6 +1957,70 @@ public class NewProductController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}
 
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	private void populateNewProductControllersMap(HttpServletRequest request){
+		try{
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			System.out.println("For User "+ currentUser.getUserEmail()+ " preparing product controller maps ");
+			
+			List<ProductVariant> productVariantsList = productControllerWrapper.getProductVariantList();
+			if(productVariantsList!=null && productVariantsList.size()>0){
+				for(ProductVariant productVariant:productVariantsList){
+					productVariantMap.put(productVariant.getProductVariantId(), productVariant);
+				}
+			}
+			List<Contact> suppliers =productControllerWrapper.getContactsList();
+			if (suppliers != null && suppliers.size()>0) {
+				for (Contact contact : suppliers) {
+					if(contact.getContactType()!=null && contact.getContactType().contains("SUPPLIER")){
+						contactsMap.put(contact.getContactId(), contact);
+					}
+				}
+			}
+				List<ProductType> productTypeList =productControllerWrapper.getProductTypeList();
+				if (productTypeList != null) {
+					for (ProductType productType : productTypeList) {
+						productTypeMap.put(productType.getProductTypeId(), productType);
+
+					}
+				}
+				List<Brand> brandsList = productControllerWrapper.getBrandsList();
+				if (brandsList != null) {
+					for (Brand brand : brandsList) {
+						brandsMap.put(brand.getBrandId(), brand);
+
+					}
+				}
+				List<Outlet> outlets = productControllerWrapper.getOutlets();
+				if(outlets!=null){
+					for(Outlet outlet:outlets){
+						outletsMap.put(outlet.getOutletId(), outlet);
+					}
+					}
+				List<VariantAttribute> variantAttributesList = productControllerWrapper.getVariantAttributesList();
+				if (variantAttributesList != null) {
+					for (VariantAttribute variantAttribute : variantAttributesList) {
+						variantAttributesMap.put(variantAttribute.getVariantAttributeId(), variantAttribute);
+					}
+				}
+				List<Tag> tagsList = productControllerWrapper.getTagsList();
+				if (tagsList != null) {
+					for (Tag tag : tagsList) {
+						tagsMap.put(tag.getTagId(), tag);
+					}
+				}
+				List<SalesTax> salesTaxList = productControllerWrapper.getSalesTaxlist();
+				if(salesTaxList!=null && salesTaxList.size()>0){
+					for(SalesTax salesTax:salesTaxList){
+						salesTaxMap.put(salesTax.getSalesTaxId(), salesTax);
+					}
+				}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 
 }

@@ -277,6 +277,7 @@ public class LoginController {
 					
 				}
 				System.out.println("Authorization completed for user: "+appuser.getEmail()+" against companyId: "+company.getCompanyId()+" with company Name: "+company.getCompanyName());
+				System.out.println("User associated with outlet Id: "+outlet.getOutletId()+" having outlet name: "+outlet.getOutletName());
 				util.AuditTrail(request, user, "LoginController.doLogin", "User:  "+ appuser.getEmail()+" Login Successfuly ",false);
 				if(user.getRole().getRoleId()==1){
 					return new Response(loginBean, StatusConstants.SUCCESS,
