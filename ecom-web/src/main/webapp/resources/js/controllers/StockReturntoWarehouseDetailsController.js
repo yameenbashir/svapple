@@ -437,7 +437,7 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 		$scope.AllInOne(); 
 		//$scope.calculateRecItemCount(); for Stock Orders with WF only (e.g. Stock RTW, Stock Receive)
 	};
-	
+
 	$scope.AllInOne = function(){
 		$scope.counter = 1;
 		$scope.stockOrderBean.itemCount = 0;
@@ -508,7 +508,7 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 	};
 
 
-/*	$scope.arrangeOrder = function(){
+	/*	$scope.arrangeOrder = function(){
 		$scope.counter = 1;
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
@@ -554,9 +554,9 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 		}
 	}; */
 
-	$scope.calculateTotalforItem = function(productVariantId){
+	$scope.calculateTotalforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				if($scope.stockOrderBean.retailPriceBill == true){
 					value.total = value.retailPrice * value.orderProdQty;
 				}
@@ -579,10 +579,10 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 		$scope.calculateItemCount();*/
 		$scope.AllInOne();
 	};	
-	
-	$scope.calculateTotalAdminforItem = function(productVariantId){
+
+	$scope.calculateTotalAdminforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				if($scope.stockOrderBean.retailPriceBill == true){
 					value.recvTotal = value.retailPrice * value.recvProdQty;
 				}
@@ -605,7 +605,7 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 		$scope.calculateItemCount();*/
 		$scope.AllInOne();		
 	}; 
-	
+
 	/*$scope.calculateGrandTotal = function(){
 		$scope.grandTotal = "0";
 		if ($scope.stockOrderDetailBeansList.length > 0) {
@@ -815,14 +815,14 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 			renderItem : function(item) {
 				var result = [];
 				if($scope.hideRefValues == false){
-				result = {
-						value : item.variantAttributeName,
-						label : $sce.trustAsHtml("<table class='auto-complete'>"
-								+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
-								+ item.variantAttributeName + "</td>"
-								+ "<td style='width: 10%'>" + "</td>"
-								+ "</tr>" + "</tbody>" + "</table>")
-				};
+					result = {
+							value : item.variantAttributeName,
+							label : $sce.trustAsHtml("<table class='auto-complete'>"
+									+ "<tbody>" + "<tr>" + "<td style='width: 90%'>"
+									+ item.variantAttributeName + "</td>"
+									+ "<td style='width: 10%'>" + "</td>"
+									+ "</tr>" + "</tbody>" + "</table>")
+					};
 				}
 				else{
 

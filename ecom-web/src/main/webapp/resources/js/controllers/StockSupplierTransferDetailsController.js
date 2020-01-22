@@ -449,9 +449,9 @@ var StockSupplierTransferDetailsController = ['$scope', '$sce', '$http', '$timeo
 		$scope.calculateGrandTotal();
 	}; */
 
-	$scope.calculateTotalforItem = function(productVariantId){
+	$scope.calculateTotalforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				if($scope.stockOrderBean.retailPriceBill == true){
 					value.total = value.retailPrice * value.orderProdQty;
 				}

@@ -242,7 +242,7 @@
 																data-ng-model="stockOrderDetailBean.orderProdQty"
 																min="1" class="" id="Name" maxlength="9"
 																ng-pattern='/^[0-9]+(\.[0-9]{1,2})?$/'
-																ng-blur="calculateTotalforItem(stockOrderDetailBean.productVariantId)"
+																ng-blur="calculateTotalforItem(stockOrderDetailBean)"
 																required><br />
 																 <span ng-show="stockOrderDetailBean.greaterThanStock"	style="color: red;">* Greater than stock at source</span></td>
 															<td ng-bind="stockOrderDetailBean.ordrSupplyPrice" ng-hide="isAdmin()"></td>

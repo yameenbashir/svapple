@@ -588,9 +588,9 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 		$scope.calculateItemCount();
 	}; */
 
-	$scope.calculateTotalforItem = function(productVariantId){
+	$scope.calculateTotalforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				value.total = value.ordrSupplyPrice * value.orderProdQty;
 				if(isNaN(value.total)){
 					value.total = "0";
@@ -646,9 +646,9 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 		$scope.calculateRecItemCount();
 	}; */
 
-	$scope.calculateRecvTotalforItem = function(productVariantId){
+	$scope.calculateRecvTotalforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				value.recvTotal = value.recvSupplyPrice * value.recvProdQty;
 				if(isNaN(value.recvTotal)){
 					value.recvTotal = "0";

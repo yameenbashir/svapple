@@ -528,9 +528,9 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 		$scope.calculateItemCount();
 	}; */
 
-	$scope.calculateTotalforItem = function(productVariantId){
+	$scope.calculateTotalforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				value.total = value.ordrSupplyPrice * value.orderProdQty;
 				if(isNaN(value.total)){
 					value.total = "0";
@@ -539,7 +539,7 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 			}
 		});	
 		$scope.AllInOne();
-	};
+	}; 
 
 	/*$scope.calculateItemCount = function(){
 		$scope.stockOrderBean.itemCount = 0;
@@ -586,9 +586,9 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 		$scope.calculateGrandTotal();
 	}; */
 
-	$scope.calculateRecvTotalforItem = function(productVariantId){
+	$scope.calculateRecvTotalforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				value.recvTotal = value.recvSupplyPrice * value.recvProdQty;
 				if(isNaN(value.recvTotal)){
 					value.recvTotal = "0";
@@ -631,32 +631,6 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 		else {
 			return false;
 		}
-	};
-	
-	$scope.calculateTotalforItem = function(productVariantId){
-		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
-				if($scope.stockOrderBean.retailPriceBill == true){
-					value.total = value.retailPrice * value.orderProdQty;
-				}
-				else{
-					value.total = value.ordrSupplyPrice * value.orderProdQty;
-				}				
-				if(isNaN(value.total)){
-					value.total = "0";
-				}
-				/*if(parseInt(value.productVariantCurrInventory) < parseInt(value.orderProdQty)){
-					value.greaterThanStock = true;
-				}
-				else{
-					value.greaterThanStock = false;
-				}*/
-				value.isDirty = true;
-			}
-		});	
-		/*$scope.calculateGrandTotal();
-		$scope.calculateItemCount();*/
-		$scope.AllInOne();
 	};
 	
 	$scope.checkStockOrderDetailList = function() {

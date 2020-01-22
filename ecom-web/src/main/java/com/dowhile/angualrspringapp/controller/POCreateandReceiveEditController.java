@@ -56,6 +56,7 @@ import com.dowhile.service.StockOrderService;
 import com.dowhile.service.StockOrderTypeService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.ProductListsWrapper;
 import com.dowhile.wrapper.StockDataProductsWrapper;
 
 /**
@@ -97,6 +98,7 @@ public class POCreateandReceiveEditController {
 	private Map productIdsMap = new HashMap<>();
 	private Map productVariantIdsMap = new HashMap<>();
 	private List<Product> products = new ArrayList<>();
+	ProductListsWrapper productListsWrapper;
 
 	@RequestMapping("/layout")
 	public String getPOCreateandReceiveEditControllerPartialPage(ModelMap modelMap) {
@@ -107,7 +109,6 @@ public class POCreateandReceiveEditController {
 	@RequestMapping(value = "/getPOCreateandReceiveEditControllerData/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response getPOCreateandReceiveEditControllerData(@PathVariable("sessionId") String sessionId,
 			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request) {
-
 		List<OutletBean> outletBeansList = null;
 		List<StockOrderTypeBean> stockOrderTypeBeansList= null;
 		List<SupplierBean> supplierBeansList = null;
@@ -117,10 +118,10 @@ public class POCreateandReceiveEditController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
+			productListsWrapper = new ProductListsWrapper();
 			try {
+				productListsWrapper = productService.getAllProductsOutlet(Integer.parseInt(stockOrderBean.getOutletId()), currentUser.getCompany().getCompanyId());
 				stockDataProductsWrapper = stockOrderService.GetStockWithProductsData(currentUser.getCompany().getCompanyId());
-
 				Response response = getAllOutlets(sessionId,request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					outletBeansList = (List<OutletBean>) response.data;
@@ -133,7 +134,6 @@ public class POCreateandReceiveEditController {
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					supplierBeansList = (List<SupplierBean>) response.data;
 				}
-
 				response = getAllProducts(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productBeansList = (List<ProductVariantBean>) response.data;
@@ -566,8 +566,23 @@ public class POCreateandReceiveEditController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			productMap = new HashMap<>();
+			Map productSessionMap = new HashMap<>();
 			try {		
-					products = stockDataProductsWrapper.getProductList();			
+				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productIdsMap") != null) {
+						productSessionMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
+						products = new ArrayList<Product>(productSessionMap.values());
+					}
+					else {
+						products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
+				}	*/	
+				if(productListsWrapper.getOutletProducts() != null) {
+					products = productListsWrapper.getOutletProducts();	
+				}				
 				if(products != null){
 					for(Product product:products){
 						ProductVariantBean productVariantBean = new ProductVariantBean();
@@ -649,9 +664,23 @@ public class POCreateandReceiveEditController {
 			List<ProductVariant> productVariantList = null;
 			productVariantMap = new HashMap<>();
 			try {
-				productVariantList = stockDataProductsWrapper.getProductVariantList();
+				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
+					if(session.getAttribute("productVariantIdsMap") != null) {
+						productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
+						productVariantList = new ArrayList<ProductVariant>(productVariantSessionMap.values());
+					}
+					else {
+						productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
+					}
+				}
+				else {
+					productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
+				}*/
+				if(productListsWrapper.getOutletProductVariants() != null) {
+					productVariantList = productListsWrapper.getOutletProductVariants();
+				}
 				Map<Integer, Product> productsMap = new HashMap<>();
-				if(products.isEmpty()) {
+				/*if(products.isEmpty()) {
 					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 						if(session.getAttribute("productIdsMap") != null) {
 							productsMap = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
@@ -664,7 +693,10 @@ public class POCreateandReceiveEditController {
 					else {
 						products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
 					}
-				}		
+				}		*/
+				if(productListsWrapper.getOutletProducts() != null) {
+					products = productListsWrapper.getOutletProducts();
+				}
 				if(products!=null){
 					for(Product product:products){
 						productsMap.put(product.getProductId(), product);
@@ -733,7 +765,6 @@ public class POCreateandReceiveEditController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}	
 	}
-
 	
 	public Map getProductVariantMap() {
 		return productVariantMap;

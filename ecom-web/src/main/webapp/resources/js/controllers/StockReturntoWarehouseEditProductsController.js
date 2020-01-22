@@ -786,9 +786,9 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		}
 	}; */
 
-	$scope.calculateTotalforItem = function(productVariantId){
+	$scope.calculateTotalforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				if($scope.stockOrderBean.retailPriceBill == true){
 					value.total = value.retailPrice * value.orderProdQty;
 				}
@@ -811,10 +811,10 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		$scope.calculateItemCount();*/
 		$scope.AllInOne();
 	};
-	
-	$scope.calculateTotalAdminforItem = function(productVariantId){
+
+	$scope.calculateTotalAdminforItem = function(stockOrderDetailBean){
 		angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
-			if(value.productVariantId == productVariantId){
+			if(value.productVariantId == stockOrderDetailBean.productVariantId && value.isProduct == stockOrderDetailBean.isProduct){
 				if($scope.stockOrderBean.retailPriceBill == true){
 					value.recvTotal = value.retailPrice * value.recvProdQty;
 				}
