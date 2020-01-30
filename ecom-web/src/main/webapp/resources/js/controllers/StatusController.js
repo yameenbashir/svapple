@@ -43,7 +43,51 @@ var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope
 		$rootScope.globalPageLoader = false;
 		
 	};
+	
+	
 
+	
+
+	  $scope.saveFile = function(){
+			
+			$scope.invoiceMainBeanStatusList = StatusControllerPreLoad.loadControllerData();
+			if($scope.invoiceMainBeanStatusList==null){
+				
+					$scope.data1 = $scope.invoiceMainBeanStatusList;
+				
+			}
+	    	console.log($scope.invoiceMainBeanStatusList);
+	    	
+	    	
+	    	
+	    	$scope.loading = true;
+	        const textToBLOB = new Blob([JSON.stringify($scope.invoiceMainBeanStatusList)], { type: 'text/plain' });
+	    	/*var currentdate = new Date(); 
+			var invoiceRefNbr = "OfflineSaleData-" + currentdate.getDate() + 
+			+ (currentdate.getMonth()+1)  +  
+			+ currentdate.getFullYear() + 
+			+ currentdate.getHours() +   
+			+ currentdate.getMinutes()+  
+			+ currentdate.getSeconds(); */
+	        const sFileName = 'OfflineData.txt';	   // The file to save the data.
+	        $scope.loading = false;
+
+	        let newLink = document.createElement("a");
+	        newLink.download = sFileName;
+
+	        if (window.webkitURL != null) {
+	            newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+	        }
+	        else {
+	            newLink.href = window.URL.createObjectURL(textToBLOB);
+	            newLink.style.display = "none";
+	            document.body.appendChild(newLink);
+	        }
+
+	        newLink.click();
+	    };
+	    
+	    
 	$scope.showAddBrandPopup = function() {
 		$scope.brandBean = {};
 		$scope.showNewBrandModal = true;
