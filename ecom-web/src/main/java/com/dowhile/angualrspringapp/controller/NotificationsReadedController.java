@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dowhile.Configuration;
 import com.dowhile.Contact;
 import com.dowhile.Notification;
 import com.dowhile.Outlet;
@@ -65,9 +66,10 @@ public String getNotificationsReadedControllerPartialPage(ModelMap modelMap) {
 	}
 
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@RequestMapping(value = "/getAllNotifications/{sessionId}/{loadAllNotications}", method = RequestMethod.POST)
-public @ResponseBody Response getAllNotifications(@PathVariable("sessionId") String sessionId,@PathVariable("loadAllNotications") String loadAllNotications,
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
+@RequestMapping(value = "/getAllNotifications/{sessionId}/{loadAllNotifications}", method = RequestMethod.POST)
+public @ResponseBody Response getAllNotifications(@PathVariable("sessionId") String sessionId,@PathVariable("loadAllNotifications") String loadAllNotifications,
 		HttpServletRequest request) {
 
 	List<Notification> notificationsList = null;
@@ -76,11 +78,22 @@ public @ResponseBody Response getAllNotifications(@PathVariable("sessionId") Str
 		HttpSession session =  request.getSession(false);
 		User currentUser = (User) session.getAttribute("user");
 		try {
+			
 			Map<Integer, Outlet> outletMap = outletService.getAllOutletsMapByCompanyId(currentUser.getCompany().getCompanyId());
 			if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
-				notificationsList = notificationService.getAllReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
+				if(loadAllNotifications.equalsIgnoreCase("true")) {
+					notificationsList = notificationService.getAllReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
+				}else {
+					notificationsList = notificationService.getTenReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
+				}
+				
 			}else{
-				notificationsList = notificationService.getAllReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				if(loadAllNotifications.equalsIgnoreCase("true")) {
+					notificationsList = notificationService.getAllReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				}else {
+					notificationsList = notificationService.getTenReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				}
+				
 				
 			}
 			if (notificationsList != null) {
@@ -103,6 +116,7 @@ public @ResponseBody Response getAllNotifications(@PathVariable("sessionId") Str
 				   
 
 				}
+				
 				util.AuditTrail(request, currentUser, "NotificationsReadedController.getAllNotifications", 
 						"User "+ currentUser.getUserEmail()+" retrived all Notifications successfully ",false);
 				return new Response(notificationBeanList, StatusConstants.SUCCESS,
@@ -137,7 +151,7 @@ public @ResponseBody Response getAllNotifications(@PathVariable("sessionId") Str
 
 
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
+/*@SuppressWarnings({ "unchecked", "rawtypes" })
 @RequestMapping(value = "/getAllReadedNotifications/{sessionId}", method = RequestMethod.GET)
 public @ResponseBody
 Response getAllReadedNotifications(@PathVariable("sessionId") String sessionId,
@@ -167,7 +181,7 @@ Response getAllReadedNotifications(@PathVariable("sessionId") String sessionId,
 		return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 	}
 	
-}
+}*/
 
 
 

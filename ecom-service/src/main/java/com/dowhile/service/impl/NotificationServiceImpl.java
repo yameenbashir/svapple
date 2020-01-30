@@ -91,11 +91,17 @@ public class NotificationServiceImpl implements NotificationService{
 		// TODO Auto-generated method stub
 		return getNotificationDAO().getAllUnReadNotificationsByOutletIdCompanyId(outletId, companyId);
 	}
-
+	
 	@Override
 	public List<Notification> getAllReadedNotificationsByOutletIdCompanyId(int outletId, int companyId) {
 		// TODO Auto-generated method stub
 		return getNotificationDAO().getAllReadedNotificationsByOutletIdCompanyId(outletId, companyId);
+	}
+	
+	@Override
+	public List<Notification> getTenReadedNotificationsByOutletIdCompanyId(int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		return getNotificationDAO().getTenReadedNotificationsByOutletIdCompanyId(outletId, companyId);
 	}
 
 	@Override
@@ -103,15 +109,17 @@ public class NotificationServiceImpl implements NotificationService{
 		// TODO Auto-generated method stub
 		return getNotificationDAO().getAllReadedNotificationsByCompanyId(companyId);
 	}
+	
+	@Override
+	public List<Notification> getTenReadedNotificationsByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		return getNotificationDAO().getTenReadedNotificationsByCompanyId(companyId);
+	}
 
 	@Override
 	public List<Notification> getAllUnReadedNotificationsByCompanyId(int companyId) {
 		// TODO Auto-generated method stub
 		return getNotificationDAO().getAllUnReadedNotificationsByCompanyId(companyId);
 	}
-
-	
-	
-	
 	
 }

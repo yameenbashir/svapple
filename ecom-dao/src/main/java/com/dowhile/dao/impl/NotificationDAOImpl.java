@@ -3,6 +3,7 @@
  */
 package com.dowhile.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -11,6 +12,7 @@ import org.hibernate.SessionFactory;
 
 import com.dowhile.Contact;
 import com.dowhile.Notification;
+import com.dowhile.StockOrder;
 import com.dowhile.dao.NotificationDAO;
 
 /**
@@ -205,6 +207,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 			}
 			return null;
 	}
+	
+
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -228,6 +232,30 @@ try{
 		
 		return null;
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Notification> getTenReadedNotificationsByOutletIdCompanyId(int outletId, int companyId) {
+		// TODO Auto-generated method stub
+		List<Notification> list = new ArrayList<>();
+try{
+			
+			 list= sessionFactory.getCurrentSession()
+			.createQuery("from Notification where OUTLET_ID_TO = ? AND MARK_AS_READ = ? AND COMPANY_ASSOCIATION_ID = ?  ORDER BY NOTIFICATION_ID DESC  LIMIT 10").setMaxResults(10)
+	.setParameter(0, outletId)
+	.setParameter(1, true)
+	.setParameter(2, companyId).list();
+	if(list!=null && list.size()>0){
+
+		return list;
+	}
+			
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		
+		return list;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -249,6 +277,28 @@ try{
 		}
 		return null;
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Notification> getTenReadedNotificationsByCompanyId(int companyId) {
+		// TODO Auto-generated method stub
+		List<Notification> list = new ArrayList<>();
+		try{
+			
+			 list= sessionFactory.getCurrentSession()
+			.createQuery("from Notification where COMPANY_ASSOCIATION_ID = ? AND MARK_AS_READ = ?  ORDER BY NOTIFICATION_ID DESC  LIMIT 10").setMaxResults(10)
+			.setParameter(0, companyId)
+			.setParameter(1, true).list();
+			if(list!=null && list.size()>0){
+
+				return list;
+			}
+			
+		}catch(HibernateException ex){
+			ex.printStackTrace();
+		}
+		return list;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -268,6 +318,8 @@ try{
 		}
 		return null;
 	}
+	
+	
 		
 	}
 
