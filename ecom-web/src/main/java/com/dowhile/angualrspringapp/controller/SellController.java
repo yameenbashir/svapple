@@ -278,7 +278,7 @@ public class SellController  {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	@RequestMapping(value = "/getAllProductsOnly/{sessionId}", method = RequestMethod.GET)
 	public @ResponseBody
 	SellControllerBean getAllProductsOnly(
@@ -336,8 +336,8 @@ public class SellController  {
 					sellControllerBean.setIsReturnEnableonSell("false");
 				}
 				
-				
-				Configuration configurationInvoiceDiscount = configurationService.getConfigurationByPropertyNameByCompanyId("INVOICE_LEVEL_DISCOUNT",currentUser.getCompany().getCompanyId());
+				Configuration configurationInvoiceDiscount = configurationMap.get("INVOICE_LEVEL_DISCOUNT");
+				//Configuration configurationInvoiceDiscount = configurationService.getConfigurationByPropertyNameByCompanyId("INVOICE_LEVEL_DISCOUNT",currentUser.getCompany().getCompanyId());
 				if(configurationInvoiceDiscount!=null && configurationInvoiceDiscount.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 					sellControllerBean.setIsInvoiceLevelDiscountEnable("true");
 				}
@@ -345,7 +345,8 @@ public class SellController  {
 				{
 					sellControllerBean.setIsInvoiceLevelDiscountEnable("false");
 				}
-				Configuration configurationInvoiceLineLevelDiscount = configurationService.getConfigurationByPropertyNameByCompanyId("INVOICE_LINE_LEVEL_DISCOUNT",currentUser.getCompany().getCompanyId());
+				Configuration configurationInvoiceLineLevelDiscount = configurationMap.get("INVOICE_LINE_LEVEL_DISCOUNT");
+				//Configuration configurationInvoiceLineLevelDiscount = configurationService.getConfigurationByPropertyNameByCompanyId("INVOICE_LINE_LEVEL_DISCOUNT",currentUser.getCompany().getCompanyId());
 				if(configurationInvoiceLineLevelDiscount!=null && configurationInvoiceLineLevelDiscount.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.TRUE)){
 					sellControllerBean.setIsInvoiceDetailLevelDiscountEnable("true");
 				}
@@ -353,7 +354,18 @@ public class SellController  {
 				{
 					sellControllerBean.setIsInvoiceDetailLevelDiscountEnable("false");
 				}
-				
+				Configuration configurationInvoiceTax = configurationMap.get("SHOW_INVOICE_LEVEL_TAX");
+				//Configuration configurationInvoiceTax = configurationService.getConfigurationByPropertyNameByCompanyId("SHOW_INVOICE_LEVEL_TAX",currentUser.getCompany().getCompanyId());
+				if(configurationInvoiceTax !=null && configurationInvoiceTax.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.FALSE)) {
+					sellControllerBean.setIsInvoiceTaxAmountEnable("false");
+				}
+				/*else if(configurationInvoiceTax == null)
+				{
+					sellControllerBean.setIsInvoiceTaxAmountEnable("true");*/
+				else 
+				{
+					sellControllerBean.setIsInvoiceTaxAmountEnable("true");
+				}
 				if(currentUser.getOutlet().getAddress()!=null){
 					address =  addressService.getAddressByAddressId(currentUser.getOutlet().getAddress().getAddressId(), company.getCompanyId());
 

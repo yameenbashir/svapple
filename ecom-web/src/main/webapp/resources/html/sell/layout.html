@@ -353,7 +353,6 @@
 
 
 					<div class="col-md-4">
-
 						<!-- Profile Image -->
 						<div class="box box-primary newFont" ng-show="!standardReceipt">
 
@@ -481,7 +480,7 @@
 													<hr class="vd-hr no-print">
 													<div style="font-size: 10px" style="margin-top:-20px; !important;">
 														<div class="col-xs-8 text-right">
-															Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> <br> Tax Amount <br>
+															Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> <br > Tax Amount <br>
 															Total:
 														</div>
 														<div class="col-xs-4 text-center">
@@ -712,9 +711,10 @@
 													<hr class="dash" style="margin-top:-20px !important;" />
 													
 													<hr class="vd-hr no-print">
-													<div style="font-size: 10px" style="margin-top:-20px; !important;">
+												<!-- 	<div style="font-size: 10px" style="margin-top:-20px; !important;">
 														<div class="col-xs-8 text-right">
-															Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> <br> Tax Amount <br>
+															Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> 
+															<br>Tax Amount <br>
 															Total:
 														</div>
 														<div class="col-xs-4 text-center">
@@ -724,11 +724,37 @@
 															 <span class="text-center" ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>{{InvoiceMainBean.invoiceDiscountAmt}}</span> 
 															 <span><br></span>
 															<span class="text-center"
-																ng-bind="(InvoiceMainBean.invoiceTax)"></span> <span><br></span>
+																ng-bind="(InvoiceMainBean.invoiceTax)" ></span> <span><br></span>
 															<span class="text-center" style="font-size: larger;"
 																ng-bind="(returnvalue *InvoiceMainBean.invoiceNetAmt)"></span>
 														</div>
-													</div>
+													</div> -->
+													
+													<!-- asif -->
+													<div style="font-size: 10px" style="margin-top:-20px; !important;"  >
+															<div class="col-xs-8 text-right"><b>Sub Total</b>
+																 <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span>
+															</div>
+															<div class="col-xs-4 text-center" ng-bind="(returnvalue * InvoiceMainBean.invoiceAmt)">
+																	<span ng-show="InvoiceMainBean.invoiceDiscountAmt>0"><br></span>
+															 <span class="text-center" ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>{{InvoiceMainBean.invoiceDiscountAmt}}</span> 
+															 <span><br></span>
+															</div>
+															
+															<div style="font-size: 10px" style="margin-top:-20px; !important;">
+															<div ng-show="isInvoiceTaxAmountEnable" class="col-xs-8 text-right"><b>Tax Amount</b></div>
+															<div ng-show="isInvoiceTaxAmountEnable"  class="col-xs-4 text-center" ng-bind="(InvoiceMainBean.invoiceTax)"></div>
+															</div>
+															</div>
+															<div style="font-size: 10px" style="margin-top:-20px; !important;" >
+															<div  class="col-xs-8 text-right"><b>Total:</b></div>
+															<div   class="col-xs-4 text-center">
+																<span class="text-center" style="font-size: larger;"
+																ng-bind="(returnvalue *InvoiceMainBean.invoiceNetAmt)"></span>
+															
+															</div>
+														</div>
+													
 													<hr class="dash" />
 													<div ng-if="listPayments.length > 0"
 														ng-repeat="payment in listPayments">
