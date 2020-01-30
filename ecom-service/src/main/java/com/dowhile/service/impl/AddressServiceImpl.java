@@ -97,4 +97,10 @@ public class AddressServiceImpl implements AddressService {
 		
 		return map;
 	}
+
+	@Override
+	public List<Address> getAddress(String phone, int companyId) {
+		// TODO Auto-generated method stub
+		return getAddressDAO().getAddress(phone,companyId);
+	}
 }

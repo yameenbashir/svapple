@@ -103,18 +103,39 @@ var NewCustomerController = ['$scope', '$http', '$filter', '$timeout','$window',
 			}else if($scope.responseStatus == 'INVALIDSESSION'||$scope.responseStatus == 'SYSTEMBUSY') {
 				$scope.newCustomerError = true;
 				$scope.newCustomerErrorMessage = Response.data;
-				$window.location = Response.layOutPath;
+				$timeout(function(){
+					$scope.newCustomerError = false;
+					$scope.newCustomerErrorMessage = false;
+					$scope.loading = false;
+					$route.reload();
+				}, 3000);
+				
+				
 			}else {
+				$scope.loading = false;
 				$scope.newCustomerError = true;
 				$scope.newCustomerErrorMessage = Response.data;
+				$timeout(function(){
+					$scope.newCustomerError = false;
+					$scope.newCustomerErrorMessage = false;
+					$window.location = Response.layOutPath;
+				}, 2000);
 			}
 		}).error(function() {
 			$scope.loading = false;
 			$scope.newCustomerError = true;
 			$scope.newCustomerErrorMessage = $scope.systemBusy;
+			$timeout(function(){
+				$scope.newCustomerError = false;
+				$scope.newCustomerErrorMessage = false;
+				$window.location = Response.layOutPath;
+			}, 2000);
 		});
 	};
-
+	
+	
+	
+	
 	$scope.sessionValidation();
 
 }];

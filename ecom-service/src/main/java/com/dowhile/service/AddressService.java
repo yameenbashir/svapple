@@ -23,4 +23,5 @@ public interface AddressService {
 	List< Address> getAddressByCustomerId(int customerId, int companyId);
 	Map<String, Address> getALLAddressByCustomerId(int companyId);
 	List< Address> getAllAddress(int companyId);
+	List< Address> getAddress(String phone,int companyId);
 }
