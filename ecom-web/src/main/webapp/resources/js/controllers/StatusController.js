@@ -61,18 +61,19 @@ var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope
 	    	
 	    	
 	    	$scope.loading = true;
-	        const textToBLOB = new Blob([JSON.stringify($scope.invoiceMainBeanStatusList)], { type: 'text/plain' });
-	    	/*var currentdate = new Date(); 
-			var invoiceRefNbr = "OfflineSaleData-" + currentdate.getDate() + 
+	    	var currentdate = new Date(); 
+			var invoiceRefNbr = "SV-" + currentdate.getDate() + 
 			+ (currentdate.getMonth()+1)  +  
 			+ currentdate.getFullYear() + 
 			+ currentdate.getHours() +   
 			+ currentdate.getMinutes()+  
-			+ currentdate.getSeconds(); */
-	        const sFileName = 'OfflineData.txt';	   // The file to save the data.
+			+ currentdate.getSeconds(); 
+	        var textToBLOB = new Blob([JSON.stringify($scope.invoiceMainBeanStatusList)], { type: 'text/plain' });
+	    	
+	        var sFileName = invoiceRefNbr+'-OfflineSaleData.txt';	   // The file to save the data.
 	        $scope.loading = false;
 
-	        let newLink = document.createElement("a");
+	        var newLink = document.createElement("a");
 	        newLink.download = sFileName;
 
 	        if (window.webkitURL != null) {

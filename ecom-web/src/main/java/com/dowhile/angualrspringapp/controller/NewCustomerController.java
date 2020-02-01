@@ -137,7 +137,7 @@ public class NewCustomerController {
 						}else if(addresstList!= null) {
 							util.AuditTrail(request, currentUser, "NewCustomerController.addNewCustomer", "User "+ 
 							currentUser.getUserEmail()+" Unable to add Customer from user: "+currentUser.getUserId(),false);
-							return new Response(MessageConstants.INVALID_REQUEST_CUSTOMER,StatusConstants.BUSY,LayOutPageConstants.NEW_CUSTOMER);
+							return new Response("Customer already exist with same phone/mobile number",StatusConstants.BUSY,"");
 						}
 						address.setWebsite(addressBean.getWebsite());
 						address.setTwitter(addressBean.getTwitter());
