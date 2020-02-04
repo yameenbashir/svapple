@@ -502,7 +502,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 		});
 		$scope.AllInOne();
 	};
-	
+
 	/*$scope.calculateItemCount = function(){
 		$scope.inventoryCountBean.itemCountCounted = 0;
 		$scope.inventoryCountBean.itemCountExp = 0;
@@ -730,7 +730,8 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 					$scope.success = true;
 					$scope.successMessage = "Saved Successfully";
 					//$cookieStore.put('_ct_sc_ost',"") ;
-					$scope.inventoryCountDetailBeansList = Response.data;
+					$scope.inventoryCountBean = Response.data;
+					$scope.inventoryCountDetailBeansList = angular.copy($scope.inventoryCountBean.inventoryCountDetailBeansList);
 					if ($scope.inventoryCountDetailBeansList.length > 0) {
 						for (var i = 0; i < $scope.inventoryCountDetailBeansList.length; i++) {
 							$scope.inventoryCountDetailBeansList[i].isDirty = false; 
