@@ -325,7 +325,9 @@ public class InventoryCountCreateController {
 						inventoryCount.setCompany(currentUser.getCompany());
 						if(inventoryCountBean.getRemarks() != null){
 							inventoryCount.setRemarks(inventoryCountBean.getRemarks());
-						}					
+						}	
+						System.out.println(inventoryCount.getOutlet().getOutletId());
+						System.out.println(inventoryCount.getStatus().getStatusId());
 						inventoryCountService.addInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
 						String path = LayOutPageConstants.INVENTORY_COUNT_DETAILS;
 						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", 
