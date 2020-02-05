@@ -21,7 +21,7 @@
 		<div class="loader"></div>
 	</div>
 			<!-- Main content -->
-			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+			<section class="content" ng-show="!globalPageLoader" ng-cloak>  
   			 <div class="row">
 	  <div class="col-md-1">
 	   </div>
@@ -47,8 +47,25 @@
 							class="vd-flex vd-flex--forced-row vd-flex--row vd-flex--justify-between vd-flex--align-center  ng-scope">
 							  
               
-							<span>   A list of all of your Readed Notifications.<!-- <b><i>Your messages count is {{readedNotifications}}</i></b> --> 
+							<span ng-show="!loadAll">   A list of all your Marked Notifications.<i class="fa fa-hand-o-down text-white fa-4x" ></i><!-- <b><i>Your messages count is {{readedNotifications}}</i></b> --> 
 							</span>
+							<span ng-show="loadAll">  List of your all Marked Notifications by clicking on Load All Marked Notifications.<i class="fa fa-hand-o-right text-white fa-4x" ></i></span>
+							</span>
+							<div>
+									<div class="vd-button-group" ng-show="dataLoading">
+									<button class="btn  btn-primary btn-lg"
+										ng-click="loadAllNotifications()">Load All Marked Notifications</button>
+
+								</div>
+								<div class="vd-button-group" ng-show="!dataLoading">
+									<button class="btn  btn-primary btn-lg" ng-disabled="true">
+										Loading All Marked Notifications<i
+											class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+									</button>
+
+								</div>
+							</div>
+							
 							<!-- <div> 
 								<button class="btn btn-primary btn-lg" ng-hide="userRole==1" ng-click="markAllAsRead()"><span>Mark all as read</span>
 								<i class="fa fa-spinner fa-spin" aria-hidden="true"  ng-if="processing"></i>
@@ -68,7 +85,7 @@
 								ng-bind="errorMessage" ng-cloak></div>
 				 </div><!-- /.box-header -->
 				<div class="box-body">
-				<table id="myTable"  class="display" cellspacing="0" width="100%"  ng-clock ng-if="notificationBeanList.length > 0">
+				<table id="myTable"  class="display" cellspacing="0" width="100%"  ng-clock ng-show="notificationsList.length > 0">
 				    <thead >
 				        <tr >
 				           <th>Notification To</th>
@@ -80,12 +97,12 @@
 				        </tr>
 				    </thead>
 				    <tbody>
-				          <tr ng-if="notificationBeanList.length > 0" ng-repeat="notificationBean in notificationBeanList">
+				          <tr ng-show="notificationsList.length > 0" ng-repeat="notification in notificationsList">
 						
-				        <td ng-bind="notificationBean.outletByOutletIdToName"></td>
-				        <td ng-bind="notificationBean.outletByOutletIdFromName"></td>
-				        <td ng-bind="notificationBean.description"></td>
-				        <td ng-bind="notificationBean.createdDate"></td>
+				        <td ng-bind="notification.outletByOutletIdToName"></td>
+				        <td ng-bind="notification.outletByOutletIdFromName"></td>
+				        <td ng-bind="notification.description"></td>
+				        <td ng-bind="notification.createdDate"></td>
 				        <td  ng-hide="userRole==1"><a href="" data-toggle="tooltip" title="In Active">
 							<i class="btn btn-default btn-sm fa fa-power-off " aria-hidden="true" ></i></td>
 				       <!--  <td><a href="" ng-hide="userRole==1" class="btn btn-sm {{notificationBean.markAsRead ? 'btn-default' : 'btn-success'}}" data-toggle="tooltip" title="{{notificationBean.markAsRead ? 'In Active' : 'Active'}}" ng-click="editNotification(notificationBean)">
@@ -97,6 +114,8 @@
 				          
 				    </tbody>
 				</table>
+					<Span ng-hide="dataLoading"> Loading ...</Span>
+					<div class="loader" ng-hide="dataLoading"></div>
 				</div>
 			</div>
                  <div class="top-buffer-contact"> </div>
@@ -131,8 +150,8 @@
    
      <script src="resources/js/jquery.dataTables.min.js"></script>
     
-     <script src="resources/js/dataTables.responsive.min.js"></script>
-     <script src="resources/js/dataTables.buttons.min.js"></script>
+     <!-- <script src="resources/js/dataTables.responsive.min.js"></script>
+     <script src="resources/js/dataTables.buttons.min.js"></script> -->
 <style>
  .user-block {
     white-space: nowrap;

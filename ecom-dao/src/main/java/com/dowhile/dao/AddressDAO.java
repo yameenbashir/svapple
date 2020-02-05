@@ -21,4 +21,5 @@ public interface AddressDAO {
 	List< Address> getAddressBySupplierId(int supplierId, int companyId);
 	List< Address> getAddressByCustomerId(int customerId, int companyId);
 	List< Address> getAllAddress(int companyId);
+	List< Address> getAddress(String phone,int companyId);
 }

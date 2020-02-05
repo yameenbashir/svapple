@@ -36,14 +36,22 @@
 								<span
 									ng-bind="'Sales with errors - '+(invoiceMainBeanStatusList.length)+' of your sales couldnot be saved to our servers.'">
 								</span>
-
+								
+								<div class="vd-button-group">
+										<button	class="btn btn-primary btn-sm pull-right btn-primary-spacing" ng-show="invoiceMainBeanStatusList.length>0"										ng-click="saveFile()"
+										 ng-show="!loading" >Save data to file</button>
+									<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+								    	Save Processing<i class="fa fa-arrow-right text-muted fa-spinner fa-spin " ></i>
+					       			 </button>
+								</div>
 							</div>
+								
+							
 						</div>
 						</vd-section>
 
 
 
-						<div class="box box-primary newFont">
 							<div class="box-header">
 								<div class="top-buffer-contact"></div>
 								<span ng-if="invoiceMainBeanStatusList.length>0">We've had a
@@ -97,7 +105,7 @@
 								</div>
 								<div class="top-buffer-contact"></div>
 								<button class="btn btn-danger btn-lg pull-right" ng-disabled="!online" ng-hide="loadingSynchsales"
-									ng-click="synchsales()">Retry Errored Sales</button>
+									ng-click="saveFile();synchsales();">Retry Errored Sales</button>
 								<button class="btn btn-danger btn-lg pull-right"  ng-hide="!loadingSynchsales"
 									><i class="fa fa-arrow-right fa-spinner fa-spin "></i> Retry Errored Sales Processing</button>
 							</div>

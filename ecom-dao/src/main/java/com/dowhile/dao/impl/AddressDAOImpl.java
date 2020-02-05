@@ -177,6 +177,28 @@ public class AddressDAOImpl implements AddressDAO{
 		}
 	}
 
+	@Override
+	public List<Address> getAddress(String phone, int companyId) {
+		{
+	
+		// TODO Auto-generated method stub
+		
+		try {
+			@SuppressWarnings("unchecked")
+			List<Address> list = getSessionFactory().getCurrentSession()
+				.createQuery("from Address where PHONE=? and COMPANY_ASSOCIATION_ID=?")
+				.setParameter(0, phone)
+				.setParameter(1, companyId).list();
+				if(list!=null && list.size()>0) {
+					return list;
+				}
+			
+		}catch(HibernateException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+}
 
 
 

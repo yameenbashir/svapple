@@ -9,6 +9,7 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 	$rootScope.MainHeaderideit = false;	$scope.success = false;
 	$scope.error = false;
 	$scope.dataLoading = false;
+	$scope.loadAll = true;
 	$scope.tagBean = {};
 	$scope.notificationBeanList = [];
 	$scope.comparisonNotificationBeanList = [];
@@ -24,13 +25,14 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 			$scope._s_tk_com =  $cookieStore.get('_s_tk_com') ;
 			$scope.data = NotificationsReadedControllerPreLoad.loadControllerData();
 			$scope.fetchData();
-			$scope.getAllReadedNotifications();
+			
 			
 		}
 	};
 
 	$scope.fetchData = function() {
-		$rootScope.productTagsLoadedFully = false;
+		$rootScope.notificationsLoadedFully = false;
+		
 		if($scope.data == 'NORECORDFOUND' || $scope.data == 'No record found !'){
 
 			$scope.error = true;
@@ -48,10 +50,10 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 
 		}
 		else{
-
-			if($scope.data!=null){
-				$scope.notificationBeanList = $scope.data;
+				if($scope.data!=null){
+					$scope.notificationsList = $scope.data;
 				$scope.comparisonNotificationBeanList = $scope.data;
+				$scope.lodAllNotificationsAsynchrnously();
 				setTimeout(
 						function() 
 						{
@@ -59,81 +61,39 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 								responsive: true,
 								paging: true,
 								searching:true,
-								bInfo : true
+								bInfo : true,
+								dom : 'Bfrtip',
+								pageLength: 5,
+								
+								buttons :$rootScope.buttonsView
 							} );
-
-
 						}, 10);
-				//$scope.lodAllNotificationsAsynchrnously();
-			}
 		}
+		}
+		
 		$rootScope.globalPageLoader = false;
 	};
 	
-	$scope.lodAllNotificationsAsynchrnously = function() {
-		$http.post('notificationsReaded/getAllNotifications/'+$cookieStore.get('_s_tk_com')+'/'+"true").success(function(Response) {
-				$scope.responseStatus = Response.status;
-				$scope.dataLoading = true;
-				if ($scope.responseStatus== 'SUCCESSFUL') {
-					$scope.data = Response.data;
-					$scope.success = true;
-					$scope.sucessMessage = Response.data;
-					
-				}else if($scope.responseStatus == 'SYSTEMBUSY'
-					||$scope.responseStatus=='INVALIDUSER'
-						||$scope.responseStatus =='ERROR'
-							||$scope.responseStatus =='INVALIDSESSION'){
-					$scope.error = true;
-					$scope.errorMessage = Response.data;
-					$window.location = Response.layOutPath;
-				} else {
-					$scope.error = true;
-					$scope.errorMessage = Response.data;
-				}
-
-			}).error(function() {
-				$rootScope.emergencyInfoLoadedFully = false;
-				$scope.error = true;
-				$scope.errorMessage  = $scope.systemBusy;
-			});
-
-		};
-		
-		
-		
-		
-		
-		
-		$scope.activeInactiveAll = function(isActive) {
+	
+	$scope.lodAllNotificationsAsynchrnously = function(){
+		$scope.dataLoading = false;
+		$http.post('notificationsReaded/getAllNotifications/'+$cookieStore.get('_s_tk_com')+'/'+"true").success(function(Response){
+			$scope.data = Response.data;
 			
-			$scope.loading = true;
-			$http.get('notificationsReaded/activeInactiveAllNotifications/'+$scope._s_tk_com+'/'+isActive)
-			.success(function(Response) {
-				
-				$scope.responseStatus = Response.status;
-				if ($scope.responseStatus == 'SUCCESSFUL') {
-					notifications = Response.data;
-					localforage.setItem('_e_cOt_jir',notifications);
-					$window.location = "/app/#/manageNoftificationsReaded";
-					
-				}else  {
-				
-					$window.location = Response.layOutPath;
-				}
-			}).error(function() {
-				$scope.loading = false;
-				$scope.outletError = true;
-				$scope.outletErrorMessage = $scope.systemBusy;
-			});
-			
-		};
+			$scope.dataLoading = true;
+		}).error(function() {
+			$window.location = '/app/#/login';
+		});
+	};
+
+		
+	
 		
 		$scope.loadAllNotifications = function(){
 			$scope.dataLoading = false;
-			
 			for(var i=0;i<$scope.data.length;i++){
 				if(!checkNotificationExist($scope.data[i])){
-					$scope.notificationBeanList.push($scope.data[i]);
+					$scope.notificationsList.push($scope.data[i]);
 				}
 			}
 			var table = $('#myTable').DataTable();
@@ -144,6 +104,7 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 					function() 
 					{
 						$('#myTable').DataTable( {
+							destroy : true,
 							responsive: true,
 							paging: true,
 							searching:true,
@@ -155,6 +116,7 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 						
 					}, 1);
 			$scope.dataLoading = true;
+			$scope.loadAll = false;
 		};
 
 		function checkNotificationExist(notification) {
@@ -168,31 +130,7 @@ var NotificationsReadedController = ['$scope', '$http', '$window','$cookieStore'
 			return false;
 		};
 		
-
 	
-	$scope.getAllReadedNotifications = function(){
-		$scope.readedNotifications = 0;
-		$http.get('notificationsReaded/getAllReadedNotifications/'+$scope._s_tk_com)
-		.success(function(Response) {
-
-				$scope.responseStatus = Response.status;
-				if ($scope.responseStatus == 'SUCCESSFUL'){
-					$scope.readedNotifications = Response.data;
-					
-				}
-				
-		}).error(function() {
-			$scope.loading = false;
-			$scope.outletError = true;
-			$scope.outletErrorMessage = $scope.systemBusy;
-		});
-
-	};	
-	
-	
-	
-		
-
 	
 	$scope.sessionValidation();
 }];

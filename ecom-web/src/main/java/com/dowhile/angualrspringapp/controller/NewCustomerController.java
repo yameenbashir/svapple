@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dowhile.Address;
 import com.dowhile.Contact;
 import com.dowhile.ContactGroup;
+import com.dowhile.Outlet;
 import com.dowhile.User;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
@@ -35,6 +36,7 @@ import com.dowhile.service.AddressService;
 import com.dowhile.service.CompanyService;
 import com.dowhile.service.ContactGroupService;
 import com.dowhile.service.ContactService;
+import com.dowhile.service.OutletService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
 
@@ -57,6 +59,9 @@ public class NewCustomerController {
 	
 	@Resource
 	private AddressService addressService;
+	
+	@Resource
+	private OutletService outletService;
 	
 	@Resource
 	private ServiceUtil util;
@@ -105,7 +110,7 @@ public class NewCustomerController {
 					customer.setCompany(currentUser.getCompany());
 					customer.setContactType("CUSTOMER");
 					customer.setOutlet(currentUser.getOutlet());
-					customer = customerService.addContact(customer,currentUser.getCompany().getCompanyId());
+					//customer = customerService.addContact(customer,currentUser.getCompany().getCompanyId());
 					List<AddressBean> addressBeanList = customerBean.getAddressBeanList(); 
 					if(addressBeanList.isEmpty()==false){
 					for (AddressBean addressBean : addressBeanList) {
@@ -117,6 +122,23 @@ public class NewCustomerController {
 						address.setContactName(addressBean.getContactName());
 						address.setEmail(addressBean.getEmail());
 						address.setPhone(addressBean.getPhone());
+						
+						List<Address> addresstList = addressService.getAddress(address.getPhone(),currentUser.getCompany().getCompanyId());
+						
+						if(addresstList== null && address.getAddressType().equals("Physical Address") ) {
+							address.setPhone(addressBean.getPhone());
+							
+						}else if(addresstList!= null && address.getAddressType().equals("Postal Address")){
+									for(Address address1 :addresstList) {
+										if(address1.getPhone().equals(addressBean.getPhone())){
+											address.setPhone(address1.getPhone());
+										}
+									}
+						}else if(addresstList!= null) {
+							util.AuditTrail(request, currentUser, "NewCustomerController.addNewCustomer", "User "+ 
+							currentUser.getUserEmail()+" Unable to add Customer from user: "+currentUser.getUserId(),false);
+							return new Response("Customer already exist with same phone/mobile number",StatusConstants.BUSY,"");
+						}
 						address.setWebsite(addressBean.getWebsite());
 						address.setTwitter(addressBean.getTwitter());
 						address.setStreet(addressBean.getStreet());
@@ -130,6 +152,7 @@ public class NewCustomerController {
 						address.setCreatedDate(new Date());
 						address.setLastUpdated(new Date());	
 						address.setCompany(currentUser.getCompany());
+						customer = customerService.addContact(customer,currentUser.getCompany().getCompanyId());
 						addressService.addAddress(address,currentUser.getCompany().getCompanyId());
 						}
 					}

@@ -37,6 +37,7 @@ public class SellControllerBean implements Serializable{
 	private String isReturnEnableonSell = "false"; 
 	private String isInvoiceLevelDiscountEnable = "true";
 	private String isInvoiceDetailLevelDiscountEnable = "true";
+	private String isInvoiceTaxAmountEnable = "true";
 	private String companyImagePath;
 	private String autoCreateStandardVariant;
 	private String defaultVariantName;
@@ -184,5 +185,18 @@ public class SellControllerBean implements Serializable{
 			ReceiptConfigurationBean receiptConfigurationBean) {
 		this.receiptConfigurationBean = receiptConfigurationBean;
 	}
+	/**
+	 * @return the isInvoiceTaxAmountEnable
+	 */
+	public String getIsInvoiceTaxAmountEnable() {
+		return isInvoiceTaxAmountEnable;
+	}
+	/**
+	 * @param isInvoiceTaxAmountEnable the isInvoiceTaxAmountEnable to set
+	 */
+	public void setIsInvoiceTaxAmountEnable(String isInvoiceTaxAmountEnable) {
+		this.isInvoiceTaxAmountEnable = isInvoiceTaxAmountEnable;
+	}
+	
 
 }
