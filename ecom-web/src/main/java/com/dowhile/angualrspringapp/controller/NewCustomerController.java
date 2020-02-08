@@ -111,6 +111,8 @@ public class NewCustomerController {
 					customer.setContactType("CUSTOMER");
 					customer.setOutlet(currentUser.getOutlet());
 					//customer = customerService.addContact(customer,currentUser.getCompany().getCompanyId());
+					List<Address> newAddressList = new ArrayList<>();
+					boolean isAddressFound = false;
 					List<AddressBean> addressBeanList = customerBean.getAddressBeanList(); 
 					if(addressBeanList.isEmpty()==false){
 					for (AddressBean addressBean : addressBeanList) {
@@ -152,10 +154,19 @@ public class NewCustomerController {
 						address.setCreatedDate(new Date());
 						address.setLastUpdated(new Date());	
 						address.setCompany(currentUser.getCompany());
-						customer = customerService.addContact(customer,currentUser.getCompany().getCompanyId());
-						addressService.addAddress(address,currentUser.getCompany().getCompanyId());
+						newAddressList.add(address);
+						isAddressFound = true;
+						
 						}
 					}
+					customer = customerService.addContact(customer,currentUser.getCompany().getCompanyId());
+					if(isAddressFound){
+						for(Address addres:newAddressList){
+							addressService.addAddress(addres,currentUser.getCompany().getCompanyId());
+						}
+					}
+					
+					
 					customerBean.setCustomerId(customer.getContactId().toString());
 				util.AuditTrail(request, currentUser, "NewCustomerController.addNewCustomer", 
 							"User "+ currentUser.getUserEmail()+" Added Customer :+"+customerBean.getAddressBeanList().get(0).getFirstName()+" successfully ",false);
