@@ -1321,6 +1321,7 @@ public class InventoryCountDetailsController {
 							if(outletId != headOfficeOutletId) {
 								if(product.getOutlet().getOutletId() == warehousOutlletId) {
 									productVariantBean.setAuditTransfer("true");
+									productVariantBean.setCurrentInventory("0");
 									warehouseProductBeansSKUMap.put(product.getSku().toLowerCase(), productVariantBean);
 								}
 							}
@@ -1503,6 +1504,7 @@ public class InventoryCountDetailsController {
 						if(outletId != headOfficeOutletId) {
 							if(productVariant.getOutlet().getOutletId() == warehouseOutletId) {
 								productVariantBean.setAuditTransfer("true");
+								productVariantBean.setCurrentInventory("0");
 								warehouseProductVariantBeansSKUMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
 							}
 						}

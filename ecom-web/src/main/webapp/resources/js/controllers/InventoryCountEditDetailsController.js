@@ -598,6 +598,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 				$scope.inventoryCountDetailBeansList.splice(index, 1);
 			}
 		});	
+		$scope.showConfirmDeletePopup = false; 
 		$scope.AllInOne();
 	};
 	
