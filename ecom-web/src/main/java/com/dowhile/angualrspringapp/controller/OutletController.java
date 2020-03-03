@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/outlet")
 public class OutletController {
 
+	private static Logger logger = Logger.getLogger(OutletController.class.getName());
 	@Resource
 	private CompanyService companyService;
 	@Resource
@@ -123,7 +125,7 @@ public class OutletController {
 				return new Response(outletControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "OutletController.getOutletControllerData",
@@ -218,7 +220,7 @@ public class OutletController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "OutletController.addOutlet",
@@ -264,7 +266,7 @@ public class OutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "OutletController.getAllTimeZones",
@@ -312,7 +314,7 @@ public class OutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "OutletController.getAllCountry",
@@ -359,7 +361,7 @@ public class OutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "OutletController.getAllSalesTax",

@@ -333,7 +333,7 @@ public class SalesReportWithSaleController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SalesReportController.getSalesReportByDateRange",
@@ -379,7 +379,7 @@ public class SalesReportWithSaleController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SalesReportController.getOutlets",

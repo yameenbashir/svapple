@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/home")
 public class HomeController {
 
+	private static Logger logger = Logger.getLogger(HomeController.class.getName());
 	@Resource
 	private SaleService saleService;
 	private Configuration configuration =null;
@@ -137,7 +139,7 @@ public class HomeController {
 				
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "HomeController.getDashBoard",
@@ -380,7 +382,7 @@ public class HomeController {
 			
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	

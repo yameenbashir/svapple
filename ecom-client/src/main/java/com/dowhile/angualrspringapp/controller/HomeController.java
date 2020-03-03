@@ -79,6 +79,7 @@ public class HomeController {
 					
 				} catch (Exception e) {
 					e.printStackTrace();
+//					logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.addContactusRequest",
@@ -104,6 +105,7 @@ public class HomeController {
 					
 				} catch (Exception e) {
 					e.printStackTrace();
+//					logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.visitWebsite",
@@ -155,6 +157,7 @@ public class HomeController {
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
+//						logger.error(e.getMessage(),e);
 						StringWriter errors = new StringWriter();
 						e.printStackTrace(new PrintWriter(errors));
 //						util.AuditTrail(request, currentUser, "ProductTypeController.getAllProductTypes",

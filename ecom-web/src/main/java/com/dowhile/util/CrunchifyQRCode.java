@@ -63,9 +63,9 @@ public class CrunchifyQRCode {
 				}
 				ImageIO.write(image, fileType, myFile);
 			} catch (WriterException e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 			}
 			System.out.println("\n\nYou have successfully created QR Code.");
 		}

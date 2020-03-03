@@ -70,11 +70,11 @@ public class SessionValidator {
 
 		} catch (UnknownHostException e) {
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		} catch (SocketException e){
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		}
 		System.out.println("Mac address not found");
@@ -104,11 +104,11 @@ public class SessionValidator {
 
 		} catch (UnknownHostException e) {
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		} catch (SocketException e){
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		}
 

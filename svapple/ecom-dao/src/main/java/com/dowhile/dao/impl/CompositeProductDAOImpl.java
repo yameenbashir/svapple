@@ -22,7 +22,7 @@ import com.dowhile.dao.CompositeProductDAO;
 public class CompositeProductDAOImpl implements CompositeProductDAO{
 
 	
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -65,7 +65,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 			return compositeProduct;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -92,7 +92,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 			return compositeProduct;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -118,7 +118,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -138,7 +138,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -156,7 +156,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -178,7 +178,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -197,7 +197,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -226,7 +226,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 			
 			return count;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return count;
 	}
@@ -255,7 +255,7 @@ public class CompositeProductDAOImpl implements CompositeProductDAO{
 			
 			return count;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return count;
 	}

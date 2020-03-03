@@ -116,7 +116,7 @@ public class PurchaseOrderEditProductsController {
 				return new Response(purchaseOrderEditProductsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData",
@@ -170,7 +170,7 @@ public class PurchaseOrderEditProductsController {
 				return new Response(purchaseOrderEditProductsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData",
@@ -224,7 +224,7 @@ public class PurchaseOrderEditProductsController {
 				return new Response(purchaseOrderEditProductsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData",
@@ -386,7 +386,7 @@ public class PurchaseOrderEditProductsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByStockOrderId",
@@ -516,7 +516,7 @@ public class PurchaseOrderEditProductsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getAllProductVariants",
@@ -596,7 +596,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -677,7 +677,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",
@@ -774,7 +774,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -880,7 +880,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",
@@ -958,7 +958,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -1038,7 +1038,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",

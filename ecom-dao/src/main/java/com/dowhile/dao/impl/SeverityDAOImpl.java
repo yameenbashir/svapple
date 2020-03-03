@@ -2,6 +2,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -14,6 +15,7 @@ import com.dowhile.dao.SeverityDAO;
 public class SeverityDAOImpl implements SeverityDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(SeverityDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -47,7 +49,7 @@ public class SeverityDAOImpl implements SeverityDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -60,7 +62,7 @@ public class SeverityDAOImpl implements SeverityDAO{
 			List<Severity> severityList = getSessionFactory().getCurrentSession().createCriteria(Severity.class).list();
 			return severityList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

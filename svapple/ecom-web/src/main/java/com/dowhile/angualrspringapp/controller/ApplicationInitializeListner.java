@@ -25,7 +25,7 @@ public class ApplicationInitializeListner implements ApplicationListener<Context
 			//applicationCacheController.load();
 			
 		}catch(Exception ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
     }
 

@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/backup")
 public class BackupController {
 
+	private static Logger logger = Logger.getLogger(BackupController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -77,7 +79,7 @@ public class BackupController {
 						"User "+ currentUser.getUserEmail()+" taked backup successfully ",false);
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BackupController.takeBakup",
@@ -115,7 +117,7 @@ public class BackupController {
 						"User "+ currentUser.getUserEmail()+" restored backup successfully ",false);
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BackupController.reStoreBackup",
@@ -136,12 +138,12 @@ public class BackupController {
 			
 
 			try{
-				System.out.println("Running schedule");
+				logger.info("Running schedule");
 				tempSaleService.runDailyScript();
-				System.out.println("schedule run succesfully");
+				logger.info("schedule run succesfully");
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				

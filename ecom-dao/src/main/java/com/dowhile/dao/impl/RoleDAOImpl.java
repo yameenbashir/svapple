@@ -5,6 +5,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -18,6 +19,7 @@ import com.dowhile.dao.RoleDAO;
 public class RoleDAOImpl implements RoleDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(RoleDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -46,7 +48,7 @@ public class RoleDAOImpl implements RoleDAO{
 			return role;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -59,7 +61,7 @@ public class RoleDAOImpl implements RoleDAO{
 			return role;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +74,7 @@ public class RoleDAOImpl implements RoleDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -85,7 +87,7 @@ public class RoleDAOImpl implements RoleDAO{
 			List<Role> RoleList = getSessionFactory().getCurrentSession().createCriteria(Role.class).list();
 			return RoleList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -103,7 +105,7 @@ public class RoleDAOImpl implements RoleDAO{
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -121,7 +123,7 @@ public class RoleDAOImpl implements RoleDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -5,6 +5,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -18,6 +19,7 @@ import com.dowhile.dao.ProductPriceHistoryDAO;
 public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 	
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(ProductPriceHistoryDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -49,7 +51,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			return productPriceHistory;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -63,7 +65,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			return productPriceHistory;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -77,7 +79,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -98,7 +100,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			}
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -119,7 +121,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			}
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -141,7 +143,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			}
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

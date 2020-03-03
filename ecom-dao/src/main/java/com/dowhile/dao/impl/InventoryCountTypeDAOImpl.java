@@ -2,6 +2,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -15,6 +16,7 @@ import com.dowhile.dao.InventoryCountTypeDAO;
 public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(InventoryCountTypeDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -43,7 +45,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			return inventoryCountType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -56,7 +58,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			return inventoryCountType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -69,7 +71,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -87,7 +89,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -100,7 +102,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			List<InventoryCountType> inventoryCountTypeList = getSessionFactory().getCurrentSession().createCriteria(InventoryCountType.class).list();
 			return inventoryCountTypeList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -12,7 +12,7 @@ import com.dowhile.dao.ActivityDetailDAO;
  */
 public class ActivityDetailDAOImpl implements ActivityDetailDAO{
 
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -41,7 +41,7 @@ public class ActivityDetailDAOImpl implements ActivityDetailDAO{
 			return activityDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -5,6 +5,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -18,6 +19,7 @@ import com.dowhile.dao.TicketActivityDAO;
 public class TicketActivityDAOImpl implements TicketActivityDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(TicketActivityDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -48,7 +50,7 @@ public class TicketActivityDAOImpl implements TicketActivityDAO{
 			return ticketActivity.getTicketActivityId();
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 		return -1;
@@ -68,7 +70,7 @@ public class TicketActivityDAOImpl implements TicketActivityDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

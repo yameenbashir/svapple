@@ -193,7 +193,7 @@ public class LayoutDesignController {
 					return designControllerBean;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -246,7 +246,7 @@ public class LayoutDesignController {
 						StatusConstants.SUCCESS, LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",

@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -20,6 +21,7 @@ import com.dowhile.dao.PriceBookDAO;
 public class PriceBookDAOImpl implements PriceBookDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(PriceBookDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -48,7 +50,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 			return priceBook;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +63,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 			return priceBook;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -74,7 +76,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -93,7 +95,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -110,7 +112,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -144,7 +146,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -171,7 +173,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -188,7 +190,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -214,7 +216,7 @@ public class PriceBookDAOImpl implements PriceBookDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

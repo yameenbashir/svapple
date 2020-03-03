@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +49,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/priceBook")
 public class PriceBookController {
 
-	
+	private static Logger logger = Logger.getLogger(PriceBookController.class.getName());
 	@Resource
 	private ContactGroupService customerGroupService;
 	@Resource
@@ -138,9 +139,9 @@ public class PriceBookController {
 						localTIme.setTime(priceBook.getValidTo());
 						localTIme.add(Calendar.HOUR_OF_DAY, 9);//For live
 //						localTIme.add(Calendar.HOUR_OF_DAY, 0);//For local
-						/*System.out.println("priceBook.getValidTo(): "+priceBook.getValidTo());
-						System.out.println("todayDate: "+todayDate);
-						System.out.println("localTIme.getTime().equals(new Date())||localTIme.getTime().after(new Date()): "+localTIme.getTime().equals(todayDate)+localTIme.getTime().after(todayDate));*/
+						/*logger.info("priceBook.getValidTo(): "+priceBook.getValidTo());
+						logger.info("todayDate: "+todayDate);
+						logger.info("localTIme.getTime().equals(new Date())||localTIme.getTime().after(new Date()): "+localTIme.getTime().equals(todayDate)+localTIme.getTime().after(todayDate));*/
 						if(localTIme.getTime().equals(todayDate)||localTIme.getTime().after(todayDate)){
 							priceBookBean.setActive(priceBook.isActiveIndicator()==true?ControllersConstants.TRUE:ControllersConstants.FALSE);
 						}else if(localTIme.getTime().before(todayDate)){
@@ -164,7 +165,7 @@ public class PriceBookController {
 							LayOutPageConstants.PRICEBOOK);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PriceBookController.getAllPriceBooks",
@@ -242,9 +243,9 @@ public class PriceBookController {
 						localTIme.setTime(priceBook.getValidTo());
 						localTIme.add(Calendar.HOUR_OF_DAY, 10);//For live
 //						localTIme.add(Calendar.HOUR_OF_DAY, 0);//For local
-						/*System.out.println("priceBook.getValidTo(): "+priceBook.getValidTo());
-						System.out.println("todayDate: "+todayDate);
-						System.out.println("localTIme.getTime().equals(new Date())||localTIme.getTime().after(new Date()): "+localTIme.getTime().equals(todayDate)+localTIme.getTime().after(todayDate));*/
+						/*logger.info("priceBook.getValidTo(): "+priceBook.getValidTo());
+						logger.info("todayDate: "+todayDate);
+						logger.info("localTIme.getTime().equals(new Date())||localTIme.getTime().after(new Date()): "+localTIme.getTime().equals(todayDate)+localTIme.getTime().after(todayDate));*/
 						if(localTIme.getTime().equals(todayDate)||localTIme.getTime().after(todayDate)){
 							priceBookBean.setActive(priceBook.isActiveIndicator()==true?ControllersConstants.TRUE:ControllersConstants.FALSE);
 						}else if(localTIme.getTime().before(todayDate)){
@@ -268,7 +269,7 @@ public class PriceBookController {
 							LayOutPageConstants.PRICEBOOK);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PriceBookController.getAllInActivePriceBooks",

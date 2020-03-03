@@ -65,7 +65,7 @@ public class HomeController {
 					util.WebAuditTrail(request, superUser, "Contact US","Contact US",false);
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace();logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.addContactusRequest",
@@ -90,7 +90,7 @@ public class HomeController {
 					
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace();logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.visitWebsite",

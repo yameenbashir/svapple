@@ -5,6 +5,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -18,6 +19,7 @@ import com.dowhile.dao.ProductSummmaryDAO;
 public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(ProductSummmaryDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -51,7 +53,7 @@ public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -70,7 +72,7 @@ public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -86,7 +88,7 @@ public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

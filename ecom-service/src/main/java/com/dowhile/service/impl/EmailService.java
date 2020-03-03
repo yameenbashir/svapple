@@ -9,8 +9,7 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -19,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = false)
 public class EmailService {
-	private static final Logger LOGGER = LoggerFactory
-	        .getLogger(EmailService.class);
+	private static Logger logger = Logger.getLogger(EmailService.class.getName());
 	 String  emailHostStr ;
 	 String emailHostSSLStr ;
 	 String emailPortStr ;
@@ -147,8 +145,8 @@ public class EmailService {
 //			}
 			email.send();
 		} catch (Exception e) {
-			LOGGER.error("Unable to send Email: "+ e.getMessage());
-			e.printStackTrace();
+			logger.error("Unable to send Email: "+ e.getMessage());
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			return false;
 		}
 		return true;
@@ -218,8 +216,8 @@ public class EmailService {
 //			}
 			email.send();
 		} catch (Exception e) {
-			LOGGER.error("Unable to send Email: "+ e.getMessage());
-			e.printStackTrace();
+			logger.error("Unable to send Email: "+ e.getMessage());
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			return false;
 		}
 		return true;
@@ -276,7 +274,7 @@ public class EmailService {
 
 			email.send();
 		} catch (Exception e) {
-			LOGGER.error("Unable to send Email: "+ e.getMessage());
+			logger.error("Unable to send Email: "+ e.getMessage());
 			return false;
 		}
 		return true;
@@ -501,7 +499,7 @@ public boolean sendEmailContactUs(String toEmail, String  requestPath,String mes
 		
 		
 	} catch (EmailException e) {
-		LOGGER.error("Unable to send Email: "+ e.getMessage());
+		logger.error("Unable to send Email: "+ e.getMessage());
 	}
 	
 	return true;

@@ -570,7 +570,7 @@ public class ManageProductController {
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.MANAGE_PRODUCT);
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.updateProduct",
@@ -762,7 +762,7 @@ public class ManageProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveProductVariant",
@@ -802,7 +802,7 @@ public class ManageProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveCompositeProductVariant",
@@ -852,7 +852,7 @@ public class ManageProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
@@ -1007,7 +1007,7 @@ public class ManageProductController {
 			productPriceHistory.setVrNumber(productPriceHistoryBean.getVrNumber());
 			return productPriceHistory;
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		

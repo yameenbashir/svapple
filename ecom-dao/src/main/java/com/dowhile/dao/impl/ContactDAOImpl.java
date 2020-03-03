@@ -6,6 +6,7 @@ package com.dowhile.dao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -24,6 +25,7 @@ import com.dowhile.dao.ContactDAO;
 public class ContactDAOImpl implements ContactDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(ContactDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -57,7 +59,7 @@ public class ContactDAOImpl implements ContactDAO{
 			return Contact;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -69,7 +71,7 @@ public class ContactDAOImpl implements ContactDAO{
 			return Contact;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -81,7 +83,7 @@ public class ContactDAOImpl implements ContactDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -101,7 +103,7 @@ public class ContactDAOImpl implements ContactDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -123,7 +125,7 @@ public class ContactDAOImpl implements ContactDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -146,7 +148,7 @@ public class ContactDAOImpl implements ContactDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return -1;
 	}
@@ -164,7 +166,7 @@ public class ContactDAOImpl implements ContactDAO{
 			List<Contact> Contact = criteria.list();
 			return Contact;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -182,7 +184,7 @@ public class ContactDAOImpl implements ContactDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -200,7 +202,7 @@ public class ContactDAOImpl implements ContactDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 		}
@@ -218,7 +220,7 @@ public class ContactDAOImpl implements ContactDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -243,7 +245,7 @@ public class ContactDAOImpl implements ContactDAO{
 			return true;
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -263,7 +265,7 @@ public class ContactDAOImpl implements ContactDAO{
 					return list;
 				}
 			}catch(HibernateException ex){
-				ex.printStackTrace();
+				ex.printStackTrace();logger.error(ex.getMessage(),ex);
 			}
 		return null;
 	}

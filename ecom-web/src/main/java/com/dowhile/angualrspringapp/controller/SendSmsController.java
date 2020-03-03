@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/sendSms")
 public class SendSmsController {
 
+	private static Logger logger = Logger.getLogger(SendSmsController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -134,7 +136,7 @@ public class SendSmsController {
 			
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -359,7 +361,7 @@ public class SendSmsController {
 				
 			} catch (Exception e) {
 				messageService.updateMessageTextLimtByCompanyId(currentUser.getCompany().getCompanyId());
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "sendSms.sendMessage","Error Occured " + errors.toString(), true);
@@ -436,7 +438,7 @@ public class SendSmsController {
 				return new Response(MessageConstants.VALID_SESSION, StatusConstants.SUCCESS,
 						LayOutPageConstants.SEND_SMS);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "sendSingleMessage.sendMessage","Error Occured " + errors.toString(), true);

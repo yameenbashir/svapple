@@ -17,7 +17,7 @@ import com.dowhile.dao.SmsReportDAO;
  */
 public class SmsReportDAOImpl implements SmsReportDAO{
 
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -52,7 +52,7 @@ public class SmsReportDAOImpl implements SmsReportDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

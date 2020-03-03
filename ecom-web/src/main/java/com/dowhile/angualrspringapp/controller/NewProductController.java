@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -110,6 +111,7 @@ import com.dowhile.wrapper.ProductControllerWrapper;
 @RequestMapping("/newProduct")
 public class NewProductController {
 
+	private static Logger logger = Logger.getLogger(NewProductController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -237,7 +239,7 @@ public class NewProductController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
-			System.out.println("getNewProductControllerData request received for user: "+currentUser.getUserEmail()+" for companyId / company : "+currentUser.getCompany().getCompanyId()+" / "+currentUser.getCompany().getCompanyName()
+			logger.info("getNewProductControllerData request received for user: "+currentUser.getUserEmail()+" for companyId / company : "+currentUser.getCompany().getCompanyId()+" / "+currentUser.getCompany().getCompanyName()
 					+ " against outletId / outlet:"+currentUser.getOutlet().getOutletId()+" / "+currentUser.getOutlet().getOutletName());
 			try {
 				initializeClassObjects();
@@ -245,7 +247,7 @@ public class NewProductController {
 				productControllerWrapper = productControllerWrapperService.getProductControllerWrapperDataByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
 				long endWrapper   = System.currentTimeMillis();
 				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get productControllerWrapper is " + formatter.format((endWrapper - start) / 1000d) + " seconds");
+				logger.info("Execution time to get productControllerWrapper is " + formatter.format((endWrapper - start) / 1000d) + " seconds");
 //				products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
 				products = productControllerWrapper.getProductList();
 				if(products!=null){
@@ -342,12 +344,12 @@ public class NewProductController {
 				util.AuditTrail(request, currentUser, "NewProductController.getNewProductControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived NewProductController data successfully ",false);
 				long endTimeTotal   = System.currentTimeMillis();
-				System.out.println("For User "+ currentUser.getUserEmail()+ "Execution time to get NewProductController.getNewProductControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
+				logger.info("For User "+ currentUser.getUserEmail()+ "Execution time to get NewProductController.getNewProductControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
 				destroyClassObjects();
 				return new Response(newProductControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getNewProductControllerData",
@@ -390,7 +392,7 @@ public class NewProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addVariantAttribute",
@@ -422,7 +424,7 @@ public class NewProductController {
 				products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
 				long end   = System.currentTimeMillis();
 				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get products is " + formatter.format((end - start) / 1000d) + " seconds");
+				logger.info("Execution time to get products is " + formatter.format((end - start) / 1000d) + " seconds");
 				if(products!=null){
 					for(Product product:products){
 						productBarCodeMap.put(product.getSku(), product);
@@ -437,7 +439,7 @@ public class NewProductController {
 //				List<ProductVariant> productVariantsList = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 				long endVariant   = System.currentTimeMillis();
 //				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to get products Variants is " + formatter.format((endVariant - startVariant) / 1000d) + " seconds");
+				logger.info("Execution time to get products Variants is " + formatter.format((endVariant - startVariant) / 1000d) + " seconds");
 				Map productVariantMap = new HashMap<>();
 				if(productVariantsList!=null){
 					
@@ -468,7 +470,7 @@ public class NewProductController {
 				}
 				long endFetching   = System.currentTimeMillis();
 //				NumberFormat formatter = new DecimalFormat("#0.00000");
-				System.out.println("Execution time to verify duplication and fetching product and variants is " + formatter.format((endFetching - start) / 1000d) + " seconds");
+				logger.info("Execution time to verify duplication and fetching product and variants is " + formatter.format((endFetching - start) / 1000d) + " seconds");
 				//To check duplicate bar code end
 				if(outletsist!=null){
 
@@ -514,7 +516,7 @@ public class NewProductController {
 					}
 					long endProductAdd   = System.currentTimeMillis();
 //					NumberFormat formatter = new DecimalFormat("#0.00000");
-					System.out.println("For User "+ currentUser.getUserEmail()+" Execution time to complete add product Process is " + formatter.format((endProductAdd - start) / 1000d) + " seconds");
+					logger.info("For User "+ currentUser.getUserEmail()+" Execution time to complete add product Process is " + formatter.format((endProductAdd - start) / 1000d) + " seconds");
 					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "NewProductController.addProduct", 
 							"User "+ currentUser.getUserEmail()+"For all outlets Added Product/s +"+productBean.getProductName()+" successfully ",false);
@@ -525,7 +527,7 @@ public class NewProductController {
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.PRODUCTS);
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addProduct",
@@ -576,7 +578,7 @@ public class NewProductController {
 			productBean.setProductVariantValuesCollectionOne(productVariantValuesCollectionOne);
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 
@@ -829,7 +831,7 @@ public class NewProductController {
 					AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, request);
 					long end   = System.currentTimeMillis();
 					NumberFormat formatter = new DecimalFormat("#0.00000");
-					System.out.println("Execution time to complete AddStockOrder is " + formatter.format((end - start) / 1000d) + " seconds");
+					logger.info("Execution time to complete AddStockOrder is " + formatter.format((end - start) / 1000d) + " seconds");
 					
 				}
 
@@ -1075,7 +1077,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllVariantAttributes",
@@ -1131,7 +1133,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductsForDropDown",
@@ -1249,14 +1251,14 @@ public class NewProductController {
 										productVariantBean.setSupplierCode(productt.getContact().getContactId().toString());
 										productVariantBean.setSupplyPriceExclTax(productVariant.getSupplyPriceExclTax().toString());
 										productVariantBean.setMarkupPrct(productVariant.getMarkupPrct().toString());
-										//System.out.println("variant markup: "+productVariant.getMarkupPrct().toString());
+										//logger.info("variant markup: "+productVariant.getMarkupPrct().toString());
 										/*BigDecimal retialPriceExclTax = (productVariant.getSupplyPriceExclTax().multiply(productVariant.getMarkupPrct().divide(new BigDecimal(100)))).add(productVariant.getSupplyPriceExclTax());
 										retialPriceExclTax =retialPriceExclTax.setScale(2,RoundingMode.HALF_EVEN);
 										productVariantBean.setRetailPriceExclTax(retialPriceExclTax.toString());*/
 										BigDecimal retialPriceExclTax = (productVariant.getSupplyPriceExclTax().multiply(productVariant.getMarkupPrct().divide(new BigDecimal(100)))).add(productVariant.getSupplyPriceExclTax());
-										//System.out.println("retialPriceExclTax Before round: "+retialPriceExclTax);
+										//logger.info("retialPriceExclTax Before round: "+retialPriceExclTax);
 										BigDecimal newNetPrice =retialPriceExclTax.setScale(2,RoundingMode.HALF_EVEN);
-										//System.out.println("retialPriceExclTax after round: "+newNetPrice);
+										//logger.info("retialPriceExclTax after round: "+newNetPrice);
 										productVariantBean.setRetailPriceExclTax(newNetPrice.toString());
 										productVariantBean.setSku(productVariant.getSku());
 										productVariantBean.setProductVariantUuid(productVariant.getProductVariantUuid());
@@ -1353,7 +1355,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getProductDetailByProductId",
@@ -1417,7 +1419,7 @@ public class NewProductController {
 						StatusConstants.SUCCESS, LayOutPageConstants.SUPPLIERS);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -1472,7 +1474,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,
@@ -1532,7 +1534,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductTypes",
@@ -1583,7 +1585,7 @@ public class NewProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addBrand",
@@ -1641,7 +1643,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllBrands",
@@ -1754,7 +1756,7 @@ public class NewProductController {
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							e.printStackTrace();logger.error(e.getMessage(),e);
 						}*/
 
 						outletBean.setStatus(String.valueOf(outlet.isActiveIndicator()));
@@ -1771,7 +1773,7 @@ public class NewProductController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
@@ -1826,8 +1828,8 @@ public class NewProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-//			e.printStackTrace();
-			System.out.println("Error of Upload Image at path:"+configuration.getPropertyValue() + "/Company_"+currentUser.getCompany().getCompanyId());
+//			e.printStackTrace();logger.error(e.getMessage(),e);
+			logger.info("Error of Upload Image at path:"+configuration.getPropertyValue() + "/Company_"+currentUser.getCompany().getCompanyId());
 			StringWriter errors = new StringWriter();
 //			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
@@ -1946,7 +1948,7 @@ public class NewProductController {
 			productPriceHistory.setGrNumber(productPriceHistoryBean.getGrNumber());
 			return productPriceHistory;
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		
@@ -1998,7 +2000,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags",
@@ -2019,7 +2021,7 @@ public class NewProductController {
 		try{
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			System.out.println("For User "+ currentUser.getUserEmail()+ " preparing product controller maps ");
+			logger.info("For User "+ currentUser.getUserEmail()+ " preparing product controller maps ");
 			
 			List<ProductVariant> productVariantsList = productControllerWrapper.getProductVariantList();
 			if(productVariantsList!=null && productVariantsList.size()>0){
@@ -2074,11 +2076,11 @@ public class NewProductController {
 					}
 				}
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	public void initializeClassObjects(){
-		System.out.println("Inside method initializeClassObjects of NewProductController");
+		logger.info("Inside method initializeClassObjects of NewProductController");
 		products = null;
 		productVariantBarCodeMap = new HashMap<>();
 		variantAttributeMap = new HashMap<>();
@@ -2095,7 +2097,7 @@ public class NewProductController {
 		salesTaxMap = new HashMap<>();
 	}
 	public void destroyClassObjects(){
-		System.out.println("Inside method destroyClassObjects of NewProductController");
+		logger.info("Inside method destroyClassObjects of NewProductController");
 		products = null;
 		productVariantBarCodeMap  = null; 
 		variantAttributeMap = null;

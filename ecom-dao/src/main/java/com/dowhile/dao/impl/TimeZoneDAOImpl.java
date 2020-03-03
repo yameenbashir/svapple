@@ -5,11 +5,11 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
-import com.dowhile.PrinterFormat;
 import com.dowhile.TimeZone;
 import com.dowhile.dao.TimeZoneDAO;
 
@@ -20,6 +20,7 @@ import com.dowhile.dao.TimeZoneDAO;
 public class TimeZoneDAOImpl implements TimeZoneDAO {
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(TimeZoneDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -53,7 +54,7 @@ public class TimeZoneDAOImpl implements TimeZoneDAO {
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -71,7 +72,7 @@ public class TimeZoneDAOImpl implements TimeZoneDAO {
 				return timeZone;
 			}
 			}catch(HibernateException ex){
-				ex.printStackTrace();
+				ex.printStackTrace();logger.error(ex.getMessage(),ex);
 			}
 
 

@@ -6,7 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+
 public class MyTester {
+	private static Logger logger = Logger.getLogger(MyTester.class.getName());
 	public static final String USER_AGENT = "Mozilla/5.0";
 	public static String message ="Hurry Up!! Get special out fits for your children and Get Flat 30% off on entire new arrival.";
 
@@ -30,7 +33,7 @@ public class MyTester {
 			//sendPost();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 		//print result

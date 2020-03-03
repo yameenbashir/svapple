@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -26,6 +27,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 	
 	
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(InventoryCountDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -55,7 +57,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 			return inventoryCount;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -68,7 +70,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 			return inventoryCount;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -121,7 +123,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 				}
 			}
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return true;
 	}
@@ -136,7 +138,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -157,7 +159,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -180,7 +182,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -203,7 +205,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -223,7 +225,7 @@ public class InventoryCountDAOImpl implements InventoryCountDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

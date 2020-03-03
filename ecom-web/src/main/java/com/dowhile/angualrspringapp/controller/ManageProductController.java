@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -90,6 +91,7 @@ import com.dowhile.wrapper.ProductControllerWrapper;
 @RequestMapping("/manageProduct")
 public class ManageProductController {
 
+	private static Logger logger = Logger.getLogger(ManageProductController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -643,7 +645,7 @@ public class ManageProductController {
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.MANAGE_PRODUCT);
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.updateProduct",
@@ -851,7 +853,7 @@ public class ManageProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveProductVariant",
@@ -891,7 +893,7 @@ public class ManageProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveCompositeProductVariant",
@@ -943,8 +945,8 @@ public class ManageProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-//			e.printStackTrace();
-			System.out.println("Error of Upload Image at path:"+configuration.getPropertyValue() + "/Company_"+currentUser.getCompany().getCompanyId());
+//			e.printStackTrace();logger.error(e.getMessage(),e);
+			logger.info("Error of Upload Image at path:"+configuration.getPropertyValue() + "/Company_"+currentUser.getCompany().getCompanyId());
 			StringWriter errors = new StringWriter();
 //			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
@@ -1102,14 +1104,14 @@ public class ManageProductController {
 			productPriceHistory.setVrNumber(productPriceHistoryBean.getVrNumber());
 			return productPriceHistory;
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		
 		return null;
 	}
 	public void initializeClassObjects(){
-		System.out.println("Inside method initializeClassObjects of ManageProductController");
+		logger.info("Inside method initializeClassObjects of ManageProductController");
 		stockOrderDetialBeansList = new ArrayList<>();
 		grandTotal = 0.0;
 		itemCount = 0.0;
@@ -1122,7 +1124,7 @@ public class ManageProductController {
 		
 	}
 	public void destroyClassObjects(){
-		System.out.println("Inside method destroyClassObjects of ManageProductController");
+		logger.info("Inside method destroyClassObjects of ManageProductController");
 		stockOrderDetialBeansList = null;
 		grandTotal = 0.0;
 		itemCount = 0.0;

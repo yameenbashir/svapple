@@ -3,14 +3,12 @@
  */
 package com.dowhile.dao.impl;
 
-import java.sql.ResultSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.transform.Transformers;
 
-import com.dowhile.InvoiceDetailCustom;
 import com.dowhile.Message;
 import com.dowhile.dao.MessageDAO;
 
@@ -21,6 +19,7 @@ import com.dowhile.dao.MessageDAO;
 public class MessageDAOImpl implements MessageDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(MessageDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -49,7 +48,7 @@ public class MessageDAOImpl implements MessageDAO{
 			return message;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -62,7 +61,7 @@ public class MessageDAOImpl implements MessageDAO{
 			return message;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -75,7 +74,7 @@ public class MessageDAOImpl implements MessageDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -93,7 +92,7 @@ public class MessageDAOImpl implements MessageDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -111,7 +110,7 @@ public class MessageDAOImpl implements MessageDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -127,7 +126,7 @@ public class MessageDAOImpl implements MessageDAO{
 			
 			return true;
 		}catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}

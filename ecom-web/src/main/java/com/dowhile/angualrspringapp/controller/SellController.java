@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.mapping.Array;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -103,6 +104,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/sell")
 public class SellController  {
 
+	private static Logger logger = Logger.getLogger(SellController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -263,7 +265,7 @@ public class SellController  {
 				}
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -644,7 +646,7 @@ public class SellController  {
 				}
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -887,7 +889,7 @@ public class SellController  {
 				
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -959,7 +961,7 @@ public class SellController  {
 				return new Response(listInvoiceMainBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.SELL);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash","Error Occured " + errors.toString(), true);
@@ -1181,7 +1183,7 @@ public class SellController  {
 						LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash","Error Occured " + errors.toString(), true);
@@ -1399,7 +1401,7 @@ public class SellController  {
 						LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1458,7 +1460,7 @@ public class SellController  {
 
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1582,7 +1584,7 @@ public class SellController  {
 						StatusConstants.SUCCESS, LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -2235,7 +2237,7 @@ public class SellController  {
 			return listPriceBooksBean;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 		
@@ -2274,7 +2276,7 @@ public class SellController  {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewCustomerController.getAllCustomerGroups",

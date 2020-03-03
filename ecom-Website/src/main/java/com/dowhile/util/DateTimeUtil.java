@@ -10,7 +10,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.util.StringUtil;
+
+import com.dowhile.angualrspringapp.controller.HomeController;
 
 /**
  * @author Yameen Bashir
@@ -18,6 +21,7 @@ import org.apache.poi.util.StringUtil;
  */
 public class DateTimeUtil {
 
+	private static Logger logger = Logger.getLogger(DateTimeUtil.class.getName());
 //	private static Configuration configuration =null;
 //	
 //	@Resource
@@ -40,7 +44,7 @@ public class DateTimeUtil {
 			DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -52,7 +56,7 @@ public class DateTimeUtil {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			return dateFormat.parse(guiDate);
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -100,7 +104,7 @@ public class DateTimeUtil {
 			//System.out.println(outputFormat.format(inputFormat.parse(original)));
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 }

@@ -125,7 +125,7 @@ public class SendSmsController {
 			
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -256,7 +256,7 @@ public class SendSmsController {
 			} catch (Exception e) {
 				messageObj.setMessageTextLimit(smsCount);
 				messageService.updateMessage(messageObj);
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "sendSms.sendMessage","Error Occured " + errors.toString(), true);
@@ -330,7 +330,7 @@ public class SendSmsController {
 				return new Response(MessageConstants.VALID_SESSION, StatusConstants.SUCCESS,
 						LayOutPageConstants.SEND_SMS);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "sendSingleMessage.sendMessage","Error Occured " + errors.toString(), true);

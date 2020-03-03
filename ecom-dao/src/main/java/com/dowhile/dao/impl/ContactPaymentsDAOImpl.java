@@ -6,6 +6,7 @@ package com.dowhile.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -23,6 +24,7 @@ import com.dowhile.dao.ContactPaymentsDAO;
 public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(ContactPaymentsDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -56,7 +58,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 			return ContactPayments;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -68,7 +70,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 			return ContactPayments;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -80,7 +82,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -100,7 +102,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 		return null;
@@ -123,7 +125,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -140,7 +142,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 			List<ContactPayments> ContactPayments = criteria.list();
 			return ContactPayments;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -162,7 +164,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 					}
 
 				}catch(HibernateException ex){
-					ex.printStackTrace();
+					ex.printStackTrace();logger.error(ex.getMessage(),ex);
 				}
 
 
@@ -186,7 +188,7 @@ public class ContactPaymentsDAOImpl implements ContactPaymentsDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 

@@ -5,6 +5,8 @@ package com.dowhile.util;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.dowhile.Configuration;
 import com.dowhile.constants.ControllersConstants;
 import com.dowhile.frontend.configuration.bean.ProductConfigurationBean;
@@ -14,6 +16,7 @@ import com.dowhile.frontend.configuration.bean.ProductConfigurationBean;
  *
  */
 public class ConfigurationUtil {
+	private static Logger logger = Logger.getLogger(ConfigurationUtil.class.getName());
 
 	public static ProductConfigurationBean setProductConifurationsFromConfigurationMap(Map<String, Configuration> congigurationMap){
 		
@@ -120,7 +123,7 @@ public class ConfigurationUtil {
 			
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 			productConfigurationBean.setMarkupPrct(true);
 			productConfigurationBean.setProductCode(true);
 			productConfigurationBean.setProductDesc(true);

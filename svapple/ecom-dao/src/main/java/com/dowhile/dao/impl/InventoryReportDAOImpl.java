@@ -17,7 +17,7 @@ import com.dowhile.dao.InventoryReportDAO;
  */
 public class InventoryReportDAOImpl implements InventoryReportDAO{
 
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -51,7 +51,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -71,7 +71,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

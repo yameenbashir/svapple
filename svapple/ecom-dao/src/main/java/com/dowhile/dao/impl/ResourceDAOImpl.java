@@ -12,7 +12,7 @@ import com.dowhile.dao.ResourceDAO;
  *
  */
 public class ResourceDAOImpl implements ResourceDAO{
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -40,7 +40,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 			return user;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -61,7 +61,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 				}
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 
@@ -83,7 +83,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 
@@ -103,7 +103,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 
@@ -121,7 +121,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 					.setParameter(1, 4).
 					list();
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -136,7 +136,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 					.setParameter(0, userId)
 					.setParameter(1, companyId).list();
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -149,7 +149,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 			getSessionFactory().getCurrentSession().update(user);
 			return true;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -165,7 +165,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 				return true;
 			}
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -180,7 +180,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 					.setParameter(0, 3)
 					.setParameter(1, companyId).list();
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -192,7 +192,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 			int count = ((Long)getSessionFactory().getCurrentSession().createQuery("select count(*) from User where COMPANY_ASSOCIATION_ID = "+companyId+"AND ROLE_ID= 4").uniqueResult()).intValue();
 			return count;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return 0;
 	}
@@ -207,7 +207,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 					.setParameter(0, companyAssociationId)
 					.list();
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -222,7 +222,7 @@ public class ResourceDAOImpl implements ResourceDAO{
 			.setParameter(0, companyId)
 			.list();
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

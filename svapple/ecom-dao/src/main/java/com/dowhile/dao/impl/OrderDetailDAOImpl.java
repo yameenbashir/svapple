@@ -17,7 +17,7 @@ import com.dowhile.dao.OrderDetailDAO;
  */
 public class OrderDetailDAOImpl implements OrderDetailDAO{
 
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -46,7 +46,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO{
 			return orderDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -59,7 +59,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO{
 			return orderDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -91,7 +91,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -108,7 +108,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

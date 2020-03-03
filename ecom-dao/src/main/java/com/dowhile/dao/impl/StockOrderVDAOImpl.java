@@ -6,6 +6,7 @@ package com.dowhile.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -21,6 +22,7 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 	
 	
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(StockOrderVDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -58,7 +60,7 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -82,7 +84,7 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -118,7 +120,7 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -153,7 +155,7 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -175,7 +177,7 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -197,7 +199,7 @@ public class StockOrderVDAOImpl implements StockOrderVDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -93,6 +94,7 @@ import com.dowhile.util.StringUtils;
 @RequestMapping("/login")
 public class LoginController {
 
+	private static Logger logger = Logger.getLogger(LoginController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -162,6 +164,9 @@ public class LoginController {
 			return new Response(MessageConstants.INVALID_PASSWORD,
 					StatusConstants.ERROR, LayOutPageConstants.STAY_ON_PAGE);
 		try {
+			int i=1;
+			int j=0;
+			int result = i/j;
 
 			isExist = resourceService.IsUserExist(appuser.getEmail(),
 					appuser.getPassword(),0);
@@ -176,7 +181,7 @@ public class LoginController {
 				Outlet outlet = outletService.getOuletByOutletId(outlets.getOutlet().getOutletId(), company.getCompanyId());
 				
 				if(!outlet.isActiveIndicator()){
-					System.out.println("Outlet status is : "+outlet.isActiveIndicator());
+					logger.info("Outlet status is : "+outlet.isActiveIndicator());
 					return new Response(MessageConstants.OUTLET_CLOSED,
 							StatusConstants.OUTLET_CLOSED,
 							LayOutPageConstants.STAY_ON_PAGE);
@@ -191,9 +196,9 @@ public class LoginController {
 				if(configruationForLocal!=null){
 					String companyImagePath = configruationForLocal.getPropertyValue();
 					String encodeString = StringUtils.encode(companyImagePath);
-					System.out.println("Encode: "+encodeString);
+					logger.info("Encode: "+encodeString);
 					String decode = StringUtils.decode(encodeString);
-					System.out.println("Decode: "+decode);
+					logger.info("Decode: "+decode);
 					
 					
 				}*/
@@ -248,7 +253,7 @@ public class LoginController {
 							}
 					
 				}catch(Exception e){
-					e.printStackTrace();
+					e.printStackTrace();logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 				}
@@ -256,7 +261,7 @@ public class LoginController {
 				//SynchProductMartInData(user);
 //				SynchProductDataLumenFashions(user);
 				if(domianConfiguration==null){
-					System.out.println("domain configuration is null ");
+					logger.info("domain configuration is null ");
 					util.AuditTrail(request, user, "LoginController.doLogin", "domain configuration is null for user : "+
 							loginBean.getUserName()+" against companyId : "+company.getCompanyId()+
 							" with company Name: "+company.getCompanyName(),false);
@@ -264,10 +269,10 @@ public class LoginController {
 							StatusConstants.USER_INVALID,
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
-				System.out.println("Authorizing user for domain: "+domianConfiguration.getPropertyValue());
+				logger.info("Authorizing user for domain: "+domianConfiguration.getPropertyValue());
 				if(!SessionValidator.isSessionValid(session.getId(), request)){
-					System.out.println("Authorization failde for user : "+loginBean.getUserName()+" against companyId : "+company.getCompanyId()+" with company Name: "+company.getCompanyName());
-					System.out.println("User associated with outlet Id: "+outlet.getOutletId()+" having outlet name: "+outlet.getOutletName());
+					logger.info("Authorization failde for user : "+loginBean.getUserName()+" against companyId : "+company.getCompanyId()+" with company Name: "+company.getCompanyName());
+					logger.info("User associated with outlet Id: "+outlet.getOutletId()+" having outlet name: "+outlet.getOutletName());
 					util.AuditTrail(request, user, "LoginController.doLogin", "Authorization failde for user : "+
 					loginBean.getUserName()+" against companyId : "+company.getCompanyId()+
 					" with company Name: "+company.getCompanyName(),false);
@@ -276,8 +281,8 @@ public class LoginController {
 							LayOutPageConstants.STAY_ON_PAGE);
 					
 				}
-				System.out.println("Authorization completed for user: "+appuser.getEmail()+" against companyId: "+company.getCompanyId()+" with company Name: "+company.getCompanyName());
-				System.out.println("User associated with outlet Id: "+outlet.getOutletId()+" having outlet name: "+outlet.getOutletName());
+				logger.info("Authorization completed for user: "+appuser.getEmail()+" against companyId: "+company.getCompanyId()+" with company Name: "+company.getCompanyName());
+				logger.info("User associated with outlet Id: "+outlet.getOutletId()+" having outlet name: "+outlet.getOutletName());
 				util.AuditTrail(request, user, "LoginController.doLogin", "User:  "+ appuser.getEmail()+" Login Successfuly ",false);
 				if(user.getRole().getRoleId()==1){
 					return new Response(loginBean, StatusConstants.SUCCESS,
@@ -295,6 +300,7 @@ public class LoginController {
 						LayOutPageConstants.STAY_ON_PAGE);
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, user, "LoginController.doLogin",
@@ -367,9 +373,9 @@ public class LoginController {
 			SynchProductTypeData(user);
 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -401,9 +407,9 @@ public class LoginController {
 			SynchProductData(user);
 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -424,7 +430,7 @@ public class LoginController {
 			int rowNum = 0;
 			while (iterator.hasNext()) {
 				rowNum = rowNum+1;
-				System.out.println(rowNum);
+				logger.info(rowNum);
 
 				Row currentRow = iterator.next();
 				String productName = "";
@@ -591,13 +597,13 @@ public class LoginController {
 
 
 
-				//     System.out.println(retail_price);
+				//     logger.info(retail_price);
 
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -627,7 +633,7 @@ public class LoginController {
 			int rowNum = 0;
 			while (iterator.hasNext()) {
 				rowNum = rowNum+1;
-				System.out.println(rowNum);
+				logger.info(rowNum);
 
 				Row currentRow = iterator.next();
 				String sku = currentRow.getCell(0).getStringCellValue();
@@ -639,14 +645,14 @@ public class LoginController {
 				
 				double markUp = (retailPr-supplierPr)*100/supplierPr;
 				DecimalFormat numberFormat = new DecimalFormat("#.00");
-				//System.out.println("Markup: "+numberFormat.format(markUp));
+				//logger.info("Markup: "+numberFormat.format(markUp));
 				BigDecimal markUpPrct = new BigDecimal(numberFormat.format(markUp)).setScale(2, RoundingMode.HALF_EVEN);
-				System.out.println("Big Decimal markUpPrct: "+markUpPrct);
-				//System.out.println("Row Number: "+rowNum+" sku: "+sku+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
+				logger.info("Big Decimal markUpPrct: "+markUpPrct);
+				//logger.info("Row Number: "+rowNum+" sku: "+sku+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
 				
 				//result = (supplyPrice*(markUp/100)+supplyPrice).toFixed(2);
 				//double newRetailPrice = (supplierPr*(markUp/100)+supplierPr);
-				//System.out.println("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
+				//logger.info("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
 				
 				
 				
@@ -729,21 +735,21 @@ public class LoginController {
 
 					
 				}else{
-					System.out.println("Product Already exit");
-					System.out.println("Row Number: "+rowNum+" sku: "+sku+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
+					logger.info("Product Already exit");
+					logger.info("Row Number: "+rowNum+" sku: "+sku+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
 				}
 
 
 
 
-				//     System.out.println(retail_price);
+				//     logger.info(retail_price);
 
 			
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -777,7 +783,7 @@ public class LoginController {
 			int rowNum = 0;
 			while (iterator.hasNext()) {
 				rowNum = rowNum+1;
-				System.out.println(rowNum);
+				logger.info(rowNum);
 
 				Row currentRow = iterator.next();
 				String barCode = "";
@@ -787,11 +793,11 @@ public class LoginController {
 				} else if (currentRow.getCell(0).getCellTypeEnum() == CellType.NUMERIC) {
 					//currentRow.getCell(0).setCellType(currentRow.getCell(0).CELL_TYPE_STRING);
 					Double doub = currentRow.getCell(0).getNumericCellValue();
-					System.out.println("doub: "+Double.toString(doub));
-					//System.out.println("currentRow.getCell(0).getNumericCellValue(); "+currentRow.getCell(0).getNumericCellValue());
+					logger.info("doub: "+Double.toString(doub));
+					//logger.info("currentRow.getCell(0).getNumericCellValue(); "+currentRow.getCell(0).getNumericCellValue());
 					barCode = String.valueOf(currentRow.getCell(0).getNumericCellValue());
 				}
-				System.out.println("Barcode: "+barCode);
+				logger.info("Barcode: "+barCode);
 				if(barCode.equalsIgnoreCase("")||barCode.equalsIgnoreCase("LIST OF ITEM FILE SORTED BY COST PRICE DESCENDING")
 						||barCode.equalsIgnoreCase("Item Code")
 						||barCode.equalsIgnoreCase("MART INN")||barCode.equalsIgnoreCase("LIST OF ITEM FILE SORTED BY COST PRICE DESCENDING")){
@@ -800,7 +806,7 @@ public class LoginController {
 				//	                String lineItemName = currentRow.getCell(1).getStringCellValue();
 				currentRow.getCell(1).setCellType(CellType.STRING);
 				String productName =  currentRow.getCell(1).getStringCellValue();
-				System.out.println("ProductName: "+productName);
+				logger.info("ProductName: "+productName);
 				
 				
 				
@@ -810,7 +816,7 @@ public class LoginController {
 				double retailPrice = (double) currentRow.getCell(7).getNumericCellValue();
 				double supplierPrice = (double) currentRow.getCell(8).getNumericCellValue();
 				if(supplierPrice==0){
-					System.out.println("supplierPrice: "+supplierPrice);
+					logger.info("supplierPrice: "+supplierPrice);
 					supplierPrice = retailPrice;
 				}
 				if(retailPrice==0){
@@ -820,13 +826,13 @@ public class LoginController {
 				productMap.get(barCode);
 				if(productMap.get(barCode)!=null){
 					duplicate++;
-					System.out.println("dublicate bar Code: "+barCode+" with productName: "+productName);
+					logger.info("dublicate bar Code: "+barCode+" with productName: "+productName);
 				}else{
 					productMap.put(barCode, productName);
 					productInfo.put( i+++"", new Object[] {
 							barCode, productName, retailPrice+"",supplierPrice+"" });
 				}
-				System.out.println("Product Name: "+productName+" salePrice: "+retailPrice+" retailPrice: "+supplierPrice);
+				logger.info("Product Name: "+productName+" salePrice: "+retailPrice+" retailPrice: "+supplierPrice);
 				
 				//	                String supplier_name = currentRow.getCell(6).getStringCellValue();
 			//	String size = currentRow.getCell(7).getStringCellValue().replaceAll("temp_", "");
@@ -839,10 +845,10 @@ public class LoginController {
 
 
 
-				//     System.out.println(retail_price);
+				//     logger.info(retail_price);
 
 			}
-			System.out.println("duplicate count:"+duplicate);
+			logger.info("duplicate count:"+duplicate);
 			//Iterate over data and write to sheet
 		      Set < String > keyid = productInfo.keySet();
 			//Create row object
@@ -866,11 +872,11 @@ public class LoginController {
 		      
 		      workbookWrite.write(out);
 		      out.close();
-		      System.out.println("New mart written successfully");
+		      logger.info("New mart written successfully");
 		   	
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -887,7 +893,7 @@ public class LoginController {
 			int rowNum = 0;
 			while (iterator.hasNext()) {
 				rowNum = rowNum+1;
-				//System.out.println("Row Number: "+rowNum);
+				//logger.info("Row Number: "+rowNum);
 				Row currentRow = iterator.next();
 				String barCode = "";
 				currentRow.getCell(0).setCellType(CellType.STRING);
@@ -905,19 +911,19 @@ public class LoginController {
 				
 				double markUp = (retailPr-supplierPr)*100/supplierPr;
 				DecimalFormat numberFormat = new DecimalFormat("#.00");
-				System.out.println("Markup: "+numberFormat.format(markUp));
+				logger.info("Markup: "+numberFormat.format(markUp));
 				BigDecimal mark = new BigDecimal(numberFormat.format(markUp));
-				System.out.println("Big Decimal mark: "+mark);
-				System.out.println("Row Number: "+rowNum+" barCode: "+barCode+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
+				logger.info("Big Decimal mark: "+mark);
+				logger.info("Row Number: "+rowNum+" barCode: "+barCode+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
 				
 				//result = (supplyPrice*(markUp/100)+supplyPrice).toFixed(2);
 				double newRetailPrice = (supplierPr*(markUp/100)+supplierPr);
-				System.out.println("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
-				//System.out.println("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
+				logger.info("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
+				//logger.info("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
 			}
 						
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -925,7 +931,7 @@ public class LoginController {
 		try{
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	private static final String FILE_NAME_HEATMAP = "C:\\heatmap\\Heatmap_Adhoc.xlsx";
@@ -941,19 +947,19 @@ public class LoginController {
 			int rowNum = 0;
 			while (iterator.hasNext()) {
 				rowNum = rowNum+1;
-				//System.out.println("Row Number: "+rowNum);
+				//logger.info("Row Number: "+rowNum);
 				Row currentRow = iterator.next();
 				
 				for(int i=0;i<26;i++) {
 					String cell =  currentRow.getCell(i).getStringCellValue();
-					System.out.println("Cell Id: "+i+" Cell Value: "+cell);
+					logger.info("Cell Id: "+i+" Cell Value: "+cell);
 				}
 				
-				//System.out.println("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
+				//logger.info("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
 			}
 						
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -1064,7 +1070,7 @@ public class LoginController {
 				//String quantity =  currentRow.getCell(9).getStringCellValue();
 				
 				
-				System.out.println("Product Name: "+productName);
+				logger.info("Product Name: "+productName);
 				
 //				String retailPrice = currentRow.getCell(2).getStringCellValue();
 //				String supplierPrice = currentRow.getCell(3).getStringCellValue();
@@ -1074,17 +1080,17 @@ public class LoginController {
 				
 				double markUp = (retailPr-supplierPr)*100/supplierPr;
 				DecimalFormat numberFormat = new DecimalFormat("#.00000");
-				System.out.println("Markup: "+numberFormat.format(markUp));
+				logger.info("Markup: "+numberFormat.format(markUp));
 				BigDecimal mark = new BigDecimal(numberFormat.format(markUp));
-				System.out.println("Big Decimal mark: "+mark);
-				//System.out.println("Row Number: "+rowNum+" barCode: "+barCode+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
+				logger.info("Big Decimal mark: "+mark);
+				//logger.info("Row Number: "+rowNum+" barCode: "+barCode+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
 				
 				//result = (supplyPrice*(markUp/100)+supplyPrice).toFixed(2);
 				double newRetailPrice = (supplierPr*(markUp/100)+supplierPr);
-				System.out.println("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
-				//System.out.println("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
+				logger.info("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
+				//logger.info("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
 				BigDecimal markUpPrct = new BigDecimal(numberFormat.format(markUp)).setScale(5, RoundingMode.HALF_EVEN);
-				System.out.println("Big Decimal markUpPrct: "+markUpPrct);
+				logger.info("Big Decimal markUpPrct: "+markUpPrct);
 				if(productMap.get(productName)==null){
 					Product newProduct = new Product();
 					newProduct.setProductName(productName);
@@ -1177,7 +1183,7 @@ public class LoginController {
 							Integer currentInventory = Integer.valueOf(quantity);
 							productVariant.setCurrentInventory(currentInventory);
 						}catch(Exception ex){
-							ex.printStackTrace();
+							ex.printStackTrace();logger.error(ex.getMessage(),ex);
 							productVariant.setCurrentInventory(0);
 						}
 						
@@ -1239,7 +1245,7 @@ public class LoginController {
 			}
 						
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -1250,20 +1256,20 @@ public class LoginController {
 		
 		double markUp = (retailPr-supplierPr)*100/supplierPr;
 		DecimalFormat numberFormat = new DecimalFormat("#.00000");
-		System.out.println("Markup: "+numberFormat.format(markUp));
+		logger.info("Markup: "+numberFormat.format(markUp));
 		BigDecimal mark = new BigDecimal(numberFormat.format(markUp));
-		System.out.println("Big Decimal mark: "+mark);
-		//System.out.println("Row Number: "+rowNum+" barCode: "+barCode+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
+		logger.info("Big Decimal mark: "+mark);
+		//logger.info("Row Number: "+rowNum+" barCode: "+barCode+" Product Name: "+productName+" supplierPrice: "+supplierPrice+" retailPrice: "+retailPrice);
 		
 		//result = (supplyPrice*(markUp/100)+supplyPrice).toFixed(2);
 		double newRetailPrice = (supplierPr*(markUp/100)+supplierPr);
-		System.out.println("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
-		//System.out.println("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
+		logger.info("newRetailPrice: "+newRetailPrice+" oldRetailPrice: "+retailPr);
+		//logger.info("markUp: "+markUp.setScale(5, RoundingMode.HALF_EVEN));
 		BigDecimal markUpPrct = new BigDecimal(numberFormat.format(markUp)).setScale(5, RoundingMode.HALF_EVEN);
-		System.out.println("Big Decimal markUpPrct: "+markUpPrct);
+		logger.info("Big Decimal markUpPrct: "+markUpPrct);
 		/*double number = 90909090.123456789;
 		DecimalFormat numberFormat = new DecimalFormat("#.00000");
-		System.out.println(numberFormat.format(number));*/
+		logger.info(numberFormat.format(number));*/
 		
 		User user  = new User();
 //		SynchProductDataLumenFashions(user);

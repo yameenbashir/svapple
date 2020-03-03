@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/inventoryCount")
 public class InventoryCountController {
 
+	private static Logger logger = Logger.getLogger(InventoryCountController.class.getName());
 	@Resource
 	private OutletService outletService;
 	@Resource
@@ -260,7 +262,7 @@ public class InventoryCountController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getAllInventoryCounts",

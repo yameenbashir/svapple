@@ -11,11 +11,15 @@ import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Yameen Bashir
  *
  */
 public class SessionValidator {
+	
+	private static Logger logger = Logger.getLogger(SessionValidator.class.getName());
 	
 	public static boolean isSessionValid(String sessionId,HttpServletRequest request){
 
@@ -70,11 +74,11 @@ public class SessionValidator {
 
 		} catch (UnknownHostException e) {
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		} catch (SocketException e){
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		}
 		System.out.println("Mac address not found");
@@ -104,11 +108,11 @@ public class SessionValidator {
 
 		} catch (UnknownHostException e) {
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		} catch (SocketException e){
 
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 
 		}
 

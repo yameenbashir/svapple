@@ -148,7 +148,7 @@ public class EmailService {
 			email.send();
 		} catch (Exception e) {
 			LOGGER.error("Unable to send Email: "+ e.getMessage());
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			return false;
 		}
 		return true;
@@ -219,7 +219,7 @@ public class EmailService {
 			email.send();
 		} catch (Exception e) {
 			LOGGER.error("Unable to send Email: "+ e.getMessage());
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			return false;
 		}
 		return true;

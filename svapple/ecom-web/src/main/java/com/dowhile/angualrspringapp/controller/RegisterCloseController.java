@@ -180,7 +180,7 @@ public class RegisterCloseController {
 						StatusConstants.ERROR, LayOutPageConstants.HOME);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterCloseController.loadRegister",
@@ -230,7 +230,7 @@ public class RegisterCloseController {
 
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterCloseController.closeRegister",
@@ -337,7 +337,7 @@ public class RegisterCloseController {
 						StatusConstants.ERROR, LayOutPageConstants.HOME);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterCloseController.loadRegisterDetail",

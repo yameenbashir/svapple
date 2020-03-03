@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -91,6 +92,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/manageCompositeProduct")
 public class ManageCompositeProductController {
 
+	private static Logger logger = Logger.getLogger(ManageCompositeProductController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -654,7 +656,7 @@ public class ManageCompositeProductController {
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.MANAGE_PRODUCT);
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.updateProduct",
@@ -759,7 +761,7 @@ public class ManageCompositeProductController {
 				
 				
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.updateProduct",
@@ -955,7 +957,7 @@ public class ManageCompositeProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveProductVariant",
@@ -995,7 +997,7 @@ public class ManageCompositeProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageProductController.markInActiveCompositeProductVariant",
@@ -1045,7 +1047,7 @@ public class ManageCompositeProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
@@ -1202,7 +1204,7 @@ public class ManageCompositeProductController {
 			productPriceHistory.setVrNumber(productPriceHistoryBean.getVrNumber());
 			return productPriceHistory;
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		
@@ -1247,7 +1249,7 @@ public class ManageCompositeProductController {
 			return true;
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 			return false;
 		}
 	}
@@ -1322,7 +1324,7 @@ public class ManageCompositeProductController {
 			
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	
@@ -1396,7 +1398,7 @@ public class ManageCompositeProductController {
 			
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 

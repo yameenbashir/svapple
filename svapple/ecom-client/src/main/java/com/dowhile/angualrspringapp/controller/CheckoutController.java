@@ -191,7 +191,7 @@ public class CheckoutController {
 					util.WebAuditTrail(request, superUser, "checkout","checkout",false);
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace();logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "CheckoutController.checkout",

@@ -6,9 +6,11 @@ package com.dowhile.dao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.dowhile.Configuration;
 import com.dowhile.dao.ConfigurationDAO;
 
@@ -19,6 +21,7 @@ import com.dowhile.dao.ConfigurationDAO;
 public class ConfigurationDAOImpl implements ConfigurationDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(ConfigurationDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -51,7 +54,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 			return configuration;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -66,7 +69,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 			getSessionFactory().getCurrentSession().update(configuration);
 			return configuration;
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -87,7 +90,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -106,7 +109,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -119,7 +122,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 			return true;
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -139,7 +142,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -160,7 +163,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -177,7 +180,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO{
 			return true;
 		
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}

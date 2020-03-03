@@ -13,10 +13,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
+
 import com.ibatis.common.jdbc.ScriptRunner;
 
 public class DBUtil {
 	
+	private static Logger logger = Logger.getLogger(DBUtil.class.getName());
 	static String dbName = "ecom";
 	static String dbUser = "root";
 	static String dbPass = "123456";
@@ -26,10 +29,10 @@ public class DBUtil {
 			dbRestore("C:/backup"+ "/backup.sql");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 	}
 	public static void Backupdbtosql(String backupPath) {
@@ -75,7 +78,7 @@ public class DBUtil {
 	        }
 
 	    } catch (URISyntaxException | IOException | InterruptedException ex) {
-	    	ex.printStackTrace();
+	    	ex.printStackTrace();logger.error(ex.getMessage(),ex);
 	       // JOptionPane.showMessageDialog(null, "Error at Backuprestore" + ex.getMessage());
 	    }
 	}

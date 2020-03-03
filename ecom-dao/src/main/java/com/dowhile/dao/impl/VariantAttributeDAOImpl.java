@@ -5,6 +5,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -18,6 +19,7 @@ import com.dowhile.dao.VariantAttributeDAO;
 public class VariantAttributeDAOImpl implements VariantAttributeDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(VariantAttributeDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -47,7 +49,7 @@ public class VariantAttributeDAOImpl implements VariantAttributeDAO{
 			return variantAttribute;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +63,7 @@ public class VariantAttributeDAOImpl implements VariantAttributeDAO{
 			return variantAttribute;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 		return null;
@@ -75,7 +77,7 @@ public class VariantAttributeDAOImpl implements VariantAttributeDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 		return false;
@@ -96,7 +98,7 @@ public class VariantAttributeDAOImpl implements VariantAttributeDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -114,7 +116,7 @@ public class VariantAttributeDAOImpl implements VariantAttributeDAO{
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

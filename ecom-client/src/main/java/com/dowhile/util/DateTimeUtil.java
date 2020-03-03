@@ -26,6 +26,7 @@ public class DateTimeUtil {
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
 		}catch(Exception ex){
 			ex.printStackTrace();
+//			logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -52,6 +53,7 @@ public class DateTimeUtil {
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
+//			logger.error(ex.getMessage(),ex);
 		}
 	}
 }

@@ -3,15 +3,12 @@
  */
 package com.dowhile.dao.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.transform.AliasToEntityMapResultTransformer;
 
 import com.dowhile.InventoryReport;
 import com.dowhile.beans.Row;
@@ -25,6 +22,7 @@ import com.dowhile.dao.InventoryReportDAO;
 public class InventoryReportDAOImpl implements InventoryReportDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(InventoryReportDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -58,7 +56,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -78,7 +76,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -151,7 +149,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 							colums.add(value);
 						}	
 					}catch(Exception ex){
-						ex.printStackTrace();
+						ex.printStackTrace();logger.error(ex.getMessage(),ex);
 					}
 					
 					row.setColumns(colums);
@@ -189,7 +187,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 			tableData.setRows(rows);
 			return tableData;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -30,7 +30,7 @@ public class MyTester {
 //			sendPost();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 		}
 
 		//print result

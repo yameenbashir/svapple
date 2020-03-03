@@ -5,8 +5,10 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+
 import com.dowhile.OrderDetail;
 import com.dowhile.OrderMain;
 import com.dowhile.dao.EcomOrderDAO;
@@ -18,6 +20,7 @@ import com.dowhile.dao.EcomOrderDAO;
 public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(EcomOrderDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -45,7 +48,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 			return orderMain;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -57,7 +60,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 			return orderMain;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -74,7 +77,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -91,7 +94,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -107,7 +110,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -124,7 +127,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -141,7 +144,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -158,7 +161,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -170,7 +173,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 			return orderdetail;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -182,7 +185,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 			return orderdetail;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -199,7 +202,7 @@ public class  EcomOrderDAOImpl implements  EcomOrderDAO  {
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

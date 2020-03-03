@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
@@ -27,6 +28,7 @@ import com.dowhile.dao.TempSaleDAO;
 public class TempSaleDAOImpl implements TempSaleDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(TempSaleDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -235,7 +237,7 @@ public class TempSaleDAOImpl implements TempSaleDAO{
 			tableData.setRows(rows);
 			return tableData;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -256,7 +258,7 @@ public class TempSaleDAOImpl implements TempSaleDAO{
 			 "CALL RunDaily()").executeUpdate();
 			return true;
 		}catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -361,7 +363,7 @@ public class TempSaleDAOImpl implements TempSaleDAO{
 						}
 						
 					}catch(Exception ex){
-						ex.printStackTrace();
+						ex.printStackTrace();logger.error(ex.getMessage(),ex);
 					}
 					
 					row.setColumns(colums);
@@ -414,7 +416,7 @@ public class TempSaleDAOImpl implements TempSaleDAO{
 			tableData.setRows(rows);
 			return tableData;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

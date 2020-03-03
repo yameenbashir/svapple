@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/manageRole")
 public class ManageRoleController {
 
+	private static Logger logger = Logger.getLogger(ManageRoleController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -81,7 +83,7 @@ public class ManageRoleController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRoleController.getPageRightsListByRoleId",
@@ -122,7 +124,7 @@ public class ManageRoleController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRoleController.updatePageRightsByRoleId",

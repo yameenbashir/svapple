@@ -10,6 +10,7 @@ import java.util.Date;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
+import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.mysql.jdbc.Connection;
@@ -22,6 +23,7 @@ import com.mysql.jdbc.Statement;
 
 public class SchedulerController {
 
+	private static Logger logger = Logger.getLogger(SchedulerController.class.getName());
 	 String  emailHostStr ;
 	 String emailHostSSLStr ;
 	 String emailPortStr ;
@@ -218,7 +220,7 @@ public class SchedulerController {
 				email.send();
 			} catch (Exception e) {
 				
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				return false;
 			}
 			return true;

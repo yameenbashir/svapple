@@ -28,7 +28,7 @@ public class ControllerUtil {
 				}
 			}
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return totalCount;
 	}
@@ -56,7 +56,7 @@ public class ControllerUtil {
 				}
 			}
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return outletsCountMap;
 	}

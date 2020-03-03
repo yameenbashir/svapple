@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ import com.dowhile.util.SessionValidator;
 
 public class SupportController {
 
+	private static Logger logger = Logger.getLogger(SupportController.class.getName());
 	@Resource
 	private SeverityService severityService;
 	@Resource
@@ -94,7 +96,7 @@ public class SupportController {
 				return new Response(supportControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupportController.getSupportControllerData",
@@ -153,7 +155,7 @@ public class SupportController {
 					isAdded = true;
 				}
 			}catch(Exception ex){
-				ex.printStackTrace();
+				ex.printStackTrace();logger.error(ex.getMessage(),ex);
 				StringWriter errors = new StringWriter();
 				ex.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, manager, "SupportController.addTicket", "Error Occured "+ errors.toString(),true);
@@ -223,7 +225,7 @@ public class SupportController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupportController.getAllTickets", "Error Occured "+ errors.toString(),true);
@@ -265,7 +267,7 @@ public class SupportController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupportController.getSeverities", "Error Occured "+ errors.toString(),true);

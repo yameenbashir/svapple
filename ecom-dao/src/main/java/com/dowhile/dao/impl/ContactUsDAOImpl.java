@@ -6,6 +6,7 @@ package com.dowhile.dao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -19,6 +20,7 @@ import com.dowhile.dao.ContactUsDAO;
 public class ContactUsDAOImpl implements ContactUsDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(ContactUsDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -51,7 +53,7 @@ public class ContactUsDAOImpl implements ContactUsDAO{
 			return contactUs;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -66,7 +68,7 @@ public class ContactUsDAOImpl implements ContactUsDAO{
 			getSessionFactory().getCurrentSession().update(contactUs);
 			return contactUs;
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -79,7 +81,7 @@ public class ContactUsDAOImpl implements ContactUsDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -98,7 +100,7 @@ public class ContactUsDAOImpl implements ContactUsDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -112,7 +114,7 @@ public class ContactUsDAOImpl implements ContactUsDAO{
 			List<ContactUs> contactUsList = getSessionFactory().getCurrentSession().createCriteria(ContactUs.class).list();
 			return contactUsList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

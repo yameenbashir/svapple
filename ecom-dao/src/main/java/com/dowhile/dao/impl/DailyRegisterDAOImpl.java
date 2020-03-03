@@ -5,6 +5,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -18,6 +19,7 @@ import com.dowhile.dao.DailyRegisterDAO;
 public class DailyRegisterDAOImpl implements DailyRegisterDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(DailyRegisterDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -48,7 +50,7 @@ public class DailyRegisterDAOImpl implements DailyRegisterDAO{
 			return dailyRegister;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -62,7 +64,7 @@ public class DailyRegisterDAOImpl implements DailyRegisterDAO{
 			return dailyRegister;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -82,7 +84,7 @@ public class DailyRegisterDAOImpl implements DailyRegisterDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -101,7 +103,7 @@ public class DailyRegisterDAOImpl implements DailyRegisterDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -119,7 +121,7 @@ public class DailyRegisterDAOImpl implements DailyRegisterDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

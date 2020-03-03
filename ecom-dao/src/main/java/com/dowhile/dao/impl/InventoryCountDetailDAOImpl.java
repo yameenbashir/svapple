@@ -2,6 +2,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -19,6 +20,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(InventoryCountDetailDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -48,7 +50,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 			return inventoryCountDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +63,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 				getSessionFactory().getCurrentSession().save(inventoryCountDetail);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 
@@ -73,7 +75,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 				getSessionFactory().getCurrentSession().saveOrUpdate(inventoryCountDetail);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	
@@ -85,7 +87,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 			return inventoryCountDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -98,7 +100,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 				getSessionFactory().getCurrentSession().update(inventoryCountDetail);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 
@@ -110,7 +112,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -123,7 +125,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 				getSessionFactory().getCurrentSession().delete(inventoryCountDetail);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 
@@ -143,7 +145,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -167,7 +169,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -193,7 +195,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -215,7 +217,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -241,7 +243,7 @@ public class InventoryCountDetailDAOImpl implements InventoryCountDetailDAO{
 				return list;
 			}			
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

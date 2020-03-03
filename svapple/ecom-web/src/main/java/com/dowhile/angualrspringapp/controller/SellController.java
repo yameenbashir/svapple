@@ -231,7 +231,7 @@ public class SellController  {
 				sellControllerBean.setDisplayProductsBean(displayProductsBean);
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -579,7 +579,7 @@ public class SellController  {
 				
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -651,7 +651,7 @@ public class SellController  {
 				return new Response(listInvoiceMainBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.SELL);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash","Error Occured " + errors.toString(), true);
@@ -873,7 +873,7 @@ public class SellController  {
 						LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash","Error Occured " + errors.toString(), true);
@@ -1091,7 +1091,7 @@ public class SellController  {
 						LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1150,7 +1150,7 @@ public class SellController  {
 
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1274,7 +1274,7 @@ public class SellController  {
 						StatusConstants.SUCCESS, LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1911,7 +1911,7 @@ public class SellController  {
 			return listPriceBooksBean;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 		
@@ -1950,7 +1950,7 @@ public class SellController  {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewCustomerController.getAllCustomerGroups",

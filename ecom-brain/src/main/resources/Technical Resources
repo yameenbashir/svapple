@@ -102,7 +102,7 @@ https://jscompress.com/
 
 
 cd C:\Users\HafizYameenBashir\git\svapple\ecom-web\src\main\webapp\resources\js\controllers
-Delete File(C:\Users\IBM_ADMIN\git\ecom\ecom-web\src\main\webapp\resources\js\controllers\merged\output.js)
+Delete File(C:\Users\HafizYameenBashir\git\svapple\ecom-web\src\main\webapp\resources\js\controllers\merged\output.js)
 file-merge -i C:\Users\HafizYameenBashir\git\svapple\ecom-web\src\main\webapp\resources\js\controllers/*.js -o merged\merged.js
 cd merged
 uglifyjs merged.js -c -m -o output.js
@@ -116,6 +116,7 @@ then restart computer
 3- after node js instllation run below commands
 npm install -g uglifyjs
 npm install -g file-merge
+npm install -g uglify-js
 =============================================================================
 ========================SMS Delivery STatus==================================
 http://sendpk.com/api/delivery.php?username=923214823566&password=9183&id=e607e7b1-057f-4cd0-ac7b-266ddd66b601

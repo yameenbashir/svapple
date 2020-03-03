@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ import com.dowhile.service.util.ServiceUtil;
 @RequestMapping("/home")
 public class HomeController {
 	
+	private static Logger logger = Logger.getLogger(HomeController.class.getName());
 	@Resource
 	ResourceService resourceService;
 	@Resource
@@ -65,7 +67,7 @@ public class HomeController {
 					util.WebAuditTrail(request, superUser, "Contact US","Contact US",false);
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace();logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.addContactusRequest",
@@ -90,7 +92,7 @@ public class HomeController {
 					
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace();logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.visitWebsite",

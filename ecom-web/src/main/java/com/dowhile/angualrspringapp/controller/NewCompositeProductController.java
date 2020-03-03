@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -109,6 +110,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/newCompositeProduct")
 public class NewCompositeProductController {
 
+	private static Logger logger = Logger.getLogger(NewCompositeProductController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -325,7 +327,7 @@ public class NewCompositeProductController {
 				return new Response(newProductControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getNewProductControllerData",
@@ -368,7 +370,7 @@ public class NewCompositeProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addVariantAttribute",
@@ -493,7 +495,7 @@ public class NewCompositeProductController {
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.PRODUCTS);
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addProduct",
@@ -544,7 +546,7 @@ public class NewCompositeProductController {
 			productBean.setProductVariantValuesCollectionOne(productVariantValuesCollectionOne);
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 
@@ -1002,7 +1004,7 @@ public class NewCompositeProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllVariantAttributes",
@@ -1083,7 +1085,7 @@ public class NewCompositeProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductsForDropDown",
@@ -1236,14 +1238,14 @@ public class NewCompositeProductController {
 										productVariantBean.setSupplierCode(productt.getContact().getContactId().toString());
 										productVariantBean.setSupplyPriceExclTax(productVariant.getSupplyPriceExclTax().toString());
 										productVariantBean.setMarkupPrct(productVariant.getMarkupPrct().toString());
-										//System.out.println("variant markup: "+productVariant.getMarkupPrct().toString());
+										//logger.info("variant markup: "+productVariant.getMarkupPrct().toString());
 										/*BigDecimal retialPriceExclTax = (productVariant.getSupplyPriceExclTax().multiply(productVariant.getMarkupPrct().divide(new BigDecimal(100)))).add(productVariant.getSupplyPriceExclTax());
 										retialPriceExclTax =retialPriceExclTax.setScale(2,RoundingMode.HALF_EVEN);
 										productVariantBean.setRetailPriceExclTax(retialPriceExclTax.toString());*/
 										BigDecimal retialPriceExclTax = (productVariant.getSupplyPriceExclTax().multiply(productVariant.getMarkupPrct().divide(new BigDecimal(100)))).add(productVariant.getSupplyPriceExclTax());
-										//System.out.println("retialPriceExclTax Before round: "+retialPriceExclTax);
+										//logger.info("retialPriceExclTax Before round: "+retialPriceExclTax);
 										BigDecimal newNetPrice =retialPriceExclTax.setScale(2,RoundingMode.HALF_EVEN);
-										//System.out.println("retialPriceExclTax after round: "+newNetPrice);
+										//logger.info("retialPriceExclTax after round: "+newNetPrice);
 										productVariantBean.setRetailPriceExclTax(newNetPrice.toString());
 										productVariantBean.setSku(productVariant.getSku());
 										productVariantBean.setProductVariantUuid(productVariant.getProductVariantUuid());
@@ -1339,7 +1341,7 @@ public class NewCompositeProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductsDetail",
@@ -1403,7 +1405,7 @@ public class NewCompositeProductController {
 						StatusConstants.SUCCESS, LayOutPageConstants.SUPPLIERS);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -1448,7 +1450,7 @@ public class NewCompositeProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,
@@ -1500,7 +1502,7 @@ public class NewCompositeProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ProductTagsController.getAllTags",
@@ -1553,7 +1555,7 @@ public class NewCompositeProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductTypes",
@@ -1604,7 +1606,7 @@ public class NewCompositeProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addBrand",
@@ -1653,7 +1655,7 @@ public class NewCompositeProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllBrands",
@@ -1768,7 +1770,7 @@ public class NewCompositeProductController {
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							e.printStackTrace();logger.error(e.getMessage(),e);
 						}*/
 
 						outletBean.setStatus(String.valueOf(outlet.isActiveIndicator()));
@@ -1783,7 +1785,7 @@ public class NewCompositeProductController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
@@ -1834,7 +1836,7 @@ public class NewCompositeProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
@@ -1952,7 +1954,7 @@ public class NewCompositeProductController {
 			productPriceHistory.setGrNumber(productPriceHistoryBean.getGrNumber());
 			return productPriceHistory;
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 		
@@ -2020,7 +2022,7 @@ public class NewCompositeProductController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManagePriceBookController.getAllProducts",
@@ -2073,7 +2075,7 @@ public class NewCompositeProductController {
 			return true;
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 			return false;
 		}
 	}
@@ -2148,7 +2150,7 @@ public class NewCompositeProductController {
 			
 			
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	

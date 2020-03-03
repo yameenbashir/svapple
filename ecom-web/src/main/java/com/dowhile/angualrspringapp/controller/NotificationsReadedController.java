@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,112 +47,114 @@ import com.dowhile.util.SessionValidator;/**
 @Controller
 @RequestMapping("/notificationsReaded")
 public class NotificationsReadedController {
-@Resource
-private ResourceService resourceService;
-@Resource
-private ServiceUtil util;
-@Resource
-private TagService tagService;
-@Resource
-private ProductTagService productTagService;
-@Resource
-private ProductService productService;
-@Resource
-private NotificationService notificationService;
-@Resource
-private OutletService outletService;
-@RequestMapping("/layout")
-public String getNotificationsReadedControllerPartialPage(ModelMap modelMap) {
-	return "notificationsReaded/layout";
+	
+	private static Logger logger = Logger.getLogger(NotificationsReadedController.class.getName());
+	@Resource
+	private ResourceService resourceService;
+	@Resource
+	private ServiceUtil util;
+	@Resource
+	private TagService tagService;
+	@Resource
+	private ProductTagService productTagService;
+	@Resource
+	private ProductService productService;
+	@Resource
+	private NotificationService notificationService;
+	@Resource
+	private OutletService outletService;
+	@RequestMapping("/layout")
+	public String getNotificationsReadedControllerPartialPage(ModelMap modelMap) {
+		return "notificationsReaded/layout";
 	}
 
 
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
-@RequestMapping(value = "/getAllNotifications/{sessionId}/{loadAllNotifications}", method = RequestMethod.POST)
-public @ResponseBody Response getAllNotifications(@PathVariable("sessionId") String sessionId,@PathVariable("loadAllNotifications") String loadAllNotifications,
-		HttpServletRequest request) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/getAllNotifications/{sessionId}/{loadAllNotifications}", method = RequestMethod.POST)
+	public @ResponseBody Response getAllNotifications(@PathVariable("sessionId") String sessionId,@PathVariable("loadAllNotifications") String loadAllNotifications,
+			HttpServletRequest request) {
 
-	List<Notification> notificationsList = null;
-	List<NotificationBean> notificationBeanList = new ArrayList<>();
-	if(SessionValidator.isSessionValid(sessionId, request)){
-		HttpSession session =  request.getSession(false);
-		User currentUser = (User) session.getAttribute("user");
-		try {
-			
-			Map<Integer, Outlet> outletMap = outletService.getAllOutletsMapByCompanyId(currentUser.getCompany().getCompanyId());
-			if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
-				if(loadAllNotifications.equalsIgnoreCase("true")) {
-					notificationsList = notificationService.getAllReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
-				}else {
-					notificationsList = notificationService.getTenReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
-				}
-				
-			}else{
-				if(loadAllNotifications.equalsIgnoreCase("true")) {
-					notificationsList = notificationService.getAllReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
-				}else {
-					notificationsList = notificationService.getTenReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
-				}
-				
-				
-			}
-			if (notificationsList != null) {
-				for (Notification notification : notificationsList) {
-					NotificationBean notificationBean = new NotificationBean();
-					BeanUtils.copyProperties(notification, notificationBean);
-					notificationBean.setOutletByOutletIdFrom(notification.getOutletByOutletIdFrom().getOutletId());
-					Outlet outletFrom = outletMap.get(notification.getOutletByOutletIdFrom().getOutletId());
-					notificationBean.setOutletByOutletIdFromName(outletFrom.getOutletName());
-					notificationBean.setOutletByOutletIdTo(notification.getOutletByOutletIdTo().getOutletId());
-					Outlet outletTo = outletMap.get(notification.getOutletByOutletIdTo().getOutletId());
-					notificationBean.setOutletByOutletIdToName(outletTo.getOutletName());
-					notificationBean.setCompanyId(notification.getCompany().getCompanyId());
-					notificationBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(notification.getCreatedDate()));
-					notificationBean.setLastUpdated(DateTimeUtil.convertDBDateTimeToGuiFormat(notification.getLastUpdated()));
-					notificationBean.setDescription(notification.getDescription());
-					notificationBean.setMarkAsRead(notification.isMarkAsRead());
-					
-					notificationBeanList.add(notificationBean);
-				   
+		List<Notification> notificationsList = null;
+		List<NotificationBean> notificationBeanList = new ArrayList<>();
+		if(SessionValidator.isSessionValid(sessionId, request)){
+			HttpSession session =  request.getSession(false);
+			User currentUser = (User) session.getAttribute("user");
+			try {
+
+				Map<Integer, Outlet> outletMap = outletService.getAllOutletsMapByCompanyId(currentUser.getCompany().getCompanyId());
+				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
+					if(loadAllNotifications.equalsIgnoreCase("true")) {
+						notificationsList = notificationService.getAllReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
+					}else {
+						notificationsList = notificationService.getTenReadedNotificationsByCompanyId(currentUser.getCompany().getCompanyId());
+					}
+
+				}else{
+					if(loadAllNotifications.equalsIgnoreCase("true")) {
+						notificationsList = notificationService.getAllReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+					}else {
+						notificationsList = notificationService.getTenReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+					}
+
 
 				}
-				
-				util.AuditTrail(request, currentUser, "NotificationsReadedController.getAllNotifications", 
-						"User "+ currentUser.getUserEmail()+" retrived all Notifications successfully ",false);
-				return new Response(notificationBeanList, StatusConstants.SUCCESS,
-						LayOutPageConstants.STAY_ON_PAGE);
-			} else {
-				util.AuditTrail(request, currentUser, "NotificationsReadedController.getAllNotifications", 
-						" Notifications are not found requested by User "+currentUser.getUserEmail(),false);
-				return new Response(MessageConstants.RECORD_NOT_FOUND,
+				if (notificationsList != null) {
+					for (Notification notification : notificationsList) {
+						NotificationBean notificationBean = new NotificationBean();
+						BeanUtils.copyProperties(notification, notificationBean);
+						notificationBean.setOutletByOutletIdFrom(notification.getOutletByOutletIdFrom().getOutletId());
+						Outlet outletFrom = outletMap.get(notification.getOutletByOutletIdFrom().getOutletId());
+						notificationBean.setOutletByOutletIdFromName(outletFrom.getOutletName());
+						notificationBean.setOutletByOutletIdTo(notification.getOutletByOutletIdTo().getOutletId());
+						Outlet outletTo = outletMap.get(notification.getOutletByOutletIdTo().getOutletId());
+						notificationBean.setOutletByOutletIdToName(outletTo.getOutletName());
+						notificationBean.setCompanyId(notification.getCompany().getCompanyId());
+						notificationBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(notification.getCreatedDate()));
+						notificationBean.setLastUpdated(DateTimeUtil.convertDBDateTimeToGuiFormat(notification.getLastUpdated()));
+						notificationBean.setDescription(notification.getDescription());
+						notificationBean.setMarkAsRead(notification.isMarkAsRead());
+
+						notificationBeanList.add(notificationBean);
+
+
+					}
+
+					util.AuditTrail(request, currentUser, "NotificationsReadedController.getAllNotifications", 
+							"User "+ currentUser.getUserEmail()+" retrived all Notifications successfully ",false);
+					return new Response(notificationBeanList, StatusConstants.SUCCESS,
+							LayOutPageConstants.STAY_ON_PAGE);
+				} else {
+					util.AuditTrail(request, currentUser, "NotificationsReadedController.getAllNotifications", 
+							" Notifications are not found requested by User "+currentUser.getUserEmail(),false);
+					return new Response(MessageConstants.RECORD_NOT_FOUND,
+							StatusConstants.RECORD_NOT_FOUND,
+							LayOutPageConstants.STAY_ON_PAGE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();logger.error(e.getMessage(),e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				util.AuditTrail(request, currentUser, "NotificationsController.getAllNotifications",
+						"Error Occured " + errors.toString(),true);
+				return new Response(MessageConstants.SYSTEM_BUSY,
 						StatusConstants.RECORD_NOT_FOUND,
 						LayOutPageConstants.STAY_ON_PAGE);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			StringWriter errors = new StringWriter();
-			e.printStackTrace(new PrintWriter(errors));
-			util.AuditTrail(request, currentUser, "NotificationsController.getAllNotifications",
-					"Error Occured " + errors.toString(),true);
-			return new Response(MessageConstants.SYSTEM_BUSY,
-					StatusConstants.RECORD_NOT_FOUND,
-					LayOutPageConstants.STAY_ON_PAGE);
 
+			}
+		}else{
+			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}
-	}else{
-		return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
+
 	}
 
-}
 
 
 
 
 
 
-
-/*@SuppressWarnings({ "unchecked", "rawtypes" })
+	/*@SuppressWarnings({ "unchecked", "rawtypes" })
 @RequestMapping(value = "/getAllReadedNotifications/{sessionId}", method = RequestMethod.GET)
 public @ResponseBody
 Response getAllReadedNotifications(@PathVariable("sessionId") String sessionId,
@@ -162,14 +165,14 @@ Response getAllReadedNotifications(@PathVariable("sessionId") String sessionId,
 		try {
 			List<Notification> notificationsList= notificationService.getAllReadedNotificationsByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
 			if(notificationsList!=null && notificationsList.size()>0){
-				
+
 				return new Response(notificationsList.size(),StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
 			}else{
 				return new Response(MessageConstants.RECORD_NOT_FOUND,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			return new Response(MessageConstants.SYSTEM_BUSY,
@@ -180,7 +183,7 @@ Response getAllReadedNotifications(@PathVariable("sessionId") String sessionId,
 	else{
 		return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 	}
-	
+
 }*/
 
 

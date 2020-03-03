@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,7 @@ import com.dowhile.service.ConfigurationService;
 @RequestMapping("/applicationCache")
 public class ApplicationCacheController {
 
+	private static Logger logger = Logger.getLogger(ApplicationCacheController.class.getName());
 	@Resource
 	private ConfigurationService configurationService;
 	@Resource
@@ -35,13 +37,13 @@ public class ApplicationCacheController {
 	public @ResponseBody void load() {
 		try {
 			boolean forcefullyPopulate = true;
-			System.out.println("Starting build Cache");
+			logger.info("Starting build Cache");
 			populateallCompaniesMap(forcefullyPopulate);
 			populateAllCompaniesConfigurationsMap(forcefullyPopulate);
 			
-			System.out.println("Cache built successfully");
+			logger.info("Cache built successfully");
 		}catch(Exception ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	
@@ -56,7 +58,7 @@ public class ApplicationCacheController {
 				}
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return allCompaniesMap;
 	}
@@ -76,7 +78,7 @@ public class ApplicationCacheController {
 				}
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		
 	*/

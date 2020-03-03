@@ -11,6 +11,8 @@ import java.net.URL;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 import com.dowhile.User;
 import com.dowhile.service.util.ServiceUtil;
 /**
@@ -19,6 +21,8 @@ import com.dowhile.service.util.ServiceUtil;
  */
 
 public class SendSMS {
+	
+	private static Logger logger = Logger.getLogger(SendSMS.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -333,7 +337,7 @@ public class SendSMS {
 			in.close();
 			System.out.println(response.toString());*/
 		}catch(Exception ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 	}
 	

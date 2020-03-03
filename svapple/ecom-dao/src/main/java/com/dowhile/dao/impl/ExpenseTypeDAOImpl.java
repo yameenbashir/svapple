@@ -17,7 +17,7 @@ import com.dowhile.dao.ExpenseTypeDAO;
  */
 public class ExpenseTypeDAOImpl implements ExpenseTypeDAO{
 
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -46,7 +46,7 @@ public class ExpenseTypeDAOImpl implements ExpenseTypeDAO{
 			return ExpenseType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -59,7 +59,7 @@ public class ExpenseTypeDAOImpl implements ExpenseTypeDAO{
 			return ExpenseType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class ExpenseTypeDAOImpl implements ExpenseTypeDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -90,7 +90,7 @@ public class ExpenseTypeDAOImpl implements ExpenseTypeDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -108,7 +108,7 @@ public class ExpenseTypeDAOImpl implements ExpenseTypeDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

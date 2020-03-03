@@ -3,6 +3,10 @@ package com.dowhile.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import org.apache.log4j.Logger;
+
+import com.dowhile.angualrspringapp.controller.UtilitiesController;
+
 /*
  * Base64.java
  *
@@ -38,6 +42,7 @@ import java.net.URLDecoder;
  */
 
 public class Base64 {
+	private static Logger logger = Logger.getLogger(Base64.class.getName());
     static byte[] encodeData;
     static String charSet = 
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -198,7 +203,7 @@ public class Base64 {
 		} 
     	 catch (UnsupportedEncodingException e) {
  			// TODO Auto-generated catch block
- 			e.printStackTrace();
+ 			e.printStackTrace();logger.error(e.getMessage(),e);
  		}
     	/*
     	System.out.println("encode: " + args[0]  + " -> (" 

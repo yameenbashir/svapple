@@ -5,11 +5,11 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
 import com.dowhile.InventoryDetailReport;
-import com.dowhile.InventoryReport;
 import com.dowhile.dao.InventoryDetailReportDAO;
 
 /**
@@ -19,6 +19,7 @@ import com.dowhile.dao.InventoryDetailReportDAO;
 public class InventoryDetailReportDAOImpl implements InventoryDetailReportDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(InventoryDetailReportDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -53,7 +54,7 @@ public class InventoryDetailReportDAOImpl implements InventoryDetailReportDAO{
 						return list;
 					}
 				}catch(HibernateException ex){
-					ex.printStackTrace();
+					ex.printStackTrace();logger.error(ex.getMessage(),ex);
 				}
 				return null;
 	}
@@ -72,7 +73,7 @@ public class InventoryDetailReportDAOImpl implements InventoryDetailReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

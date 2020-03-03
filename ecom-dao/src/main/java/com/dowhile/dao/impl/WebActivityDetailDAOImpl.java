@@ -3,6 +3,7 @@
  */
 package com.dowhile.dao.impl;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
@@ -16,6 +17,7 @@ import com.dowhile.dao.WebActivityDetailDAO;
 public class WebActivityDetailDAOImpl implements WebActivityDetailDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(WebActivityDetailDAOImpl.class.getName());
 	/**
 	 * Get Hibernate Session Factory
 	 * 
@@ -44,7 +46,7 @@ public class WebActivityDetailDAOImpl implements WebActivityDetailDAO{
 			return webActivityDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

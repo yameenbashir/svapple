@@ -5,6 +5,7 @@ package com.dowhile.dao.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -29,6 +30,7 @@ import com.dowhile.wrapper.ProductControllerWrapper;
 public class ProductControllerWrapperDAOImpl implements ProductControllerWrapperDAO{
 
 	private SessionFactory sessionFactory;
+	private static Logger logger = Logger.getLogger(ProductControllerWrapperDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -124,7 +126,7 @@ public class ProductControllerWrapperDAOImpl implements ProductControllerWrapper
 			}
 			return productControllerWrapper;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -158,7 +160,7 @@ public class ProductControllerWrapperDAOImpl implements ProductControllerWrapper
 			}
 			return productControllerWrapper;
 		}catch(HibernateException ex){
-			ex.printStackTrace();
+			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
