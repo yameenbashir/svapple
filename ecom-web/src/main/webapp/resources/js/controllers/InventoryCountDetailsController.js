@@ -24,7 +24,7 @@ var InventoryCountDetailsController = ['$sce', '$scope', '$http', '$timeout', '$
 	$scope.hideRefValues = false;
 	$scope.inputTypeScan = true;
 
-	$scope.counter = 1;
+	$scope.counter = 1; 
 
 	$scope.sessionValidation = function(){
 		if(SessionService.validate()){

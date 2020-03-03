@@ -31,7 +31,6 @@ import com.dowhile.Outlet;
 import com.dowhile.Product;
 import com.dowhile.ProductVariant;
 import com.dowhile.StockOrder;
-import com.dowhile.StockOrderDetail;
 import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.StockOrderType;
 import com.dowhile.User;

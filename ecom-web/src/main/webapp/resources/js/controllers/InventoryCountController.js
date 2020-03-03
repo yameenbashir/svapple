@@ -12,7 +12,7 @@ var InventoryCountController = ['$scope', '$http', '$window','$cookieStore','$ro
 	$scope.sesssionValidation = function(){
 		if(SessionService.validate()){
 			$scope._s_tk_com =  $cookieStore.get('_s_tk_com');				
-		}
+		} 
 	};	
 	
 	$scope.addInventoryCount = function(){

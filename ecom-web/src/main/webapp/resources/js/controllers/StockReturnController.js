@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * StockReturnController
+ * StockReturnController 
  * @constructor
  */
 var StockReturnController = ['$scope', '$http','$filter', '$window','$cookieStore','$rootScope','$timeout','SessionService','StockReturnControllerPreLoad',function($scope, $http,$filter, $window,$cookieStore,$rootScope,$timeout,SessionService,StockReturnControllerPreLoad) {

@@ -1,11 +1,5 @@
 package com.dowhile.frontend.mapping.bean;
 
-import java.util.Date;
-
-import com.dowhile.Outlet;
-import com.dowhile.Status;
-import com.dowhile.StockOrder;
-
 /**
  * @author Zafar Shakeel
  *

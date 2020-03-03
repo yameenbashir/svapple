@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dowhile.ProductVariant;
 import com.dowhile.frontend.mapping.bean.OutletBean;
 import com.dowhile.frontend.mapping.bean.ProductBean;
 import com.dowhile.frontend.mapping.bean.ProductVariantBean;

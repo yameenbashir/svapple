@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dowhile.Outlet;
 import com.dowhile.Product;
 import com.dowhile.ProductVariant;
 import com.dowhile.StockOrderDetail;
@@ -33,6 +32,7 @@ import com.dowhile.constants.StatusConstants;
 import com.dowhile.controller.bean.Response;
 import com.dowhile.frontend.mapping.bean.StockOrderBean;
 import com.dowhile.frontend.mapping.bean.StockOrderDetailBean;
+import com.dowhile.service.ContactService;
 import com.dowhile.service.OutletService;
 import com.dowhile.service.ProductService;
 import com.dowhile.service.ProductVariantService;
@@ -40,7 +40,6 @@ import com.dowhile.service.StatusService;
 import com.dowhile.service.StockOrderDetailService;
 import com.dowhile.service.StockOrderService;
 import com.dowhile.service.StockOrderTypeService;
-import com.dowhile.service.ContactService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
 

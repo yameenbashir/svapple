@@ -29,7 +29,7 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 	}
 	$scope.matchedCounts = function(){
 		alert('matched Counts');
-	}
+	} 
 
 	$scope.sessionValidation = function(){
 		if(SessionService.validate()){

@@ -14,7 +14,7 @@ import com.dowhile.dao.StockOrderTypeDAO;
 /**
  * @author Zafar Shakeel
  *
- */
+ */ 
 public class StockOrderTypeDAOImpl implements StockOrderTypeDAO{
 
 	private SessionFactory sessionFactory;

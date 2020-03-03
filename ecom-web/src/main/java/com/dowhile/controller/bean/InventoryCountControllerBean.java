@@ -11,7 +11,6 @@ import com.dowhile.frontend.mapping.bean.InventoryCountDetailBean;
 import com.dowhile.frontend.mapping.bean.InventoryCountTypeBean;
 import com.dowhile.frontend.mapping.bean.OutletBean;
 import com.dowhile.frontend.mapping.bean.ProductVariantBean;
-import com.dowhile.frontend.mapping.bean.ProductBean;
 
 
 /**

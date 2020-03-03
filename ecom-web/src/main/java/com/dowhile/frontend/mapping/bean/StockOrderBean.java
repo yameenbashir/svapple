@@ -1,12 +1,7 @@
 package com.dowhile.frontend.mapping.bean;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.dowhile.Outlet;
-import com.dowhile.Status;
-import com.dowhile.StockOrderType;
 
 /**
  * @author Zafar Shakeel

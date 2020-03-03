@@ -22,7 +22,7 @@ var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$
 			$scope.inventoryCountBean.outletId= $scope.userOutletId;
 			$scope.inventoryCountBean.inventoryCountTypeId = '-1';
 		}
-	};
+	}; 
 
 	$scope.fetchData = function() {
 		$rootScope.inventoryCountCreateLoadedFully = false;

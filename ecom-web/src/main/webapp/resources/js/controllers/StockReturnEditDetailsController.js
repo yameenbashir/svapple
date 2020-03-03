@@ -2,7 +2,7 @@
 
 /**
  * StockReturnEditDetailsController
- * @constructor
+ * @constructor 
  */
 var StockReturnEditDetailsController = ['$scope', '$http', '$timeout', '$window','$cookieStore','$rootScope','SessionService','StockReturnEditDetailsControllerPreLoad',function($scope, $http, $timeout, $window,$cookieStore,$rootScope,SessionService,StockReturnEditDetailsControllerPreLoad) {
 

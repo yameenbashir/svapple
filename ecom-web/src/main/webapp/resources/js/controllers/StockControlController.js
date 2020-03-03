@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * HomeController
+ * HomeController 
  * @constructor
  */
 var StockControlController = ['$scope', '$http', '$window','$cookieStore','$rootScope','SessionService','StockControlControllerPreLoad',function($scope, $http, $window,$cookieStore,$rootScope,SessionService,StockControlControllerPreLoad) {

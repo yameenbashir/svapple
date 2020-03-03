@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * StockSupplierTransferController
+ * StockSupplierTransferController 
  * @constructor
  */
 var StockSupplierTransferController = ['$scope', '$http','$filter', '$window','$cookieStore','$rootScope','$timeout','SessionService','StockSupplierTransferControllerPreLoad',function($scope, $http,$filter, $window,$cookieStore,$rootScope,$timeout,SessionService,StockSupplierTransferControllerPreLoad) {

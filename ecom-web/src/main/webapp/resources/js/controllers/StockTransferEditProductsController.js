@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * StockTransferEditProductsController
+ * StockTransferEditProductsController 
  * @constructor
  */
 var StockTransferEditProductsController = ['$scope','$sce', '$http', '$timeout', '$window','$cookieStore','$rootScope','SessionService','StockTransferEditProductsControllerPreLoad',function($scope,$sce, $http, $timeout, $window,$cookieStore,$rootScope,SessionService,StockTransferEditProductsControllerPreLoad) {

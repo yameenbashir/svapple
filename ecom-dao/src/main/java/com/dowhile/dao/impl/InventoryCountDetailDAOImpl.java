@@ -9,7 +9,6 @@ import org.hibernate.transform.Transformers;
 
 import com.dowhile.InventoryCountDetail;
 import com.dowhile.InventoryCountDetailCustom;
-import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.dao.InventoryCountDetailDAO;
 
 /**

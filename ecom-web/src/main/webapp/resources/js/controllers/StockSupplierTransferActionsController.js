@@ -1,6 +1,6 @@
 'use strict';
 
-/**
+/** 
  * StockSupplierTransferActionsController
  * @constructor
  */

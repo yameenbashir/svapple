@@ -1,8 +1,6 @@
 package com.dowhile.dao.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +16,6 @@ import com.dowhile.ProductVariant;
 import com.dowhile.constant.Actions;
 import com.dowhile.dao.InventoryCountDAO;
 import com.dowhile.wrapper.InventoryCountWrapper;
-import com.dowhile.wrapper.StockWrapper;
 
 
 /**

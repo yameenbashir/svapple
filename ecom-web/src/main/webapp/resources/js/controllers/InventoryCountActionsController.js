@@ -10,7 +10,7 @@ var InventoryCountActionsController = ['$scope', '$http', '$window', '$timeout',
 	$rootScope.MainHeaderideit = false;
 	$scope.disableProcess = false;
 	$scope.showConfirmCancelPopup = false;
-	$scope.inventoryCountDetailBeansList = [];
+	$scope.inventoryCountDetailBeansList = []; 
 
 	$scope.sessionValidation = function(){
 
