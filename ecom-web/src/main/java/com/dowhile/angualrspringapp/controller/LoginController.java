@@ -164,10 +164,7 @@ public class LoginController {
 			return new Response(MessageConstants.INVALID_PASSWORD,
 					StatusConstants.ERROR, LayOutPageConstants.STAY_ON_PAGE);
 		try {
-			int i=1;
-			int j=0;
-			int result = i/j;
-
+			
 			isExist = resourceService.IsUserExist(appuser.getEmail(),
 					appuser.getPassword(),0);
 			if (isExist) {
