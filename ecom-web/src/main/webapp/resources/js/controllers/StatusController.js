@@ -31,6 +31,7 @@ var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope
 		if($scope.invoiceMainBeanStatusList==null){
 			localforage.getItem('invoiceMainBeanNewList').then(function(value) {
 				 $scope.invoiceMainBeanStatusList = value;
+				// console.log(value);
 				 
 				 localforage.setItem('InvoiceMainBeanList', $scope.invoiceMainBeanStatusList);
 				 if(value!=null){
@@ -44,8 +45,38 @@ var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope
 		
 	};
 	
+/*	$scope.removeRow = function(invoiceGenerationDte){				
+
+		var comArr = eval(  $scope.invoiceMainBeanStatusList );
+		for( var i = 0; i < comArr.length; i++ ) {
+			if( comArr[i].invoiceGenerationDte === invoiceGenerationDte ) {
+				if ($window.confirm("Do you want to delete this errored sale invoice: " + invoiceGenerationDte)) {
+					//Remove the item from Array using Index.
+					comArr.splice(i, 1);
+					localforage.setItem('invoiceMainBeanNewList',comArr);
+					localforage.setItem('InvoiceMainBeanList', comArr);
+					break;
+				}
+			}
+		}
+	};*/
 	
 
+	$scope.removeRow = function (index) {
+		//Find the record using Index from Array.
+		var invoice = $scope.invoiceMainBeanStatusList[index].invoiceRefNbr;
+		if ($window.confirm("Do you want to delete this errored sale invoice: " + invoice)) {
+			//Remove the item from Array using Index.
+			$scope.invoiceMainBeanStatusList.splice(index, 1);
+			var comArr = eval(  $scope.invoiceMainBeanStatusList );
+			localforage.setItem('invoiceMainBeanNewList',comArr);
+			localforage.setItem('InvoiceMainBeanList', comArr);
+		}
+	};
+	
+
+
+	
 	
 
 	  $scope.saveFile = function(){
@@ -56,7 +87,7 @@ var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope
 					$scope.data1 = $scope.invoiceMainBeanStatusList;
 				
 			}
-	    	console.log($scope.invoiceMainBeanStatusList);
+	    	//console.log($scope.invoiceMainBeanStatusList);
 	    	
 	    	
 	    	

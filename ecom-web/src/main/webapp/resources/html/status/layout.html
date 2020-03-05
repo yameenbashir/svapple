@@ -69,11 +69,13 @@
 									<div class="items-table">
 										<div class="row header">
 											<div class="col-xs-2">Date</div>
-											<div class="col-xs-2">Status</div>
-											<div class="col-xs-2">User</div>
-											<div class="col-xs-2">Customer</div>
+											<div class="col-xs-1">Status</div>
+											<div class="col-xs-1">User</div>
+											<div class="col-xs-1">Customer</div>
 											<div class="col-xs-2">Total</div>
-											<div class="col-xs-2">Note</div>
+											<div class="col-xs-1">Note</div>
+											<div class="col-xs-2">Actions</div>
+											
 										</div>
 
 										<div class="row invoice-item" ng-animate="'slide-down'"
@@ -81,27 +83,28 @@
 											<div class="col-xs-2 remove-item-container">
 												<span ng-bind="invoiceMain.invoiceGenerationDte"></span>
 											</div>
-											<div class="col-xs-2 input-container">
+											<div class="col-xs-1 input-container">
 												<span ng-bind="invoiceMain.status"></span>
 											</div>
-											<div class="col-xs-2 input-container">
+											<div class="col-xs-1 input-container">
 												<span ng-bind="invoiceMain.insertedbyname"></span>
 											</div>
-											<div class="col-xs-2 input-container">
+											<div class="col-xs-1 input-container">
 												<span ng-bind="invoiceMain.customer"></span>
 											</div>
 											<div class="col-xs-2 input-container">
 												<span ng-bind="invoiceMain.invoiceNetAmt"></span>
 											</div>
-											<div class="col-xs-2 input-container">
+											<div class="col-xs-1 input-container">
 												<span ng-bind="invoiceMain.invoiceNotes"></span>
 											</div>
+											<div class="tools_new col-xs-2  input-container" >
+												<a data-toggle='tooltip' data-placement='auto' data-original-title="Remove Item"  href=""  for="invoiceMain.invoiceRefNbr"   ng-click="removeRow($index)">
+												 <i class="fa fa-trash-o text-red"></i>	
+											</div>
+											
 										</div>
-
-
-
-
-									</div>
+										</div>
 								</div>
 								<div class="top-buffer-contact"></div>
 								<button class="btn btn-danger btn-lg pull-right" ng-disabled="!online" ng-hide="loadingSynchsales"
