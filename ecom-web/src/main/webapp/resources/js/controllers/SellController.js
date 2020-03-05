@@ -774,6 +774,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	$scope.InvoiceMainBeanList = [];
 	$scope.payCash = function(paymentmethod) {
 		$scope.cashloading = true;
+		$scope.creditloading = true;
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -794,6 +795,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$timeout(function() {
 			$scope.error = false;
 			$scope.cashloading = false;
+			$scope.creditloading = false;
 			$scope.errorMessage = false;
 		}, 1500);
 		return;
@@ -887,11 +889,13 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 				$scope.loadSalesProductDataOnlyAjax();
 				if(paymentmethod == 'cash') 
 				{
-					$scope.cashloading = false;	
+					$scope.cashloading = false;
+					$scope.creditloading = false;
 				}
 				else  if(paymentmethod == 'creditcard') 
 				{
 					$scope.creditloading = false;
+					$scope.cashloading = false;
 				}
 
 				$scope.sendMessage($scope.InvoiceMainBean.invoiceNetAmt);
