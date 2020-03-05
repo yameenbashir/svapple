@@ -773,6 +773,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	};
 	$scope.InvoiceMainBeanList = [];
 	$scope.payCash = function(paymentmethod) {
+		$scope.cashloading = true;
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -792,6 +793,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$scope.errorMessage = 'Sale with 0 Amount is not allowed.';
 		$timeout(function() {
 			$scope.error = false;
+			$scope.cashloading = false;
 			$scope.errorMessage = false;
 		}, 1500);
 		return;
