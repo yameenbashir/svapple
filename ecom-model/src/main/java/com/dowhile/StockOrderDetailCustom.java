@@ -1,6 +1,7 @@
 package com.dowhile;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class StockOrderDetailCustom {
@@ -11,9 +12,9 @@ public class StockOrderDetailCustom {
 	private Integer PRODUCT_ASSOCIATION_ID;
 	private String product_name;
 	private String VariantAttributeName;
-	private Integer product_current_inventory;
+	private BigInteger product_current_inventory;
 	private Integer product_destination_current_inventory;
-	private Integer product_variant_current_inventory;
+	private BigInteger product_variant_current_inventory;
 	private Integer product_variant_destination_inventory;
 	private boolean IS_PRODUCT;
 	private Integer ORDER_PROD_QTY;
@@ -63,10 +64,10 @@ public class StockOrderDetailCustom {
 	public void setVariantAttributeName(String variantAttributeName) {
 		VariantAttributeName = variantAttributeName;
 	}
-	public Integer getProduct_current_inventory() {
+	public BigInteger getProduct_current_inventory() {
 		return product_current_inventory;
 	}
-	public void setProduct_current_inventory(Integer product_current_inventory) {
+	public void setProduct_current_inventory(BigInteger product_current_inventory) {
 		this.product_current_inventory = product_current_inventory;
 	}
 	public Integer getProduct_destination_current_inventory() {
@@ -75,10 +76,10 @@ public class StockOrderDetailCustom {
 	public void setProduct_destination_current_inventory(Integer product_destination_current_inventory) {
 		this.product_destination_current_inventory = product_destination_current_inventory;
 	}
-	public Integer getProduct_variant_current_inventory() {
+	public BigInteger getProduct_variant_current_inventory() {
 		return product_variant_current_inventory;
 	}
-	public void setProduct_variant_current_inventory(Integer product_variant_current_inventory) {
+	public void setProduct_variant_current_inventory(BigInteger product_variant_current_inventory) {
 		this.product_variant_current_inventory = product_variant_current_inventory;
 	}
 	public Integer getProduct_variant_destination_inventory() {
