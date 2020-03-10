@@ -9,8 +9,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 
+import com.dowhile.InventoryHealthCheckReport;
 import com.dowhile.InventoryReport;
+import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.beans.Row;
 import com.dowhile.beans.TableData;
 import com.dowhile.dao.InventoryReportDAO;
@@ -42,15 +45,15 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<InventoryReport> getInventoryReportByCompanyId(int companyId) {
 		// TODO Auto-generated method stub
 		try{
 			List<InventoryReport> list = getSessionFactory().getCurrentSession()
-			.createQuery("from InventoryReport where COMPANY_ASSOCIATION_ID = ?")
-			.setParameter(0, companyId).list();
+					.createQuery("from InventoryReport where COMPANY_ASSOCIATION_ID = ?")
+					.setParameter(0, companyId).list();
 			if(list!=null&& list.size()>0){
 
 				return list;
@@ -68,9 +71,9 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 		// TODO Auto-generated method stub
 		try{
 			List<InventoryReport> list = getSessionFactory().getCurrentSession()
-			.createQuery("from InventoryReport where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?")
-			.setParameter(0, outletId)
-			.setParameter(1, companyId).list();
+					.createQuery("from InventoryReport where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
 			if(list!=null&& list.size()>0){
 
 				return list;
@@ -89,34 +92,34 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 			TableData tableData = new TableData();
 			List result =  null;
 			try{
-			if(isHeadOffice){
-				result = getSessionFactory()
-						.getCurrentSession().createSQLQuery(
-						 "CALL GetInventoryReportForWarehouse(:param1,:param2)")
-						 .setParameter("param1", companyId)
-						 .setParameter("param2", outletId)
-						 .list();
-			}else{
-				result = getSessionFactory()
-						.getCurrentSession().createSQLQuery(
-						 "CALL GetInventoryReportForOutlets(:param1,:param2)")
-						 .setParameter("param1", companyId)
-						 .setParameter("param2", outletId)
-						 .list();
-			}
-				
-			 
+				if(isHeadOffice){
+					result = getSessionFactory()
+							.getCurrentSession().createSQLQuery(
+									"CALL GetInventoryReportForWarehouse(:param1,:param2)")
+							.setParameter("param1", companyId)
+							.setParameter("param2", outletId)
+							.list();
+				}else{
+					result = getSessionFactory()
+							.getCurrentSession().createSQLQuery(
+									"CALL GetInventoryReportForOutlets(:param1,:param2)")
+							.setParameter("param1", companyId)
+							.setParameter("param2", outletId)
+							.list();
+				}
+
+
 			}catch(Exception exception){
-				
+
 			}
 			List<String> columns = new ArrayList<>();
 			List<Row> rows = new ArrayList<>();
-		
+
 			if(result!=null){
-				
+
 				String dbColumns = "Product,Outlet,SKU,Brand,Supplier,Type,Current Stock,Stock Value,Item Value,Reorder Point, Reorder Amount";
-				
-				
+
+
 				if(dbColumns!=null){
 					for(String columnName: dbColumns.split(",")){
 						if(!isHeadOffice&& columnName.equalsIgnoreCase("Supplier"))
@@ -133,7 +136,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 					Row row = new Row();
 					List<String> colums = new ArrayList<>();
 					try{
-						
+
 						Object[] data = (Object[]) result.get(index);
 						for(int i=0;i<data.length;i++){
 							String value = String.valueOf(data[i]);
@@ -151,7 +154,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 					}catch(Exception ex){
 						ex.printStackTrace();logger.error(ex.getMessage(),ex);
 					}
-					
+
 					row.setColumns(colums);
 					rows.add(row);
 				}
@@ -163,7 +166,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				if(isHeadOffice){
 					colums.add("-");
 				}
-				
+
 				colums.add("Total Stock");
 				colums.add(totalCurrentStock+"");
 				colums.add("Total Stock Value");
@@ -174,16 +177,16 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				rows.add(footerRow);
 				System.out.println("totalCurrentStock: "+totalCurrentStock+" totalStockValue: "+totalStockValue);
 			}
-		
+
 			tableData.setColumns(columns);
 			if(rows.size()>0){
-				
+
 				tableData.setFooter(rows.get(rows.size()-1));
 				rows.remove(rows.size()-1);
 			}else{
 				tableData.setFooter(new Row());
 			}
-			
+
 			tableData.setRows(rows);
 			return tableData;
 		} catch (HibernateException ex) {
@@ -192,4 +195,28 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 		return null;
 	}
 
+	@SuppressWarnings({"rawtypes" })
+	@Override
+	public List<InventoryHealthCheckReport> getInventoryHealthCheckReportByCompanyIdOutletId(int companyId, int outletId) {
+		// TODO Auto-generated method stub
+			List<InventoryHealthCheckReport> list = null;
+			try {
+				list = getSessionFactory()
+						.getCurrentSession().createSQLQuery(
+								"CALL GetInventoryHealthCheckReportForWarehouse(:param1,:param2)")
+						.setParameter("param1", companyId)
+						.setParameter("param2", outletId)
+						.setResultTransformer(Transformers.aliasToBean(InventoryHealthCheckReport.class))
+						.list();
+
+				if(list!=null&& list.size()>0){
+
+					return list;
+				}
+			}
+			catch(HibernateException ex){
+				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			}
+			return null;	
+	}
 }

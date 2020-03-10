@@ -3817,6 +3817,50 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 		}
 	}); 
 	
+	$routeProvider.when('/inventoryHealthCheckReport', {
+		templateUrl: 'resources/html/inventoryHealthCheckReport/layout.html',
+		controller: InventoryHealthCheckReportController,
+		resolve: {
+			"InventoryHealthCheckReportControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["salesReport"]==true){
+					$rootScope.purchaseOrderLoadedFully = true;
+					controllerData = $http.post('inventoryHealthCheckReport/getInventoryHealthCheckReportControllerData/'+$cookieStore.get('_s_tk_com')+'/'+$rootScope.inventoryReportOutletName)//+'/'+$rootScope.salesReportStartDate+"/"+$rootScope.salesReportEndDate + "/"+$rootScope.salesReportType+"/"+$rootScope.salesReportDateType)
+					.success(function(Response) {
+						controllerData = Response.data;
+						//$rootScope.salesReportStartDate = "undefined";
+						//$rootScope.salesReportEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
 	$routeProvider.when('/downloadInventoryReportLive', {
 		templateUrl: 'resources/html/downloadInventoryReportLive/layout.html',
 		controller: InventoryReportLiveController,
