@@ -441,7 +441,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 		return true;
 	}
 
-	
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -451,72 +451,85 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			List<Outlet> list = getSessionFactory().getCurrentSession()
 					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?")
 					.setParameter(0, companyId).list();
-					if(list != null&& list.size() > 0){
-						stockBasicDataWrapper.setOutletList(list);
-					}
-					List<StockOrderType> stockOrderTypeList = getSessionFactory().getCurrentSession().createCriteria(StockOrderType.class).list();
-					if(stockOrderTypeList != null) {
-						stockBasicDataWrapper.setStockOrderTypeList(stockOrderTypeList);
-					}
-					Criteria criteria = getSessionFactory().getCurrentSession()
-							.createCriteria(Contact.class);
-					criteria.add(Restrictions.eq("company.companyId", companyId));
-					criteria.add(Restrictions.eq("contactOutletId", null));
-					List<Contact> contact = criteria.list();
-					if(contact != null) {
-						stockBasicDataWrapper.setSupplierList(contact);
-					}
-					return stockBasicDataWrapper;
+			if(list != null&& list.size() > 0){
+				stockBasicDataWrapper.setOutletList(list);
+			}
+			List<StockOrderType> stockOrderTypeList = getSessionFactory().getCurrentSession().createCriteria(StockOrderType.class).list();
+			if(stockOrderTypeList != null) {
+				stockBasicDataWrapper.setStockOrderTypeList(stockOrderTypeList);
+			}
+			Criteria criteria = getSessionFactory().getCurrentSession()
+					.createCriteria(Contact.class);
+			criteria.add(Restrictions.eq("company.companyId", companyId));
+			criteria.add(Restrictions.eq("contactOutletId", null));
+			List<Contact> contact = criteria.list();
+			if(contact != null) {
+				stockBasicDataWrapper.setSupplierList(contact);
+			}
+			return stockBasicDataWrapper;
 		} catch (HibernateException ex) {
 			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public StockDataProductsWrapper GetStockWithProductsData(int companyId) {
+	public StockDataProductsWrapper GetStockWithProductsData(int outletId, int companyId) {
 		try {
 			StockDataProductsWrapper stockDataProductsWrapper = new StockDataProductsWrapper();
-			List<Outlet> list = getSessionFactory().getCurrentSession()
+			System.out.println("get outlet Start: " + new Date());
+			List<Outlet> listOutlet = getSessionFactory().getCurrentSession()
 					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?")
 					.setParameter(0, companyId).list();
-					if(list != null&& list.size() > 0){
-						stockDataProductsWrapper.setOutletList(list);
-					}
-					List<StockOrderType> stockOrderTypeList = getSessionFactory().getCurrentSession().createCriteria(StockOrderType.class).list();
-					if(stockOrderTypeList != null) {
-						stockDataProductsWrapper.setStockOrderTypeList(stockOrderTypeList);
-					}
-					Criteria criteria = getSessionFactory().getCurrentSession()
-							.createCriteria(Contact.class);
-					criteria.add(Restrictions.eq("company.companyId", companyId));
-					criteria.add(Restrictions.eq("contactOutletId", null));
-					List<Contact> contact = criteria.list();
-					if(contact != null) {
-						stockDataProductsWrapper.setSupplierList(contact);
-					}
-					List<Product> productList = getSessionFactory().getCurrentSession()
-							.createQuery("from Product where COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1 GROUP BY PRODUCT_UUID ")			
-							.setParameter(0, companyId).list();
-					if(productList !=null && productList.size()>0){
-
-						stockDataProductsWrapper.setProductList(productList);
-					}
-					List<ProductVariant> productVariantList = getSessionFactory()
-							.getCurrentSession()
-							.createQuery(
-									"from ProductVariant where COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1 GROUP BY PRODUCT_VARIANT_UUID ORDER BY PRODUCT_VARIANT_ID")
-									.setParameter(0, companyId).list();
-					if(productVariantList !=null && productVariantList.size()>0){
-
-						stockDataProductsWrapper.setProductVariantList(productVariantList);
-					}
-					return stockDataProductsWrapper;
-		} catch (HibernateException ex) {
+			if(listOutlet != null&& listOutlet.size() > 0){
+				stockDataProductsWrapper.setOutletList(listOutlet);
+			}
+			System.out.println("StockOrderType List Start: " + new Date());
+			List<StockOrderType> stockOrderTypeList = getSessionFactory().getCurrentSession().createCriteria(StockOrderType.class).list();
+			if(stockOrderTypeList != null) {
+				stockDataProductsWrapper.setStockOrderTypeList(stockOrderTypeList);
+			}
+			System.out.println("Supplier Start: " + new Date());
+			Criteria criteria = getSessionFactory().getCurrentSession()
+					.createCriteria(Contact.class);
+			criteria.add(Restrictions.eq("company.companyId", companyId));
+			criteria.add(Restrictions.eq("contactOutletId", null));
+			List<Contact> contact = criteria.list();
+			if(contact != null) {
+				stockDataProductsWrapper.setSupplierList(contact);
+			}
+			System.out.println("Product Start: " + new Date());
+			List<Product> listProduct = getSessionFactory().getCurrentSession()
+					.createQuery("from Product where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
+			if(listProduct != null && listProduct.size() > 0) {
+				System.out.println("Outlet Product size: " + listProduct.size());
+			}else {
+				System.out.println("Outlet Product size: 0");
+			}
+			System.out.println("Product Variants Start: " + new Date());
+			List<ProductVariant> listVariants = getSessionFactory().getCurrentSession()
+					.createQuery("from ProductVariant where OUTLET_ASSOCICATION_ID = ? AND COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1  ")
+					.setParameter(0, outletId)
+					.setParameter(1, companyId).list();
+			if(listVariants != null && listVariants.size() > 0) {
+				System.out.println("Outlet Product Variant size: " + listVariants.size());
+			}else {
+				System.out.println("Outlet Product Variant size: 0");
+			}			
+			System.out.println("stockDataProductsWrapper.setProductList Start: " + new Date());
+			stockDataProductsWrapper.setProductList(listProduct);
+			System.out.println("stockDataProductsWrapper.setProductVariantList Start: " + new Date());
+			stockDataProductsWrapper.setProductVariantList(listVariants);
+			System.out.println("stockOrder DAO END: " + new Date());
+			return stockDataProductsWrapper;
+		} 
+		catch (HibernateException ex) {
 			ex.printStackTrace();logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
-	
+
 }

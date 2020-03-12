@@ -61,7 +61,7 @@ import com.dowhile.wrapper.StockDataProductsWrapper;
 @RequestMapping("/poCreateandReceive")
 
 public class POCreateandReceiveController {
-	
+
 	private static Logger logger = Logger.getLogger(POCreateandReceiveController.class.getName());
 	@Resource
 	private ServiceUtil util;
@@ -95,7 +95,7 @@ public class POCreateandReceiveController {
 	private Map productIdsMap = new HashMap<>();
 	private Map productVariantIdsMap = new HashMap<>();
 	private List<Product> products = new ArrayList<>();
-	ProductListsWrapper productListsWrapper;
+	//ProductListsWrapper productListsWrapper;
 
 	@RequestMapping("/layout")
 	public String getPOCreateandReceiveControllerPartialPage(ModelMap modelMap) {
@@ -114,32 +114,41 @@ public class POCreateandReceiveController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			productListsWrapper = new ProductListsWrapper();
+			//productListsWrapper = new ProductListsWrapper();
 			try {
-				productListsWrapper = productService.getAllProductsOutlet(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
-				stockDataProductsWrapper = stockOrderService.GetStockWithProductsData(currentUser.getCompany().getCompanyId());
+				//productListsWrapper = productService.getAllProductsOutlet(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				System.out.println("StockDataProductWrapper Start: " + new Date());
+				stockDataProductsWrapper = stockOrderService.GetStockWithProductsData(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+				System.out.println("StockDataProductWrapper End: " + new Date());
+				//productListsWrapper.setOutletProducts(stockDataProductsWrapper.getProductList());
+				//productListsWrapper.setOutletProductVariants(stockDataProductsWrapper.getProductVariantList());
+				System.out.println("getAllOutlets Start: " + new Date());
 				Response response = getAllOutlets(sessionId,request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					outletBeansList = (List<OutletBean>) response.data;
 				}
+				System.out.println("getAllStockOrderTypes Start: " + new Date());
 				response = getAllStockOrderTypes(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					stockOrderTypeBeansList = (List<StockOrderTypeBean>) response.data;
 				}
+				System.out.println("getAllSuppliers Start: " + new Date());
 				response = getAllSuppliers(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					supplierBeansList = (List<SupplierBean>) response.data;
 				}
-
+				System.out.println("getAllProducts Start: " + new Date());
 				response = getAllProducts(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productBeansList = (List<ProductVariantBean>) response.data;
 				}
+				System.out.println("getProductVariants Start: " + new Date());
 				response = getProductVariants(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productVariantBeansList = (List<ProductVariantBean>) response.data;
 				}
 				POCreateandReceiveControllerBean POCreateandReceiveControllerBean = new POCreateandReceiveControllerBean();
+				System.out.println("POCreateandReceiveControllerBean Start: " + new Date());
 				POCreateandReceiveControllerBean.setOutletBeansList(outletBeansList);
 				POCreateandReceiveControllerBean.setStockOrderTypeBeansList(stockOrderTypeBeansList);
 				POCreateandReceiveControllerBean.setSupplierBeansList(supplierBeansList);
@@ -180,9 +189,7 @@ public class POCreateandReceiveController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
 			try {
-
 				//outletList = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 				outletList = stockDataProductsWrapper.getOutletList();
 				if (outletList != null) {
@@ -440,7 +447,7 @@ public class POCreateandReceiveController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllProducts/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response getAllProducts(@PathVariable("sessionId") String sessionId, HttpServletRequest request){
@@ -463,8 +470,10 @@ public class POCreateandReceiveController {
 				else {
 					products = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
 				}	*/	
-				if(productListsWrapper.getOutletProducts() != null) {
-					products = productListsWrapper.getOutletProducts();	
+				//if(productListsWrapper.getOutletProducts() != null) {
+				if(stockDataProductsWrapper.getProductList() != null) {
+					//products = productListsWrapper.getOutletProducts();
+					products = stockDataProductsWrapper.getProductList();
 				}				
 				if(products != null){
 					for(Product product:products){
@@ -559,8 +568,10 @@ public class POCreateandReceiveController {
 				else {
 					productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
 				}*/
-				if(productListsWrapper.getOutletProductVariants() != null) {
-					productVariantList = productListsWrapper.getOutletProductVariants();
+				//if(productListsWrapper.getOutletProductVariants() != null) {
+				if(stockDataProductsWrapper.getProductVariantList() != null){
+					//productVariantList = productListsWrapper.getOutletProductVariants();
+					productVariantList = stockDataProductsWrapper.getProductVariantList();
 				}
 				Map<Integer, Product> productsMap = new HashMap<>();
 				/*if(products.isEmpty()) {
@@ -577,8 +588,10 @@ public class POCreateandReceiveController {
 						products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
 					}
 				}		*/
-				if(productListsWrapper.getOutletProducts() != null) {
-					products = productListsWrapper.getOutletProducts();
+				//if(productListsWrapper.getOutletProducts() != null) {
+				if(stockDataProductsWrapper.getProductList() != null) {
+					//products = productListsWrapper.getOutletProducts();
+					products = stockDataProductsWrapper.getProductList();
 				}
 				if(products!=null){
 					for(Product product:products){
@@ -648,7 +661,7 @@ public class POCreateandReceiveController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}	
 	}
-	
+
 	public Map getProductVariantMap() {
 		return productVariantMap;
 	}

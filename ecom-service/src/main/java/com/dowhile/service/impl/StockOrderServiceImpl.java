@@ -141,8 +141,8 @@ public class StockOrderServiceImpl implements StockOrderService{
 	}
 	
 	@Override
-	public StockDataProductsWrapper GetStockWithProductsData(int companyId) {
+	public StockDataProductsWrapper GetStockWithProductsData(int outletId, int companyId) {
 		// TODO Auto-generated method stub
-		return getStockOrderDAO().GetStockWithProductsData(companyId);
+		return getStockOrderDAO().GetStockWithProductsData(outletId, companyId);
 	}
 }

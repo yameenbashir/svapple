@@ -34,5 +34,5 @@ public interface StockOrderDAO {
 	List<StockOrder> GetAllStockReturnOrderForOutlet(int outletId, int companyId);
 	boolean UpdateStockComplete(StockWrapper stockWrapper, Company company);
 	StockBasicDataWrapper GetStockBasicData(int companyId);
-	StockDataProductsWrapper GetStockWithProductsData(int companyId);
+	StockDataProductsWrapper GetStockWithProductsData(int outletId, int companyId);
 }
