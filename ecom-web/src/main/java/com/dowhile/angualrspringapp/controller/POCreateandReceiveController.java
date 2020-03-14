@@ -116,6 +116,7 @@ public class POCreateandReceiveController {
 			User currentUser = (User) session.getAttribute("user");
 			//productListsWrapper = new ProductListsWrapper();
 			try {
+				initializeClassObjects();
 				//productListsWrapper = productService.getAllProductsOutlet(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				System.out.println("StockDataProductWrapper Start: " + new Date());
 				stockDataProductsWrapper = stockOrderService.GetStockWithProductsData(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
@@ -156,6 +157,7 @@ public class POCreateandReceiveController {
 				POCreateandReceiveControllerBean.setProductVariantBeansList(productVariantBeansList);
 				POCreateandReceiveControllerBean.setProductVariantMap(productVariantMap);
 				POCreateandReceiveControllerBean.setProductMap(productMap);
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getPOCreateandReceiveControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived POCreateandReceiveControllerData successfully ",false);
 				return new Response(POCreateandReceiveControllerBean, StatusConstants.SUCCESS,
@@ -183,7 +185,6 @@ public class POCreateandReceiveController {
 	public @ResponseBody
 	Response getAllOutlets(@PathVariable("sessionId") String sessionId,
 			HttpServletRequest request) {
-
 		List<OutletBean> outletBeansList = new ArrayList<>();
 		List<Outlet> outletList = null;
 		if(SessionValidator.isSessionValid(sessionId, request)){
@@ -228,7 +229,6 @@ public class POCreateandReceiveController {
 	public @ResponseBody
 	Response getAllStockOrderTypes(@PathVariable("sessionId") String sessionId,
 			HttpServletRequest request) {
-
 		List<StockOrderTypeBean> stockOrderTypeBeansList = new ArrayList<>();
 		List<StockOrderType> stockOrderTypeList = null;
 		if(SessionValidator.isSessionValid(sessionId, request)){
@@ -455,8 +455,8 @@ public class POCreateandReceiveController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			productMap = new HashMap<>();
-			Map productSessionMap = new HashMap<>();
+			//productMap = new HashMap<>();
+			//Map productSessionMap = new HashMap<>();
 			try {		
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productIdsMap") != null) {
@@ -554,7 +554,7 @@ public class POCreateandReceiveController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
-			productVariantMap = new HashMap<>();
+			//productVariantMap = new HashMap<>();
 			try {
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productVariantIdsMap") != null) {
@@ -676,6 +676,26 @@ public class POCreateandReceiveController {
 
 	public void setProductMap(Map productMap) {
 		this.productMap = productMap;
+	}
+	
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of POCreateandReceiveEditController");
+		stockDataProductsWrapper = new StockDataProductsWrapper();
+		productVariantMap = new HashMap<>();
+		productMap = new HashMap<>();
+		productIdsMap = new HashMap<>();
+		productVariantIdsMap = new HashMap<>();
+		products = new ArrayList<>();
+
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of POCreateandReceiveEditController");
+		stockDataProductsWrapper = null;
+		productVariantMap = null;
+		productMap = null;
+		productIdsMap = null;
+		productVariantIdsMap = null;
+		products = null;
 	}
 
 }

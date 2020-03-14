@@ -13,7 +13,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +53,7 @@ import com.dowhile.service.StockOrderService;
 import com.dowhile.service.StockOrderTypeService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
-import com.dowhile.wrapper.ProductListsWrapper; 
+import com.dowhile.wrapper.ProductListsWrapper;
 import com.dowhile.wrapper.StockWrapper;
 
 /**
@@ -99,11 +98,11 @@ public class PurchaseOrderDetailsController {
 	private NotificationService notificationService;
 
 	ProductListsWrapper productListsWrapper;
-	private Map productVariantMap = new HashMap<>();
-	private Map productMap = new HashMap<>();
-	private Map productIdsMap = new HashMap<>();
-	private Map productVariantIdsMap = new HashMap<>();
-	private List<Product> products = new ArrayList<>();
+	private Map productVariantMap;
+	private Map productMap;
+	private Map productIdsMap;
+	private Map productVariantIdsMap;
+	private List<Product> products;
 
 	@RequestMapping("/layout")
 	public String getPurchaseOrderDetialsControllerPartialPage(ModelMap modelMap) {
@@ -119,8 +118,8 @@ public class PurchaseOrderDetailsController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			productListsWrapper = new ProductListsWrapper();
 			try {
+				initializeClassObjects();
 				productListsWrapper = productService.getAllProductsOutlet(Integer.parseInt(stockOrderBean.getOutletId()), currentUser.getCompany().getCompanyId());
 				Response response = getAllProducts(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
@@ -135,6 +134,7 @@ public class PurchaseOrderDetailsController {
 				purchaseOrderControllerBean.setProductVariantBeansList(productVariantBeansList);
 				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderControllerBean.setProductMap(productMap);
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -166,8 +166,8 @@ public class PurchaseOrderDetailsController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			productListsWrapper = new ProductListsWrapper();
 			try {
+				initializeClassObjects();
 				if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
 					productListsWrapper = productService.getAllProductsWarehouseandOutlet(Integer.parseInt(stockOrderBean.getSourceOutletId()), Integer.parseInt(stockOrderBean.getOutletId()), currentUser.getCompany().getCompanyId());
 				}else {
@@ -192,6 +192,7 @@ public class PurchaseOrderDetailsController {
 				purchaseOrderControllerBean.setStockTransferOrderBeansList(stockTransferOrderBeansList);
 				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderControllerBean.setProductMap(productMap);
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -222,8 +223,8 @@ public class PurchaseOrderDetailsController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			productListsWrapper = new ProductListsWrapper();
 			try {
+				initializeClassObjects();
 				productListsWrapper = productService.getAllProductsOutlet(Integer.parseInt(stockOrderBean.getOutletId()), currentUser.getCompany().getCompanyId());
 				Response response = getAllProductsByOutletId(sessionId, stockOrderBean.getOutletId(), request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
@@ -238,6 +239,7 @@ public class PurchaseOrderDetailsController {
 				purchaseOrderControllerBean.setProductVariantBeansList(productVariantBeansList);
 				purchaseOrderControllerBean.setProductVariantMap(productVariantMap);
 				purchaseOrderControllerBean.setProductMap(productMap);
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -599,13 +601,13 @@ public class PurchaseOrderDetailsController {
 			List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 			try {			
 				if (stockOrderDetailBeansList.size() > 0) {	
+					initializeClassObjects();
 					updateStockOrderDetail(sessionId, grandTotal, recItemCount, stockOrderDetailBeansList, request);
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					//List<StockOrderDetail> preStockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
 					//outletProductVariantList = productVariantService.getAllProductVariantsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId(),currentUser.getCompany().getCompanyId());
 					//outletProductList = productService.getAllProductsByOutletId(stockOrder.getOutletByOutletAssocicationId().getOutletId());
 					Contact contact = supplierService.getContactByID(stockOrder.getContactId(),currentUser.getCompany().getCompanyId());
-					ProductListsWrapper productListsWrapper = new ProductListsWrapper();
 					productListsWrapper = productService.getAllProductsOutlet(stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
 					Map<Integer, Product> productsMap = new HashMap<>();
 					List<Product> products =  productListsWrapper.getOutletProducts(); //productService.getAllProducts(currentUser.getCompany().getCompanyId());
@@ -992,6 +994,7 @@ public class PurchaseOrderDetailsController {
 					//supplierService.updateContact(supplier, currentUser.getCompany().getCompanyId());
 					stockWrapper.setContact(contact);
 					stockOrderService.UpdateStockComplete(stockWrapper, currentUser.getCompany());
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
 							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+contact.getContactId()+" successfully ",false);
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.STOCKCONTROL);
@@ -1020,16 +1023,15 @@ public class PurchaseOrderDetailsController {
 			@PathVariable("grandTotal") String grandTotal,
 			@PathVariable("itemCount") String itemCount,
 			@RequestBody List<StockOrderDetailBean> stockOrderDetailBeansList, HttpServletRequest request){
-
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			try {			
+				initializeClassObjects();
 				if (stockOrderDetailBeansList.size() > 0) {	
 					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<Integer, Product> productsMap = new HashMap<>();
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
-					ProductListsWrapper productListsWrapper = new ProductListsWrapper();
 					productListsWrapper = productService.getAllProductsOutlet(stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
 					List<Product> products = productListsWrapper.getOutletProducts(); //productService.getAllProducts(currentUser.getCompany().getCompanyId());
 					/*List<StockOrderDetail> stockOrderDetailsUpdateList = new ArrayList<>();
@@ -1230,6 +1232,7 @@ public class PurchaseOrderDetailsController {
 					//supplierService.updateContact(supplier, currentUser.getCompany().getCompanyId());
 					stockWrapper.setContact(supplier);
 					stockOrderService.UpdateStockComplete(stockWrapper, currentUser.getCompany());
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
 							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+supplier.getContactId()+" successfully ",false);
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.STOCKCONTROL);
@@ -1262,12 +1265,12 @@ public class PurchaseOrderDetailsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			try {			
+				initializeClassObjects();
 				if (stockOrderDetailBeansList.size() > 0) {	
 					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<String, ProductVariant> recvProductVariantList = new HashMap();
 					Map<String, Product> recvProductList = new HashMap();
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
-					ProductListsWrapper productListsWrapper = new ProductListsWrapper();
 					productListsWrapper = productService.getAllProductsWarehouseandOutlet(stockOrder.getOutletBySourceOutletAssocicationId().getOutletId(), stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
 					Map<Integer, Product> productsMap = new HashMap<>();
 					List<Product> products = productListsWrapper.getWarehouseProducts(); //productService.getAllProducts(currentUser.getCompany().getCompanyId());
@@ -2072,10 +2075,9 @@ public class PurchaseOrderDetailsController {
 					//supplierService.updateContact(supplier, currentUser.getCompany().getCompanyId());
 					stockWrapper.setContact(supplier);
 					stockOrderService.UpdateStockComplete(stockWrapper, currentUser.getCompany());
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
 							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+supplier.getContactId()+" successfully ",false);
-
-
 
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.STOCKCONTROL);
 				}else{
@@ -2107,7 +2109,8 @@ public class PurchaseOrderDetailsController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
-			try {			
+			try {	
+				initializeClassObjects();		
 				if (stockOrderDetailBeansList.size() > 0) {	
 					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<String, ProductVariant> recvProductVariantList = new HashMap();
@@ -2122,11 +2125,11 @@ public class PurchaseOrderDetailsController {
 					List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 					List<Product> products = new ArrayList<>();
 					List<ProductVariant> productVariants = new ArrayList<>();
-					ProductListsWrapper productListsWrapper1 = productService.getAllProductsWarehouseandOutlet(stockOrder.getOutletBySourceOutletAssocicationId().getOutletId(), stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
-					products.addAll(productListsWrapper1.getWarehouseProducts());
-					products.addAll(productListsWrapper1.getOutletProducts());
-					productVariants.addAll(productListsWrapper1.getWarehouseProductVariants());
-					productVariants.addAll(productListsWrapper1.getOutletProductVariants());
+					productListsWrapper = productService.getAllProductsWarehouseandOutlet(stockOrder.getOutletBySourceOutletAssocicationId().getOutletId(), stockOrder.getOutletByOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
+					products.addAll(productListsWrapper.getWarehouseProducts());
+					products.addAll(productListsWrapper.getOutletProducts());
+					productVariants.addAll(productListsWrapper.getWarehouseProductVariants());
+					productVariants.addAll(productListsWrapper.getOutletProductVariants());
 					if(products!=null){
 						for(Product product:products){
 							productsMap.put(product.getProductId(), product);
@@ -2921,6 +2924,7 @@ public class PurchaseOrderDetailsController {
 					//supplierService.updateContact(supplier, currentUser.getCompany().getCompanyId());
 					stockWrapper.setContact(supplier);
 					stockOrderService.UpdateStockComplete(stockWrapper, currentUser.getCompany());
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
 							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+supplier.getContactId()+" successfully ",false);
 
@@ -3413,12 +3417,12 @@ public class PurchaseOrderDetailsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			try {			
+				initializeClassObjects();
 				if (stockOrderDetailBeansList.size() > 0) {					
 					updateStockOrderDetail(sessionId, grandTotal, itemCount, stockOrderDetailBeansList, request);
 					Map<String, ProductVariant> recvProductVariantList = new HashMap();
 					Map<String, Product> recvProductList = new HashMap();
 					StockOrder stockOrder = stockOrderService.getStockOrderByStockOrderID(Integer.parseInt(stockOrderDetailBeansList.get(0).getStockOrderId()),currentUser.getCompany().getCompanyId());
-					ProductListsWrapper productListsWrapper = new ProductListsWrapper();
 					productListsWrapper = productService.getAllProductsWarehouseandOutlet(stockOrder.getOutletByOutletAssocicationId().getOutletId(), stockOrder.getOutletBySourceOutletAssocicationId().getOutletId(), currentUser.getCompany().getCompanyId());
 					Map<Integer, Product> productsMap = new HashMap<>();
 					List<Product> products = productListsWrapper.getWarehouseProducts(); //productService.getAllProducts(currentUser.getCompany().getCompanyId());
@@ -4205,6 +4209,7 @@ public class PurchaseOrderDetailsController {
 					//supplierService.updateContact(supplier, currentUser.getCompany().getCompanyId());
 					stockWrapper.setContact(supplier);
 					stockOrderService.UpdateStockComplete(stockWrapper, currentUser.getCompany());
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
 							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+supplier.getContactId()+" successfully ",false);
 
@@ -4440,6 +4445,7 @@ public class PurchaseOrderDetailsController {
 					//stockOrderService.updateStockOrder(stockOrder,currentUser.getCompany().getCompanyId());
 					stockWrapper.setStockOrder(stockOrder);
 					stockOrderService.UpdateStockComplete(stockWrapper, currentUser.getCompany());
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "PurchaseOrderDetails.updateandRecStockOrderDetail", 
 							"User "+ currentUser.getUserEmail()+"Updated Supplier+"+stockOrder.getStockOrderId()+" successfully ",false);
 					/*Contact supplier = supplierService.getContactByID(stockOrder.getContactId(), currentUser.getCompany().getCompanyId());
@@ -4503,7 +4509,6 @@ public class PurchaseOrderDetailsController {
 	@RequestMapping(value = "/getAllStockTransferOrders/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody	Response getAllStockTransferOrders(@PathVariable("sessionId") String sessionId,
 			@RequestBody StockOrderBean stockOrdBean, HttpServletRequest request) {
-
 		List<StockOrderBean> stockOrderBeansList = new ArrayList<>();
 		List<StockOrder> stockOrderList = null;
 		List<StockOrder> stockReturnList = null;
@@ -4693,7 +4698,7 @@ public class PurchaseOrderDetailsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			productMap = new HashMap<>();
+			//productMap = new HashMap<>();
 			try {			
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productIdsMap") != null) {
@@ -4788,7 +4793,7 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
-			productVariantMap = new HashMap<>();
+			//productVariantMap = new HashMap<>();
 			try {
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productVariantIdsMap") != null) {
@@ -4899,8 +4904,8 @@ public class PurchaseOrderDetailsController {
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<Product> recvProductList = null;
 			Map recvProductMap = new HashMap<>();
-			productMap = new HashMap<>();
-			productIdsMap = new HashMap<>();
+			//productMap = new HashMap<>();
+			//productIdsMap = new HashMap<>();
 			try {			
 				products = productListsWrapper.getWarehouseProducts(); //productService.getAllProductsByOutletIdByCompanyIdGroupByProductUuId(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());				 
 				if(stockOrderBean.getSourceOutletId() != null && !stockOrderBean.getSourceOutletId().equalsIgnoreCase("")){ //Stock Transfer Case
@@ -5000,7 +5005,7 @@ public class PurchaseOrderDetailsController {
 			List<ProductVariant> productVariantList = null;
 			List<ProductVariant> recvProductVariantList = null;
 			Map recvProductVariantMap = new HashMap<>();
-			productVariantMap = new HashMap<>();
+			//productVariantMap = new HashMap<>();
 			try {	
 				if(productListsWrapper.getWarehouseProductVariants() != null) {
 					productVariantList = productListsWrapper.getWarehouseProductVariants(); //productVariantService.getAllProductVariantsByOutletIdGroupbyUuid(Integer.parseInt(stockOrderBean.getSourceOutletId()), currentUser.getCompany().getCompanyId());
@@ -5126,8 +5131,7 @@ public class PurchaseOrderDetailsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			productMap = new HashMap<>();
-			Map productSessionMap = new HashMap<>();
+			//productMap = new HashMap<>();
 			try {		
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productIdsMap") != null) {
@@ -5223,7 +5227,7 @@ public class PurchaseOrderDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
-			productVariantMap = new HashMap<>();
+			//productVariantMap = new HashMap<>();
 			try {
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productVariantIdsMap") != null) {
@@ -5327,20 +5331,24 @@ public class PurchaseOrderDetailsController {
 		}	
 	}
 
-	public Map getProductVariantMap() {
-		return productVariantMap;
-	}
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of PurchaseOrderDetailsController");
+		productListsWrapper = new ProductListsWrapper();
+		productVariantMap = new HashMap<>();
+		productMap = new HashMap<>();
+		productIdsMap = new HashMap<>();
+		productVariantIdsMap = new HashMap<>();
+		products = new ArrayList<>();
 
-	public void setProductVariantMap(HashMap productVariantMap) {
-		this.productVariantMap = productVariantMap;
 	}
-
-	public Map getProductMap() {
-		return productMap;
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of PurchaseOrderDetailsController");
+		productListsWrapper = null;
+		productVariantMap = null;
+		productMap = null;
+		productIdsMap = null;
+		productVariantIdsMap = null;
+		products = null;
 	}
-
-	public void setProductMap(HashMap productMap) {
-		this.productMap = productMap;
-	}
-
+	
 }

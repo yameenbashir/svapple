@@ -61,6 +61,7 @@ import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
 import com.dowhile.wrapper.InventoryCountWrapper;
 import com.dowhile.wrapper.ProductListsWrapper;
+import com.dowhile.wrapper.StockDataProductsWrapper;
 
 /**
  * Zafar Shakeel
@@ -112,13 +113,13 @@ public class InventoryCountDetailsController {
 	private List<ProductVariant> productVariantList; //outlet + Warehouse Product Variants
 	//private Map<Integer, Product> warehouseProductMap = new HashMap<>(); //Warehouse Product Map
 	//private Map<Integer, Product> productMap = new HashMap<>(); //outlet Products Map
-	private Map<Integer, Product> compProductMap = new HashMap<>(); // Outlet + Warehouse Product
+	private Map<Integer, Product> compProductMap; // Outlet + Warehouse Product
 	//private Map<Integer, ProductVariantBean> productVariantMap = new HashMap<>(); //outlet Product Variant Map
 	//private Map<Integer, ProductVariantBean> warehouseProductVariantMap = new HashMap<>(); //Warehouse Product Map
-	private Map<String, ProductVariantBean> productBeansSKUMap  = new HashMap<>();
-	private Map<String, ProductVariantBean> productVariantBeansSKUMap = new HashMap<>();
-	private Map<String, ProductVariantBean> warehouseProductBeansSKUMap = new HashMap<>();
-	private Map<String, ProductVariantBean> warehouseProductVariantBeansSKUMap = new HashMap<>();
+	private Map<String, ProductVariantBean> productBeansSKUMap;
+	private Map<String, ProductVariantBean> productVariantBeansSKUMap;
+	private Map<String, ProductVariantBean> warehouseProductBeansSKUMap;
+	private Map<String, ProductVariantBean> warehouseProductVariantBeansSKUMap;
 	private int headOfficeOutletId; //= 1;
 	private int outletId;
 	ProductListsWrapper productListsWrapper;
@@ -141,7 +142,7 @@ public class InventoryCountDetailsController {
 		List<ProductVariantBean> warehouseProductBeansList = new ArrayList<>();
 		List<ProductVariantBean> warehouseProductVariantBeansList = new ArrayList<>();
 		List<InventoryCountDetailBean> inventoryCountDetailBeansList = null;
-		productListsWrapper = new ProductListsWrapper();
+		initializeClassObjects();
 		//Map<Integer, ProductVariantBean> productsMap = new HashMap<>();
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
@@ -256,6 +257,7 @@ public class InventoryCountDetailsController {
 					inventoryCountControllerBean.setAllProductVariantMap(warehouseProductVariantBeansSKUMap); // Warehouse ProductVariants
 					System.out.println("allProductVariantMap size: " + warehouseProductVariantBeansSKUMap.size());
 				}
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "InventoryCountController.getInventoryCountControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived InventoryCountControllerData successfully ",false);
 				return new Response(inventoryCountControllerBean, StatusConstants.SUCCESS,
@@ -669,7 +671,7 @@ public class InventoryCountDetailsController {
 			List<ProductVariant> productVariantUpdateList = new ArrayList<>();
 			String stockDetails = "<p> Please Close/Complete following Stock Orders before iniating an Audit";
 			List<StockOrder> stockOrderList = null;
-			try {			
+			try {
 				DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 				stockOrderList = stockOrderService.getStockOrderByOutletIdNotComp(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				for(StockOrder stockOrder:stockOrderList){
@@ -686,7 +688,8 @@ public class InventoryCountDetailsController {
 				}
 				stockDetails = stockDetails + "</p>";
 				if(stockOrderList.size() < 1){
-					if (inventoryCountDetailBeansList.size() > 0) {	
+					if (inventoryCountDetailBeansList.size() > 0) {				
+						initializeClassObjects();
 						updateInventoryCountDetail(sessionId,inventoryCountBean, request);
 						InventoryCount inventoryCount = inventoryCountService.getInventoryCountByInventoryCountID(Integer.parseInt(inventoryCountDetailBeansList.get(0).getInventoryCountId()),currentUser.getCompany().getCompanyId());
 						Map<Integer, Product> productsMap = new HashMap<>();
@@ -1165,6 +1168,7 @@ public class InventoryCountDetailsController {
 							stockOrderBean.setOutlet(String.valueOf(inventoryCount.getOutlet().getOutletId()));
 							AddStockOrder(sessionId, stockOrderBean, stockOrderDetialBeansList, grandTotal, itemCount, request);
 						}
+						initializeClassObjects();
 						return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.INVENTORY_COUNT);
 					}else{
 						util.AuditTrail(request, currentUser, "InventoryCountDetails.addandUpdateInventoryCountDetail", "User "+ 
@@ -1272,9 +1276,9 @@ public class InventoryCountDetailsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			productList = new  ArrayList<>();
+			//productList = new  ArrayList<>();
 			//productMap = new HashMap<>();
-			compProductMap = new HashMap<>();
+			//compProductMap = new HashMap<>();
 			try {			
 				productList.addAll(productListsWrapper.getOutletProducts());
 				System.out.println("Product size: " + productList.size());
@@ -1452,7 +1456,7 @@ public class InventoryCountDetailsController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			//productVariantMap = new HashMap<>();
-			productVariantList = new ArrayList<>();
+			//productVariantList = new ArrayList<>();
 			try {			
 				//productVariantList = productVariantService.getAllProductVariantsWarehouseandOutlet(warehouseOutletId, currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				productVariantList.addAll(productListsWrapper.getOutletProductVariants());
@@ -1881,4 +1885,33 @@ public class InventoryCountDetailsController {
 		this.productMap = produtMap;
 	}*/
 
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of InventoryCountDetailController");
+		purchaseOrderController = new PurchaseOrderController();
+		purchaseOrderDetailsController = new PurchaseOrderDetailsController();
+		productList = new ArrayList<>(); //outlet + Warehouse Products
+		productVariantList = new ArrayList<>(); //outlet + Warehouse Product Variants
+		compProductMap = new HashMap<>(); // Outlet + Warehouse Product
+		productBeansSKUMap  = new HashMap<>();
+		productVariantBeansSKUMap = new HashMap<>();
+		warehouseProductBeansSKUMap = new HashMap<>();
+		warehouseProductVariantBeansSKUMap = new HashMap<>();
+		productListsWrapper = new ProductListsWrapper();
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of InventoryCountDetailController");
+		purchaseOrderController = null;
+		purchaseOrderDetailsController = null;
+		productList = null;; //outlet + Warehouse Products
+		productVariantList = null; //outlet + Warehouse Product Variants
+		compProductMap = null; // Outlet + Warehouse Product
+		productBeansSKUMap  = null;
+		productVariantBeansSKUMap = null;
+		warehouseProductBeansSKUMap = null;
+		warehouseProductVariantBeansSKUMap = null;
+		productListsWrapper = null;
+	}
+	
+	
+	
 }

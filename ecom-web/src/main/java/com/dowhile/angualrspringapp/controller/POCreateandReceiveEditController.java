@@ -94,12 +94,12 @@ public class POCreateandReceiveEditController {
 
 	@Resource
 	private ProductService productService;
-	private StockDataProductsWrapper stockDataProductsWrapper = new StockDataProductsWrapper();
-	private Map productVariantMap = new HashMap<>();
-	private Map productMap = new HashMap<>();
-	private Map productIdsMap = new HashMap<>();
-	private Map productVariantIdsMap = new HashMap<>();
-	private List<Product> products = new ArrayList<>();
+	private StockDataProductsWrapper stockDataProductsWrapper;
+	private Map productVariantMap;
+	private Map productMap;
+	private Map productIdsMap;
+	private Map productVariantIdsMap;
+	private List<Product> products;
 	//ProductListsWrapper productListsWrapper;
 
 	@RequestMapping("/layout")
@@ -122,6 +122,7 @@ public class POCreateandReceiveEditController {
 			User currentUser = (User) session.getAttribute("user");
 			//productListsWrapper = new ProductListsWrapper();
 			try {
+				initializeClassObjects();
 				//productListsWrapper = productService.getAllProductsOutlet(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				System.out.println("StockDataProductWrapper Start: " + new Date());
 				stockDataProductsWrapper = stockOrderService.GetStockWithProductsData(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
@@ -163,6 +164,7 @@ public class POCreateandReceiveEditController {
 				POCreateandReceiveControllerBean.setStockOrderDetailBeansList(stockOrderDetailBeansList);
 				POCreateandReceiveControllerBean.setProductVariantMap(productVariantMap);
 				POCreateandReceiveControllerBean.setProductMap(productMap);
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getPOCreateandReceiveControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived POCreateandReceiveControllerData successfully ",false);
 				return new Response(POCreateandReceiveControllerBean, StatusConstants.SUCCESS,
@@ -189,13 +191,11 @@ public class POCreateandReceiveEditController {
 	public @ResponseBody
 	Response getAllOutlets(@PathVariable("sessionId") String sessionId,
 			HttpServletRequest request) {
-
 		List<OutletBean> outletBeansList = new ArrayList<>();
 		List<Outlet> outletList = null;
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
 			try {
 				//outletList = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 				outletList = stockDataProductsWrapper.getOutletList();
@@ -235,26 +235,22 @@ public class POCreateandReceiveEditController {
 	public @ResponseBody
 	Response getAllStockOrderTypes(@PathVariable("sessionId") String sessionId,
 			HttpServletRequest request) {
-
 		List<StockOrderTypeBean> stockOrderTypeBeansList = new ArrayList<>();
 		List<StockOrderType> stockOrderTypeList = null;
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
 			try {
 				//stockOrderTypeList = stockOrderTypeService.getAllStockOrderType();
 				stockOrderTypeList = stockDataProductsWrapper.getStockOrderTypeList();
 				if (stockOrderTypeList != null) {
 					for (StockOrderType stockOrderType : stockOrderTypeList) {
-
 						StockOrderTypeBean stockOrderTypeBean = new StockOrderTypeBean();
 						stockOrderTypeBean.setStockOrderTypeId(stockOrderType.getStockOrderTypeId().toString());
 						stockOrderTypeBean.setStockOrderTypeCode(stockOrderType.getStockOrderTypeCode());
 						stockOrderTypeBean.setStockOrderTypeDesc(stockOrderType.getStockOrderTypeDesc());
 						stockOrderTypeBeansList.add(stockOrderTypeBean);
 					}
-
 					util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllStockOrderTypes", 
 							"User "+ currentUser.getUserEmail()+" fetched all stock order types successfully ",false);
 					return new Response(stockOrderTypeBeansList,StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
@@ -275,9 +271,8 @@ public class POCreateandReceiveEditController {
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}
-
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/getAllSuppliers/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody
@@ -571,8 +566,8 @@ public class POCreateandReceiveEditController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-			productMap = new HashMap<>();
-			Map productSessionMap = new HashMap<>();
+			//productMap = new HashMap<>();
+			//Map productSessionMap = new HashMap<>();
 			try {		
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productIdsMap") != null) {
@@ -670,7 +665,7 @@ public class POCreateandReceiveEditController {
 			User currentUser = (User) session.getAttribute("user");	
 			List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
 			List<ProductVariant> productVariantList = null;
-			productVariantMap = new HashMap<>();
+			//productVariantMap = new HashMap<>();
 			try {
 				/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 					if(session.getAttribute("productVariantIdsMap") != null) {
@@ -778,19 +773,24 @@ public class POCreateandReceiveEditController {
 		}	
 	}
 	
-	public Map getProductVariantMap() {
-		return productVariantMap;
-	}
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of POCreateandReceiveEditController");
+		stockDataProductsWrapper = new StockDataProductsWrapper();
+		productVariantMap = new HashMap<>();
+		productMap = new HashMap<>();
+		productIdsMap = new HashMap<>();
+		productVariantIdsMap = new HashMap<>();
+		products = new ArrayList<>();
 
-	public void setProductVariantMap(HashMap productVariantMap) {
-		this.productVariantMap = productVariantMap;
 	}
-	public Map getProductMap() {
-		return productMap;
-	}
-
-	public void setProductMap(Map productMap) {
-		this.productMap = productMap;
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of POCreateandReceiveEditController");
+		stockDataProductsWrapper = null;
+		productVariantMap = null;
+		productMap = null;
+		productIdsMap = null;
+		productVariantIdsMap = null;
+		products = null;
 	}
 
 }

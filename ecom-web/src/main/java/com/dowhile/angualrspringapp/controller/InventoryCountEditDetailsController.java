@@ -99,13 +99,13 @@ public class InventoryCountEditDetailsController {
 	private List<ProductVariant> productVariantList; //outlet + Warehouse Product Variants
 	//private Map<Integer, Product> warehouseProductMap = new HashMap<>(); //Warehouse Product Map
 	//private Map<Integer, Product> productMap = new HashMap<>(); //outlet Products Map
-	private Map<Integer, Product> compProductMap = new HashMap<>(); // Outlet + Warehouse Product
+	private Map<Integer, Product> compProductMap; // Outlet + Warehouse Product
 	//private Map<Integer, ProductVariantBean> productVariantMap = new HashMap<>(); //outlet Product Variant Map
 	//private Map<Integer, ProductVariantBean> warehouseProductVariantMap = new HashMap<>(); //Warehouse Product Map
-	private Map<String, ProductVariantBean> productBeansSKUMap  = new HashMap<>();
-	private Map<String, ProductVariantBean> productVariantBeansSKUMap = new HashMap<>();
-	private Map<String, ProductVariantBean> warehouseProductBeansSKUMap = new HashMap<>();
-	private Map<String, ProductVariantBean> warehouseProductVariantBeansSKUMap = new HashMap<>();
+	private Map<String, ProductVariantBean> productBeansSKUMap;
+	private Map<String, ProductVariantBean> productVariantBeansSKUMap;
+	private Map<String, ProductVariantBean> warehouseProductBeansSKUMap;
+	private Map<String, ProductVariantBean> warehouseProductVariantBeansSKUMap;
 	private int headOfficeOutletId; //= 1;
 	private int outletId;
 	ProductListsWrapper productListsWrapper;
@@ -128,7 +128,7 @@ public class InventoryCountEditDetailsController {
 		List<ProductVariantBean> warehouseProductBeansList = new ArrayList<>();
 		List<ProductVariantBean> warehouseProductVariantBeansList = new ArrayList<>();
 		List<InventoryCountDetailBean> inventoryCountDetailBeansList = null;
-		productListsWrapper = new ProductListsWrapper();
+		//productListsWrapper = new ProductListsWrapper();
 		//Map<Integer, ProductVariantBean> productsMap = new HashMap<>();
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
@@ -137,6 +137,7 @@ public class InventoryCountEditDetailsController {
 			headOfficeOutletId = outletService.getHeadOfficeOutlet(currentUser.getCompany().getCompanyId()).getOutletId();
 			outletId = currentUser.getOutlet().getOutletId();
 			try {
+				initializeClassObjects();
 				if(outletId != headOfficeOutletId) {
 					productListsWrapper = productService.getAllProductsWarehouseandOutlet(headOfficeOutletId, currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				}else {
@@ -243,6 +244,7 @@ public class InventoryCountEditDetailsController {
 					inventoryCountControllerBean.setAllProductVariantMap(warehouseProductVariantBeansSKUMap); // Warehouse ProductVariants
 					System.out.println("allProductVariantMap size: " + warehouseProductVariantBeansSKUMap.size());
 				}
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "InventoryCountController.getInventoryCountControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived InventoryCountControllerData successfully ",false);
 				return new Response(inventoryCountControllerBean, StatusConstants.SUCCESS,
@@ -869,4 +871,27 @@ public class InventoryCountEditDetailsController {
 	public void setProdutMap(Map produtMap) {
 		this.productMap = produtMap;
 	}*/
+	
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of InventoryCountDetailController");
+		productList = new ArrayList<>(); //outlet + Warehouse Products
+		productVariantList = new ArrayList<>(); //outlet + Warehouse Product Variants
+		compProductMap = new HashMap<>(); // Outlet + Warehouse Product
+		productBeansSKUMap  = new HashMap<>();
+		productVariantBeansSKUMap = new HashMap<>();
+		warehouseProductBeansSKUMap = new HashMap<>();
+		warehouseProductVariantBeansSKUMap = new HashMap<>();
+		productListsWrapper = new ProductListsWrapper();
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of InventoryCountDetailController");
+		productList = null;; //outlet + Warehouse Products
+		productVariantList = null; //outlet + Warehouse Product Variants
+		compProductMap = null; // Outlet + Warehouse Product
+		productBeansSKUMap  = null;
+		productVariantBeansSKUMap = null;
+		warehouseProductBeansSKUMap = null;
+		warehouseProductVariantBeansSKUMap = null;
+		productListsWrapper = null;
+	}
 }

@@ -52,8 +52,8 @@ public class InventoryHealthCheckReportController {
 	@Resource
 	private OutletService outletService;
 	
-	private Configuration configuration =null;
-	private static List<OutletBean> outletBeans;
+//	private Configuration configuration =null;
+//	private static List<OutletBean> outletBeans;
 
 	@Resource
 	private ConfigurationService configurationService;
@@ -62,15 +62,15 @@ public class InventoryHealthCheckReportController {
 	@RequestMapping(value = "/getInventoryHealthCheckReportControllerData/{sessionId}/{outletName}", method = RequestMethod.POST)
 	public @ResponseBody Response getInventoryHealthCheckReportControllerData(@PathVariable("sessionId") String sessionId,
 			@PathVariable("outletName") String outletName,HttpServletRequest request) {
-		List<InventoryHealthCheckReportBean>  inventoryHealthCheckReportBeansList = null;
+		//List<InventoryHealthCheckReportBean>  inventoryHealthCheckReportBeansList = null;
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
+			List<OutletBean> outletBeans = new ArrayList<>();
 			try {
-				TableData tableData = null;
 				boolean isHeadOffice = false;
 				if(currentUser.getOutlet().getIsHeadOffice()!=null){
-					 isHeadOffice =currentUser.getOutlet().getIsHeadOffice();					
+					isHeadOffice =currentUser.getOutlet().getIsHeadOffice();					
 				}
 				//configuration = configurationService.getConfigurationByPropertyNameByCompanyId("HIDE_ORIGNAL_PRICE_INFO_REPORTS",currentUser.getCompany().getCompanyId());
 				if(currentUser.getRole().getRoleId()== 1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true"){
