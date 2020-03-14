@@ -164,6 +164,9 @@ public class InvoiceMainBean {
 	private String laybyamount;
 	private String synchedInd;
 	private String customername;
+	private String currentPayment;  // for alreadylayby invoice
+	private String customerPreviousBalance;
+	private String customerTotalPayments;
 	private String insertedby;
 	private String insertedbyname;
 	private String salesUser;
@@ -232,5 +235,46 @@ public class InvoiceMainBean {
 	public void setInvoiceSubTotal(String invoiceSubTotal) {
 		this.invoiceSubTotal = invoiceSubTotal;
 	}
+	
+	/**
+	 * @return the customerPreviousBalance
+	 */
+	public String getCustomerPreviousBalance() {
+		return customerPreviousBalance;
+	}
+	/**
+	 * @param customerPreviousBalance the customerPreviousBalance to set
+	 */
+	public void setCustomerPreviousBalance(String customerPreviousBalance) {
+		this.customerPreviousBalance = customerPreviousBalance;
+	}
+	/**
+	 * @return the customerTotalPayments
+	 */
+	public String getCustomerTotalPayments() {
+		return customerTotalPayments;
+	}
+	/**
+	 * @param customerTotalPayments the customerTotalPayments to set
+	 */
+	public void setCustomerTotalPayments(String customerTotalPayments) {
+		this.customerTotalPayments = customerTotalPayments;
+	}
+	/**
+	 * @return the currentPayment
+	 */
+	public String getCurrentPayment() {
+		return currentPayment;
+	}
+	/**
+	 * @param currentPayment the currentPayment to set
+	 */
+	public void setCurrentPayment(String currentPayment) {
+		this.currentPayment = currentPayment;
+	}
+	
+	
+	
+	
 
 }

@@ -104,7 +104,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/sell")
 public class SellController  {
 
-	// private static Logger logger = Logger.getLogger(SellController.class.getName());
+	private static Logger logger = Logger.getLogger(SellController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -265,7 +265,7 @@ public class SellController  {
 				}
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -280,7 +280,7 @@ public class SellController  {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "null" })
+	@SuppressWarnings({ "unchecked"})
 	@RequestMapping(value = "/getAllProductsOnly/{sessionId}", method = RequestMethod.GET)
 	public @ResponseBody
 	SellControllerBean getAllProductsOnly(
@@ -646,7 +646,7 @@ public class SellController  {
 				}
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -889,7 +889,7 @@ public class SellController  {
 				
 				return sellControllerBean;
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -961,7 +961,7 @@ public class SellController  {
 				return new Response(listInvoiceMainBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.SELL);
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash","Error Occured " + errors.toString(), true);
@@ -1020,7 +1020,6 @@ public class SellController  {
 							invoice.setSalesUser(currentUser.getUserId());
 						}
 
-						
 						invoice = saleService.addInvoiceMain(invoice,currentUser.getCompany().getCompanyId());
 
 						invoiceMainBean.setInvoiceMainId(invoice.getInvoiceMainId().toString());
@@ -1106,6 +1105,7 @@ public class SellController  {
 						previousSettlementAmount = invoice.getSettledAmt();
 						invoice.setSettledAmt(currentSettlementAmount
 								.add(previousSettlementAmount));
+						
 
 
 
@@ -1118,12 +1118,20 @@ public class SellController  {
 							statusId = invoice.getStatus().getStatusId();
 							UpdateCustomerBalance(Integer.parseInt( invoiceMainBean.getCustomerId()), currentSettlementAmount,Actions.BALANCE_REMOVE, currentUser.getCompany().getCompanyId() );					
 						}
+						
 
 						if(invoice.getStatus().getStatusId() == 9 &&   invoice.getInvoiceNetAmt().subtract(invoice.getSettledAmt()).compareTo(BigDecimal.ZERO)==0)
 						{
 							statusId = 13;
 						}
-
+						if(invoice.getStatus().getStatusId() == 9 &&   invoice.getInvoiceNetAmt().subtract(invoice.getSettledAmt()).compareTo(BigDecimal.ZERO)!=0)
+						{
+							Contact  customer = customerService.getContactByID(Integer.parseInt( invoiceMainBean.getCustomerId()), currentUser.getCompany().getCompanyId());
+							if(customer.getContactBalance()!=null) {
+								invoiceMainBean.setCustomerPreviousBalance(customer.getContactBalance().toString());
+								logger.info(invoiceMainBean.getCustomerPreviousBalance());
+							}
+						}
 
 
 						invoice.setStatus(statusService.getStatusByStatusId(statusId));
@@ -1134,11 +1142,7 @@ public class SellController  {
 
 						invoiceDetails = saleService.addInvoiceDetails(invoiceDetails,currentUser.getCompany().getCompanyId());
 						saleService.updateInvoiceMainByID(invoice,currentUser.getCompany().getCompanyId());
-						System.out.println("invoice.getStatus().getStatusId(): "+invoice.getStatus().getStatusId());
-						if(invoice.getStatus()!=null && invoice.getStatus().getStatusId()!=11 && invoice.getStatus().getStatusId()!=13 && invoice.getStatus().getStatusId()==10 ) {
-							UpdateProductInventory(invoiceMainBean.getInvoiceDetails(),currentUser,invoiceMainBean.getReturnvalue(),invoice);
-						}
-						
+						UpdateProductInventory(invoiceMainBean.getInvoiceDetails(),currentUser,invoiceMainBean.getReturnvalue(),invoice);
 
 
 					}
@@ -1174,6 +1178,11 @@ public class SellController  {
 					}*/
 					invoiceMainBean.setSettledAmt(currentSettlementAmount.add(
 							previousSettlementAmount).toString());
+					invoiceMainBean.setCustomerTotalPayments(currentSettlementAmount.add(            //for customer total payments sum
+							previousSettlementAmount).toString());
+					invoiceMainBean.setCurrentPayment(currentSettlementAmount.toString());           // for already layby invoice customer pay some amount and layby the remain amount
+					
+					
 					invoiceMainBean.setStatus(invoice.getStatus().getStatusId().toString());
 
 					util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1188,7 +1197,7 @@ public class SellController  {
 						LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash","Error Occured " + errors.toString(), true);
@@ -1283,6 +1292,11 @@ public class SellController  {
 							UpdateCustomerBalance(Integer.parseInt(invoiceMainBean.getCustomerId()), new BigDecimal(invoiceMainBean.getLaybyamount()),Actions.BALANCE_ADD, currentUser.getCompany().getCompanyId() );
 
 						}
+						Contact  customer = customerService.getContactByID(Integer.parseInt( invoiceMainBean.getCustomerId()), currentUser.getCompany().getCompanyId());
+						if(customer.getContactBalance()!=null) {
+							invoiceMainBean.setCustomerPreviousBalance(customer.getContactBalance().toString());
+							logger.info(invoiceMainBean.getCustomerPreviousBalance());
+						}
 
 						// Receipt receipt = PopulateReceipt(invoiceMainBean,
 						// invoice,
@@ -1376,6 +1390,14 @@ public class SellController  {
 									.parseInt(invoiceMainBean.getCustomerId()),currentUser.getCompany().getCompanyId());
 							alreadyLayByInvoice.setContact(customer);
 						}
+						
+						
+						/*if (invoiceMainBean.getCustomerId() != null && StringUtils.isNotEmpty(invoiceMainBean.getCustomerId())) {
+							Contact customer = customerService.getContactByID(Integer
+									.parseInt(invoiceMainBean.getCustomerId()),currentUser.getCompany().getCompanyId());
+							List<ContactPayments> customerTotalPayments = customerService.getContactAllPaymentsByContactID(customer.getContactId(),currentUser.getCompany().getCompanyId());
+							invoiceMainBean.setCustomerTotalPayments((customerTotalPayments));
+						}*/
 
 						saleService.updateInvoiceMainByID(alreadyLayByInvoice,currentUser.getCompany().getCompanyId());
 
@@ -1406,7 +1428,7 @@ public class SellController  {
 						LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1465,7 +1487,7 @@ public class SellController  {
 
 
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1589,7 +1611,7 @@ public class SellController  {
 						StatusConstants.SUCCESS, LayOutPageConstants.SELL);
 
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SellController.payCash",
@@ -1681,6 +1703,8 @@ public class SellController  {
 			Contact customer = customerService.getContactByID(Integer
 					.parseInt(invoiceMain.getCustomerId()),currentUser.getCompany().getCompanyId());
 			invoice.setContact(customer);
+			//Contact customer = customerService.getContactByID(customerId, company.getCompanyId());
+			
 		}
 
 		Outlet outlet = outletService.getOuletByOutletId(outletId,currentUser.getCompany().getCompanyId());
@@ -1913,7 +1937,7 @@ public class SellController  {
 		//{
 			//returnvalue = "LayBy";
 		//}
-		System.out.println("Request received for UpdateProductInventory");
+		
 
 		if (invoiceDetailBeans != null && invoiceDetailBeans.size() > 0) {
 
@@ -2242,7 +2266,7 @@ public class SellController  {
 			return listPriceBooksBean;
 
 		} catch (Exception e) {
-			e.printStackTrace();// logger.error(e.getMessage(),e);
+			e.printStackTrace();logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 		
@@ -2281,7 +2305,7 @@ public class SellController  {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();// logger.error(e.getMessage(),e);
+				e.printStackTrace();logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewCustomerController.getAllCustomerGroups",
@@ -2296,6 +2320,6 @@ public class SellController  {
 		}
 
 	}
-	
+
 
 }

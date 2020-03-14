@@ -971,6 +971,8 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		}
 		localforage.setItem('_s_tk_sell',"");
 		$scope.balance = parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat($scope.InvoiceMainBean.settledAmt);
+		
+		$scope.payment.amount = parseFloat($scope.InvoiceMainBean.invoiceGivenAmt);
 
 		$scope.change = parseFloat(	$scope.InvoiceMainBean.invoiceGivenAmt ) - parseFloat($scope.InvoiceMainBean.settledAmt);
 		$scope.InvoiceMainBean.invoiceGivenAmt =  parseFloat($scope.balance);
@@ -1014,16 +1016,25 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		$scope.laybyloading = true;
 		$scope.InvoiceMainBean.dailyRegesterId = $scope.dailyRegesterId;
 		$scope.InvoiceMainBean.transactionType = transactionType;
-
+		
 		$scope.InvoiceMainBean.laybyamount =  parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat($scope.InvoiceMainBean.settledAmt);
-		if($scope.InvoiceMainBean.laybyamount!=null || $scope.selectedItem.item.customerBalance>0){
+		
+		/*if($scope.InvoiceMainBean.laybyamount!=null || !$scope.selectedItem.item == 'undefined'){
 			$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.selectedItem.item.customerBalance);
-		}else if($scope.InvoiceMainBean.laybyamount==null){
+			
+		}*/if($scope.InvoiceMainBean.laybyamount!=null || !$scope.selectedItem.item == 'undefined'){
+			if($scope.InvoiceMainBean.customerPreviousBalance!=null){
+				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.InvoiceMainBean.customerPreviousBalance);
+			}else if ($scope.selectedItem.item.customerBalance){
+				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.selectedItem.item.customerBalance);
+					}
+			}else if($scope.InvoiceMainBean.laybyamount==null){
 			$scope.totalBalance = $scope.selectedItem.item.customerBalance
 		}else if($scope.selectedItem.item.customerBalance==null){
 			$scope.selectedItem.item.customerBalance = 0;
 		}
 		$scope.InvoiceMainBean.settledAmt = 0;
+		
 
 		if(!$scope.InvoiceMainBean.invoiceRefNbr)
 		{
@@ -1046,6 +1057,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			              d.getHours() >= 12 ? 'PM' : 'AM'].join(':');
 			$scope.invoiceGenerationDteFE = dformat;
 		}
+		
 		$http.post('sell/salenoncash/' + $scope._s_tk_com,$scope.InvoiceMainBean).success(function(Response) {
 
 
@@ -1082,11 +1094,23 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	};
 	$scope.salenoncashSuccess = function(response){
 		$scope.gobackenable = false;
+		$scope.success = false;
+		$scope.error = false;
+		$scope.laybyloading = false;
 
 //		$scope.successMessage = response.data;
 		localforage.setItem('_s_tk_sell',"");
 		$scope.salesComplete = true;
-		$scope.balance = parseFloat($scope.InvoiceMainBean.invoiceGivenAmt );
+		$scope.balance = parseFloat($scope.InvoiceMainBean.laybyamount );
+		//$scope.payment.amount = parseFloat($scope.InvoiceMainBean.invoiceGivenAmt)-parseFloat($scope.InvoiceMainBean.laybyamount);
+		
+		if($scope.InvoiceMainBean.currentPayment!=null){
+			$scope.payment.amount = parseFloat($scope.InvoiceMainBean.currentPayment);
+		}else{ 
+			$scope.payment.amount = parseFloat($scope.InvoiceMainBean.invoiceNetAmt)-parseFloat($scope.InvoiceMainBean.laybyamount);
+		}
+		
+		
 
 		if(response !=null)
 		{

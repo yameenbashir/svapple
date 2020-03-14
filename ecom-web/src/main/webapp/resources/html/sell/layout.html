@@ -272,7 +272,10 @@
 											</div></li>
 											
 											<li ng-show = "showPaymentSale"><span class="handle"> <iclass="fafa-ellipsis-v" >
-												</i></span> <!-- todo text --> <!-- todo text --> <span class="text">Payment(s) </span>
+												</i></span> 
+												<!-- todo text --> <!-- todo text -->
+												
+												 <span class="text">Payment(s) </span>
 											<div class="tools_new">
 
 												<span
@@ -756,7 +759,7 @@
 														</div>
 													
 													<hr class="dash" />
-													<div ng-if="listPayments.length > 0"
+												<!-- 	<div ng-if="listPayments.length > 0"
 														ng-repeat="payment in listPayments">
 														<div>
 															<div class="col-xs-8 text-right">{{payment.type}}</div>
@@ -764,7 +767,11 @@
 																ng-bind="payment.amount"></div>
 														</div>
 
-													</div>
+													</div> -->
+													<div >
+															<div ng-if="payment.amount" class="col-xs-8 text-right"><b>{{payment.type}}</b></div>
+															<div  ng-if="payment.amount" class="col-xs-4 text-center" ng-bind="payment.amount"></div>
+														</div>
 
 
 													<div ng-show="change > 0" style="font-size: 12px">
