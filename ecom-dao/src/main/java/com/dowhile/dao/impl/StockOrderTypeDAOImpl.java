@@ -19,7 +19,7 @@ import com.dowhile.dao.StockOrderTypeDAO;
 public class StockOrderTypeDAOImpl implements StockOrderTypeDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(StockOrderTypeDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(StockOrderTypeDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class StockOrderTypeDAOImpl implements StockOrderTypeDAO{
 			return stockOrderType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +61,7 @@ public class StockOrderTypeDAOImpl implements StockOrderTypeDAO{
 			return stockOrderType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -74,7 +74,7 @@ public class StockOrderTypeDAOImpl implements StockOrderTypeDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -92,7 +92,7 @@ public class StockOrderTypeDAOImpl implements StockOrderTypeDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -105,7 +105,7 @@ public class StockOrderTypeDAOImpl implements StockOrderTypeDAO{
 			List<StockOrderType> stockOrderTypeList = getSessionFactory().getCurrentSession().createCriteria(StockOrderType.class).list();
 			return stockOrderTypeList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -17,7 +17,7 @@ import com.dowhile.dao.AddressDAO;
  */
 public class AddressDAOImpl implements AddressDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -46,7 +46,7 @@ public class AddressDAOImpl implements AddressDAO{
 			return address;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -59,7 +59,7 @@ public class AddressDAOImpl implements AddressDAO{
 			return address;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class AddressDAOImpl implements AddressDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -91,7 +91,7 @@ public class AddressDAOImpl implements AddressDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -110,7 +110,7 @@ public class AddressDAOImpl implements AddressDAO{
 					return list;
 				}
 			}catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;
 		}
@@ -131,7 +131,7 @@ public class AddressDAOImpl implements AddressDAO{
 					return list;
 				}
 			}catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;
 		}
@@ -151,7 +151,7 @@ public class AddressDAOImpl implements AddressDAO{
 					return list;
 				}
 			}catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;
 		}
@@ -171,7 +171,7 @@ public class AddressDAOImpl implements AddressDAO{
 					return list;
 				}
 			}catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;
 		}

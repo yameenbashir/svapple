@@ -17,7 +17,7 @@ import com.dowhile.dao.RoleDAO;
  */
 public class RoleDAOImpl implements RoleDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -46,7 +46,7 @@ public class RoleDAOImpl implements RoleDAO{
 			return role;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -59,7 +59,7 @@ public class RoleDAOImpl implements RoleDAO{
 			return role;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class RoleDAOImpl implements RoleDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -85,7 +85,7 @@ public class RoleDAOImpl implements RoleDAO{
 			List<Role> RoleList = getSessionFactory().getCurrentSession().createCriteria(Role.class).list();
 			return RoleList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -103,7 +103,7 @@ public class RoleDAOImpl implements RoleDAO{
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -121,7 +121,7 @@ public class RoleDAOImpl implements RoleDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

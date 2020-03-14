@@ -40,7 +40,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/companySetupImages")
 public class CompanySetupImagesController {
 
-	private static Logger logger = Logger.getLogger(CompanySetupImagesController.class.getName());
+	// private static Logger logger = Logger.getLogger(CompanySetupImagesController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -85,7 +85,7 @@ public class CompanySetupImagesController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CompanySetupImagesController.getCompanySetupImagesControllerData",

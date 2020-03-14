@@ -46,7 +46,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/newUser")
 public class NewUserController {
 
-	private static Logger logger = Logger.getLogger(NewUserController.class.getName());
+	// private static Logger logger = Logger.getLogger(NewUserController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -99,7 +99,7 @@ public class NewUserController {
 				return new Response(newUserControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewUserController.getNewUserControllerData",
@@ -173,7 +173,7 @@ public class NewUserController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewUserController.addUser",
@@ -223,7 +223,7 @@ public class NewUserController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewUserController.getAllRoles",
@@ -269,7 +269,7 @@ public class NewUserController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewUserController.getOutletsForDropDown",

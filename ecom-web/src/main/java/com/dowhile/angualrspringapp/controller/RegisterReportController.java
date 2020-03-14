@@ -46,7 +46,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/registerReport")
 public class RegisterReportController {
 
-	private static Logger logger = Logger.getLogger(RegisterReportController.class.getName());
+	// private static Logger logger = Logger.getLogger(RegisterReportController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -96,7 +96,7 @@ public class RegisterReportController {
 				return new Response(registerReportControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterReportController.getRegisterReportControllerData",
@@ -146,9 +146,9 @@ public class RegisterReportController {
 							registrReprotBean.setDailyRegisterId(String.valueOf(registerReport.getId().getDailyRegisterId()));
 							registrReprotBean.setCreditCardAmtActual(registerReport.getId().getCreditCardAmtActual()!=null?registerReport.getId().getCreditCardAmtActual().toPlainString():"");
 							registrReprotBean.setOpenBy(registerReport.getId().getOpenBy());
-//							logger.info("registerReport.getId().getOpeningDate(): "+new String(registerReport.getId().getOpeningDate()));
+//							System.out.println("registerReport.getId().getOpeningDate(): "+new String(registerReport.getId().getOpeningDate()));
 							registrReprotBean.setOpeningDate(DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
-//							logger.info("DateTimeUtil.convertDBDateTimeToGuiFormat(new Date(new String(registerReport.getId().getOpeningDate()))) "+DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
+//							System.out.println("DateTimeUtil.convertDBDateTimeToGuiFormat(new Date(new String(registerReport.getId().getOpeningDate()))) "+DateTimeUtil.convertDBDateTimeStringToGuiFormat(new String(registerReport.getId().getOpeningDate())));
 							registrReprotBean.setOutletAssocicationId(registerReport.getId().getOutletAssocicationId().toString());
 							registrReprotBean.setOutletName(registerReport.getId().getOutletName());
 							registrReprotBean.setRegisterClosingNotes(registerReport.getId().getRegisterClosingNotes());
@@ -158,13 +158,13 @@ public class RegisterReportController {
 								registrReprotBean.setClosingDate("-");
 								registrReprotBean.setCloseBy("-");
 							}else{
-//								logger.info("new String(registerReport.getId().getClosingDate()): "+new String(registerReport.getId().getClosingDate()));
+//								System.out.println("new String(registerReport.getId().getClosingDate()): "+new String(registerReport.getId().getClosingDate()));
 								registrReprotBean.setClosingDate(new String(registerReport.getId().getClosingDate()));
 								registrReprotBean.setCloseBy(new String(registerReport.getId().getCloseBy()));
 							}
 							registerReportBeansList.add(registrReprotBean);
 						}else{
-							logger.info("something wrong with register report............");
+							System.out.println("something wrong with register report............");
 						}
 					}
 					util.AuditTrail(request, currentUser, "RegisterReportController.getRegisterReport", 
@@ -179,7 +179,7 @@ public class RegisterReportController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterReportController.getRegisterReport",
@@ -225,7 +225,7 @@ public class RegisterReportController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterReportController.getOutlets",

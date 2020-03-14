@@ -100,7 +100,7 @@ public class TicketActivityController {
 				return new Response(ticketActivityControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "TicketActivityController.getTicketActivityControllerData",
@@ -164,7 +164,7 @@ public class TicketActivityController {
 					isAdded = true;
 				}
 			}catch(Exception ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 				StringWriter errors = new StringWriter();
 				ex.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, manager, "TicketActivityController.addTicketActivity", "Error Occured "+ errors.toString(),true);
@@ -218,7 +218,7 @@ public class TicketActivityController {
 					isAdded = true;
 				}
 			}catch(Exception ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 				StringWriter errors = new StringWriter();
 				ex.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, manager, "SupportController.addTicket", "Error Occured "+ errors.toString(),true);
@@ -273,7 +273,7 @@ public class TicketActivityController {
 					isAdded = true;
 				}
 			}catch(Exception ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 				StringWriter errors = new StringWriter();
 				ex.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, manager, "SupportController.addTicket", "Error Occured "+ errors.toString(),true);
@@ -355,7 +355,7 @@ public class TicketActivityController {
 
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "TicketActivityController.getTicketActivities", "Error Occured "+ errors.toString(),true);
@@ -406,7 +406,7 @@ public class TicketActivityController {
 					}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "TicketActivityController.getTicketByTicketId", "Error Occured "+ errors.toString(),true);

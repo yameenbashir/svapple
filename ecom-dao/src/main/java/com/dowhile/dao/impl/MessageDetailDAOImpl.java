@@ -20,7 +20,7 @@ import com.dowhile.dao.MessageDetailDAO;
 public class MessageDetailDAOImpl implements MessageDetailDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(MessageDetailDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(MessageDetailDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -49,7 +49,7 @@ public class MessageDetailDAOImpl implements MessageDetailDAO{
 			return messageDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -62,7 +62,7 @@ public class MessageDetailDAOImpl implements MessageDetailDAO{
 			return messageDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -75,7 +75,7 @@ public class MessageDetailDAOImpl implements MessageDetailDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -89,7 +89,7 @@ public class MessageDetailDAOImpl implements MessageDetailDAO{
 			}			
 		} 
 		catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 

@@ -17,7 +17,7 @@ import com.dowhile.dao.ContactsSummmaryDAO;
  */
 public class ContactsSummmaryDAOImpl implements ContactsSummmaryDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -51,7 +51,7 @@ public class ContactsSummmaryDAOImpl implements ContactsSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -70,7 +70,7 @@ public class ContactsSummmaryDAOImpl implements ContactsSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -89,7 +89,7 @@ public class ContactsSummmaryDAOImpl implements ContactsSummmaryDAO{
 							.list();
 					return list;
 				} catch (HibernateException ex) {
-					ex.printStackTrace();logger.error(ex.getMessage(),ex);
+					ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 				}
 				return null;
 	}
@@ -107,7 +107,7 @@ public class ContactsSummmaryDAOImpl implements ContactsSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -127,7 +127,7 @@ public class ContactsSummmaryDAOImpl implements ContactsSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -147,7 +147,7 @@ try {
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

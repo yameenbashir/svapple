@@ -19,7 +19,7 @@ import com.dowhile.dao.OrderMainDAO;
 public class OrderMainDAOImpl implements OrderMainDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(OrderMainDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(OrderMainDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class OrderMainDAOImpl implements OrderMainDAO{
 			return orderMain;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +61,7 @@ public class OrderMainDAOImpl implements OrderMainDAO{
 			return orderMain;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -74,7 +74,7 @@ public class OrderMainDAOImpl implements OrderMainDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -93,7 +93,7 @@ public class OrderMainDAOImpl implements OrderMainDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -111,7 +111,7 @@ public class OrderMainDAOImpl implements OrderMainDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

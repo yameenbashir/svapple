@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class DateTimeUtil {
 
-	private static Logger logger = Logger.getLogger(DateTimeUtil.class.getName());
+	// private static Logger logger = Logger.getLogger(DateTimeUtil.class.getName());
 //	private static Configuration configuration =null;
 //	
 //	@Resource
@@ -32,8 +32,8 @@ public class DateTimeUtil {
 			Calendar localTIme = new GregorianCalendar(TimeZone.getTimeZone("UTC +7"));
 			localTIme.setTime(dbDateTime);
 //			System.out.println(localTIme.getTimeZone());
-			localTIme.add(Calendar.HOUR_OF_DAY, 9);//For Live Deployment
-//			localTIme.add(Calendar.HOUR_OF_DAY, 0);//For Local Deployment
+//			localTIme.add(Calendar.HOUR_OF_DAY, 9);//For Live Deployment
+			localTIme.add(Calendar.HOUR_OF_DAY, 0);//For Local Deployment
 			 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dbDateTimeTOString = inputFormat.format(localTIme.getTime()). toString();
 			dbDateTimeTOString = dbDateTimeTOString.substring(0, dbDateTimeTOString.length());
@@ -41,7 +41,7 @@ public class DateTimeUtil {
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
 			
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			
 		}
 		
@@ -57,7 +57,7 @@ public class DateTimeUtil {
 			
 			return value;
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -79,7 +79,7 @@ public class DateTimeUtil {
 			DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -96,7 +96,7 @@ public class DateTimeUtil {
 			return dateFormat.parse(guiDate);
 			
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -152,7 +152,7 @@ public class DateTimeUtil {
 			//System.out.println(outputFormat.format(inputFormat.parse(original)));
 			
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 }

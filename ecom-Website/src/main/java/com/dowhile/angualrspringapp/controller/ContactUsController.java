@@ -35,7 +35,7 @@ import com.dowhile.util.DateTimeUtil;
 @RequestMapping("/contactUs")
 public class ContactUsController {
 	
-	private static Logger logger = Logger.getLogger(ContactUsController.class.getName());
+	// private static Logger logger = Logger.getLogger(ContactUsController.class.getName());
 	@Resource
 	ResourceService resourceService;
 	@Resource
@@ -69,7 +69,7 @@ public class ContactUsController {
 								StatusConstants.RECORD_NOT_FOUND, LayOutPageConstants.STAY_ON_PAGE);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();logger.error(e.getMessage(),e);
+					e.printStackTrace();// logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					 User superUser =  resourceService.getUserById(1, 1);//On live server Imran is super user and his id is 1

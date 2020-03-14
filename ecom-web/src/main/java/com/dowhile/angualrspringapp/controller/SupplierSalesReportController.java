@@ -49,7 +49,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/supplierSalesReport")
 public class SupplierSalesReportController {
 
-	private static Logger logger = Logger.getLogger(SupplierSalesReportController.class.getName());
+	// private static Logger logger = Logger.getLogger(SupplierSalesReportController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -325,7 +325,7 @@ public class SupplierSalesReportController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupplierSalesReportController.getSupplierSalesReportByDateRange",
@@ -371,7 +371,7 @@ public class SupplierSalesReportController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupplierSalesReportController.getOutlets",

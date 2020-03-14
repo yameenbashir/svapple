@@ -39,7 +39,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/paymentType")
 public class PaymentTypeController {
 
-	private static Logger logger = Logger.getLogger(PaymentTypeController.class.getName());
+	// private static Logger logger = Logger.getLogger(PaymentTypeController.class.getName());
 	@Resource
 	private RegisterService registerService;
 	@Resource
@@ -79,7 +79,7 @@ public class PaymentTypeController {
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.SALES_TAX);
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PaymentTypeController.addPaymentType",
@@ -118,7 +118,7 @@ public class PaymentTypeController {
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.SALES_TAX);
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PaymentTypeController.updatePaymentType",
@@ -169,7 +169,7 @@ public class PaymentTypeController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PaymentTypeController.getAllPaymentTypes",

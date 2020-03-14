@@ -65,7 +65,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/stockControl")
 public class StockControlController {
 	
-	private static Logger logger = Logger.getLogger(StockControlController.class.getName());
+	// private static Logger logger = Logger.getLogger(StockControlController.class.getName());
 	@Resource
 	private StockOrderService stockOrderService;
 
@@ -344,7 +344,7 @@ public class StockControlController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "StockControlController.getAllStockOrders",
@@ -489,7 +489,7 @@ public class StockControlController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "StockControlController.getAllStockOrders",

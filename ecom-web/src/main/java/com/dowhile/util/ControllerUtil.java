@@ -29,7 +29,7 @@ import com.dowhile.frontend.mapping.bean.VarientValueBean;
  */
 public class ControllerUtil {
 
-	private static Logger logger = Logger.getLogger(ControllerUtil.class.getName());
+	// private static Logger logger = Logger.getLogger(ControllerUtil.class.getName());
 	public static int  getTotlalQuantityForAllOutlets(List<OutletBean> outletsist){
 		int totalCount = 0;
 		try{
@@ -42,7 +42,7 @@ public class ControllerUtil {
 				}
 			}
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return totalCount;
 	}
@@ -70,7 +70,7 @@ public class ControllerUtil {
 				}
 			}
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return outletsCountMap;
 	}
@@ -300,7 +300,7 @@ public class ControllerUtil {
 			}
 		}
 		}catch(Exception e){
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 //			util.AuditTrail(request, currentUser, "HomeController.getRevenueData",

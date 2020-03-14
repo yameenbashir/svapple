@@ -26,7 +26,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 @Transactional(readOnly = false)
 public class ServiceUtil {
 	
-	private static Logger logger = Logger.getLogger(ServiceUtil.class.getName());
+	// private static Logger logger = Logger.getLogger(ServiceUtil.class.getName());
 	private SeverityDAO severityDAO;
 	private ActivityDetailDAO activityDetailDAO;
 	private WebActivityDetailDAO webActivityDetailDAO;
@@ -115,7 +115,7 @@ public class ServiceUtil {
 			getActivityDetailDAO().addActivityDetail(activityDetail,user.getCompany().getCompanyId());
 			
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return activityDetail;
@@ -154,7 +154,7 @@ public class ServiceUtil {
 			webActivityDetail.setIsException(String.valueOf(isException));
 			getWebActivityDetailDAO().addWebActivityDetail(webActivityDetail);
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return webActivityDetail;

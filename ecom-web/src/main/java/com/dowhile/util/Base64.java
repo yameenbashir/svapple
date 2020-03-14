@@ -42,7 +42,7 @@ import com.dowhile.angualrspringapp.controller.UtilitiesController;
  */
 
 public class Base64 {
-	private static Logger logger = Logger.getLogger(Base64.class.getName());
+	// private static Logger logger = Logger.getLogger(Base64.class.getName());
     static byte[] encodeData;
     static String charSet = 
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -203,7 +203,7 @@ public class Base64 {
 		} 
     	 catch (UnsupportedEncodingException e) {
  			// TODO Auto-generated catch block
- 			e.printStackTrace();logger.error(e.getMessage(),e);
+ 			e.printStackTrace();// logger.error(e.getMessage(),e);
  		}
     	/*
     	System.out.println("encode: " + args[0]  + " -> (" 

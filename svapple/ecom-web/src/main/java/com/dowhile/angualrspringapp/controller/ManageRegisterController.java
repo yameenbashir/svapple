@@ -109,7 +109,7 @@ public class ManageRegisterController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRegisterController.getRegisterByRegisterId",
@@ -163,7 +163,7 @@ public class ManageRegisterController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRegisterController.updateRegister",

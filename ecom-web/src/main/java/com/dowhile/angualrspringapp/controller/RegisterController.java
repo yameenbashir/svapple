@@ -38,7 +38,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/register")
 public class RegisterController {
 
-	private static Logger logger = Logger.getLogger(RegisterController.class.getName());
+	// private static Logger logger = Logger.getLogger(RegisterController.class.getName());
 	@Resource
 	private OutletService outletService;
 	
@@ -111,7 +111,7 @@ public class RegisterController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterController.addRegister",

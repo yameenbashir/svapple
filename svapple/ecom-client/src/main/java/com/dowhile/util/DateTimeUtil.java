@@ -25,7 +25,7 @@ public class DateTimeUtil {
 			DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy KK:mm a");
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -51,7 +51,7 @@ public class DateTimeUtil {
 			System.out.println(outputFormat.format(inputFormat.parse(original)));*/
 			
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 }

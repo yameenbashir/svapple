@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
 import com.dowhile.controller.bean.LoginBean;
 import com.dowhile.controller.bean.Response;
+import com.dowhile.dao.impl.ProductVariantDAOImpl;
 import com.dowhile.frontend.mapping.bean.UserBean;
 import com.dowhile.service.CompanyService;
 import com.dowhile.service.ResourceService;
@@ -34,6 +36,7 @@ import com.dowhile.service.util.ServiceUtil;
 @RequestMapping("/login")
 public class LoginController {
 
+	// private static Logger logger = Logger.getLogger(LoginController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -89,7 +92,7 @@ public class LoginController {
 						LayOutPageConstants.STAY_ON_PAGE);
 		} catch (Exception e) {
 			e.printStackTrace();
-//			logger.error(e.getMessage(),e);
+//			// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, user, "LoginController.doLogin","Error Occured " + errors.toString(),true);

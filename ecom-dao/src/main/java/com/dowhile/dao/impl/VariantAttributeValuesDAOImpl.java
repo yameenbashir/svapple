@@ -22,7 +22,7 @@ import com.dowhile.dao.VariantAttributeValuesDAO;
 public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(VariantAttributeValuesDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(VariantAttributeValuesDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -52,7 +52,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 			return variantAttributeValues;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -66,7 +66,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 			return variantAttributeValues;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -80,7 +80,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -100,7 +100,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -118,7 +118,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -140,7 +140,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -182,7 +182,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 			 
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -199,7 +199,7 @@ public class VariantAttributeValuesDAOImpl implements VariantAttributeValuesDAO{
 			}
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 	}

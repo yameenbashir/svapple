@@ -62,7 +62,7 @@ import com.dowhile.wrapper.ProductListsWrapper;
 
 public class InventoryCountEditDetailsController {
 	
-	private static Logger logger = Logger.getLogger(InventoryCountEditDetailsController.class.getName());
+	// private static Logger logger = Logger.getLogger(InventoryCountEditDetailsController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -146,7 +146,7 @@ public class InventoryCountEditDetailsController {
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					//productBeansList = (List<ProductVariantBean>) response.data;
 					complProductBeansList = (List<ProductVariantBean>) response.data;
-					logger.info("outlet + warehouse ProductBeansList size: " + complProductBeansList.size());
+					System.out.println("outlet + warehouse ProductBeansList size: " + complProductBeansList.size());
 					//int outletId = currentUser.getOutlet().getOutletId();
 					/*for(ProductVariantBean product:complProductBeansList){
 						if(Integer.parseInt(product.getOutletId()) == outletId) {
@@ -155,7 +155,7 @@ public class InventoryCountEditDetailsController {
 						productsMap.put(Integer.parseInt(product.getProductVariantId()), product); //in productVariantBean is Main Id 
 					}*/					
 				}				
-				logger.info("outlet + warehouse Product Map size: " + compProductMap.size());
+				System.out.println("outlet + warehouse Product Map size: " + compProductMap.size());
 				response = getProductVariantsByOutletId(sessionId, headOfficeOutletId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					//productVariantBeansList = (List<ProductVariantBean>) response.data;
@@ -222,33 +222,33 @@ public class InventoryCountEditDetailsController {
 				}
 				InventoryCountControllerBean inventoryCountControllerBean = new InventoryCountControllerBean();
 				inventoryCountControllerBean.setProductBeansList(outletProductBeansList); // outlet Products Beans
-				logger.info("outletProductBeansList size: " + outletProductBeansList.size());
+				System.out.println("outletProductBeansList size: " + outletProductBeansList.size());
 				inventoryCountControllerBean.setProductVariantBeansList(outletProductVariantBeansList); //outlet Product Variant Beans
-				logger.info("outletProductVariantBeansList size: " + outletProductVariantBeansList.size());
+				System.out.println("outletProductVariantBeansList size: " + outletProductVariantBeansList.size());
 				inventoryCountControllerBean.setInventoryCountDetailBeansList(inventoryCountDetailBeansList);
-				//logger.info("inventoryCountDetailBeansList size: " + inventoryCountDetailBeansList.size());
+				//System.out.println("inventoryCountDetailBeansList size: " + inventoryCountDetailBeansList.size());
 				if(outletId != headOfficeOutletId) {
 					inventoryCountControllerBean.setAllProductBeansList(warehouseProductBeansList); // Warehouse Products Beans
-					logger.info("allProductBeansList size: " + warehouseProductBeansList.size());
+					System.out.println("allProductBeansList size: " + warehouseProductBeansList.size());
 					inventoryCountControllerBean.setAllProductVariantBeansList(warehouseProductVariantBeansList); //warehouse ProductVariant Beans
-					logger.info("allProductVariantBeansList size: " + warehouseProductVariantBeansList.size());
+					System.out.println("allProductVariantBeansList size: " + warehouseProductVariantBeansList.size());
 				}
 				inventoryCountControllerBean.setProductVariantMap(productVariantBeansSKUMap); // outlet ProductVariants
-				logger.info("productVariantMap size: " + productVariantBeansSKUMap.size());
+				System.out.println("productVariantMap size: " + productVariantBeansSKUMap.size());
 				inventoryCountControllerBean.setProductMap(productBeansSKUMap); //outlet Products
-				logger.info("productMap size: " + productBeansSKUMap.size());
+				System.out.println("productMap size: " + productBeansSKUMap.size());
 				if(outletId != headOfficeOutletId) {
 					inventoryCountControllerBean.setAllProductMap(warehouseProductBeansSKUMap); // Warehouse Products
-					logger.info("allProductMap size: " + warehouseProductBeansSKUMap.size());
+					System.out.println("allProductMap size: " + warehouseProductBeansSKUMap.size());
 					inventoryCountControllerBean.setAllProductVariantMap(warehouseProductVariantBeansSKUMap); // Warehouse ProductVariants
-					logger.info("allProductVariantMap size: " + warehouseProductVariantBeansSKUMap.size());
+					System.out.println("allProductVariantMap size: " + warehouseProductVariantBeansSKUMap.size());
 				}
 				util.AuditTrail(request, currentUser, "InventoryCountController.getInventoryCountControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived InventoryCountControllerData successfully ",false);
 				return new Response(inventoryCountControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountDetailsController.getInventoryCountControllerData",
@@ -276,10 +276,10 @@ public class InventoryCountEditDetailsController {
 			compProductMap = new HashMap<>();
 			try {			
 				productList.addAll(productListsWrapper.getOutletProducts());
-				logger.info("Product size: " + productList.size());
+				System.out.println("Product size: " + productList.size());
 				if(outletId != headOfficeOutletId) {
 					productList.addAll(productListsWrapper.getWarehouseProducts());
-					logger.info("Product Warehosue Added size: " + productList.size());
+					System.out.println("Product Warehosue Added size: " + productList.size());
 				}
 				//productList = productService.getAllProductsWarehouseandOutlet(warehousOutlletId, currentUser.getOutlet().getOutletId() ,currentUser.getCompany().getCompanyId());
 				if(productList != null){
@@ -345,7 +345,7 @@ public class InventoryCountEditDetailsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getAllProducts",
@@ -427,7 +427,7 @@ public class InventoryCountEditDetailsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getAllProducts",
@@ -455,10 +455,10 @@ public class InventoryCountEditDetailsController {
 			try {			
 				//productVariantList = productVariantService.getAllProductVariantsWarehouseandOutlet(warehouseOutletId, currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
 				productVariantList.addAll(productListsWrapper.getOutletProductVariants());
-				logger.info("outlet ProductVariant size: " + productVariantList.size());
+				System.out.println("outlet ProductVariant size: " + productVariantList.size());
 				if(outletId != headOfficeOutletId) {
 					productVariantList.addAll(productListsWrapper.getWarehouseProductVariants());
-					logger.info("Warehouse ProductVariant size: " + productVariantList.size());
+					System.out.println("Warehouse ProductVariant size: " + productVariantList.size());
 				}
 				/*Map<Integer, Product> productsMap1 = new HashMap<>();
 				List<Product> products = productService.getAllProducts(currentUser.getCompany().getCompanyId());
@@ -526,7 +526,7 @@ public class InventoryCountEditDetailsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getProductVariants",
@@ -609,7 +609,7 @@ public class InventoryCountEditDetailsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getProductVariants",
@@ -743,7 +743,7 @@ public class InventoryCountEditDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByInventoryCountId",
@@ -817,7 +817,7 @@ public class InventoryCountEditDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByInventoryCountId",

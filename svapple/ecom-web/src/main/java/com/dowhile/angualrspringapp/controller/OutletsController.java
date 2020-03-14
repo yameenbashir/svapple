@@ -161,7 +161,7 @@ public class OutletsController {
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();logger.error(e.getMessage(),e);
+							e.printStackTrace();// logger.error(e.getMessage(),e);
 						}
 
 						outletBean.setStatus(String.valueOf(outlet.isActiveIndicator()));
@@ -179,7 +179,7 @@ public class OutletsController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "OutletsController.getOutlets",

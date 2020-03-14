@@ -9,11 +9,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
+import com.dowhile.angualrspringapp.controller.LoginController;
+
 /**
  * @author Yameen Bashir
  *
  */
 public class DateTimeUtil {
+	// private static Logger logger = Logger.getLogger(DateTimeUtil.class.getName());
 
 	public static String convertDBDateTimeToGuiFormat(Date dbDateTime){
 		
@@ -26,7 +31,7 @@ public class DateTimeUtil {
 			return outputFormat.format(inputFormat.parse(dbDateTimeTOString));
 		}catch(Exception ex){
 			ex.printStackTrace();
-//			logger.error(ex.getMessage(),ex);
+//			// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -53,7 +58,7 @@ public class DateTimeUtil {
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
-//			logger.error(ex.getMessage(),ex);
+//			// logger.error(ex.getMessage(),ex);
 		}
 	}
 }

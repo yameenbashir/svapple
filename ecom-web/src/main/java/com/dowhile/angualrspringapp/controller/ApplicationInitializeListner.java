@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationInitializeListner implements ApplicationListener<ContextRefreshedEvent> {
 
-	private static Logger logger = Logger.getLogger(ApplicationInitializeListner.class.getName());
+	// private static Logger logger = Logger.getLogger(ApplicationInitializeListner.class.getName());
 	@Autowired
 	private ApplicationCacheController applicationCacheController;
 	@Autowired
@@ -25,13 +25,13 @@ public class ApplicationInitializeListner implements ApplicationListener<Context
 	
     public void onApplicationEvent(final ContextRefreshedEvent event) {
    //   ApplicationContext ctx = event.getApplicationContext();
-      logger.info("On server Startup insdie onApplicationEvent");
+      System.out.println("On server Startup insdie onApplicationEvent");
 		try {
 			//applicationCacheController.load();
 //			schedulerController.schedulerForMVInventoryExecution();
 			
 		}catch(Exception ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
     }
 

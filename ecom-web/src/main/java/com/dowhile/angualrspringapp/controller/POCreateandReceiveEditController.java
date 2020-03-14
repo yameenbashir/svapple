@@ -67,7 +67,7 @@ import com.dowhile.wrapper.StockDataProductsWrapper;
 
 public class POCreateandReceiveEditController {
 	
-	private static Logger logger = Logger.getLogger(POCreateandReceiveEditController.class.getName());
+	// private static Logger logger = Logger.getLogger(POCreateandReceiveEditController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -168,7 +168,7 @@ public class POCreateandReceiveEditController {
 				return new Response(POCreateandReceiveControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getPOCreateandReceiveControllerData",
@@ -218,7 +218,7 @@ public class POCreateandReceiveEditController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllOutlets",
@@ -265,7 +265,7 @@ public class POCreateandReceiveEditController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllStockOrderTypes",
@@ -311,7 +311,7 @@ public class POCreateandReceiveEditController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllSuppliers",
@@ -415,7 +415,7 @@ public class POCreateandReceiveEditController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByStockOrderId",
@@ -487,7 +487,7 @@ public class POCreateandReceiveEditController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.addStockOrder",
@@ -552,7 +552,7 @@ public class POCreateandReceiveEditController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.addStockOrder",
@@ -645,7 +645,7 @@ public class POCreateandReceiveEditController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -762,7 +762,7 @@ public class POCreateandReceiveEditController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",

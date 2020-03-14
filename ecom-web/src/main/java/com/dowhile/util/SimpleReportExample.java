@@ -23,10 +23,10 @@ public class SimpleReportExample {
 		connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/ecom","root", "123456");
 	} catch (SQLException e) {
-		e.printStackTrace();logger.error(e.getMessage(),e);
+		e.printStackTrace();// logger.error(e.getMessage(),e);
 		return;
 	} catch (ClassNotFoundException e) {
-		e.printStackTrace();logger.error(e.getMessage(),e);
+		e.printStackTrace();// logger.error(e.getMessage(),e);
 		return;
 	}
 
@@ -51,9 +51,9 @@ public class SimpleReportExample {
         //export the report to a pdf file
 		report.toPdf(new FileOutputStream("c:/report.pdf"));
 	} catch (DRException e) {
-		e.printStackTrace();logger.error(e.getMessage(),e);
+		e.printStackTrace();// logger.error(e.getMessage(),e);
 	} catch (FileNotFoundException e) {
-		e.printStackTrace();logger.error(e.getMessage(),e);
+		e.printStackTrace();// logger.error(e.getMessage(),e);
 	}
   }
 }

@@ -43,7 +43,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/manageCustomer")
 public class ManageCustomerController {
 
-	private static Logger logger = Logger.getLogger(ManageCustomerController.class.getName());
+	// private static Logger logger = Logger.getLogger(ManageCustomerController.class.getName());
 	@Resource
 	private CompanyService companyService;
 	
@@ -136,7 +136,7 @@ public class ManageCustomerController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageCustomerController.updateCustomer",

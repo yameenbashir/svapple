@@ -46,7 +46,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/home")
 public class HomeController {
 
-	private static Logger logger = Logger.getLogger(HomeController.class.getName());
+	// private static Logger logger = Logger.getLogger(HomeController.class.getName());
 	@Resource
 	private SaleService saleService;
 	private Configuration configuration =null;
@@ -139,7 +139,7 @@ public class HomeController {
 				
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "HomeController.getDashBoard",
@@ -382,7 +382,7 @@ public class HomeController {
 			
 			
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 	

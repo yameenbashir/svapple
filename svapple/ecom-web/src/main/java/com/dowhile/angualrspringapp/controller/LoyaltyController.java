@@ -97,7 +97,7 @@ public class LoyaltyController {
 						LayOutPageConstants.STAY_ON_PAGE);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			util.AuditTrail(request, currentUser, "LoyaltyController.updateCompanyLoyalty",
 					"Error Occured " + errors.toString(),true);
@@ -139,7 +139,7 @@ public class LoyaltyController {
 			return new Response(companyBean, StatusConstants.SUCCESS,
 					LayOutPageConstants.STAY_ON_PAGE);
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			util.AuditTrail(request, currentUser, "LoyaltyController.getCompanyLoyalty",
 					"Error Occured " + errors.toString(),true);

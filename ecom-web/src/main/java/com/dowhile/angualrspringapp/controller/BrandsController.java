@@ -39,7 +39,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/brands")
 public class BrandsController {
 
-	private static Logger logger = Logger.getLogger(BrandsController.class.getName());
+	// private static Logger logger = Logger.getLogger(BrandsController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -84,7 +84,7 @@ public class BrandsController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BrandsController.addBrand",
@@ -122,7 +122,7 @@ public class BrandsController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BrandsController.updateBrand",
@@ -172,7 +172,7 @@ public class BrandsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BrandsController.getAllBrands",

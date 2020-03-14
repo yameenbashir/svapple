@@ -41,7 +41,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/manageRole")
 public class ManageRoleController {
 
-	private static Logger logger = Logger.getLogger(ManageRoleController.class.getName());
+	// private static Logger logger = Logger.getLogger(ManageRoleController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -83,7 +83,7 @@ public class ManageRoleController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRoleController.getPageRightsListByRoleId",
@@ -124,7 +124,7 @@ public class ManageRoleController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRoleController.updatePageRightsByRoleId",

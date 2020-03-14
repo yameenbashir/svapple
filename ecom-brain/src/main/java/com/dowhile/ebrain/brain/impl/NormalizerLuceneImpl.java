@@ -80,7 +80,7 @@ public class NormalizerLuceneImpl implements Normalizer {
                     }
                 }
             } catch (ParseException ex) {
-                LOGGER.error("Parse failure while normalizing", ex);
+                // logger.error("Parse failure while normalizing", ex);
             }
         }
 

@@ -60,7 +60,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/products")
 public class ProductsController {
 
-	private static Logger logger = Logger.getLogger(ProductsController.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductsController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -180,7 +180,7 @@ public class ProductsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ProductsController.getAllProducts",
@@ -236,7 +236,7 @@ public class ProductsController {
 
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ProductsController.getDashBoard",

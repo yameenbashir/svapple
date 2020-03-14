@@ -41,7 +41,7 @@ public class ApplicationCacheController {
 			
 			System.out.println("Cache built successfully");
 		}catch(Exception ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 	
@@ -56,7 +56,7 @@ public class ApplicationCacheController {
 				}
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return allCompaniesMap;
 	}
@@ -76,7 +76,7 @@ public class ApplicationCacheController {
 				}
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 	*/

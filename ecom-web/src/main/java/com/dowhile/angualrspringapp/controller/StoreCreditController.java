@@ -37,7 +37,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/storeCredit")
 public class StoreCreditController {
 
-	private static Logger logger = Logger.getLogger(StoreCreditController.class.getName());
+	// private static Logger logger = Logger.getLogger(StoreCreditController.class.getName());
 	@Resource
 	private CompanyService companyService;
 	@Resource
@@ -84,7 +84,7 @@ public class StoreCreditController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "StoreCreditController.getCompanyDetailsByCompanyID",
@@ -125,7 +125,7 @@ public class StoreCreditController {
 					
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "StoreCreditController.updateStoreCreditbyCompany",

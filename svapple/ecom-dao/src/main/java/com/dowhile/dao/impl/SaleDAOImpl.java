@@ -30,7 +30,7 @@ import com.dowhile.dao.SaleDAO;
  */
 public class  SaleDAOImpl implements SaleDAO  {
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -59,7 +59,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 			return invoice;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	
@@ -73,7 +73,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 			return invoiceDetail;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -89,7 +89,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -106,7 +106,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -124,7 +124,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -142,7 +142,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -161,7 +161,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -176,7 +176,7 @@ public class  SaleDAOImpl implements SaleDAO  {
 			return invoiceDetails;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -221,7 +221,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 			
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -245,7 +245,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -265,7 +265,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -277,7 +277,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 			return invoice;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -291,7 +291,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 			return paramInvoiceDetl;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -322,7 +322,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 						return result;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return result;
 	}
@@ -350,7 +350,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -374,7 +374,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -399,7 +399,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -424,7 +424,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -456,7 +456,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 					}
 					
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -481,7 +481,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 						return list;
 					}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -505,7 +505,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 							return list;
 						}
 			}catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;
 	}
@@ -529,7 +529,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 							return list;
 						}
 			}catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;
 	}
@@ -575,7 +575,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 			
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -616,7 +616,7 @@ public List<InvoiceMainCustom> getAllInvoicesMainById(int outletId, int copmayId
 			
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

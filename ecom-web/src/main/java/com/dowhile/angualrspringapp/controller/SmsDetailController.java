@@ -40,7 +40,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/smsDetail")
 public class SmsDetailController {
 
-	private static Logger logger = Logger.getLogger(SmsDetailController.class.getName());
+	// private static Logger logger = Logger.getLogger(SmsDetailController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -112,7 +112,7 @@ public class SmsDetailController {
 				}
 				
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SmsDetailController.getAllSmsDetail",

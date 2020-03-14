@@ -40,7 +40,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/utilities")
 public class UtilitiesController {
 	
-	private static Logger logger = Logger.getLogger(UtilitiesController.class.getName());
+	// private static Logger logger = Logger.getLogger(UtilitiesController.class.getName());
 	@Resource
 	private OutletService outletService;
 	@Resource
@@ -90,7 +90,7 @@ public class UtilitiesController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "UtilitiesController.getAllRoles",

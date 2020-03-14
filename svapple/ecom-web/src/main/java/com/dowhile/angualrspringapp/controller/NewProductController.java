@@ -300,7 +300,7 @@ public class NewProductController {
 				return new Response(newProductControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getNewProductControllerData",
@@ -343,7 +343,7 @@ public class NewProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addVariantAttribute",
@@ -451,7 +451,7 @@ public class NewProductController {
 					return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.PRODUCTS);
 				}
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addProduct",
@@ -885,7 +885,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllVariantAttributes",
@@ -941,7 +941,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductsForDropDown",
@@ -1157,7 +1157,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductsDetail",
@@ -1221,7 +1221,7 @@ public class NewProductController {
 						StatusConstants.SUCCESS, LayOutPageConstants.SUPPLIERS);
 
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -1266,7 +1266,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,
@@ -1318,7 +1318,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllProductTypes",
@@ -1369,7 +1369,7 @@ public class NewProductController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.addBrand",
@@ -1418,7 +1418,7 @@ public class NewProductController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllBrands",
@@ -1523,7 +1523,7 @@ public class NewProductController {
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();logger.error(e.getMessage(),e);
+							e.printStackTrace();// logger.error(e.getMessage(),e);
 						}*/
 
 						outletBean.setStatus(String.valueOf(outlet.isActiveIndicator()));
@@ -1538,7 +1538,7 @@ public class NewProductController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
@@ -1589,7 +1589,7 @@ public class NewProductController {
 			stream2.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "Error of Upload Image",
@@ -1706,7 +1706,7 @@ public class NewProductController {
 			productPriceHistory.setGrNumber(productPriceHistoryBean.getGrNumber());
 			return productPriceHistory;
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		

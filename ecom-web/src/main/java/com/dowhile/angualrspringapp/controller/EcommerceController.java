@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EcommerceController {
 
 	
-	private static Logger logger = Logger.getLogger(EcommerceController.class.getName());
+	// private static Logger logger = Logger.getLogger(EcommerceController.class.getName());
 	@RequestMapping("/layout")
 	public String getEcommerceControllerPartialPage(ModelMap modelMap) {
 		return "ecommerce/layout";

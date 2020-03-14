@@ -16,7 +16,7 @@ import com.dowhile.dao.ContactPaymentsTypeDAO;
  */
 public class ContactPaymentsTypeDAOImpl implements ContactPaymentsTypeDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -51,7 +51,7 @@ public class ContactPaymentsTypeDAOImpl implements ContactPaymentsTypeDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -58,7 +58,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/customerDetails")
 public class CustomerDetailsController {
 
-	private static Logger logger = Logger.getLogger(CustomerDetailsController.class.getName());
+	// private static Logger logger = Logger.getLogger(CustomerDetailsController.class.getName());
 	@Resource
 	private CompanyService companyService;
 	
@@ -161,7 +161,7 @@ public class CustomerDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CustomerDetailsController.loadCustomerDetails",

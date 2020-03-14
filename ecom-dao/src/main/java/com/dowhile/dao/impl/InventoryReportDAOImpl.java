@@ -25,7 +25,7 @@ import com.dowhile.dao.InventoryReportDAO;
 public class InventoryReportDAOImpl implements InventoryReportDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(InventoryReportDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(InventoryReportDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -59,7 +59,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -79,7 +79,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -152,7 +152,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 							colums.add(value);
 						}	
 					}catch(Exception ex){
-						ex.printStackTrace();logger.error(ex.getMessage(),ex);
+						ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 					}
 
 					row.setColumns(colums);
@@ -190,7 +190,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 			tableData.setRows(rows);
 			return tableData;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -215,7 +215,7 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 				}
 			}
 			catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;	
 	}

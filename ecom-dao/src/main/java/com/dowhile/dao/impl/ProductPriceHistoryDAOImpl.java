@@ -19,7 +19,7 @@ import com.dowhile.dao.ProductPriceHistoryDAO;
 public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 	
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ProductPriceHistoryDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductPriceHistoryDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -51,7 +51,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			return productPriceHistory;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -65,7 +65,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			return productPriceHistory;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -79,7 +79,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -100,7 +100,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			}
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -121,7 +121,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			}
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -143,7 +143,7 @@ public class ProductPriceHistoryDAOImpl implements ProductPriceHistoryDAO{
 			}
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

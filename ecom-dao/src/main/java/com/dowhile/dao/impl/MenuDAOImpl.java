@@ -20,7 +20,7 @@ import com.dowhile.dao.MenuDAO;
 public class MenuDAOImpl implements MenuDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(MenuDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(MenuDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -49,7 +49,7 @@ public class MenuDAOImpl implements MenuDAO{
 			return menu;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -62,7 +62,7 @@ public class MenuDAOImpl implements MenuDAO{
 			return menu;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 
@@ -76,7 +76,7 @@ public class MenuDAOImpl implements MenuDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -95,7 +95,7 @@ public class MenuDAOImpl implements MenuDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -114,7 +114,7 @@ public class MenuDAOImpl implements MenuDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -132,7 +132,7 @@ public class MenuDAOImpl implements MenuDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -150,7 +150,7 @@ public class MenuDAOImpl implements MenuDAO{
 			return true;
 		
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}

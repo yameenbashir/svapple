@@ -19,7 +19,7 @@ import com.dowhile.dao.ProductTagDAO;
 public class ProductTagDAOImpl implements ProductTagDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ProductTagDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductTagDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class ProductTagDAOImpl implements ProductTagDAO{
 			return productTag;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +61,7 @@ public class ProductTagDAOImpl implements ProductTagDAO{
 			return productTag;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -74,7 +74,7 @@ public class ProductTagDAOImpl implements ProductTagDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -94,7 +94,7 @@ public class ProductTagDAOImpl implements ProductTagDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -107,7 +107,7 @@ public class ProductTagDAOImpl implements ProductTagDAO{
 					+ "where  COMPANY_ASSOCIATION_ID = "+companyId+" AND TAG_ASSOCICATION_ID = "+tagId+"").uniqueResult()).intValue();
 			return count;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return 0;
 	}
@@ -126,7 +126,7 @@ public class ProductTagDAOImpl implements ProductTagDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -143,7 +143,7 @@ public class ProductTagDAOImpl implements ProductTagDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -49,7 +49,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/inventoryReport")
 public class InventoryReportController {
 
-	private static Logger logger = Logger.getLogger(InventoryReportController.class.getName());
+	// private static Logger logger = Logger.getLogger(InventoryReportController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -106,7 +106,7 @@ public class InventoryReportController {
 				return new Response(inventoryReportControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReportControllerData",
@@ -164,7 +164,7 @@ public class InventoryReportController {
 				return new Response(inventoryReportControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReportControllerData",
@@ -251,7 +251,7 @@ public class InventoryReportController {
 							
 							inventoryReportBeansList.add(inventoryReportBean);
 						}else{
-							logger.info("something wrong............");
+							System.out.println("something wrong............");
 						}
 						
 					}
@@ -267,7 +267,7 @@ public class InventoryReportController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReport",
@@ -351,7 +351,7 @@ public class InventoryReportController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryReportController.getInventoryReport",
@@ -393,7 +393,7 @@ public class InventoryReportController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);

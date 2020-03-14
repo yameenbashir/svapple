@@ -19,7 +19,7 @@ import com.dowhile.dao.PaymentTypeDAO;
 public class PaymentTypeDAOImpl implements PaymentTypeDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(PaymentTypeDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(PaymentTypeDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO{
 			return paymentType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +61,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO{
 			return paymentType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -74,7 +74,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -92,7 +92,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -110,7 +110,7 @@ public class PaymentTypeDAOImpl implements PaymentTypeDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

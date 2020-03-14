@@ -40,7 +40,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/backup")
 public class BackupController {
 
-	private static Logger logger = Logger.getLogger(BackupController.class.getName());
+	// private static Logger logger = Logger.getLogger(BackupController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -79,7 +79,7 @@ public class BackupController {
 						"User "+ currentUser.getUserEmail()+" taked backup successfully ",false);
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BackupController.takeBakup",
@@ -117,7 +117,7 @@ public class BackupController {
 						"User "+ currentUser.getUserEmail()+" restored backup successfully ",false);
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BackupController.reStoreBackup",
@@ -138,12 +138,12 @@ public class BackupController {
 			
 
 			try{
-				logger.info("Running schedule");
+				System.out.println("Running schedule");
 				tempSaleService.runDailyScript();
-				logger.info("schedule run succesfully");
+				System.out.println("schedule run succesfully");
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				

@@ -123,7 +123,7 @@ public class OutletController {
 				return new Response(outletControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "OutletController.getOutletControllerData",
@@ -218,7 +218,7 @@ public class OutletController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "OutletController.addOutlet",
@@ -264,7 +264,7 @@ public class OutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "OutletController.getAllTimeZones",
@@ -312,7 +312,7 @@ public class OutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "OutletController.getAllCountry",
@@ -359,7 +359,7 @@ public class OutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "OutletController.getAllSalesTax",

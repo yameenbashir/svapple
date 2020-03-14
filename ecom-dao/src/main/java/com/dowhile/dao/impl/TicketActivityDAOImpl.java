@@ -19,7 +19,7 @@ import com.dowhile.dao.TicketActivityDAO;
 public class TicketActivityDAOImpl implements TicketActivityDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(TicketActivityDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(TicketActivityDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -50,7 +50,7 @@ public class TicketActivityDAOImpl implements TicketActivityDAO{
 			return ticketActivity.getTicketActivityId();
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 		return -1;
@@ -70,7 +70,7 @@ public class TicketActivityDAOImpl implements TicketActivityDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

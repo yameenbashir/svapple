@@ -73,7 +73,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/salesHistory")
 public class SalesHistoryController {
 
-	private static Logger logger = Logger.getLogger(SalesHistoryController.class.getName());
+	// private static Logger logger = Logger.getLogger(SalesHistoryController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -251,7 +251,7 @@ public class SalesHistoryController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SalesHistoryController.processPayment",
@@ -321,7 +321,7 @@ public class SalesHistoryController {
 					invoiceMains  = saleService.getAllInvoicesMainById(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(), limit,invoiceRefNo, status, fromDate,toDate,customerId);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();logger.error(e.getMessage(),e);
+					e.printStackTrace();// logger.error(e.getMessage(),e);
 				}
 				
 				

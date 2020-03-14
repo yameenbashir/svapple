@@ -58,7 +58,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/manageOutlet")
 public class ManageOutletController {
 
-	private static Logger logger = Logger.getLogger(ManageOutletController.class.getName());
+	// private static Logger logger = Logger.getLogger(ManageOutletController.class.getName());
 	@Resource
 	private CompanyService companyService;
 	
@@ -126,7 +126,7 @@ public class ManageOutletController {
 				return new Response(manageOutletControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageOutletController.getManageOutletControllerData",
@@ -220,7 +220,7 @@ public class ManageOutletController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageOutletController.updateOutlet",
@@ -266,7 +266,7 @@ public class ManageOutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "ManageOutletController.getAllTimeZones",
@@ -314,7 +314,7 @@ public class ManageOutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "ManageOutletController.getAllCountry",
@@ -361,7 +361,7 @@ public class ManageOutletController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "ManageOutletController.getAllSalesTax",
@@ -455,7 +455,7 @@ public class ManageOutletController {
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();logger.error(e.getMessage(),e);e.printStackTrace();logger.error(e.getMessage(),e);
+							e.printStackTrace();// logger.error(e.getMessage(),e);e.printStackTrace();// logger.error(e.getMessage(),e);
 							StringWriter errors = new StringWriter();
 							e.printStackTrace(new PrintWriter(errors));
 							util.AuditTrail(request, currentUser, "ManageOutletController.getOutletByOutletId",
@@ -473,7 +473,7 @@ public class ManageOutletController {
 					}
 					
 				}catch(Exception e){
-					e.printStackTrace();logger.error(e.getMessage(),e);
+					e.printStackTrace();// logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.AuditTrail(request, currentUser, "ManageOutletController.getOutletByOutletId",

@@ -33,7 +33,7 @@ import com.dowhile.service.util.ServiceUtil;
 @RequestMapping("/home")
 public class HomeController {
 	
-	private static Logger logger = Logger.getLogger(HomeController.class.getName());
+	// private static Logger logger = Logger.getLogger(HomeController.class.getName());
 	@Resource
 	ResourceService resourceService;
 	@Resource
@@ -67,7 +67,7 @@ public class HomeController {
 					util.WebAuditTrail(request, superUser, "Contact US","Contact US",false);
 					
 				} catch (Exception e) {
-					e.printStackTrace();logger.error(e.getMessage(),e);
+					e.printStackTrace();// logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.addContactusRequest",
@@ -92,7 +92,7 @@ public class HomeController {
 					
 					
 				} catch (Exception e) {
-					e.printStackTrace();logger.error(e.getMessage(),e);
+					e.printStackTrace();// logger.error(e.getMessage(),e);
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
 					util.WebAuditTrail(request, superUser, "HomeController.visitWebsite",

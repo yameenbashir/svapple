@@ -19,7 +19,7 @@ import com.dowhile.dao.CashManagmentDAO;
 public class CashManagmentDAOImpl implements CashManagmentDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(CashManagmentDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(CashManagmentDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class CashManagmentDAOImpl implements CashManagmentDAO{
 			return cashManagment;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -60,7 +60,7 @@ public class CashManagmentDAOImpl implements CashManagmentDAO{
 			return cashManagment;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -79,7 +79,7 @@ public class CashManagmentDAOImpl implements CashManagmentDAO{
 			.setParameter(2, dailyRegisterid).list();
 			return list;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

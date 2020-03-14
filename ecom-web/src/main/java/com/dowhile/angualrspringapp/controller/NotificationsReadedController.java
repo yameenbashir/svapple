@@ -48,7 +48,7 @@ import com.dowhile.util.SessionValidator;/**
 @RequestMapping("/notificationsReaded")
 public class NotificationsReadedController {
 	
-	private static Logger logger = Logger.getLogger(NotificationsReadedController.class.getName());
+	// private static Logger logger = Logger.getLogger(NotificationsReadedController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -132,7 +132,7 @@ public class NotificationsReadedController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NotificationsController.getAllNotifications",
@@ -172,7 +172,7 @@ Response getAllReadedNotifications(@PathVariable("sessionId") String sessionId,
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			return new Response(MessageConstants.SYSTEM_BUSY,

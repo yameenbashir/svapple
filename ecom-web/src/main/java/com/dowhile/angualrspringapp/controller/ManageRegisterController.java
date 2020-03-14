@@ -41,7 +41,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/manageRegister")
 public class ManageRegisterController {
 
-	private static Logger logger = Logger.getLogger(ManageRegisterController.class.getName());
+	// private static Logger logger = Logger.getLogger(ManageRegisterController.class.getName());
 	@Resource
 	private OutletService outletService;
 
@@ -110,7 +110,7 @@ public class ManageRegisterController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRegisterController.getRegisterByRegisterId",
@@ -164,7 +164,7 @@ public class ManageRegisterController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManageRegisterController.updateRegister",

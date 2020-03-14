@@ -46,7 +46,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/salesReportCurrentDate")
 public class SalesReportCurrentDateController {
 
-	private static Logger logger = Logger.getLogger(SalesReportCurrentDateController.class.getName());
+	// private static Logger logger = Logger.getLogger(SalesReportCurrentDateController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -131,7 +131,7 @@ public class SalesReportCurrentDateController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SalesReportCurrentDateController.getSalesReportCurrentDateControllerData",
@@ -173,7 +173,7 @@ public class SalesReportCurrentDateController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);

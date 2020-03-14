@@ -62,7 +62,7 @@ public class StringUtils {
 		    	encoded = com.dowhile.util.Base64.encode(str);
 		    	encoded = URLEncoder.encode(encoded,"UTF8");
 		    } catch (Exception e) {
-		      logger.error(e.getClass(),e);
+		      // logger.error(e.getClass(),e);
 		    }
 		    return encoded;
 		  } 
@@ -75,7 +75,7 @@ public class StringUtils {
 		      decoded = URLDecoder.decode(str,"UTF8");
 		      decoded = new String(com.dowhile.util.Base64.decode(decoded));
 		    } catch (Exception e) {
-		      logger.error(e.getClass(),e);
+		      // logger.error(e.getClass(),e);
 		    }
 		    return decoded;
 		 }
@@ -519,7 +519,7 @@ public class StringUtils {
 			      CSVReader csvr = new CSVReader(new StringReader(csvLine+"\r\n"));
 			      parsedLine = csvr.getLine();
 			    } catch (Exception e) {
-			      logger.error(StringUtils.getStackTraceAsString(e));
+			      // logger.error(StringUtils.getStackTraceAsString(e));
 			    }
 			    return parsedLine;
 			  }		*/

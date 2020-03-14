@@ -15,7 +15,7 @@ import com.dowhile.dao.WebActivityDetailDAO;
  */
 public class WebActivityDetailDAOImpl implements WebActivityDetailDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 	/**
 	 * Get Hibernate Session Factory
 	 * 
@@ -44,7 +44,7 @@ public class WebActivityDetailDAOImpl implements WebActivityDetailDAO{
 			return webActivityDetail;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

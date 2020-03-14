@@ -52,7 +52,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/cashManagement")
 public class CashManagementController {
 
-	private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -159,7 +159,7 @@ public class CashManagementController {
 					return new Response(cashManagmentControllerBeans,StatusConstants.SUCCESS,LayOutPageConstants.CASHMANAGMENT);
 			
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CashManagementController.enableCash",
@@ -227,7 +227,7 @@ public class CashManagementController {
 					return new Response(cashManagementControllerBean,StatusConstants.SUCCESS,LayOutPageConstants.CASHMANAGMENT);
 			
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CashManagementController.getCashInOut",
@@ -279,7 +279,7 @@ public class CashManagementController {
 					return new Response(regiseBean,StatusConstants.SUCCESS,LayOutPageConstants.CUSTOMERS);
 			
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CashManagementController.enableCash",
@@ -325,7 +325,7 @@ public class CashManagementController {
 			
 			
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CashManagementController.enableCashStatus",

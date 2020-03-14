@@ -120,7 +120,7 @@ public class ConfigurationUtil {
 			
 			
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			productConfigurationBean.setMarkupPrct(true);
 			productConfigurationBean.setProductCode(true);
 			productConfigurationBean.setProductDesc(true);

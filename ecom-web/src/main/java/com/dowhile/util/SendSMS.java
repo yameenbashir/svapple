@@ -22,7 +22,7 @@ import com.dowhile.service.util.ServiceUtil;
 
 public class SendSMS {
 	
-	private static Logger logger = Logger.getLogger(SendSMS.class.getName());
+	// private static Logger logger = Logger.getLogger(SendSMS.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -337,7 +337,7 @@ public class SendSMS {
 			in.close();
 			System.out.println(response.toString());*/
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 	

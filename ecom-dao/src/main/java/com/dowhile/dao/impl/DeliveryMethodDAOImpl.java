@@ -19,7 +19,7 @@ import com.dowhile.dao.DeliveryMethodDAO;
 public class DeliveryMethodDAOImpl implements DeliveryMethodDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(DeliveryMethodDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(DeliveryMethodDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class DeliveryMethodDAOImpl implements DeliveryMethodDAO{
 			return deliveryMethod;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -61,7 +61,7 @@ public class DeliveryMethodDAOImpl implements DeliveryMethodDAO{
 			return deliveryMethod;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -74,7 +74,7 @@ public class DeliveryMethodDAOImpl implements DeliveryMethodDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -92,7 +92,7 @@ public class DeliveryMethodDAOImpl implements DeliveryMethodDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -109,7 +109,7 @@ public class DeliveryMethodDAOImpl implements DeliveryMethodDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

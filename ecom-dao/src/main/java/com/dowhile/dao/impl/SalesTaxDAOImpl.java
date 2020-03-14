@@ -19,7 +19,7 @@ import com.dowhile.dao.SalesTaxDAO;
 public class SalesTaxDAOImpl implements SalesTaxDAO{
 	
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(SalesTaxDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(SalesTaxDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class SalesTaxDAOImpl implements SalesTaxDAO{
 			return salesTax;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -62,7 +62,7 @@ public class SalesTaxDAOImpl implements SalesTaxDAO{
 			return salesTax;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -76,7 +76,7 @@ public class SalesTaxDAOImpl implements SalesTaxDAO{
 			return true;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return false;
@@ -96,7 +96,7 @@ public class SalesTaxDAOImpl implements SalesTaxDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -114,7 +114,7 @@ public class SalesTaxDAOImpl implements SalesTaxDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

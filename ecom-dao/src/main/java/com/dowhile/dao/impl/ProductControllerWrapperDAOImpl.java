@@ -19,6 +19,7 @@ import com.dowhile.ProductType;
 import com.dowhile.ProductVariant;
 import com.dowhile.SalesTax;
 import com.dowhile.Tag;
+import com.dowhile.User;
 import com.dowhile.VariantAttribute;
 import com.dowhile.dao.ProductControllerWrapperDAO;
 import com.dowhile.wrapper.ProductControllerWrapper;
@@ -30,7 +31,7 @@ import com.dowhile.wrapper.ProductControllerWrapper;
 public class ProductControllerWrapperDAOImpl implements ProductControllerWrapperDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ProductControllerWrapperDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductControllerWrapperDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -126,7 +127,7 @@ public class ProductControllerWrapperDAOImpl implements ProductControllerWrapper
 			}
 			return productControllerWrapper;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -160,7 +161,61 @@ public class ProductControllerWrapperDAOImpl implements ProductControllerWrapper
 			}
 			return productControllerWrapper;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ProductControllerWrapper getProductControllerWrapperDataForProductHistoryByProductUuidOutletIdCompanyId(String productUuid,int outletId,
+			int companyId) {
+		// TODO Auto-generated method stub
+		try{
+			ProductControllerWrapper productControllerWrapper =  new ProductControllerWrapper();
+			List<Product> productList = getSessionFactory().getCurrentSession()
+					.createQuery("from Product where COMPANY_ASSOCIATION_ID = ? AND ACTIVE_INDICATOR = 1")
+					.setParameter(0, companyId).list();
+			if(productList!=null&& productList.size()>0){
+				productControllerWrapper.setProductList(productList);
+				productControllerWrapper.setSku(productList.size());
+				System.out.println("ProductControllerWrapper Product Count: "+productList.size()+1);
+			}
+			
+			List<Outlet> outlets = getSessionFactory().getCurrentSession()
+					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ? AND ACTIVE_INDICATOR = 1")
+					.setParameter(0, companyId).list();
+			if(outlets!=null&& outlets.size()>0){
+				productControllerWrapper.setOutlets(outlets);
+			}
+			
+			List<User> users  = getSessionFactory().getCurrentSession()
+			.createQuery("from User where COMPANY_ASSOCIATION_ID=?")
+			.setParameter(0, companyId)
+			.list();
+			if(users!=null && users.size()>0) {
+				
+			}
+			
+			List<ProductVariant> productVariantList = getSessionFactory()
+					.getCurrentSession()
+					.createQuery(
+							"from ProductVariant where COMPANY_ASSOCIATION_ID = ? AND ACTIVE_INDICATOR = 1 ORDER BY PRODUCT_VARIANT_ID")
+							.setParameter(0, companyId).list();
+			if (productVariantList != null && productVariantList.size() > 0) {
+				productControllerWrapper.setProductVariantList(productVariantList);
+			}
+			
+			List<Product> list = getSessionFactory().getCurrentSession()
+			.createQuery("from Product where PRODUCT_UUID=? AND COMPANY_ASSOCIATION_ID = ?")
+			.setParameter(0, productUuid)
+			.setParameter(1, companyId).list();;
+			if(list!=null&& list.size()>0){
+
+//				return list;
+			}
+		}catch(HibernateException ex){
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

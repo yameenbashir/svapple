@@ -18,7 +18,7 @@ import com.dowhile.service.RegisterService;
 public class RoleDetailsController {
 
 	
-	private static Logger logger = Logger.getLogger(RoleDetailsController.class.getName());
+	// private static Logger logger = Logger.getLogger(RoleDetailsController.class.getName());
 	@RequestMapping("/layout")
 	public String getRoleDetailsControllerPartialPage(ModelMap modelMap) {
 		return "roleDetails/layout";

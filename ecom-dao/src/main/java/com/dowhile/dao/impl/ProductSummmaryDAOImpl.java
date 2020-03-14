@@ -19,7 +19,7 @@ import com.dowhile.dao.ProductSummmaryDAO;
 public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ProductSummmaryDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductSummmaryDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -53,7 +53,7 @@ public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -88,7 +88,7 @@ public class ProductSummmaryDAOImpl implements ProductSummmaryDAO{
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

@@ -36,7 +36,7 @@ import com.dowhile.util.SessionValidator;
 
 public class ChangePasswordController {
 
-	private static Logger logger = Logger.getLogger(ChangePasswordController.class.getName());
+	// private static Logger logger = Logger.getLogger(ChangePasswordController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -60,7 +60,7 @@ public class ChangePasswordController {
 			 response = resourceService.UpdatePassword(email, password, newPassword, currentUser.getCompany().getCompanyId());
 		}
 		catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			/*util.AuditTrail(request, currentUser, "ManageEmployeeController.getEmployeeByEmployeeId",

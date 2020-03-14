@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = false)
 public class EmailService {
-	private static Logger logger = Logger.getLogger(EmailService.class.getName());
+	// private static Logger logger = Logger.getLogger(EmailService.class.getName());
 	 String  emailHostStr ;
 	 String emailHostSSLStr ;
 	 String emailPortStr ;
@@ -145,8 +145,8 @@ public class EmailService {
 //			}
 			email.send();
 		} catch (Exception e) {
-			logger.error("Unable to send Email: "+ e.getMessage());
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			// logger.error("Unable to send Email: "+ e.getMessage());
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			return false;
 		}
 		return true;
@@ -216,8 +216,8 @@ public class EmailService {
 //			}
 			email.send();
 		} catch (Exception e) {
-			logger.error("Unable to send Email: "+ e.getMessage());
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			// logger.error("Unable to send Email: "+ e.getMessage());
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			return false;
 		}
 		return true;
@@ -274,7 +274,7 @@ public class EmailService {
 
 			email.send();
 		} catch (Exception e) {
-			logger.error("Unable to send Email: "+ e.getMessage());
+			// logger.error("Unable to send Email: "+ e.getMessage());
 			return false;
 		}
 		return true;
@@ -348,7 +348,7 @@ public class EmailService {
 //			
 //			
 //		} catch (EmailException e) {
-//			LOGGER.error("Unable to send Email: "+ e.getMessage());
+//			// logger.error("Unable to send Email: "+ e.getMessage());
 //		}
 //		
 //		return true;
@@ -423,7 +423,7 @@ public class EmailService {
 //			
 //			
 //		} catch (EmailException e) {
-//			LOGGER.error("Unable to send Email: "+ e.getMessage());
+//			// logger.error("Unable to send Email: "+ e.getMessage());
 //		}
 //		
 //		return true;
@@ -499,7 +499,7 @@ public boolean sendEmailContactUs(String toEmail, String  requestPath,String mes
 		
 		
 	} catch (EmailException e) {
-		logger.error("Unable to send Email: "+ e.getMessage());
+		// logger.error("Unable to send Email: "+ e.getMessage());
 	}
 	
 	return true;

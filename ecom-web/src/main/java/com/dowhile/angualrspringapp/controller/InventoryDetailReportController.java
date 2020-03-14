@@ -47,7 +47,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/inventoryDetailReport")
 public class InventoryDetailReportController {
 
-	private static Logger logger = Logger.getLogger(InventoryDetailReportController.class.getName());
+	// private static Logger logger = Logger.getLogger(InventoryDetailReportController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -103,7 +103,7 @@ public class InventoryDetailReportController {
 				return new Response(inventoryReportControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryDetailReport.getInventoryDetailReportControllerData",
@@ -185,7 +185,7 @@ public class InventoryDetailReportController {
 							
 							inventoryReportBeansList.add(inventoryReportBean);
 						}else{
-							logger.info("something wrong............");
+							System.out.println("something wrong............");
 						}
 						
 					}
@@ -201,7 +201,7 @@ public class InventoryDetailReportController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryDetailReport.getInventoryDetailReport",
@@ -243,7 +243,7 @@ public class InventoryDetailReportController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);

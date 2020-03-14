@@ -36,7 +36,7 @@ import com.dowhile.util.SessionValidator;
 
 public class OrgHierarchyController {
 
-	private static Logger logger = Logger.getLogger(OrgHierarchyController.class.getName());
+	// private static Logger logger = Logger.getLogger(OrgHierarchyController.class.getName());
 	@Resource
 	private CompanyService companyService;
 	@Resource
@@ -63,7 +63,7 @@ public class OrgHierarchyController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			logger.info("Old outlet id: "+currentUser.getOutlet().getOutletId());
+			System.out.println("Old outlet id: "+currentUser.getOutlet().getOutletId());
 			Outlet outlet =  outletService.getOuletByOutletId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
 			if(outlet.getIsHeadOffice() != null && String.valueOf(outlet.getIsHeadOffice()) != "" && outlet.getIsHeadOffice()){
 				outlet.setIsHeadOffice(true);
@@ -71,7 +71,7 @@ public class OrgHierarchyController {
 				outlet.setIsHeadOffice(false);
 			}
 			currentUser.setOutlet(outlet);
-			logger.info("New outlet id: "+currentUser.getOutlet().getOutletId());
+			System.out.println("New outlet id: "+currentUser.getOutlet().getOutletId());
 			session.setAttribute("user", currentUser);
 			
 			return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
@@ -104,7 +104,7 @@ public class OrgHierarchyController {
 				return new Response(organizationGraph,StatusConstants.SUCCESS,LayOutPageConstants.STAY_ON_PAGE);
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "OrgHierarchyController.getCompanies",
@@ -130,7 +130,7 @@ public class OrgHierarchyController {
 				organizationList.add(organization);
 			}
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return organizationList;
 	}

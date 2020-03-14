@@ -17,7 +17,7 @@ import com.dowhile.dao.MessageDAO;
  */
 public class MessageDAOImpl implements MessageDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -46,7 +46,7 @@ public class MessageDAOImpl implements MessageDAO{
 			return message;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -59,7 +59,7 @@ public class MessageDAOImpl implements MessageDAO{
 			return message;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class MessageDAOImpl implements MessageDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -90,7 +90,7 @@ public class MessageDAOImpl implements MessageDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -108,7 +108,7 @@ public class MessageDAOImpl implements MessageDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

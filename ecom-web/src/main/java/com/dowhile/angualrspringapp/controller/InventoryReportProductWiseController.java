@@ -54,7 +54,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/inventoryReportProductWise")
 public class InventoryReportProductWiseController {
 
-	private static Logger logger = Logger.getLogger(InventoryReportProductWiseController.class.getName());
+	// private static Logger logger = Logger.getLogger(InventoryReportProductWiseController.class.getName());
 	@Resource
 	private ServiceUtil util;
 	@Resource
@@ -100,7 +100,7 @@ public class InventoryReportProductWiseController {
 				return new Response(inventoryReportProductWiseControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryReportProductWiseController.getInventoryReportProductWiseControllerData",
@@ -210,7 +210,7 @@ public class InventoryReportProductWiseController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryReportProductWiseController.getAllProducts",
@@ -256,7 +256,7 @@ public class InventoryReportProductWiseController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);

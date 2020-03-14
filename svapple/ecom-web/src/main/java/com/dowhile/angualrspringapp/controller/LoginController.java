@@ -220,7 +220,7 @@ public class LoginController {
 						StatusConstants.USER_INVALID,
 						LayOutPageConstants.STAY_ON_PAGE);
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, user, "LoginController.doLogin",
@@ -292,9 +292,9 @@ public class LoginController {
 			SynchProductTypeData(user);
 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -326,9 +326,9 @@ public class LoginController {
 			SynchProductData(user);
 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -520,9 +520,9 @@ public class LoginController {
 
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 		} catch (IOException e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 		}
 
 	}

@@ -74,7 +74,7 @@ public class BackupController {
 						"User "+ currentUser.getUserEmail()+" taked backup successfully ",false);
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BackupController.takeBakup",
@@ -112,7 +112,7 @@ public class BackupController {
 						"User "+ currentUser.getUserEmail()+" restored backup successfully ",false);
 				return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.BACKUP);
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "BackupController.reStoreBackup",

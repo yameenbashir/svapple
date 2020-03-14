@@ -20,7 +20,7 @@ import com.dowhile.dao.CurrencyDAO;
 public class CurrencyDAOImpl implements CurrencyDAO {
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(CurrencyDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(CurrencyDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -54,7 +54,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -73,7 +73,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 

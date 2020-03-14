@@ -57,7 +57,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/inventoryCount")
 public class InventoryCountController {
 
-	private static Logger logger = Logger.getLogger(InventoryCountController.class.getName());
+	// private static Logger logger = Logger.getLogger(InventoryCountController.class.getName());
 	@Resource
 	private OutletService outletService;
 	@Resource
@@ -262,7 +262,7 @@ public class InventoryCountController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getAllInventoryCounts",

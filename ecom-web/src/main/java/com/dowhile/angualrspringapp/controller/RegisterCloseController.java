@@ -52,7 +52,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/registerClose")
 public class RegisterCloseController {
 
-	private static Logger logger = Logger.getLogger(RegisterCloseController.class.getName());
+	// private static Logger logger = Logger.getLogger(RegisterCloseController.class.getName());
 	@Resource
 	private SaleService saleService;
 
@@ -183,7 +183,7 @@ public class RegisterCloseController {
 						StatusConstants.ERROR, LayOutPageConstants.HOME);
 
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterCloseController.loadRegister",
@@ -233,7 +233,7 @@ public class RegisterCloseController {
 
 
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterCloseController.closeRegister",
@@ -340,7 +340,7 @@ public class RegisterCloseController {
 						StatusConstants.ERROR, LayOutPageConstants.HOME);
 
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "RegisterCloseController.loadRegisterDetail",

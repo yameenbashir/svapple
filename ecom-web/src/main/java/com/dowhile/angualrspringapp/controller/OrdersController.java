@@ -71,7 +71,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/orders")
 public class OrdersController {
 
-	private static Logger logger = Logger.getLogger(OrdersController.class.getName());
+	// private static Logger logger = Logger.getLogger(OrdersController.class.getName());
 	@Resource
 	private StockOrderService stockOrderService;
 
@@ -307,7 +307,7 @@ public class OrdersController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "OrderMainController.getAllOrders",

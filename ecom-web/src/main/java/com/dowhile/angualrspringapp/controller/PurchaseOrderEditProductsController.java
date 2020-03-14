@@ -56,7 +56,7 @@ import com.dowhile.wrapper.ProductListsWrapper;
 @RequestMapping("/purchaseOrderEditProducts")
 public class PurchaseOrderEditProductsController {
 	
-	private static Logger logger = Logger.getLogger(PurchaseOrderEditProductsController.class.getName());
+	// private static Logger logger = Logger.getLogger(PurchaseOrderEditProductsController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -129,7 +129,7 @@ public class PurchaseOrderEditProductsController {
 				return new Response(purchaseOrderEditProductsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData",
@@ -188,7 +188,7 @@ public class PurchaseOrderEditProductsController {
 				return new Response(purchaseOrderEditProductsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData",
@@ -250,7 +250,7 @@ public class PurchaseOrderEditProductsController {
 				return new Response(purchaseOrderEditProductsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderEditProductsController.getPurchaseOrderEditProductsControllerData",
@@ -286,11 +286,11 @@ public class PurchaseOrderEditProductsController {
 
 				stockOrderDetailList = stockOrderDetailService.getStockOrderDetailByStockOrderId(Integer.parseInt(stockOrderBean.getStockOrderId()),currentUser.getCompany().getCompanyId());
 				/*if(stockOrderDetailList.size() > 0) {
-				logger.info("Stock Order Id" +  stockOrderDetailList.get(0).getStockOrderDetailId());
+				System.out.println("Stock Order Id" +  stockOrderDetailList.get(0).getStockOrderDetailId());
 				}
 				else
 				{
-					logger.info("Stock Order Id " +  " not found at line 279");
+					System.out.println("Stock Order Id " +  " not found at line 279");
 				}*/
 				int order = 1;
 				if (stockOrderDetailList != null) {
@@ -303,17 +303,17 @@ public class PurchaseOrderEditProductsController {
 					//recvProductList = productService.getAllProductsByOutletId(Integer.parseInt(stockOrderBean.getOutletId()));
 					if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") == "1") {
 						/*if(session.getAttribute("redirectCall") != null && session.getAttribute("redirectCall") != "") {
-						logger.info("redirect Call" +  session.getAttribute("redirectCall"));
+						System.out.println("redirect Call" +  session.getAttribute("redirectCall"));
 						}else {
-							logger.info("redirect Call is empty at line 294");
+							System.out.println("redirect Call is empty at line 294");
 						}*/
 						if(session.getAttribute("productIdsMap") != null) {
 							productSessionMap  = (HashMap<Integer, Product>)session.getAttribute("productIdsMap");
 							allProducts = new ArrayList<Product>(productSessionMap.values());
 							/*if(allProducts.size() > 0 ) {
-							logger.info("All Product from Session" +  allProducts.get(0).getProductName());
+							System.out.println("All Product from Session" +  allProducts.get(0).getProductName());
 							}else {
-								logger.info("All Product from Session is null at line 302");
+								System.out.println("All Product from Session is null at line 302");
 							}*/
 						}
 						else {
@@ -328,10 +328,10 @@ public class PurchaseOrderEditProductsController {
 							productVariantSessionMap  = (HashMap<Integer, ProductVariant>)session.getAttribute("productVariantIdsMap");
 							allProductVariants = new ArrayList<ProductVariant>(productVariantSessionMap.values());
 							/*if(allProductVariants.size() > 0) {
-							logger.info("All Product Variant from Session" +  allProductVariants.get(0).getVariantAttributeName());
+							System.out.println("All Product Variant from Session" +  allProductVariants.get(0).getVariantAttributeName());
 							}
 							else {
-								logger.info("All Product Variant from Session" + "Null Return at line 320");
+								System.out.println("All Product Variant from Session" + "Null Return at line 320");
 							}*/
 						}
 						else {
@@ -373,10 +373,10 @@ public class PurchaseOrderEditProductsController {
 						if(!stockOrderDetail.isIsProduct()){						
 							ProductVariant productVariant = productVariantsMap.get(stockOrderDetail.getProductVariant().getProductVariantId());
 							/*if(productVariant != null) {
-							logger.info("productVariant" +  productVariant.getVariantAttributeName());
+							System.out.println("productVariant" +  productVariant.getVariantAttributeName());
 							}
 							else {
-								logger.info("productVariant" +  " is not found at line 351");
+								System.out.println("productVariant" +  " is not found at line 351");
 							}*/
 							if(productVariant != null){
 								stockOrderDetailBean.setProductVariantId(Objects.toString(productVariant.getProductVariantId(),""));
@@ -467,7 +467,7 @@ public class PurchaseOrderEditProductsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByStockOrderId",
@@ -577,7 +577,7 @@ public class PurchaseOrderEditProductsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderActionsController.getAllDetailsByStockOrderId",
@@ -709,7 +709,7 @@ public class PurchaseOrderEditProductsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProductVariants",
@@ -804,7 +804,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -914,7 +914,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",
@@ -1014,7 +1014,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -1144,7 +1144,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",
@@ -1239,7 +1239,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -1352,7 +1352,7 @@ public class PurchaseOrderEditProductsController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",

@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  */
 public class SessionValidator {
 	
-	private static Logger logger = Logger.getLogger(SessionValidator.class.getName());
+	// private static Logger logger = Logger.getLogger(SessionValidator.class.getName());
 	
 	public static boolean isSessionValid(String sessionId,HttpServletRequest request){
 
@@ -74,11 +74,11 @@ public class SessionValidator {
 
 		} catch (UnknownHostException e) {
 
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 
 		} catch (SocketException e){
 
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 
 		}
 		System.out.println("Mac address not found");
@@ -108,11 +108,11 @@ public class SessionValidator {
 
 		} catch (UnknownHostException e) {
 
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 
 		} catch (SocketException e){
 
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 
 		}
 

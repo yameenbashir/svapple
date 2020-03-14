@@ -23,7 +23,7 @@ import com.dowhile.dao.ProductVariantDAO;
 public class ProductVariantDAOImpl implements ProductVariantDAO {
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ProductVariantDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductVariantDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -67,7 +67,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 			getSessionFactory().getCurrentSession().save(productHistory);
 			return productVariant;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -95,7 +95,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 			}			
 		} 
 		catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 			getSessionFactory().getCurrentSession().save(productHistory);
 			return productVariant;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -150,7 +150,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 			}
 		}
 		catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 			getSessionFactory().getCurrentSession().save(productHistory);
 			return true;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -195,7 +195,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 				return list.get(0);
 			}
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -215,7 +215,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 				return list;
 			}
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -235,7 +235,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 				return list;
 			}
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -253,7 +253,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					.setParameter(1, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -266,7 +266,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					+ "  COMPANY_ASSOCIATION_ID = "+companyId+" AND PRODUCT_ASSOCICATION_ID = "+productId+"").uniqueResult()).intValue();
 			return count;
 		}catch(Exception ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return 0;
 	}
@@ -295,7 +295,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 
 			return count;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return count;
 	}
@@ -313,7 +313,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					.setParameter(1, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -331,7 +331,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					.setParameter(1, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -348,7 +348,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					.setParameter(0, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -367,7 +367,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					.setParameter(1, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -397,7 +397,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 
 			return count;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return count;
 	}
@@ -426,7 +426,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 
 			return count;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return count;
 	}
@@ -439,7 +439,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					+ "COMPANY_ASSOCIATION_ID = "+companyId+"").uniqueResult()).intValue();
 			return count+1;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return 0;
 	}*/
@@ -470,7 +470,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					}
 					return 1;*/
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}catch(Exception ex){
 			
 		}
@@ -489,7 +489,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					.list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -508,7 +508,7 @@ public class ProductVariantDAOImpl implements ProductVariantDAO {
 					.setParameter(2, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

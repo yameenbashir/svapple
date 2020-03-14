@@ -23,7 +23,7 @@ import com.mysql.jdbc.Statement;
 
 public class SchedulerController {
 
-	private static Logger logger = Logger.getLogger(SchedulerController.class.getName());
+	// private static Logger logger = Logger.getLogger(SchedulerController.class.getName());
 	 String  emailHostStr ;
 	 String emailHostSSLStr ;
 	 String emailPortStr ;
@@ -220,7 +220,7 @@ public class SchedulerController {
 				email.send();
 			} catch (Exception e) {
 				
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				return false;
 			}
 			return true;

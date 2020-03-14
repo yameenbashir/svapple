@@ -22,7 +22,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 
 	private static final Object companyId = null;
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(NotificationDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(NotificationDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -51,7 +51,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			return notification;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -64,7 +64,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			return notification;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -77,7 +77,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -97,7 +97,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -115,7 +115,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -135,7 +135,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -157,7 +157,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	}
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 		
@@ -180,7 +180,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			return true;
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			
 		}
 			return false;
@@ -203,7 +203,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		}
 				
 			}catch(HibernateException ex){
-				ex.printStackTrace();logger.error(ex.getMessage(),ex);
+				ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 			}
 			return null;
 	}
@@ -227,7 +227,7 @@ try{
 	}
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -251,7 +251,7 @@ try{
 	}
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return list;
@@ -273,7 +273,7 @@ try{
 			}
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -295,7 +295,7 @@ try{
 			}
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return list;
 	}
@@ -314,7 +314,7 @@ try{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

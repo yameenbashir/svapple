@@ -39,7 +39,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/users")
 public class UsersController {
 
-	private static Logger logger = Logger.getLogger(UsersController.class.getName());
+	// private static Logger logger = Logger.getLogger(UsersController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -99,7 +99,7 @@ public class UsersController {
 				}
 				
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "UsersController.getAllUsers",

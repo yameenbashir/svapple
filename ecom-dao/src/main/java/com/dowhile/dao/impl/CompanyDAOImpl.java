@@ -21,7 +21,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	
 	
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(CompanyDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(CompanyDAOImpl.class.getName());
 
     /**
      * Get Hibernate Session Factory
@@ -51,7 +51,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 			return company;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -64,7 +64,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 			return company;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -77,7 +77,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -91,7 +91,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 			List<Company> companies = getSessionFactory().getCurrentSession().createCriteria(Company.class).list();
 			return companies;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -111,7 +111,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 

@@ -21,7 +21,7 @@ import com.dowhile.service.ConfigurationService;
 @RequestMapping("/applicationCache")
 public class ApplicationCacheController {
 
-	private static Logger logger = Logger.getLogger(ApplicationCacheController.class.getName());
+	// private static Logger logger = Logger.getLogger(ApplicationCacheController.class.getName());
 	@Resource
 	private ConfigurationService configurationService;
 	@Resource
@@ -36,14 +36,15 @@ public class ApplicationCacheController {
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
 	public @ResponseBody void load() {
 		try {
+			System.out.println();
 			boolean forcefullyPopulate = true;
-			logger.info("Starting build Cache");
+			System.out.println("Starting build Cache");
 			populateallCompaniesMap(forcefullyPopulate);
 			populateAllCompaniesConfigurationsMap(forcefullyPopulate);
 			
-			logger.info("Cache built successfully");
+			System.out.println("Cache built successfully");
 		}catch(Exception ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 	}
 	
@@ -58,7 +59,7 @@ public class ApplicationCacheController {
 				}
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return allCompaniesMap;
 	}
@@ -78,7 +79,7 @@ public class ApplicationCacheController {
 				}
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 	*/

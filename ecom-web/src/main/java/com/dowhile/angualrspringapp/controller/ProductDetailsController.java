@@ -67,7 +67,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/productDetails")
 public class ProductDetailsController {
 
-	private static Logger logger = Logger.getLogger(ProductDetailsController.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductDetailsController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -141,7 +141,7 @@ public class ProductDetailsController {
 				return new Response(productDetailsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewProductController.getAllVariantAttributes",
@@ -330,7 +330,7 @@ public class ProductDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ProductDetailsController.getProductDetailByProductId",
@@ -359,17 +359,11 @@ public class ProductDetailsController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			List<Product> products = null;
-
-
 			try {
-
 				products = productService.getAllProductsByUuid(productUuid,currentUser.getCompany().getCompanyId());
-
-
 				if(products!=null){
 					List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 					Map outletMap = new HashMap<>();
-
 					for(Outlet outlet:outlets){
 						outletMap.put(outlet.getOutletId(), outlet);
 					}
@@ -440,11 +434,8 @@ public class ProductDetailsController {
 										productHistoryBeans.add(productHistoryBean);
 									}
 								}
-								
-
 							}
 						}
-
 					}
 
 					util.AuditTrail(request, currentUser, "ProductDetailsController.getProductHistoryByProductUuid", 
@@ -459,7 +450,7 @@ public class ProductDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ProductDetailsController.getProductHistoryByProductUuid",

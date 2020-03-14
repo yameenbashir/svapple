@@ -25,7 +25,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 
 	
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ReceiptDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ReceiptDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -54,7 +54,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 			return receipt;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -67,7 +67,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 			return receipt;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -85,7 +85,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	
@@ -106,7 +106,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -123,7 +123,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 			.setParameter(1, companyID).list();
 			return list;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -138,7 +138,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 			.setParameter(1, companyID).list();
 			return list;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -153,7 +153,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 			.setParameter(1, companyID).list();
 			return list;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -171,7 +171,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 			setParameter(2, companyID).list();
 			return list;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		
 		return null;
@@ -211,7 +211,7 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 			
 			
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

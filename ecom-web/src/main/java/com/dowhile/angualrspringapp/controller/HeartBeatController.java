@@ -31,7 +31,7 @@ import com.dowhile.service.util.ServiceUtil;
 @RequestMapping("/heartbeat")
 public class HeartBeatController {
 
-	private static Logger logger = Logger.getLogger(HeartBeatController.class.getName());
+	// private static Logger logger = Logger.getLogger(HeartBeatController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -54,29 +54,29 @@ public class HeartBeatController {
 			HttpServletRequest request) {
 		
 		String url = request.getRequestURL().toString();
-		logger.info("url :"+url);
+		System.out.println("url :"+url);
         // Getting servlet request query string.
         String queryString = request.getQueryString();
-        logger.info("queryString :"+queryString);
+        System.out.println("queryString :"+queryString);
         // Getting request information without the hostname.
         String uri = request.getRequestURI();
-        logger.info("uri :"+uri);
+        System.out.println("uri :"+uri);
 		
         // Below we extract information about the request object path
         // information.
         String scheme = request.getScheme();
-        logger.info("scheme :"+scheme);
+        System.out.println("scheme :"+scheme);
         String serverName = request.getServerName();
-        logger.info("serverName :"+serverName);
+        System.out.println("serverName :"+serverName);
         int portNumber = request.getServerPort();
-        logger.info("portNumber :"+portNumber);
+        System.out.println("portNumber :"+portNumber);
         String contextPath = request.getContextPath();
-        logger.info("contextPath :"+contextPath);
+        System.out.println("contextPath :"+contextPath);
         String servletPath = request.getServletPath();
-        logger.info("servletPath :"+servletPath);
+        System.out.println("servletPath :"+servletPath);
         String pathInfo = request.getPathInfo();
-        logger.info("pathInfo :"+pathInfo);
-        logger.info("Subdomain :"+request.getServerName().split("\\.")[0]);
+        System.out.println("pathInfo :"+pathInfo);
+        System.out.println("Subdomain :"+request.getServerName().split("\\.")[0]);
         
         
       	return new Response(MessageConstants.INVALID_USER,

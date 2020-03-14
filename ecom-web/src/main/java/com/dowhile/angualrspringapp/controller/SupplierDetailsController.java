@@ -63,7 +63,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/supplierDetails")
 public class SupplierDetailsController {
 	
-	private static Logger logger = Logger.getLogger(SupplierDetailsController.class.getName());
+	// private static Logger logger = Logger.getLogger(SupplierDetailsController.class.getName());
 	@Resource
 	private ContactService supplierService;
 	@Resource
@@ -125,7 +125,7 @@ public class SupplierDetailsController {
 				return new Response(supplierDetailsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupplierDetailsController.getSupplierDetailsControllerData",
@@ -173,7 +173,7 @@ public class SupplierDetailsController {
 				return new Response(supplierDetailsControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupplierDetailsController.getSupplierDetailsControllerData",
@@ -279,7 +279,7 @@ public class SupplierDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupplierDetailsController.getSupplier",
@@ -415,7 +415,7 @@ public class SupplierDetailsController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "StockControlController.getAllStockOrders",
@@ -523,7 +523,7 @@ public class SupplierDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupplierDetailsController.getSupplier",
@@ -658,7 +658,7 @@ public class SupplierDetailsController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "StockControlController.getAllStockOrders",
@@ -761,7 +761,7 @@ public class SupplierDetailsController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "SupplierDetailsController.getSupplierPayments",
@@ -828,7 +828,7 @@ public class SupplierDetailsController {
 						}
 
 					}catch(Exception e){
-						e.printStackTrace();logger.error(e.getMessage(),e);
+						e.printStackTrace();// logger.error(e.getMessage(),e);
 						StringWriter errors = new StringWriter();
 						e.printStackTrace(new PrintWriter(errors));
 						util.AuditTrail(request, currentUser, "SupplierDetailsController.addSupplierPayments",

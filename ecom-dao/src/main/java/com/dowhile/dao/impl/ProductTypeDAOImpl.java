@@ -21,7 +21,7 @@ import com.dowhile.dao.ProductTypeDAO;
 public class ProductTypeDAOImpl implements ProductTypeDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ProductTypeDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductTypeDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -50,7 +50,7 @@ public class ProductTypeDAOImpl implements ProductTypeDAO{
 			return productType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -63,7 +63,7 @@ public class ProductTypeDAOImpl implements ProductTypeDAO{
 			return productType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -76,7 +76,7 @@ public class ProductTypeDAOImpl implements ProductTypeDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -95,7 +95,7 @@ public class ProductTypeDAOImpl implements ProductTypeDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -112,7 +112,7 @@ public class ProductTypeDAOImpl implements ProductTypeDAO{
 			
 			return productTypeList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -129,7 +129,7 @@ public class ProductTypeDAOImpl implements ProductTypeDAO{
 					
 					return productTypeList;
 				}catch(HibernateException ex){
-					ex.printStackTrace();logger.error(ex.getMessage(),ex);
+					ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 				}
 				return null;
 	}

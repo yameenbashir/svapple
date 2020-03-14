@@ -20,7 +20,7 @@ import com.dowhile.dao.PrinterFormatDAO;
 public class PrinterFormatDAOImpl implements PrinterFormatDAO {
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(PrinterFormatDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(PrinterFormatDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -54,7 +54,7 @@ public class PrinterFormatDAOImpl implements PrinterFormatDAO {
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class PrinterFormatDAOImpl implements PrinterFormatDAO {
 			return printerFormat;
 		}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 

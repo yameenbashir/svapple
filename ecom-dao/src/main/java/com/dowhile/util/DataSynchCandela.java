@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -13,6 +14,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class DataSynchCandela {
+	
+	// private static Logger logger = Logger.getLogger(DataSynchCandela.class.getName());
 
 	 private static final String FILE_NAME = "C://Users//IBM_ADMIN//desktop//Products_kites.xlsx";
 
@@ -38,10 +41,10 @@ public class DataSynchCandela {
 	            }
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
-//	            logger.error(e.getMessage(),e);
+//	            // logger.error(e.getMessage(),e);
 	        } catch (IOException e) {
 	            e.printStackTrace();
-//	            logger.error(e.getMessage(),e);
+//	            // logger.error(e.getMessage(),e);
 	        }
 
 	    }

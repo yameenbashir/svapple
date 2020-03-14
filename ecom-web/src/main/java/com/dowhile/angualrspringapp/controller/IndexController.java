@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class IndexController {
 
-	private static Logger logger = Logger.getLogger(IndexController.class.getName());
+	// private static Logger logger = Logger.getLogger(IndexController.class.getName());
     @RequestMapping
     public String getIndexPage() {
         return "index";

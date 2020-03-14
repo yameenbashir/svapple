@@ -19,7 +19,7 @@ import com.dowhile.dao.RegisterReportDAO;
 public class RegisterReportDAOImpl implements RegisterReportDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(RegisterReportDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(RegisterReportDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -53,7 +53,7 @@ public class RegisterReportDAOImpl implements RegisterReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -73,7 +73,7 @@ public class RegisterReportDAOImpl implements RegisterReportDAO{
 				return list;
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 

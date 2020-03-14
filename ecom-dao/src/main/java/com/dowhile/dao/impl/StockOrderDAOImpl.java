@@ -39,7 +39,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(StockOrderDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(StockOrderDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -69,7 +69,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			return stockOrder;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -82,7 +82,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			return stockOrder;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -95,7 +95,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -116,7 +116,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -139,7 +139,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -164,7 +164,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -188,7 +188,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -211,7 +211,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -247,7 +247,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -283,7 +283,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 
 
@@ -303,7 +303,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -321,7 +321,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -339,7 +339,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -357,7 +357,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -376,7 +376,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -436,7 +436,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return true;
 	}
@@ -468,7 +468,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			}
 			return stockBasicDataWrapper;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -527,7 +527,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			return stockDataProductsWrapper;
 		} 
 		catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

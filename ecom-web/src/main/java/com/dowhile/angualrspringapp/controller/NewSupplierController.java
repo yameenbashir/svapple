@@ -38,7 +38,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/newSupplier")
 public class NewSupplierController {
 
-	private static Logger logger = Logger.getLogger(NewSupplierController.class.getName());
+	// private static Logger logger = Logger.getLogger(NewSupplierController.class.getName());
 	@Resource
 	private ContactService supplierService;
 
@@ -129,7 +129,7 @@ public class NewSupplierController {
 						StatusConstants.SUCCESS, LayOutPageConstants.SUPPLIERS);
 
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,
@@ -261,7 +261,7 @@ public class NewSupplierController {
 						StatusConstants.SUCCESS, LayOutPageConstants.SUPPLIERS);
 
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser,

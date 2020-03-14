@@ -58,7 +58,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/inventoryCountCreate")
 public class InventoryCountCreateController {
 	
-	private static Logger logger = Logger.getLogger(InventoryCountCreateController.class.getName());
+	// private static Logger logger = Logger.getLogger(InventoryCountCreateController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -132,7 +132,7 @@ public class InventoryCountCreateController {
 				return new Response(inventoryCountControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountCreateController.getInventoryCountControllerData",
@@ -186,7 +186,7 @@ public class InventoryCountCreateController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getAllOutlets",
@@ -232,7 +232,7 @@ public class InventoryCountCreateController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getAllInventoryCountTypes",
@@ -275,7 +275,7 @@ public class InventoryCountCreateController {
 					return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 				}
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.getAllSuppliers",
@@ -329,8 +329,8 @@ public class InventoryCountCreateController {
 						if(inventoryCountBean.getRemarks() != null){
 							inventoryCount.setRemarks(inventoryCountBean.getRemarks());
 						}	
-						logger.info(inventoryCount.getOutlet().getOutletId());
-						logger.info(inventoryCount.getStatus().getStatusId());
+						System.out.println(inventoryCount.getOutlet().getOutletId());
+						System.out.println(inventoryCount.getStatus().getStatusId());
 						inventoryCountService.addInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
 						String path = LayOutPageConstants.INVENTORY_COUNT_DETAILS;
 						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", 
@@ -349,7 +349,7 @@ public class InventoryCountCreateController {
 				}
 			}
 			catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount",
@@ -400,7 +400,7 @@ public class InventoryCountCreateController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount",

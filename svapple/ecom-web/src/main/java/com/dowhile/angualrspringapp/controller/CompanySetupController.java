@@ -243,7 +243,7 @@ public class CompanySetupController {
 	    }
 	    
 	   }catch(Exception e){
-	    e.printStackTrace();logger.error(e.getMessage(),e);
+	    e.printStackTrace();// logger.error(e.getMessage(),e);
 	    StringWriter errors = new StringWriter();
 	    e.printStackTrace(new PrintWriter(errors));
 	    util.AuditTrail(request, currentUser, "CompanyController.addNewCompany",
@@ -285,7 +285,7 @@ public class CompanySetupController {
 						LayOutPageConstants.STAY_ON_PAGE);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			return new Response(MessageConstants.SYSTEM_BUSY,
@@ -325,7 +325,7 @@ public class CompanySetupController {
 						LayOutPageConstants.STAY_ON_PAGE);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			return new Response(MessageConstants.SYSTEM_BUSY,
@@ -365,7 +365,7 @@ public class CompanySetupController {
 						LayOutPageConstants.STAY_ON_PAGE);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			return new Response(MessageConstants.SYSTEM_BUSY,

@@ -13,7 +13,7 @@ import com.dowhile.dao.SeverityDAO;
  */
 public class SeverityDAOImpl implements SeverityDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -47,7 +47,7 @@ public class SeverityDAOImpl implements SeverityDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -60,7 +60,7 @@ public class SeverityDAOImpl implements SeverityDAO{
 			List<Severity> severityList = getSessionFactory().getCurrentSession().createCriteria(Severity.class).list();
 			return severityList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

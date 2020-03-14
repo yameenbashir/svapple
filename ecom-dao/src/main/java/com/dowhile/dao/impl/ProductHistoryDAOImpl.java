@@ -19,7 +19,7 @@ import com.dowhile.dao.ProductHistoryDAO;
 public class ProductHistoryDAOImpl implements ProductHistoryDAO{
 
 	private SessionFactory sessionFactory;
-	private static Logger logger = Logger.getLogger(ProductHistoryDAOImpl.class.getName());
+	// private static Logger logger = Logger.getLogger(ProductHistoryDAOImpl.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -48,7 +48,7 @@ public class ProductHistoryDAOImpl implements ProductHistoryDAO{
 			return productHistory;
 		}
 		catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -66,7 +66,7 @@ public class ProductHistoryDAOImpl implements ProductHistoryDAO{
 					.setParameter(1, outletId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -83,7 +83,7 @@ public class ProductHistoryDAOImpl implements ProductHistoryDAO{
 					.setParameter(1, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -99,7 +99,7 @@ public class ProductHistoryDAOImpl implements ProductHistoryDAO{
 					.setParameter(0, productId).setParameter(1, companyId).list();
 			return list;
 		} catch (HibernateException ex) {
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}

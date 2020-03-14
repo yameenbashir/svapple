@@ -62,7 +62,7 @@ import com.dowhile.wrapper.StockDataProductsWrapper;
 
 public class POCreateandReceiveController {
 
-	private static Logger logger = Logger.getLogger(POCreateandReceiveController.class.getName());
+	// private static Logger logger = Logger.getLogger(POCreateandReceiveController.class.getName());
 	@Resource
 	private ServiceUtil util;
 
@@ -161,7 +161,7 @@ public class POCreateandReceiveController {
 				return new Response(POCreateandReceiveControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getPOCreateandReceiveControllerData",
@@ -211,7 +211,7 @@ public class POCreateandReceiveController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllOutlets",
@@ -258,7 +258,7 @@ public class POCreateandReceiveController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllStockOrderTypes",
@@ -303,7 +303,7 @@ public class POCreateandReceiveController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.getAllSuppliers",
@@ -371,7 +371,7 @@ public class POCreateandReceiveController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.addStockOrder",
@@ -436,7 +436,7 @@ public class POCreateandReceiveController {
 				}
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "POCreateandReceiveController.addStockOrder",
@@ -529,7 +529,7 @@ public class POCreateandReceiveController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getAllProducts",
@@ -646,7 +646,7 @@ public class POCreateandReceiveController {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getProductVariants",

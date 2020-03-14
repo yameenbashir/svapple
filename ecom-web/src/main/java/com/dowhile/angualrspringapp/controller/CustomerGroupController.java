@@ -44,7 +44,7 @@ import com.dowhile.util.SessionValidator;
 @RequestMapping("/customerGroup")
 public class CustomerGroupController {
 	
-	private static Logger logger = Logger.getLogger(CustomerGroupController.class.getName());
+	// private static Logger logger = Logger.getLogger(CustomerGroupController.class.getName());
 	@Resource
 	private ResourceService resourceService;
 	@Resource
@@ -95,7 +95,7 @@ public class CustomerGroupController {
 				return new Response(customerGroupControllerBean, StatusConstants.SUCCESS,
 						LayOutPageConstants.STAY_ON_PAGE);
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CustomerGroupController.getCustomerGroupControllerData",
@@ -143,7 +143,7 @@ public class CustomerGroupController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CustomerGroupController.addCustomerGroup",
@@ -183,7 +183,7 @@ public class CustomerGroupController {
 
 
 			}catch(Exception e){
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CustomerGroupController.updateCustomerGroup",
@@ -235,7 +235,7 @@ public class CustomerGroupController {
 							LayOutPageConstants.STAY_ON_PAGE);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();logger.error(e.getMessage(),e);
+				e.printStackTrace();// logger.error(e.getMessage(),e);
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "CustomerGroupController.getAllCustomerGroups",
@@ -284,7 +284,7 @@ public class CustomerGroupController {
 				
 			}
 		} catch (Exception e) {
-			e.printStackTrace();logger.error(e.getMessage(),e);
+			e.printStackTrace();// logger.error(e.getMessage(),e);
 			StringWriter errors = new StringWriter();
 			e.printStackTrace(new PrintWriter(errors));
 			util.AuditTrail(request, currentUser, "CustomerGroupController.getAllCountries",

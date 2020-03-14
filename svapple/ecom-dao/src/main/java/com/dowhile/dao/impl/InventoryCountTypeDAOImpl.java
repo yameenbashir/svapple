@@ -14,7 +14,7 @@ import com.dowhile.dao.InventoryCountTypeDAO;
  */
 public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 
-	private SessionFactory sessionFactory;private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
+	private SessionFactory sessionFactory;// private static Logger logger = Logger.getLogger(CashManagementController.class.getName());
 
 	/**
 	 * Get Hibernate Session Factory
@@ -43,7 +43,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			return inventoryCountType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -56,7 +56,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			return inventoryCountType;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -69,7 +69,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			return true;
 
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return false;
 	}
@@ -87,7 +87,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 				return list.get(0);
 			}
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
@@ -100,7 +100,7 @@ public class InventoryCountTypeDAOImpl implements InventoryCountTypeDAO{
 			List<InventoryCountType> inventoryCountTypeList = getSessionFactory().getCurrentSession().createCriteria(InventoryCountType.class).list();
 			return inventoryCountTypeList;
 		}catch(HibernateException ex){
-			ex.printStackTrace();logger.error(ex.getMessage(),ex);
+			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
 		return null;
 	}
