@@ -137,8 +137,8 @@ public class PriceBookController {
 						
 						Calendar localTIme = new GregorianCalendar(TimeZone.getTimeZone("UTC +7"));
 						localTIme.setTime(priceBook.getValidTo());
-//						localTIme.add(Calendar.HOUR_OF_DAY, 9);//For live
-						localTIme.add(Calendar.HOUR_OF_DAY, 0);//For local
+						localTIme.add(Calendar.HOUR_OF_DAY, 9);//For live
+//						localTIme.add(Calendar.HOUR_OF_DAY, 0);//For local
 						/*System.out.println("priceBook.getValidTo(): "+priceBook.getValidTo());
 						System.out.println("todayDate: "+todayDate);
 						System.out.println("localTIme.getTime().equals(new Date())||localTIme.getTime().after(new Date()): "+localTIme.getTime().equals(todayDate)+localTIme.getTime().after(todayDate));*/

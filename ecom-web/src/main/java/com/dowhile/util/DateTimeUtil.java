@@ -32,8 +32,8 @@ public class DateTimeUtil {
 			Calendar localTIme = new GregorianCalendar(TimeZone.getTimeZone("UTC +7"));
 			localTIme.setTime(dbDateTime);
 //			System.out.println(localTIme.getTimeZone());
-//			localTIme.add(Calendar.HOUR_OF_DAY, 9);//For Live Deployment
-			localTIme.add(Calendar.HOUR_OF_DAY, 0);//For Local Deployment
+			localTIme.add(Calendar.HOUR_OF_DAY, 9);//For Live Deployment
+//			localTIme.add(Calendar.HOUR_OF_DAY, 0);//For Local Deployment
 			 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dbDateTimeTOString = inputFormat.format(localTIme.getTime()). toString();
 			dbDateTimeTOString = dbDateTimeTOString.substring(0, dbDateTimeTOString.length());
