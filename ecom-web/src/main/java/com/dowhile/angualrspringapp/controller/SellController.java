@@ -1129,7 +1129,7 @@ public class SellController  {
 							Contact  customer = customerService.getContactByID(Integer.parseInt( invoiceMainBean.getCustomerId()), currentUser.getCompany().getCompanyId());
 							if(customer.getContactBalance()!=null) {
 								invoiceMainBean.setCustomerPreviousBalance(customer.getContactBalance().toString());
-								logger.info(invoiceMainBean.getCustomerPreviousBalance());
+								//logger.info(invoiceMainBean.getCustomerPreviousBalance());
 							}
 						}
 

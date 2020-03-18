@@ -1008,6 +1008,9 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 //		.getElementById('barcodeImage');
 //		barcodeImage.src = barcode.exportToBase64(width, 100, 0);
 //		}
+		
+		
+		
 
 	};
 	$scope.salenoncash = function(transactionType) {
