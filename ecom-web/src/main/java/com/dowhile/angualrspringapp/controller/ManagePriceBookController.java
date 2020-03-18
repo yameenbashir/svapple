@@ -1044,7 +1044,7 @@ public class ManagePriceBookController {
 				boolean duplicateOutletsExist = false;
 				if(priceBookList!=null && priceBookList.size()>0){
 					for(PriceBook priceBook:priceBookList){
-						if(priceBook.getPriceBookId()==Integer.valueOf(priceBookBean.getPriceBookId())){
+						if(priceBook.getPriceBookId().equals(Integer.valueOf(priceBookBean.getPriceBookId()))){
 							continue;
 						}
 						String [] outletgroups = priceBook.getOuteletsGroup().split(",");
