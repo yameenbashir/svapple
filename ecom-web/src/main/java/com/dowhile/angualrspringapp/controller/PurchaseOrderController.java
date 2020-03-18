@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,7 +77,7 @@ public class PurchaseOrderController {
 	@Resource
 	private ConfigurationService configurationService;
 
-	private StockBasicDataWrapper stockBasicDataWrapper = new StockBasicDataWrapper();
+	private StockBasicDataWrapper stockBasicDataWrapper;
 	
 	@RequestMapping("/layout")
 	public String getPurchaseOrderControllerPartialPage(ModelMap modelMap) {
@@ -89,16 +88,15 @@ public class PurchaseOrderController {
 	@RequestMapping(value = "/getPurchaseOrderControllerData/{sessionId}", method = RequestMethod.POST)
 	public @ResponseBody Response getPurchaseOrderControllerData(@PathVariable("sessionId") String sessionId,
 			HttpServletRequest request) {
-
 		List<OutletBean> outletBeansList = null;
 		List<StockOrderTypeBean> stockOrderTypeBeansList= null;
 		List<SupplierBean> supplierBeansList = null;
-
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
 			try {				
+				initializeClassObjects();
 				stockBasicDataWrapper = stockOrderService.GetStockBasicData(currentUser.getCompany().getCompanyId());
 				Response response = getAllOutlets(sessionId,request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
@@ -128,7 +126,7 @@ public class PurchaseOrderController {
 				else{
 					purchaseOrderControllerBean.setRetailPriceBill("false");
 				}		
-
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "PurchaseOrderController.getPurchaseOrderControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived PurchaseOrderControllerData successfully ",false);
 				return new Response(purchaseOrderControllerBean, StatusConstants.SUCCESS,
@@ -203,15 +201,12 @@ public class PurchaseOrderController {
 	public @ResponseBody
 	Response getAllOutlets(@PathVariable("sessionId") String sessionId,
 			HttpServletRequest request) {
-
 		List<OutletBean> outletBeansList = new ArrayList<>();
 		List<Outlet> outletList = null;
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-
 			try {
-
 				//outletList = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 				outletList = stockBasicDataWrapper.getOutletList();
 				if (outletList != null) {
@@ -578,5 +573,13 @@ public class PurchaseOrderController {
 		}		
 	}
 
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of PurchaseOrderController");
+		stockBasicDataWrapper = new StockBasicDataWrapper();
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of PurchaseOrderController");
+		stockBasicDataWrapper = null;
+	}
 }
 

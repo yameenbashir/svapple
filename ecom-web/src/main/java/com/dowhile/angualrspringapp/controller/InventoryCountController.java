@@ -95,7 +95,7 @@ public class InventoryCountController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+			//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 			Map<Integer, Outlet> outletsMap = new HashMap<>();
 			List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 			if(outlets!=null){
