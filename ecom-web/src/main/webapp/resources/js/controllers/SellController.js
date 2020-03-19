@@ -1027,7 +1027,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			
 		}*/if($scope.InvoiceMainBean.laybyamount!=null || !$scope.selectedItem.item == 'undefined'){
 			if($scope.InvoiceMainBean.customerPreviousBalance!=null){
-				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.InvoiceMainBean.customerPreviousBalance);
+				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount);
 			}else if ($scope.selectedItem.item.customerBalance){
 				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.selectedItem.item.customerBalance);
 					}
