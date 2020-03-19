@@ -37,10 +37,12 @@ import com.dowhile.frontend.mapping.bean.OutletBean;
 import com.dowhile.frontend.mapping.bean.PriceBookBean;
 import com.dowhile.service.ContactGroupService;
 import com.dowhile.service.OutletService;
+import com.dowhile.service.PriceBookControllerWrapperService;
 import com.dowhile.service.PriceBookService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.PriceBookControllerWrapper;
 
 /**
  * Yameen Bashir
@@ -58,6 +60,9 @@ public class NewPriceBookController {
 	private OutletService outletService;
 	@Resource
 	private PriceBookService priceBookService;
+	@Resource
+	private PriceBookControllerWrapperService priceBookControllerWrapperService;
+	private PriceBookControllerWrapper priceBookControllerWrapper;
 
 	@RequestMapping("/layout")
 	public String getNewPriceBookControllerPartialPage(ModelMap modelMap) {
@@ -75,7 +80,8 @@ public class NewPriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-
+				initializeClassObjects();
+				priceBookControllerWrapper = priceBookControllerWrapperService.getNewPriceBookControllerDataByCompanyId(currentUser.getCompany().getCompanyId());
 				Response response = getOutletsForDropDown(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					outletBeans = (List<OutletBean>) response.data;
@@ -88,7 +94,7 @@ public class NewPriceBookController {
 				NewPriceBookControllerBean newPriceBookControllerBean = new NewPriceBookControllerBean();
 				newPriceBookControllerBean.setCustomerGroupBeansList(customerGroupBeansList);
 				newPriceBookControllerBean.setOutletBeans(outletBeans);
-
+				destroyClassObjects();
 				util.AuditTrail(request, currentUser, "NewPriceBookController.getNewPriceBookControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived NewPriceBookControllerData successfully ",false);
 				return new Response(newPriceBookControllerBean, StatusConstants.SUCCESS,
@@ -99,6 +105,7 @@ public class NewPriceBookController {
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewPriceBookController.getNewPriceBookControllerData",
 						"Error Occured " + errors.toString(),true);
+				destroyClassObjects();
 				return new Response(MessageConstants.SYSTEM_BUSY,
 						StatusConstants.RECORD_NOT_FOUND,
 						LayOutPageConstants.STAY_ON_PAGE);
@@ -122,7 +129,8 @@ public class NewPriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				outlets = priceBookControllerWrapper.getOutlets();
+//				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 				if(outlets!=null){
 					for(Outlet outlet:outlets){
 						OutletBean outletBean = new OutletBean();
@@ -165,7 +173,8 @@ public class NewPriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				customerGroupList = customerGroupService.GetAllContactGroup(currentUser.getCompany().getCompanyId());
+				customerGroupList = priceBookControllerWrapper.getCustomerGroupList();
+//				customerGroupList = customerGroupService.GetAllContactGroup(currentUser.getCompany().getCompanyId());
 				if (customerGroupList != null) {
 					for (ContactGroup customerGroup : customerGroupList) {
 						CustomerGroupBean customerGroupBean = new CustomerGroupBean();
@@ -210,6 +219,7 @@ public class NewPriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
+				initializeClassObjects();
 				String outletGroups = "";
 				List<OutletBean> outletBeans = priceBookBean.getOutletBeans();
 				Map<String,OutletBean> outletgroupsIdsMap = new HashMap<>();
@@ -222,7 +232,10 @@ public class NewPriceBookController {
 						outletGroups = outletGroups+","+outletBean.getOutletId();
 					}
 				}
-				List<PriceBook> priceBookList = priceBookService.getActivePriceBooksByDateRangeCompanyId(DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidFrom()), DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidTo()), currentUser.getCompany().getCompanyId());
+				priceBookControllerWrapper = priceBookControllerWrapperService.getActivePriceBooksAndContactGroupByDateRangeCompanyIdContactGroupId(DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidFrom()), DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidTo()),
+						currentUser.getCompany().getCompanyId(),Integer.valueOf(priceBookBean.getContactGroupId()));
+				List<PriceBook> priceBookList = priceBookControllerWrapper.getPriceBookList();
+//				List<PriceBook> priceBookList = priceBookService.getActivePriceBooksByDateRangeCompanyId(DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidFrom()), DateTimeUtil.convertGuiDateFormatYYYYMMDDToDBDateFormat(priceBookBean.getValidTo()), currentUser.getCompany().getCompanyId());
 				boolean duplicateOutletsExist = false;
 				if(priceBookList!=null && priceBookList.size()>0){
 					for(PriceBook priceBook:priceBookList){
@@ -235,6 +248,7 @@ public class NewPriceBookController {
 							}
 						}
 						if(duplicateOutletsExist){
+							destroyClassObjects();
 							util.AuditTrail(request, currentUser, "NewPriceBookController.addPriceBook", 
 									"User "+ currentUser.getUserEmail()+MessageConstants.PRICEBOOK_ALREADY_EXIST+outletgroupsName,false);
 							return new Response(MessageConstants.PRICEBOOK_ALREADY_EXIST+outletgroupsName, StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
@@ -250,7 +264,8 @@ public class NewPriceBookController {
 					PriceBook priceBook = new PriceBook();
 
 					priceBook.setCompany(currentUser.getCompany());
-					ContactGroup contactGroup = customerGroupService.getContactGroupByContactGroupId(Integer.valueOf(priceBookBean.getContactGroupId()), currentUser.getCompany().getCompanyId());
+					ContactGroup contactGroup = priceBookControllerWrapper.getCustomerGroupList().get(0);
+//					ContactGroup contactGroup = customerGroupService.getContactGroupByContactGroupId(Integer.valueOf(priceBookBean.getContactGroupId()), currentUser.getCompany().getCompanyId());
 					priceBook.setContactGroup(contactGroup);
 					priceBook.setUserByCreatedBy(currentUser);
 					priceBook.setCreatedDate(new Date());
@@ -288,12 +303,14 @@ public class NewPriceBookController {
 					}
 
 					PriceBook prceBook = priceBookService.addPriceBook(priceBook);
+					destroyClassObjects();
 					util.AuditTrail(request, currentUser, "NewPriceBookController.addPriceBook", 
 							"User "+ currentUser.getUserEmail()+" added PriceBook successfully ",false);
 					return new Response(prceBook.getPriceBookId()+"", StatusConstants.SUCCESS,prceBook.getFlatSale());
 				}else{
 					util.AuditTrail(request, currentUser, "NewPriceBookController.addPriceBook", 
 							"User "+ currentUser.getUserEmail()+" unable to add price book because pricebook already exist with date range. ",false);
+					destroyClassObjects();
 					return new Response(MessageConstants.PRICEBOOK_ALREADY_EXIST, StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STAY_ON_PAGE);
 				}
 
@@ -305,11 +322,25 @@ public class NewPriceBookController {
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "NewPriceBookController.addPriceBook",
 						"Error Occured " + errors.toString(),true);
+				destroyClassObjects();
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
 			}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}
+	}
+	
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of NewPriceBookController at "+new Date());
+		
+		priceBookControllerWrapper = null;
+		
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of NewPriceBookController at "+new Date());
+		
+		priceBookControllerWrapper = null;
+		
 	}
 
 

@@ -51,6 +51,7 @@ import com.dowhile.frontend.mapping.bean.TagBean;
 import com.dowhile.service.ConfigurationService;
 import com.dowhile.service.ContactGroupService;
 import com.dowhile.service.OutletService;
+import com.dowhile.service.PriceBookControllerWrapperService;
 import com.dowhile.service.PriceBookDetailService;
 import com.dowhile.service.PriceBookDetailSummaryService;
 import com.dowhile.service.PriceBookService;
@@ -62,6 +63,7 @@ import com.dowhile.service.TagService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.PriceBookControllerWrapper;
 
 /**
  * Yameen Bashir
@@ -97,6 +99,9 @@ public class ManagePriceBookController {
 	ProductTagsController ProductTagsController ;
 	@Resource
 	private ConfigurationService configurationService;
+	@Resource
+	private PriceBookControllerWrapperService priceBookControllerWrapperService;
+	private PriceBookControllerWrapper priceBookControllerWrapper;
 
 	@SuppressWarnings("rawtypes")
 	private Map outletMap = new HashMap<>();
@@ -128,7 +133,15 @@ public class ManagePriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-
+				initializeClassObjects();
+				System.out.println("getManagePriceBookControllerData request received for user: "+currentUser.getUserEmail()+" for companyId / company : "+currentUser.getCompany().getCompanyId()+" / "+currentUser.getCompany().getCompanyName()
+						+ " against outletId / outlet: "+currentUser.getOutlet().getOutletId()+" / "+currentUser.getOutlet().getOutletName());
+				long start = System.currentTimeMillis();
+				priceBookControllerWrapper = priceBookControllerWrapperService.getManagePriceBookControllerDataByCompanyIdOutletIdPriceBookId(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(),
+						Integer.valueOf(priceBookId));
+				long endWrapper   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time for method getManagePriceBookControllerData to get priceBookControllerWrapper is " + formatter.format((endWrapper - start) / 1000d) + " seconds");
 				Response response = getOutletsForDropDown(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					outletBeans = (List<OutletBean>) response.data;
@@ -180,7 +193,9 @@ public class ManagePriceBookController {
 				}else{
 					newPriceBookControllerBean.setShowProductTag(ControllersConstants.FALSE);
 				}
-
+				destroyClassObjects();
+				long endTimeTotal   = System.currentTimeMillis();
+				System.out.println("For User "+ currentUser.getUserEmail()+ " Execution time to get ManagePriceBookController.getManagePriceBookControllerData is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
 				util.AuditTrail(request, currentUser, "ManagePriceBookController.getManagePriceBookControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived ManagePriceBookControllerData successfully ",false);
 				return new Response(newPriceBookControllerBean, StatusConstants.SUCCESS,
@@ -191,6 +206,7 @@ public class ManagePriceBookController {
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManagePriceBookController.getManagePriceBookControllerData",
 						"Error Occured " + errors.toString(),true);
+				destroyClassObjects();
 				return new Response(MessageConstants.SYSTEM_BUSY,
 						StatusConstants.RECORD_NOT_FOUND,
 						LayOutPageConstants.STAY_ON_PAGE);
@@ -214,7 +230,8 @@ public class ManagePriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+				outlets = priceBookControllerWrapper.getOutlets();
+//				outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 				if(outlets!=null){
 					for(Outlet outlet:outlets){
 						outletMap.put(outlet.getOutletId(), outlet);
@@ -266,9 +283,11 @@ public class ManagePriceBookController {
 			User currentUser = (User) session.getAttribute("user");
 			List<ProductTagBean> productTagBeanList = new ArrayList<>();
 			try {
-				List<ProductTag> productTags = productTagService.getAllProductTagsByCompanyId(currentUser.getCompany().getCompanyId());
+				List<ProductTag> productTags =priceBookControllerWrapper.getProductTags();
+//				List<ProductTag> productTags = productTagService.getAllProductTagsByCompanyId(currentUser.getCompany().getCompanyId());
 				if(productTags!=null){
-					List<Tag> tagList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
+					List<Tag> tagList = priceBookControllerWrapper.getTagList();
+//					List<Tag> tagList = tagService.getAllTags(currentUser.getCompany().getCompanyId());
 					for(Tag tag:tagList){
 						tagMap.put(tag.getTagId(), tag);
 					}
@@ -316,7 +335,8 @@ public class ManagePriceBookController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
-				customerGroupList = customerGroupService.GetAllContactGroup(currentUser.getCompany().getCompanyId());
+				customerGroupList = priceBookControllerWrapper.getCustomerGroupList();
+//				customerGroupList = customerGroupService.GetAllContactGroup(currentUser.getCompany().getCompanyId());
 				if (customerGroupList != null) {
 					for(ContactGroup contactGroup:customerGroupList){
 						contactGroupMap.put(contactGroup.getContactGroupId(), contactGroup);
@@ -366,7 +386,8 @@ public class ManagePriceBookController {
 			try {
 				List<OutletBean> outletBeans =  new ArrayList<>();
 
-				PriceBook priceBook = priceBookService.getPriceBookByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
+				PriceBook priceBook = priceBookControllerWrapper.getPriceBookList().get(0);
+//				PriceBook priceBook = priceBookService.getPriceBookByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
 				if(priceBook!=null){
 					PriceBookBean priceBookBean = new PriceBookBean();
 					if(priceBook.getOutlet()!=null){
@@ -434,7 +455,8 @@ public class ManagePriceBookController {
 			User currentUser = (User) session.getAttribute("user");
 			try {
 				List<ProductVariantBean> productVariantBeansList = new ArrayList<>();
-				List<PriceBookDetailSummary> priceBookDetailSummaryList = priceBookDetailSummaryService.getPriceBookDetailSummaryByPriceBookIdCompanyIdGroupByUuId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
+				List<PriceBookDetailSummary> priceBookDetailSummaryList = priceBookControllerWrapper.getPriceBookDetailSummaryList();
+//				List<PriceBookDetailSummary> priceBookDetailSummaryList = priceBookDetailSummaryService.getPriceBookDetailSummaryByPriceBookIdCompanyIdGroupByUuId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
 				if(priceBookDetailSummaryList!=null){
 					for(PriceBookDetailSummary priceBookDetailSummary:priceBookDetailSummaryList){
 						ProductVariantBean productVariantBean = new ProductVariantBean();
@@ -490,7 +512,8 @@ public class ManagePriceBookController {
 			List<ProductVariant> productVariantList = null;
 			try {	
 				//New rule implemented whatever the case we only bring warehouse product variants for pricebook
-				productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
+				productVariantList = priceBookControllerWrapper.getProductVariantList();
+//				productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
 				/*if(outletId.equalsIgnoreCase("-1")||outletId.equalsIgnoreCase("")||outletId.isEmpty()){
 					productVariantList = productVariantService.getAllProductVariantsGroupbyUuid(currentUser.getCompany().getCompanyId());
 				}else{
@@ -558,7 +581,8 @@ public class ManagePriceBookController {
 			List<Product> productList = null;
 			try {	
 				//New rule implemented so whatever the case we only bring warehouse products for pricebook
-				productList = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
+				productList = priceBookControllerWrapper.getProductList();
+//				productList = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
 				/*if(outletId.equalsIgnoreCase("-1")||outletId.equalsIgnoreCase("")||outletId.isEmpty()){
 					productList = productService.getAllProductsByCompanyIdGroupByProductUuId(currentUser.getCompany().getCompanyId());
 				}else{
@@ -922,12 +946,24 @@ public class ManagePriceBookController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			Map<Integer, Product> productMap = productService.getAllActiveProductsMapByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
-			Map<Integer, ProductVariant> productVariantMap = productVariantService.getAllActiveProductsVariantMapByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
-			Map<Integer, PriceBookDetail> priceBookDetailMap =	priceBookDetailService.getAllActivePriceBookDetailsMapByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
+			initializeClassObjects();
+			System.out.println("manageProductsInPriceBook request received for user: "+currentUser.getUserEmail()+" for companyId / company : "+currentUser.getCompany().getCompanyId()+" / "+currentUser.getCompany().getCompanyName()
+					+ " against outletId / outlet: "+currentUser.getOutlet().getOutletId()+" / "+currentUser.getOutlet().getOutletName());
+			long start = System.currentTimeMillis();
+			priceBookControllerWrapper = priceBookControllerWrapperService.manageProductsInPriceBookByCompanyIdOutletIdPriceBookId(currentUser.getCompany().getCompanyId(), currentUser.getOutlet().getOutletId(), Integer.valueOf(priceBookId));
+			long endWrapper   = System.currentTimeMillis();
+			NumberFormat formatter = new DecimalFormat("#0.00000");
+			System.out.println("Execution time for method manageProductsInPriceBook to get priceBookControllerWrapper is " + formatter.format((endWrapper - start) / 1000d) + " seconds");
+			Map<Integer, Product> productMap = priceBookControllerWrapper.getProductMap();
+			Map<Integer, ProductVariant> productVariantMap = priceBookControllerWrapper.getProductVariantMap();
+			Map<Integer, PriceBookDetail> priceBookDetailMap = priceBookControllerWrapper.getPriceBookDetailMap();
+			PriceBook priceBook = priceBookControllerWrapper.getPriceBookList().get(0);
+//			Map<Integer, Product> productMap = productService.getAllActiveProductsMapByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+//			Map<Integer, ProductVariant> productVariantMap = productVariantService.getAllActiveProductsVariantMapByOutletIdCompanyId(currentUser.getOutlet().getOutletId(),currentUser.getCompany().getCompanyId());
+//			Map<Integer, PriceBookDetail> priceBookDetailMap =	priceBookDetailService.getAllActivePriceBookDetailsMapByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
 			int skippedUpdatesCount = 0;
 			try {
-				PriceBook priceBook = priceBookService.getPriceBookByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
+//				PriceBook priceBook = priceBookService.getPriceBookByPriceBookIdCompanyId(Integer.valueOf(priceBookId), currentUser.getCompany().getCompanyId());
 				if(priceBook!=null && productVariantBeansList!=null){
 					for(ProductVariantBean productVariantBean:productVariantBeansList){
 						 if(productVariantBean.getPriceBookDetailId()==null||productVariantBean.getPriceBookDetailId().equalsIgnoreCase("")){
@@ -993,11 +1029,14 @@ public class ManagePriceBookController {
 							System.out.println("====Case missed==== productVariantBean.getPriceBookDetailId():  "+productVariantBean.getPriceBookDetailId());
 						}
 					}
-					System.out.println("skippedUpdatesCount: "+skippedUpdatesCount+" while productVariantBeansList size is: "+productVariantBeansList.size());
+					System.out.println("In manageProductsInPriceBook systematically products skipped count : "+skippedUpdatesCount+" while received productVariantBeansList size is: "+productVariantBeansList.size());
 					priceBookDetailService.addPriceBookDetail(bookDetailsNewAdd);
 					priceBookDetailService.updatePriceBookDetailList(priceBookDetailsUpdateList);
 					util.AuditTrail(request, currentUser, "ManagePriceBookController.manageProductsInPriceBook", 
 							"User "+ currentUser.getUserEmail()+" added products in pricebook successfully ",false);
+					destroyClassObjects();
+					long endTimeTotal   = System.currentTimeMillis();
+					System.out.println("For User "+ currentUser.getUserEmail()+ " Execution time to add/update products through ManagePriceBookController.manageProductsInPriceBook is " + formatter.format((endTimeTotal - start) / 1000d) + " seconds");
 					return new Response(MessageConstants.REQUREST_PROCESSED, StatusConstants.SUCCESS,LayOutPageConstants.PRICEBOOK);
 				}else{
 					util.AuditTrail(request, currentUser, "ManagePriceBookController.manageProductsInPriceBook", 
@@ -1011,6 +1050,7 @@ public class ManagePriceBookController {
 				e.printStackTrace(new PrintWriter(errors));
 				util.AuditTrail(request, currentUser, "ManagePriceBookController.manageProductsInPriceBook",
 						"Error Occured " + errors.toString(),true);
+				destroyClassObjects();
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.RECORD_NOT_FOUND,LayOutPageConstants.STAY_ON_PAGE);
 			}
 		}else{
@@ -1250,6 +1290,27 @@ public class ManagePriceBookController {
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}
 
+	}
+	
+	public void initializeClassObjects(){
+		System.out.println("Inside method initializeClassObjects of ManagePriceBookController at "+new Date());
+		
+		priceBookControllerWrapper = null;
+		outletMap = new HashMap<>();
+		contactGroupMap = new HashMap<>();
+		productMap = new HashMap<>();
+		tagMap = new HashMap<>();
+		
+	}
+	public void destroyClassObjects(){
+		System.out.println("Inside method destroyClassObjects of ManagePriceBookController at "+new Date());
+		
+		priceBookControllerWrapper = null;
+		outletMap = null;
+		contactGroupMap = null;
+		productMap = null;
+		tagMap = null;
+		
 	}
 }
 
