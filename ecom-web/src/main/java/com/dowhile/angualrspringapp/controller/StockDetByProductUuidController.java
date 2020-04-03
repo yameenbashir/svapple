@@ -74,6 +74,7 @@ public class StockDetByProductUuidController {
 	
 	//private static Logger logger = Logger.getLogger(StockDetByProductUuidController.class.getName());  
 	
+	
 	@Resource
 	private ServiceUtil util;
 	@Resource

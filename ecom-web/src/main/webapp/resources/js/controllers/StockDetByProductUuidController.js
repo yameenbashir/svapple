@@ -80,6 +80,7 @@ var StockDetByProductUuidController = ['$scope', '$http', '$sce', '$window','$co
 			$scope.fetchData();
 		}
 	};
+	
 
 	$scope.fetchData = function() {
 		$scope.purchaseOrderDetailsLoadedFully = false;

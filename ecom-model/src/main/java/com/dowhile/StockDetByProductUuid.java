@@ -29,6 +29,7 @@ public class StockDetByProductUuid {
 	private Integer UPDATED_BY;
 	private Integer COMPANY_ASSOCIATION_ID;
 	
+	
 	private String  STOCK_REF_NO;
 	private String STOCK_ORDER_TYPE_DESC;
 	private String Source;

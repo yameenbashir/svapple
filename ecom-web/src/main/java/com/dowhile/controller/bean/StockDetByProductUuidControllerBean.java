@@ -13,6 +13,7 @@ import com.dowhile.frontend.mapping.bean.ProductVariantBean;
  */
 public class StockDetByProductUuidControllerBean {
 	
+	
 	private List<ProductVariantBean> productBeansList;
 	
 	public StockDetByProductUuidControllerBean() {

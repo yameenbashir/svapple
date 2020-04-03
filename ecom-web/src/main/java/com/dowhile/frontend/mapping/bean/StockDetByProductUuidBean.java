@@ -42,6 +42,7 @@ public class StockDetByProductUuidBean {
     private String createdBy;
     private String updatedBy;
     
+    
 	public StockDetByProductUuidBean()
 	{
 		
