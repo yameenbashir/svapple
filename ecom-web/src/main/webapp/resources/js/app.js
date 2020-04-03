@@ -6392,6 +6392,65 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 			}
 		}
 	});
+	
+	
+	$routeProvider.when('/stockDetByProductUuid', {
+		templateUrl: 'resources/html/stockDetByProductUuid/layout.html',
+		controller: StockDetByProductUuidController,
+		resolve: {
+			"StockDetByProductUuidControllerPreLoad": function( $q, $timeout,$http ,$cookieStore,$window,$rootScope) {
+				var myDefer = $q.defer();
+				var controllerData ='';
+				$rootScope.globalPageLoader = true;
+
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["stockDetByProductUuid"]==true){
+					$rootScope.productStockHistoryLoadedFully = true;
+					controllerData = $http.post('stockDetByProductUuid/getStockDetByProductUuidControllerData/'+$cookieStore.get('_s_tk_com'))
+					.success(function(Response) {
+						controllerData = Response.data;
+						$rootScope.productStockDetStartDate = "undefined";
+						$rootScope.productStockDetEndDate = "undefined";
+						$timeout(function(){
+							myDefer.resolve({
+								loadControllerData: function() {
+									return 	controllerData;  
+								}
+							});
+						},10);
+					}).error(function() {
+						$window.location = '/app/#/login';
+					});
+
+				}else{
+					if(typeof ($rootScope.menuMap) != "undefined"){
+						$window.location = '/app/#/login';
+						$rootScope.showErrorLoginModal = true;
+						$timeout(function(){
+							$rootScope.showErrorLoginModal = false;
+						}, 2000);	
+					}else{
+						$window.location = '/app/#/login';
+
+					}	    						
+				}
+				return myDefer.promise;
+			}
+		}
+	}); 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	$routeProvider.when('/backup', {
 		templateUrl: 'resources/html/backup/layout.html',
 		controller: BackupController

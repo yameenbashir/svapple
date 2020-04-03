@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dowhile.StockDetByProductUuid;
 import com.dowhile.StockOrderDetail;
 import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.dao.StockOrderDetailDAO;
@@ -114,4 +115,13 @@ public class StockOrderDetailServiceImpl implements StockOrderDetailService{
 		// TODO Auto-generated method stub
 		return getStockOrderDetailDAO().getStockOrderDetailCustom(stockOrderId, outletId);
 	}
+
+	@Override
+	public List<StockDetByProductUuid> getStockOrderDetailByProductUUID(int companyId, int status, int stockOrdeType,
+			String productUuid, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return getStockOrderDetailDAO().getStockOrderDetailByProductUUID(companyId,status,stockOrdeType,productUuid,startDate,endDate);
+	}
+
+	
 }

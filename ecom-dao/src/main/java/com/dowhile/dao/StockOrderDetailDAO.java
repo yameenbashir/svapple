@@ -6,6 +6,7 @@ package com.dowhile.dao;
 import java.util.List;
 import java.util.Date;
 
+import com.dowhile.StockDetByProductUuid;
 import com.dowhile.StockOrder;
 import com.dowhile.StockOrderDetail;
 import com.dowhile.StockOrderDetailCustom;
@@ -26,7 +27,11 @@ public interface StockOrderDetailDAO {
 	List<StockOrderDetail> getStockOrderDetailByStockOrderId(int stockOrderID,int companyId);
 	List<StockOrderDetail> getAllStockOrderDetails(int companyId);
 	List<StockOrderDetail> getStockOrderDetailByProductId(int productId, Date  startDate, Date endDate, int companyId);
+	List<StockDetByProductUuid> getStockOrderDetailByProductUUID(int companyId, int status, int stockOrdeType, String productUuid,Date startDate,Date endDate);
+	
 	List<StockOrderDetail> getStockOrderDetailByProductVariantId(int productVariantId, Date  startDate, Date endDate, int companyId);
 	List<StockOrderDetail> getStockOrderDetailByProductVariantsId(List<Integer> productVariantsId, Date  startDate, Date endDate, int companyId);	
 	List<StockOrderDetailCustom> getStockOrderDetailCustom(int stockOrderId, int outletId);
+	/*List<StockOrderDetail> getStockOrderDetailByProductUUID(int companyId, int status, String stockOrdreType,
+			String productUUID, Date startDate, Date endDate);*/
 }

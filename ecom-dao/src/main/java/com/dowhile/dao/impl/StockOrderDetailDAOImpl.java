@@ -14,6 +14,7 @@ import org.hibernate.transform.Transformers;
 
 import com.dowhile.Product;
 import com.dowhile.ProductVariant;
+import com.dowhile.StockDetByProductUuid;
 import com.dowhile.StockOrderDetail;
 import com.dowhile.StockOrderDetailCustom;
 import com.dowhile.dao.StockOrderDetailDAO;
@@ -353,6 +354,34 @@ public List<StockOrderDetailCustom> getStockOrderDetailCustom(int stockOrderId, 
 			}			
 		}catch(HibernateException ex){
 			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StockDetByProductUuid> getStockOrderDetailByProductUUID(int companyId, int status, int stockOrdeType,
+			String productUuid, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		List<StockDetByProductUuid> list = null;
+		try {
+				list = getSessionFactory().getCurrentSession()
+						.createSQLQuery("call GetStockDetByProductUUID(?,?,?,?,?,?)")
+						.setParameter(0, companyId)
+						.setParameter(1, status)
+						.setParameter(2, stockOrdeType)
+						.setParameter(3, productUuid)
+						.setParameter(4, startDate)
+						.setParameter(5, endDate)
+						.setResultTransformer(Transformers.aliasToBean(StockDetByProductUuid.class))
+						.list();
+				if(list!=null && list.size()>0) {
+					return list;
+				}
+			
+			
+		}catch(HibernateException ex) {
+			ex.printStackTrace();
 		}
 		return null;
 	}
