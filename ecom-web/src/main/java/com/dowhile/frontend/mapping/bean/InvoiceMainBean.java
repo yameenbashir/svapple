@@ -165,7 +165,7 @@ public class InvoiceMainBean {
 	private String synchedInd;
 	private String customername;
 	private String currentPayment;  // for alreadylayby invoice
-	private String customerPreviousBalance;
+	private String customerUpdatedBalance;
 	private String customerTotalPayments;
 	private String insertedby;
 	private String insertedbyname;
@@ -239,14 +239,14 @@ public class InvoiceMainBean {
 	/**
 	 * @return the customerPreviousBalance
 	 */
-	public String getCustomerPreviousBalance() {
-		return customerPreviousBalance;
+	public String getCustomerUpdatedBalance() {
+		return customerUpdatedBalance;
 	}
 	/**
 	 * @param customerPreviousBalance the customerPreviousBalance to set
 	 */
-	public void setCustomerPreviousBalance(String customerPreviousBalance) {
-		this.customerPreviousBalance = customerPreviousBalance;
+	public void setCustomerUpdatedBalance(String customerUpdatedBalance) {
+		this.customerUpdatedBalance = customerUpdatedBalance;
 	}
 	/**
 	 * @return the customerTotalPayments

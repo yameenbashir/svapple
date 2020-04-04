@@ -1128,8 +1128,9 @@ public class SellController  {
 						{
 							Contact  customer = customerService.getContactByID(Integer.parseInt( invoiceMainBean.getCustomerId()), currentUser.getCompany().getCompanyId());
 							if(customer.getContactBalance()!=null) {
-								invoiceMainBean.setCustomerPreviousBalance(customer.getContactBalance().toString());
+								invoiceMainBean.setCustomerUpdatedBalance(customer.getContactBalance().toString());
 								//logger.info(invoiceMainBean.getCustomerPreviousBalance());
+								
 							}
 						}
 
@@ -1294,8 +1295,8 @@ public class SellController  {
 						}
 						Contact  customer = customerService.getContactByID(Integer.parseInt( invoiceMainBean.getCustomerId()), currentUser.getCompany().getCompanyId());
 						if(customer.getContactBalance()!=null) {
-							invoiceMainBean.setCustomerPreviousBalance(customer.getContactBalance().toString());
-							logger.info(invoiceMainBean.getCustomerPreviousBalance());
+							invoiceMainBean.setCustomerUpdatedBalance(customer.getContactBalance().toString());
+							logger.info(invoiceMainBean.getCustomerUpdatedBalance());
 						}
 
 						// Receipt receipt = PopulateReceipt(invoiceMainBean,
@@ -1526,6 +1527,13 @@ public class SellController  {
 										.parseInt(invoiceMainBean
 												.getInvoiceMainId()),currentUser.getCompany().getCompanyId());
 					}
+					
+					if(invoiceMainBean.getTransactionType()== null) {
+						invoiceMainBean.setTransactionType("parked");
+					}
+					if (invoiceMainBean.getTransactionType()!= null && invoiceMainBean.getTransactionType().equals("park To sale")) {
+						invoiceMainBean.setTransactionType("parked");
+					}
 					if (alreadyParkedInvoice == null) {
 						InvoiceMain invoice = PopulateInvoiceMain(currentUser.getCompany().getCompanyId(),
 								paymentTypeId, statusId, currentUser.getOutlet().getOutletId(),
@@ -1681,6 +1689,7 @@ public class SellController  {
 		//		}
 		//
 		//		else 
+		
 		if(invoiceMain.getInvcTypeCde() != null )
 		{
 			invoice.setInvcTypeCde(invoiceMain.getInvcTypeCde()); 
@@ -1696,6 +1705,7 @@ public class SellController  {
 		}
 		invoice.setInvoiceGenerationDte(Calendar.getInstance().getTime());
 		invoice.setActiveIndicator(true);
+		
 
 		// invoiceMain.setCustomerId("1"); // TODO: will be binded value
 
@@ -1776,9 +1786,10 @@ public class SellController  {
 					billItem.setProductVariant(varient);
 				}
 
-				if(invoiceMainBean.getReturnvalue() !=null && invoiceMainBean.getReturnvalue().equalsIgnoreCase(("returnsale")) ||itemBean.getIsreturn() == "true" )
+				if(invoiceMainBean.getReturnvalue() !=null && invoiceMainBean.getReturnvalue().equalsIgnoreCase(("returnsale")) ||itemBean.isIsreturn() )
 				{
 					billItem.setIsreturn(true);	
+				
 				}
 				else
 				{
@@ -1810,7 +1821,7 @@ public class SellController  {
 				}
 				if(itemBean.getOrignalPrice()!=null && !itemBean.getOrignalPrice().equals("")){
 
-					if( (invoiceMainBean.getReturnvalue() !=null && invoiceMainBean.getReturnvalue().equalsIgnoreCase(("returnsale"))) ||itemBean.getIsreturn() == "true" )
+					if( (invoiceMainBean.getReturnvalue() !=null && invoiceMainBean.getReturnvalue().equalsIgnoreCase(("returnsale"))) ||itemBean.isIsreturn() )
 					{
 						billItem.setItemOrignalAmt((new BigDecimal(itemBean.getOrignalPrice())).multiply(new BigDecimal(-1)));
 					}
@@ -1862,7 +1873,7 @@ public class SellController  {
 				}
 
 				billItem.setItemRetailPrice((new BigDecimal(itemBean.getItemRetailPrice())));
-				if( invoiceMainBean.getReturnvalue().equalsIgnoreCase(("returnsale")))
+				if( (invoiceMainBean.getReturnvalue() !=null && invoiceMainBean.getReturnvalue().equalsIgnoreCase(("returnsale"))) ||itemBean.isIsreturn()  )
 				{
 					billItem.setItemSalePrice((new BigDecimal(itemBean.getItemSalePrice())).multiply(new BigDecimal(-1)));
 				}
@@ -1964,7 +1975,7 @@ public class SellController  {
 						continue;
 					}
 					
-					else if(returnvalue!=null && !returnvalue.equalsIgnoreCase("returnsale") && (invoiceDetailBean.getIsreturn() == null || invoiceDetailBean.getIsreturn().equalsIgnoreCase("false")) )
+					else if(returnvalue!=null && !returnvalue.equalsIgnoreCase("returnsale") && ( !invoiceDetailBean.isIsreturn() ))
 					{
 
 						if (varient.getCurrentInventory() != null
@@ -1977,7 +1988,7 @@ public class SellController  {
 					}
 					
 
-					else if(returnvalue == null || (returnvalue != null && returnvalue.equalsIgnoreCase("returnsale")) || invoiceDetailBean.getIsreturn().equalsIgnoreCase("true") )
+					else if(returnvalue == null || (returnvalue != null && returnvalue.equalsIgnoreCase("returnsale")) || invoiceDetailBean.isIsreturn() )
 
 					{
 						varient.setCurrentInventory((varient.getCurrentInventory() + Integer.parseInt(invoiceDetailBean.getProductQuantity())));
@@ -1997,7 +2008,7 @@ public class SellController  {
 									.parseInt(invoiceDetailBean
 											.getProductId()),currentUser.getCompany().getCompanyId());
 
-					if(returnvalue!=null && !returnvalue.equalsIgnoreCase("returnsale") && (invoiceDetailBean.getIsreturn() == null || invoiceDetailBean.getIsreturn().equalsIgnoreCase("false")) )
+					if(returnvalue!=null && !returnvalue.equalsIgnoreCase("returnsale") && (!invoiceDetailBean.isIsreturn()) )
 					{
 
 						if (product.getCurrentInventory() != null

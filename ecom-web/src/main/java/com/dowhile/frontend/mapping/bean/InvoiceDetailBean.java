@@ -173,8 +173,21 @@ public class InvoiceDetailBean {
 	private String updatedBy;
 	private String productInventoryCount;
 	private String orignalPrice;
-	private String isreturn = "false";
+	private boolean isreturn = false;
 	
+	/**
+	 * @return the isreturn
+	 */
+	public boolean isIsreturn() {
+		return isreturn;
+	}
+	/**
+	 * @param isreturn the isreturn to set
+	 */
+	public void setIsreturn(boolean isreturn) {
+		this.isreturn = isreturn;
+	}
+
 	private String showDetails = "false";
 	public String getShowDetails() {
 		return showDetails;
@@ -218,12 +231,12 @@ public class InvoiceDetailBean {
 	public void setOrignalPrice(String orignalPrice) {
 		this.orignalPrice = orignalPrice;
 	}
-	public String getIsreturn() {
+	/*public String getIsreturn() {
 		return isreturn;
 	}
 	public void setIsreturn(String isreturn) {
 		this.isreturn = isreturn;
-	}
+	}*/
 	public String getItemDiscountAmount() {
 		return itemDiscountAmount;
 	}

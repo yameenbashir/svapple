@@ -129,6 +129,10 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 		localforage.getItem('_s_tk_sell').then(function(value) {
 			if(value){
 				$scope.InvoiceMainBean = value;
+				
+			/*	$scope.InvoiceMainBean.invoiceDetails[0].isreturn = true;
+				$scope.calculateBill(false, $scope.InvoiceMainBean.invoiceDetails[0],'remove');
+				$scope.InvoiceMainBean.invcTypeCde = '00000';*/ 
 
 			}
 			localforage.setItem('_s_tk_sell',"");
@@ -471,21 +475,21 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 
 		$scope.InvoiceMainBean.itemsCount = parseFloat(0);
 		$scope.totallineItemDiscount = parseFloat(0);
-		if (Number(paramInvoiceDetail.productInventoryCount) < Number(paramInvoiceDetail.productQuantity) &&  transactionType == 'add' && (paramInvoiceDetail.isreturn === undefined || paramInvoiceDetail.isreturn == false )) {
+		if (Number(paramInvoiceDetail.productInventoryCount) < Number(paramInvoiceDetail.productQuantity) &&  transactionType == 'add' || transactionType == 'park To sale' && (paramInvoiceDetail.isreturn === undefined || paramInvoiceDetail.isreturn == false )) 
+		{
 
-			paramInvoiceDetail.productQuantity = paramInvoiceDetail.productInventoryCount;
+			//paramInvoiceDetail.productQuantity = paramInvoiceDetail.productInventoryCount;
+			paramInvoiceDetail.productQuantity = paramInvoiceDetail.orignalProductQuantity;
 			//$scope.calculateBill(isDiscountPrctQtyCahnged, paramInvoiceDetail,'add');
 			$scope.productquantityzero = true;
-			$scope.produtquantitymsg = 'Available Product Quantiy is : ' + paramInvoiceDetail.productQuantity;
+			$scope.produtquantitymsg = 'Available Product Quantiy is : ' + paramInvoiceDetail.productInventoryCount;
 			$timeout(function() {
 				$scope.productquantityzero = false;
 			}, 1500);
-
-
-
-		}
-
-		else if (Number(paramInvoiceDetail.productInventoryCount) >= Number(paramInvoiceDetail.productQuantity) || transactionType == 'remove' || $scope.returnvalue == -1 || paramInvoiceDetail.isreturn == true) {
+			
+			
+			
+			
 			$scope.InvoiceMainBean.invoiceAmt = parseFloat(0);
 			$scope.InvoiceMainBean.invoiceDiscountAmt = $scope.InvoiceMainBean.invoiceDiscountAmt ? $scope.InvoiceMainBean.invoiceDiscountAmt : parseFloat(0);
 			$scope.InvoiceMainBean.invoiceTax =parseFloat(0);
@@ -495,28 +499,8 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			var orignalPrice = 0;
 			for (var i = 0; i < $scope.InvoiceMainBean.invoiceDetails.length; i++) {
 
-				/*orignalPrice = orignalPrice + parseFloat($scope.InvoiceMainBean.invoiceDetails[i].orignalPrice);
-
-
-
-				if (!$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice) {
-					$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice = 0;
-				}
-
-				if (!$scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice) {
-					$scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice = 0;
-				}
-
-				if (!$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct) {
-					$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct = 0;
-				}
-
-				if (!$scope.InvoiceMainBean.invoiceDetails[i].productQuantity
-						|| $scope.InvoiceMainBean.invoiceDetails[i].productQuantity == 0) {
-					$scope.InvoiceMainBean.invoiceDetails[i].productQuantity = 1;
-				}*/
-
-
+				
+				
 				if ($scope.InvoiceMainBean.invoiceDetails[i].productVarientName == paramInvoiceDetail.productVarientName) {
 
 					// Fault fixing Start
@@ -636,7 +620,163 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			if(!$scope.totallineItemDiscount)
 				$scope.totallineItemDiscount = 0;
 			//$scope.totalDiscount = (parseFloat($scope.InvoiceMainBean.invoiceDiscountAmt) + parseFloat($scope.totallineItemDiscount)).toFixed(2);
+			
 		}
+		else if (Number(paramInvoiceDetail.productInventoryCount) >= Number(paramInvoiceDetail.productQuantity) || Number(paramInvoiceDetail.productQuantity == 'undefined') || transactionType == 'remove' || $scope.returnvalue == -1 || paramInvoiceDetail.isreturn == true) {
+				
+			$scope.InvoiceMainBean.invoiceAmt = parseFloat(0);
+			$scope.InvoiceMainBean.invoiceDiscountAmt = $scope.InvoiceMainBean.invoiceDiscountAmt ? $scope.InvoiceMainBean.invoiceDiscountAmt : parseFloat(0);
+			$scope.InvoiceMainBean.invoiceTax =parseFloat(0);
+			$scope.InvoiceMainBean.invoiceSubTotal = parseFloat(0);
+
+			$scope.InvoiceMainBean.invoiceNetAmt = $scope.InvoiceMainBean.invoiceGivenAmt = parseFloat(0);;
+			var orignalPrice = 0;
+			for (var i = 0; i < $scope.InvoiceMainBean.invoiceDetails.length; i++) {
+
+				/*orignalPrice = orignalPrice + parseFloat($scope.InvoiceMainBean.invoiceDetails[i].orignalPrice);
+
+
+
+				if (!$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice) {
+					$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice = 0;
+				}
+
+				if (!$scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice) {
+					$scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice = 0;
+				}
+
+				if (!$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct) {
+					$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct = 0;
+				}
+
+				if (!$scope.InvoiceMainBean.invoiceDetails[i].productQuantity
+						|| $scope.InvoiceMainBean.invoiceDetails[i].productQuantity == 0) {
+					$scope.InvoiceMainBean.invoiceDetails[i].productQuantity = 1;
+				}*/
+				
+				if ($scope.InvoiceMainBean.invoiceDetails[i].productVarientName == paramInvoiceDetail.productVarientName) {
+
+					// Fault fixing Start
+					orignalPrice = orignalPrice + parseFloat($scope.InvoiceMainBean.invoiceDetails[i].orignalPrice);
+
+
+
+					if (!$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice) {
+						$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice = 0;
+					}
+
+					if (!$scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice) {
+						$scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice = 0;
+					}
+
+					if (!$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct) {
+						$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct = 0;
+					}
+
+					if (!$scope.InvoiceMainBean.invoiceDetails[i].productQuantity
+							|| $scope.InvoiceMainBean.invoiceDetails[i].productQuantity == 0) {
+						$scope.InvoiceMainBean.invoiceDetails[i].productQuantity = 1;
+					}
+					
+					
+					//Fault Fixing End
+					
+					if (isDiscountPrctQtyCahnged == true || $scope.InvoiceMainBean.invoiceDetails[i].isreturn == true) {
+
+
+						if ($scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct) {
+
+							$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice = parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice)
+							- ((parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice) * parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct)) / 100)
+							.toFixed(2);
+
+							$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountAmount = 
+								parseFloat( ((parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice) * parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct)) / 100)
+										.toFixed(2))* parseFloat($scope.InvoiceMainBean.invoiceDetails[i].productQuantity);
+						} else {
+
+							$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice = parseFloat(
+									$scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice)
+									.toFixed(2);
+
+						}
+					} else {
+
+						$scope.InvoiceMainBean.invoiceDetails[i].itemDiscountPrct = (100 - ((parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice) * 100) / parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice))
+								.toFixed(2)).toFixed(2);
+
+					}
+
+					$scope.InvoiceMainBean.invoiceDetails[i].itemNetPrice = (parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice) * parseFloat($scope.InvoiceMainBean.invoiceDetails[i].productQuantity))
+					.toFixed(2);
+					if($scope.InvoiceMainBean.invoiceDetails[i].isreturn == true)
+					{
+						$scope.InvoiceMainBean.invoiceDetails[i].itemNetPrice = -1* $scope.InvoiceMainBean.invoiceDetails[i].itemNetPrice;
+						$scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice = -1* $scope.InvoiceMainBean.invoiceDetails[i].itemSalePrice;
+					}
+
+
+
+				}
+
+				if(parseFloat($scope.InvoiceMainBean.invoiceDetails[i].productQuantity) > 0)
+					{
+				$scope.InvoiceMainBean.invoiceAmt = (parseFloat($scope.InvoiceMainBean.invoiceAmt) + parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemNetPrice) )
+				.toFixed(2);
+					}
+				$scope.InvoiceMainBean.invoiceSubTotal = ((parseFloat($scope.InvoiceMainBean.invoiceSubTotal) + parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemRetailPrice))* parseFloat($scope.InvoiceMainBean.invoiceDetails[i].productQuantity))
+				.toFixed(2);
+				$scope.InvoiceMainBean.invoiceTax = ((parseFloat($scope.InvoiceMainBean.invoiceTax) + parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemTaxAmount)) * parseFloat($scope.InvoiceMainBean.invoiceDetails[i].productQuantity))
+				.toFixed(2);
+				
+
+				$scope.InvoiceMainBean.invoiceNetAmt = (parseFloat($scope.InvoiceMainBean.invoiceAmt) 
+						- parseFloat($scope.InvoiceMainBean.invoiceDiscountAmt) + parseFloat($scope.InvoiceMainBean.invoiceTax))
+						.toFixed(2);
+
+				$scope.InvoiceMainBean.settledAmt = $scope.InvoiceMainBean.settledAmt ? $scope.InvoiceMainBean.settledAmt : 0;
+
+				$scope.InvoiceMainBean.invoiceGivenAmt = parseFloat($scope.InvoiceMainBean.invoiceNetAmt) - parseFloat( $scope.InvoiceMainBean.settledAmt);
+
+				if(transactionType == 'remove' || $scope.returnvalue == -1)   //returnvalue -1 means return case
+				{
+					$scope.InvoiceMainBean.invoiceGivenAmt = $scope.returnvalue * parseFloat($scope.InvoiceMainBean.invoiceNetAmt);
+					if (Number(paramInvoiceDetail.productQuantity) > Number(paramInvoiceDetail.orignalProductQuantity))
+					{
+						$scope.returnerrormsg = 'Cannot return more than purchased items.';
+						$scope.returnerrormsgvisible = true;
+						$timeout(function() {
+							$scope.returnerrormsgvisible = false;
+						}, 1500);
+
+						paramInvoiceDetail.productQuantity = paramInvoiceDetail.orignalProductQuantity;
+					}
+					else
+					{
+
+						$scope.returnerrormsgvisible = false;
+					}
+				}
+			}
+
+			for (var i = 0; i < $scope.InvoiceMainBean.invoiceDetails.length; i++) {
+				
+				if($scope.InvoiceMainBean.invoiceDetails[i].itemDiscountAmount != undefined)
+				{
+					$scope.totallineItemDiscount  = parseFloat($scope.totallineItemDiscount) + parseFloat($scope.InvoiceMainBean.invoiceDetails[i].itemDiscountAmount);
+				}
+				
+			
+			}
+			$scope.InvoiceMainBean.orignalPrice = orignalPrice ;
+			if(!$scope.InvoiceMainBean.invoiceDiscountAmt)
+				$scope.InvoiceMainBean.invoiceDiscountAmt = 0;
+			if(!$scope.totallineItemDiscount)
+				$scope.totallineItemDiscount = 0;
+			//$scope.totalDiscount = (parseFloat($scope.InvoiceMainBean.invoiceDiscountAmt) + parseFloat($scope.totallineItemDiscount)).toFixed(2);
+		}
+
+		
 		for (var i = 0; i < $scope.InvoiceMainBean.invoiceDetails.length; i++) {
 
 			
@@ -835,6 +975,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			$scope.payment.type = 'Payment (Cash)';
 			$scope.InvoiceMainBean.paymentTypeId = 1;
 			$scope.cashloading = true;
+			
 
 		}
 		else  if(paymentmethod == 'creditcard') 
@@ -843,6 +984,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			$scope.payment.type = 'Payment (Credit Card)';
 			$scope.InvoiceMainBean.paymentTypeId = 2;
 			$scope.creditloading = true;
+			
 
 		}
 
@@ -1026,8 +1168,13 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 			$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.selectedItem.item.customerBalance);
 			
 		}*/if($scope.InvoiceMainBean.laybyamount!=null || !$scope.selectedItem.item == 'undefined'){
-			if($scope.InvoiceMainBean.customerPreviousBalance!=null){
-				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount);
+			if($scope.InvoiceMainBean.customerUpdatedBalance!=null){
+				if($scope.InvoiceMainBean.laybyamount!=null){        // park sale case with customer and layby case again and again layby
+					$scope.totalBalance = parseFloat($scope.InvoiceMainBean.customerUpdatedBalance) + parseFloat($scope.InvoiceMainBean.laybyamount);
+					$scope.previousBalance = parseFloat($scope.InvoiceMainBean.customerUpdatedBalance) ;
+				}
+				else
+				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.customerUpdatedBalance);
 			}else if ($scope.selectedItem.item.customerBalance){
 				$scope.totalBalance = parseFloat($scope.InvoiceMainBean.laybyamount) + parseFloat($scope.selectedItem.item.customerBalance);
 					}

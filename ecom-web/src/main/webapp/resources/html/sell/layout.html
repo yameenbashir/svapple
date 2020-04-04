@@ -98,6 +98,7 @@
 								
 								
 								
+								
 
 								<!-- 	<button class="btn btn-danger btn-lg pull-right"
 				               ng-click="synchsales()" >Synch Data</button>
@@ -150,6 +151,7 @@
 														wr-autofocus="{ focusDelay: 600, selectText: true }"
 														data-ng-model="invoiceDetail.productQuantity" vd-number=""
 														required vd-number-options="" maxlength="10">
+														<!-- <span ng-show="!invoiceDetail.productQuantity" style="color:red;">* add some quantity</span> -->
 												</div>
 			
 												<div class="col-md-6">
@@ -290,7 +292,7 @@
 								<hr class="vd-hr">
 								<button class="btn btn-success btn-block" type="button"
 									ng-click="pay()" ng-show="returnvalue >= 0"
-									ng-disabled="InvoiceMainBean.invoiceDetails.length==0">
+									ng-disabled="InvoiceMainBean.invoiceDetails.length==0 || (InvoiceMainBean.itemsCount) == ''? 0 : !InvoiceMainBean.itemsCount ">
 									<span class="pull-left">Pay</span> <span class="pull-right"
 										ng-bind="(returnvalue * InvoiceMainBean.invoiceGivenAmt) == null ? 0 : (returnvalue * InvoiceMainBean.invoiceGivenAmt)+' PKRs'"></span>
 

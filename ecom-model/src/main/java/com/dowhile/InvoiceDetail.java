@@ -44,6 +44,7 @@ public class InvoiceDetail  implements java.io.Serializable {
      private Integer createdBy;
      private Integer updatedBy;
      private boolean isreturn;
+     
 
     public InvoiceDetail() {
     }
