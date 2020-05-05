@@ -6,7 +6,6 @@ package com.dowhile.dao.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -357,7 +356,7 @@ public List<StockOrderDetailCustom> getStockOrderDetailCustom(int stockOrderId, 
 		}
 		return null;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockDetByProductUuid> getStockOrderDetailByProductUUID(int companyId, int status, int stockOrdeType,

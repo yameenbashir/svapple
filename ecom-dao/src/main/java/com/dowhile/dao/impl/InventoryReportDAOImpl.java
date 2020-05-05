@@ -4,6 +4,7 @@
 package com.dowhile.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -200,12 +201,14 @@ public class InventoryReportDAOImpl implements InventoryReportDAO{
 	public List<InventoryHealthCheckReport> getInventoryHealthCheckReportByCompanyIdOutletId(int companyId, int outletId) {
 		// TODO Auto-generated method stub
 			List<InventoryHealthCheckReport> list = null;
+			String auditDate = "2020-01-01";
 			try {
 				list = getSessionFactory()
 						.getCurrentSession().createSQLQuery(
-								"CALL GetInventoryHealthCheckReportForWarehouse(:param1,:param2)")
+								"CALL GetInventoryHealthCheckReportForWarehouse(:param1,:param2,:param3)")
 						.setParameter("param1", companyId)
 						.setParameter("param2", outletId)
+						.setParameter("param3", auditDate)
 						.setResultTransformer(Transformers.aliasToBean(InventoryHealthCheckReport.class))
 						.list();
 

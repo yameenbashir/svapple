@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * POCreateandReceiveController
  * @constructor
@@ -257,27 +257,30 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 		$scope.showConfirmReceivePopup = true;
 	};	
 
-	$scope.addStockOrderUpdateandReceive = function() {		
-		$scope.success = false;
-		$scope.error = false;
-		$scope.loading = true;
-		$scope.stockOrderBean.statusId = "1"; // Initiated status at Stock Order Creation page
-		$scope.stockOrderBean.stockOrderTypeId = "1"; // Supplier Order
-		$http.post('purchaseOrder/addStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
-		.success(function(Response) {
-			$scope.loading = false;
+	$scope.addStockOrderUpdateandReceive = function() {	
+		if($scope.stockOrderId != null){
+			$scope.updateAndReceiveStockOrderDetails();
+		}else{
+			$scope.success = false;
+			$scope.error = false;
+			$scope.loading = true;
+			$scope.stockOrderBean.statusId = "1"; // Initiated status at Stock Order Creation page
+			$scope.stockOrderBean.stockOrderTypeId = "1"; // Supplier Order
+			$http.post('purchaseOrder/addStockOrder/'+$scope._s_tk_com, $scope.stockOrderBean)
+			.success(function(Response) {
+				$scope.loading = false;
 
-			$scope.responseStatus = Response.status;
-			if ($scope.responseStatus == 'SUCCESSFUL') {
-				$scope.productTypeBean = {};
-				$scope.success = true;
-				$scope.successMessage = "Request Processed successfully!";
-				$scope.stockOrderId = Response.data;
-				$scope.showConfirmReceivePopup = false;
-				$scope.stockOrderBean.stockOrderId = angular.copy($scope.stockOrderId);
-				$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
-				$scope.updateAndReceiveStockOrderDetails();
-				/*$timeout(function(){
+				$scope.responseStatus = Response.status;
+				if ($scope.responseStatus == 'SUCCESSFUL') {
+					$scope.productTypeBean = {};
+					$scope.success = true;
+					$scope.successMessage = "Request Processed successfully!";
+					$scope.stockOrderId = Response.data;
+					$scope.showConfirmReceivePopup = false;
+					$scope.stockOrderBean.stockOrderId = angular.copy($scope.stockOrderId);
+					$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
+					$scope.updateAndReceiveStockOrderDetails();
+					/*$timeout(function(){
 					$scope.success = false;
 					angular.forEach($scope.supplierList, function(value,key){
 						if(value.supplierId == $scope.stockOrderBean.supplierId){
@@ -297,25 +300,25 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 					$cookieStore.put('_ct_bl_ost',$scope.stockOrderBean);
 					$window.location = Response.layOutPath;
 				}, 1000);*/
-			}
-			else if($scope.responseStatus == 'SYSTEMBUSY'
-				||$scope.responseStatus=='INVALIDUSER'
-					||$scope.responseStatus =='ERROR'
-						||$scope.responseStatus =='INVALIDSESSION'){
-				$scope.error = true;
-				$scope.errorMessage = Response.data;
-				$window.location = Response.layOutPath;
-			} else {
-				$scope.error = true;
-				$scope.errorMessage = Response.data;
-			}
+				}
+				else if($scope.responseStatus == 'SYSTEMBUSY'
+					||$scope.responseStatus=='INVALIDUSER'
+						||$scope.responseStatus =='ERROR'
+							||$scope.responseStatus =='INVALIDSESSION'){
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+					$window.location = Response.layOutPath;
+				} else {
+					$scope.error = true;
+					$scope.errorMessage = Response.data;
+				}
 
-		}).error(function() {
-			$rootScope.emergencyInfoLoadedFully = false;
-			$scope.error = true;
-			$scope.errorMessage  = $scope.systemBusy;
-		});
-
+			}).error(function() {
+				$rootScope.emergencyInfoLoadedFully = false;
+				$scope.error = true;
+				$scope.errorMessage  = $scope.systemBusy;
+			});
+		}
 	};
 
 

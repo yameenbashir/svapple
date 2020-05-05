@@ -6402,8 +6402,8 @@ App.config(['$routeProvider', function ( $routeProvider,$scope,$http) {
 				var myDefer = $q.defer();
 				var controllerData ='';
 				$rootScope.globalPageLoader = true;
-
-				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["stockDetByProductUuid"]==true){
+				//alert("Welcome "  + $rootScope.menuMap["productStockHistoryReport"]);
+				if(typeof ($rootScope.menuMap) !== "undefined" && $rootScope.menuMap["productStockHistoryReport"]==true){
 					$rootScope.productStockHistoryLoadedFully = true;
 					controllerData = $http.post('stockDetByProductUuid/getStockDetByProductUuidControllerData/'+$cookieStore.get('_s_tk_com'))
 					.success(function(Response) {

@@ -3,8 +3,8 @@
  */
 package com.dowhile.service.impl; 
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,26 +96,30 @@ public class StockOrderDetailServiceImpl implements StockOrderDetailService{
 		return getStockOrderDetailDAO().getAllStockOrderDetails(companyId);
 	}
 	
+	@Override
 	public List<StockOrderDetail> getStockOrderDetailByProductId(int productId, Date startDate, Date endDate, int companyId){
 		// TODO Auto-generated method stub
 		return getStockOrderDetailDAO().getStockOrderDetailByProductId(productId, startDate, endDate, companyId);
 	}
 	
+	@Override
 	public List<StockOrderDetail> getStockOrderDetailByProductVariantId(int productVariantId, Date startDate, Date endDate, int companyId){
 		// TODO Auto-generated method stub
 		return getStockOrderDetailDAO().getStockOrderDetailByProductVariantId(productVariantId, startDate, endDate, companyId);
 	}
 	
+	@Override
 	public List<StockOrderDetail> getStockOrderDetailByProductVariantsId(List<Integer> productVariantsId, Date startDate, Date endDate, int companyId){
 		// TODO Auto-generated method stub
 		return getStockOrderDetailDAO().getStockOrderDetailByProductVariantsId(productVariantsId, startDate, endDate, companyId);
 	}
 	
+	@Override
 	public List<StockOrderDetailCustom> getStockOrderDetailCustom(int stockOrderId, int outletId){
 		// TODO Auto-generated method stub
 		return getStockOrderDetailDAO().getStockOrderDetailCustom(stockOrderId, outletId);
 	}
-
+	
 	@Override
 	public List<StockDetByProductUuid> getStockOrderDetailByProductUUID(int companyId, int status, int stockOrdeType,
 			String productUuid, Date startDate, Date endDate) {
@@ -123,5 +127,4 @@ public class StockOrderDetailServiceImpl implements StockOrderDetailService{
 		return getStockOrderDetailDAO().getStockOrderDetailByProductUUID(companyId,status,stockOrdeType,productUuid,startDate,endDate);
 	}
 
-	
 }
