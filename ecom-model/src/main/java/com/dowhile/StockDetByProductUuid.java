@@ -10,7 +10,7 @@ public class StockDetByProductUuid {
 	private Integer STOCK_ORDER_ASSOCICATION_ID;
 	private Integer PRODUCT_VARIANT_ASSOCICATION_ID;
 	private Integer PRODUCT_ASSOCIATION_ID;
-	private String product_name;
+	private String product_name; 
 	private String VariantAttributeName;
 	private Integer product_current_inventory;
 	private Integer product_destination_current_inventory;

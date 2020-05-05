@@ -315,7 +315,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 
 			}).error(function() {
 				$rootScope.emergencyInfoLoadedFully = false;
-				$scope.error = true;
+				$scope.error = true; 
 				$scope.errorMessage  = $scope.systemBusy;
 			});
 		}

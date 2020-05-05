@@ -13,7 +13,7 @@ import com.dowhile.StockOrderDetailCustom;
  * @author Zafar Shakeel
  *
  */
-public interface StockOrderDetailDAO { 
+public interface StockOrderDetailDAO {  
 	
 	StockOrderDetail addStockOrderDetail(StockOrderDetail stockOrderDetail,int companyId);
 	void addStockOrderDetailsList(List<StockOrderDetail> stockOrderDetail,int companyId);

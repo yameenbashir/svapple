@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dowhile.controller.bean;
+package com.dowhile.controller.bean; 
 
 import java.util.List;
 

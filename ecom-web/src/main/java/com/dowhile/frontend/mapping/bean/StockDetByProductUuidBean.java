@@ -8,7 +8,7 @@ package com.dowhile.frontend.mapping.bean;
  *
  */
 public class StockDetByProductUuidBean {
-	
+	 
 	
 	private String stockOrderDetailId;
     private String stockOrderId;

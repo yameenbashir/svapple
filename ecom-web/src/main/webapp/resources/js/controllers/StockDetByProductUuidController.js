@@ -263,12 +263,12 @@ var StockDetByProductUuidController = ['$scope', '$http', '$sce', '$window','$co
 									} );
 
 
-								}, 10);
+								}, 10); 
 					}else if($scope.productStockDetType == "2"){
 						$scope.stockDetByProductUuidBeanList1 = Response.data;
 						$scope.stockDetByProductUuidBeanList = [];
 						$scope.stockDetByProductUuidBeanList2 = [];
-						$scope.stockDetByProductUuidBeanList3 = [];
+						$scope.stockDetByProductUuidBeanList3 = []; 
 						
 						$scope.purchaseOrder = true;
 						$scope.stockReturn = false;

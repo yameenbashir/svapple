@@ -12,7 +12,7 @@ import com.dowhile.StockOrderDetailCustom;
 /**
  * @author Zafar Shakeel
  *
- */
+ */ 
 public interface StockOrderDetailService {
 
 	StockOrderDetail addStockOrderDetail(StockOrderDetail stockOrderDetail,int companyId);

@@ -129,7 +129,7 @@ public class StockDetByProductUuidController {
 					productVariantBeansList = (List<ProductVariantBean>) response.data;
 				}*/
 			StockDetByProductUuidControllerBean stockDetByProductUuidControllerBean = new StockDetByProductUuidControllerBean();
-			stockDetByProductUuidControllerBean.setProductBeansList(productBeansList);
+			stockDetByProductUuidControllerBean.setProductBeansList(productBeansList); 
 				
 				util.AuditTrail(request, currentUser, "ProductStockHistoryReportController.getStockDetByProductUuidControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived getStockDetByProductUuidControllerData successfully",false);

@@ -325,10 +325,10 @@ public class StockOrderDetailDAOImpl implements StockOrderDetailDAO{
 
 				return list;
 			}
-		}catch(HibernateException ex){
+		}catch(HibernateException ex){ 
 			ex.printStackTrace();// logger.error(ex.getMessage(),ex);
 		}
-
+ 
 
 		return null;
 	}

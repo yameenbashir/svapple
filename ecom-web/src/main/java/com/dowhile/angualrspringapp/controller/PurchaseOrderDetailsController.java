@@ -102,7 +102,7 @@ public class PurchaseOrderDetailsController {
 	private Map productMap;
 	private Map productIdsMap;
 	private Map productVariantIdsMap;
-	private List<Product> products;
+	private List<Product> products; 
 
 	@RequestMapping("/layout")
 	public String getPurchaseOrderDetialsControllerPartialPage(ModelMap modelMap) {
