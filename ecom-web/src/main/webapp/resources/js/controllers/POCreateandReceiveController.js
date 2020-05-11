@@ -258,7 +258,7 @@ var POCreateandReceiveController = ['$sce', '$filter','$scope', '$http', '$timeo
 	};	
 
 	$scope.addStockOrderUpdateandReceive = function() {	
-		if($scope.stockOrderId != null){
+		if($scope.stockOrderId != ""){
 			$scope.updateAndReceiveStockOrderDetails();
 		}else{
 			$scope.success = false;
