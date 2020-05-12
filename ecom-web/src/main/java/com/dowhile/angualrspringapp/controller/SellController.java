@@ -238,6 +238,7 @@ public class SellController  {
 						customizedReceipt = true;
 					}
 				}
+				
 				if(!customizedReceipt){
 					receiptConfigurationBean.setStarndardReceipt(true);
 				}
@@ -448,6 +449,7 @@ public class SellController  {
 
 						ProductBean productBean = new ProductBean();
 						productBean.setProductUuid(product.getProductUuid());
+						productBean.setImagePath(product.getImagePath());
 						BigDecimal supplyPrice = product
 								.getSupplyPriceExclTax();
 
@@ -939,6 +941,7 @@ public class SellController  {
 	Response synchsales(@PathVariable("sessionId") String sessionId,
 			@RequestBody List<InvoiceMainBean> listInvoiceMainBean,
 			HttpServletRequest request) {
+		List<InvoiceMainBean> invoiceMainBeanList = new ArrayList<InvoiceMainBean>();
 
 		if (SessionValidator.isSessionValid(sessionId, request)) {
 			HttpSession session = request.getSession(false);
@@ -952,6 +955,10 @@ public class SellController  {
 						if(invoiceMainBean != null)
 						{
 							payCash(sessionId, invoiceMainBean, request);
+							if(!invoiceMainBean.getStatus().equals("10")) {
+								invoiceMainBeanList.add(invoiceMainBean);
+								return new Response(invoiceMainBeanList,StatusConstants.ADD_RESTRICTED,LayOutPageConstants.STATUS);
+							}
 							invoiceMainBean.setSynchedInd("true");
 						}
 					}
@@ -978,6 +985,7 @@ public class SellController  {
 	Response payCash(@PathVariable("sessionId") String sessionId,
 			@RequestBody InvoiceMainBean invoiceMainBean,
 			HttpServletRequest request) {
+		
 
 		if (SessionValidator.isSessionValid(sessionId, request)) {
 			HttpSession session = request.getSession(false);
@@ -1006,6 +1014,36 @@ public class SellController  {
 
 					int paymentTypeId = Integer.parseInt(invoiceMainBean
 							.getPaymentTypeId());
+					
+						if (invoiceMainBean.getInvoiceDetails() != null && invoiceMainBean.getInvoiceDetails().size() > 0) 
+						{
+
+							for (InvoiceDetailBean invoiceDetailBean : invoiceMainBean.getInvoiceDetails()) {
+
+								if(invoiceDetailBean.getProductVarientId() != null && !invoiceDetailBean.isIsreturn())
+								{
+									ProductVariant varient = productVariantService
+											.getProductVariantByProductVariantId(Integer
+													.parseInt(invoiceDetailBean
+															.getProductVarientId()),currentUser.getCompany().getCompanyId());
+									if (varient.getCurrentInventory() != null
+											&& varient.getCurrentInventory() > 0
+											&& (varient.getCurrentInventory() - Integer.parseInt(invoiceDetailBean.getProductQuantity())) >= 0) {
+										continue;
+									}
+									else {
+										invoiceMainBean.setStatus("uncompleted");
+										util.AuditTrail(request, currentUser, "SellController.payCash", "User "+ 
+												currentUser.getUserEmail()+"selected product has no quantity for sale. : ",true);
+										return new Response(varient.getCurrentInventory(),StatusConstants.SALE_RESTRICTED,LayOutPageConstants.SELL);
+									}
+								}
+							}
+					}
+						
+						
+					
+					
 					if (invoiceMainBean.getInvoiceMainId() == null || invoiceMainBean.getReturnvalue().equalsIgnoreCase(("returnsale"))) {
 
 						invoice = PopulateInvoiceMain(currentUser.getCompany().getCompanyId(), paymentTypeId,

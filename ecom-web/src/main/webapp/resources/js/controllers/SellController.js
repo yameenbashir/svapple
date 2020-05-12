@@ -274,6 +274,7 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 
 			$scope.layoutProduct.productName = $scope.displayProductsBean[i].productName;
 			$scope.layoutProduct.productId = $scope.displayProductsBean[i].productId;
+			$scope.layoutProduct.imagePath = $scope.displayProductsBean[i].imagePath;
 			$scope.layoutProduct.currentInventory = $scope.displayProductsBean[i].currentInventory;
 			$scope.layoutProduct.supplyPriceExclTax = $scope.displayProductsBean[i].supplyPriceExclTax;
 			$scope.layoutProduct.retailPriceExclTax = $scope.displayProductsBean[i].retailPriceExclTax;
@@ -1042,19 +1043,36 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 
 				$scope.sendMessage($scope.InvoiceMainBean.invoiceNetAmt);
 			} else if ($scope.responseStatus == 'INVALIDSESSION'
-				|| $scope.responseStatus == 'SYSTEMBUSY' || $scope.responseStatus == 'WARNING') {
+				|| $scope.responseStatus == 'SYSTEMBUSY' || $scope.responseStatus == 'WARNING' ) {
 				
 				
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
-				$timeout(function(){
+				$window.location = Response.layOutPath;
+				$scope.cashloading = false;
+				$scope.creditloading = false;
+				/*$timeout(function(){
 					$scope.error = false;
 					$window.location = Response.layOutPath;
 					$scope.cashloading = false;
 					$scope.creditloading = false;
-				    }, 1500);
+				    }, 1500);*/
 				
-			} else {
+			}else if ($scope.responseStatus == 'SALERESTRICTED'){
+				$scope.salerestricted = true;
+				$scope.salerestrictedmsg = "The selected product has quantity " + Response.data;
+				$window.location = Response.layOutPath;
+				$scope.makePayment = false;
+				$scope.cashloading = false;
+				$scope.creditloading = false;
+				
+				$timeout(function(){
+					$scope.salerestricted = false;
+					$scope.salerestrictedmsg = false;
+					
+				}, 3000);
+			}
+			else {
 				$scope.error = true;
 				$scope.errorMessage = Response.data;
 				$timeout(function(){
@@ -1151,9 +1169,6 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 //		barcodeImage.src = barcode.exportToBase64(width, 100, 0);
 //		}
 		
-		
-		
-
 	};
 	$scope.salenoncash = function(transactionType) {
 		$scope.success = false;

@@ -42,6 +42,9 @@
 											style={{layoutProduct.css}} ng-repeat="layoutProduct in layoutProducts">
 											<a href="" ng-click="selectProductFunc(layoutProduct)">
 												<h4 ng-bind="layoutProduct.productName"></h4>
+												<img ng-src="{{layoutProduct.imagePath || '//:0'}}" width="120" height="120"
+												onerror="this.src='resources/images/product.png'">
+												<div class="opacity-border"></div>
 											</a>
 
 										</div>
@@ -57,6 +60,9 @@
 						<div class="alert alert-danger alert-sm"
 							ng-show="productquantityzero" ng-bind="produtquantitymsg"
 							ng-cloak></div>
+						<div class="alert alert-danger alert-sm"
+							ng-show="salerestricted" ng-bind="salerestrictedmsg"
+							ng-cloak></div>	
 
 						<div class="alert alert-danger alert-sm"
 							ng-show="returnerrormsgvisible" ng-bind="returnerrormsg" ng-cloak></div>
@@ -292,7 +298,7 @@
 								<hr class="vd-hr">
 								<button class="btn btn-success btn-block" type="button"
 									ng-click="pay()" ng-show="returnvalue >= 0"
-									ng-disabled="InvoiceMainBean.invoiceDetails.length==0 || (InvoiceMainBean.itemsCount) == ''? 0 : !InvoiceMainBean.itemsCount ">
+									ng-disabled="InvoiceMainBean.invoiceDetails.length==0  || (InvoiceMainBean.itemsCount == ''? 0 : !InvoiceMainBean.itemsCount) ">
 									<span class="pull-left">Pay</span> <span class="pull-right"
 										ng-bind="(returnvalue * InvoiceMainBean.invoiceGivenAmt) == null ? 0 : (returnvalue * InvoiceMainBean.invoiceGivenAmt)+' PKRs'"></span>
 
