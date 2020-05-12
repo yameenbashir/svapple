@@ -8,7 +8,7 @@ var App = angular.module('AngularSpringApp', ['ui.bootstrap','ngRoute','uiSlider
                                               'ngImgCrop','multipleDatePicker','ngPrint','LocalForageModule','autoCompleteModule','angular-barcode']);
 
 
-App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeout',function($rootScope, $templateCache,$cookieStore,$window,$http,$timeout ) {
+App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeout','$route',function($rootScope, $templateCache,$cookieStore,$window,$http,$timeout,$timeout ) {
 	//Kites,Xpressions,STYLEANDSTYLE
 	$rootScope.clientName = "Xpressions";
 	$rootScope.buttonsView = {
@@ -213,7 +213,19 @@ App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeo
 						$window.location = Response.layOutPath;
 					} else {
 						$rootScope.errorSynchsales = true;
-						$rootScope.errorMessageSynchsales = Response.data;
+						$rootScope.errorMessageSynchsales = "Remove sale no " + Response.data[0].invoiceRefNbr + " to proceed retry errored sales ";
+						if( Response.data != null){
+							localforage.setItem('invoiceMainBeanNewList', null);
+							localforage.setItem('InvoiceMainBeanList', null);
+						}
+						
+						localforage.setItem('invoiceMainBeanNewList',  Response.data);
+						localforage.setItem('InvoiceMainBeanList', Response.data);
+						$timeout(function() {
+							$rootScope.loadingSynchsales = false;
+							//$window.location = Response.layOutPath;
+							$route.reload();
+						}, 1500);
 					}
 				}).error(function() {
 

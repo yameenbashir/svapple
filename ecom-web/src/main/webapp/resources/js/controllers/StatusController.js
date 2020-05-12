@@ -79,7 +79,7 @@ var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope
 	
 	
 
-	  $scope.saveFile = function(){
+	  $scope.saveAllData = function(){
 			
 			$scope.invoiceMainBeanStatusList = StatusControllerPreLoad.loadControllerData();
 			if($scope.invoiceMainBeanStatusList==null){
@@ -118,6 +118,45 @@ var StatusController = ['$scope', '$http', '$window', '$cookieStore','$rootScope
 
 	        newLink.click();
 	    };
+	    
+	    
+		  $scope.saveFile1 = function(index){
+			 // $scope.invoiceMainBeanStatusList = StatusControllerPreLoad.loadControllerData();
+			  var invoice = $scope.invoiceMainBeanStatusList[index]
+			  ;
+			 // $scope.invoiceMainBeanStatusList.get(index, 1);
+			 // var comArr = eval(  $scope.invoiceMainBeanStatusList );
+				
+		    	
+		    	
+		    	
+		    	$scope.loading = true;
+		    	var currentdate = new Date(); 
+				var invoiceRefNbr = "SV-" + currentdate.getDate() + 
+				+ (currentdate.getMonth()+1)  +  
+				+ currentdate.getFullYear() + 
+				+ currentdate.getHours() +   
+				+ currentdate.getMinutes()+  
+				+ currentdate.getSeconds(); 
+		        var textToBLOB = new Blob([JSON.stringify(invoice)], { type: 'text/plain' });
+		    	
+		        var sFileName = invoiceRefNbr+'-OfflineSaleData.txt';	   // The file to save the data.
+		        $scope.loading = false;
+
+		        var newLink = document.createElement("a");
+		        newLink.download = sFileName;
+
+		        if (window.webkitURL != null) {
+		            newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+		        }
+		        else {
+		            newLink.href = window.URL.createObjectURL(textToBLOB);
+		            newLink.style.display = "none";
+		            document.body.appendChild(newLink);
+		        }
+
+		        newLink.click();
+		    };
 	    
 	    
 	$scope.showAddBrandPopup = function() {
