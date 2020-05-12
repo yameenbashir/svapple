@@ -148,11 +148,17 @@ public class SalesHistoryController {
 				if(invoiceMain.getContact()!=null){
 
 					Contact customer = customerService.getContactByID(invoiceMain.getContact().getContactId(), currentUser.getCompany().getCompanyId());
+					
 
 					if(customer != null)
 					{
 						invoiceMainBean.setCustomerId(customer.getContactId().toString());
 						invoiceMainBean.setCustomername(customer.getLastName()!=null?customer.getFirstName() + " "+ customer.getLastName():customer.getFirstName());
+						if(customer.getContactBalance()!=null) {
+							invoiceMainBean.setCustomerUpdatedBalance(customer.getContactBalance().toString());
+						}else {
+							invoiceMainBean.setCustomerUpdatedBalance("0.00");
+						}
 					}
 				}
 
@@ -163,8 +169,12 @@ public class SalesHistoryController {
 				if(invoiceMain.getInvoiceDiscount()!=null){
 					invoiceMainBean.setInvoiceDiscount(invoiceMain.getInvoiceDiscount().toString());
 				}
+				if(invoiceMainBean.getTransactionType()== null) {
+					invoiceMainBean.setTransactionType("park To sale");
+				}
 				invoiceMainBean.setInvoiceRefNbr(invoiceMain.getInvoiceRefNbr());
 				invoiceMainBean.setInvcTypeCde(invoiceMain.getInvcTypeCde());
+				
 				invoiceMainBean.setInvoiceDiscountAmt(invoiceMain.getInvoiceDiscountAmt().toString());
 				invoiceMainBean.setInvoiceGenerationDte(DateTimeUtil.convertDBDateTimeToGuiFormat(invoiceMain.getInvoiceGenerationDte()));
 				invoiceMainBean.setInvoiceGivenAmt(invoiceMain.getInvoiceGivenAmt().toString());
@@ -193,6 +203,13 @@ public class SalesHistoryController {
 						itemsCount = itemsCount + invoiceDetail.getProductQuantity();
 						detailBean.setCreatedBy(invoiceDetail.getCreatedBy().toString());
 						detailBean.setCreatedDate(DateTimeUtil.convertDBDateTimeToGuiFormat(invoiceDetail.getCreatedDate()));
+						//detailBean.setIsreturn(invoiceDetail.isIsreturn());
+						if(invoiceMain.getStatus().getStatusId() == 10) {
+							detailBean.setIsreturn(true);
+						}else {
+							detailBean.setIsreturn(invoiceDetail.isIsreturn());
+						}
+						
 						detailBean.setInvoiceDetailId(invoiceDetail.getInvoiceDetailId().toString());
 						//							detailBean.setInvoiceSettleDte(invoiceDetail.get);
 						detailBean.setItemDiscountPrct(invoiceDetail.getItemDiscountPrct().toString());											
@@ -369,6 +386,7 @@ public class SalesHistoryController {
 					historyBean.setBalance(invoiceMain.getINVOICE_NET_AMT().subtract(invoiceMain.getSETTLED_AMT()).toString());
 					historyBean.setCashGiven(invoiceMain.getINVOICE_GIVEN_AMT().toString());
 					historyBean.setCashReturn(invoiceMain.getINVOICE_NET_AMT().subtract(invoiceMain.getINVOICE_GIVEN_AMT()).toString() );
+					
 
 					historyBean.setCashReturnDate(DateTimeUtil.convertDBDateTimeToGuiFormat(invoiceMain.getCREATED_DATE()));
 					historyBean.setCashGivenDate(DateTimeUtil.convertDBDateTimeToGuiFormat(invoiceMain.getCREATED_DATE()));
@@ -379,8 +397,12 @@ public class SalesHistoryController {
 						{
 							historyBean.setCustomer(customer.getContactId().toString());
 							historyBean.setCustomerName(customer.getLastName()!=null?customer.getFirstName() + " "+ customer.getLastName():customer.getFirstName());
-							if(customer.getContactBalance()!=null)
+							
+							if(customer.getContactBalance()!=null) {
 								historyBean.setLaybayamount(customer.getContactBalance().toString());
+							}else {
+								historyBean.setLaybayamount("0.00");
+							}
 						}else{
 							historyBean.setCustomer("-");
 							historyBean.setCustomerName("-");
@@ -389,6 +411,7 @@ public class SalesHistoryController {
 					}else{
 						historyBean.setCustomer("-");
 						historyBean.setCustomerName("-");
+						historyBean.setLaybayamount("0.00");
 					}
 
 
@@ -418,7 +441,10 @@ public class SalesHistoryController {
 					historyBean.setTotalTax(invoiceMain.getINVOICE_TAX().toString());
 					historyBean.setHtml("<a href=\"#salesHistory\" ng-click=\"processPayment('"+invoiceMain.getINVOICE_MAIN_ID().toString()+"')\"><i class=\"fa fa-history\"></i></a>");
 					historyBean.setPrint("<button class=\"btn btn-success btn-lg\" ng-click=\"printReceipt('"+invoiceMain.getINVOICE_MAIN_ID().toString()+"')\">Print</button>");
-					if(invoiceMain.getSTATUS_ID() == 14 || invoiceMain.getSTATUS_ID() == 13 ||
+					if (invoiceMain.getSTATUS_ID() == 11) {
+						historyBean.setHtml("<a href=\"#salesHistory\" ng-click=\"processPayment('"+invoiceMain.getINVOICE_MAIN_ID().toString()+"')\"><i class=\"fa fa-history\"></i></a>");
+					}
+					else if(invoiceMain.getSTATUS_ID() == 14 || invoiceMain.getSTATUS_ID() == 13 ||
 							(invoiceMain.getINVC_TYPE_CDE() !=null &&	invoiceMain.getINVC_TYPE_CDE().equalsIgnoreCase("00000"))
 							){
 						historyBean.setHtml("");
@@ -479,6 +505,12 @@ public class SalesHistoryController {
 							bean.setReceiptAmount(receipt.getReceiptAmount().toString());
 							bean.setReceiptDate(DateTimeUtil.convertDBDateTimeToGuiFormat(receipt.getReceiptDate()));
 							bean.setReceiptId(receipt.getReceiptId().toString());
+							bean.setPaymentType(receipt.getPaymentTypeId().toString());
+							if (bean.getPaymentType() == "1") {
+								bean.setPaymentType("Cash");
+							}else if (bean.getPaymentType() == "2"){
+								bean.setPaymentType("Credit Card");
+							}
 							receiptBeans.add(bean);
 						}
 					}

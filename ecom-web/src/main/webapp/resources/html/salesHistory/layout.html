@@ -245,6 +245,10 @@
 												<div class="text-center col-md-12"
 													ng-bind="'Cashier: ' + userName"></div>
 											</div>
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="text-center col-md-12"
+													ng-bind="'Customer: ' + InvoiceMainBean.customerName"></div>
+											</div>
 											<hr class="vd-hr no-print">
 											<br>
 											<hr class="dash" />
@@ -320,7 +324,7 @@
 													<div style="font-size: 10px">
 														<div class="col-xs-8 text-right">
 														Sub Total <br ng-show="InvoiceMainBean.invoiceDiscountAmt>0"> <span ng-show="InvoiceMainBean.invoiceDiscountAmt>0" ng-cloak>Discount</span> <br> Tax Amount <br>
-															Total:
+															Total: 
 														</div>
 														<div class="col-xs-4 text-center">
 														<span ng-bind="(InvoiceMainBean.subtotal)"></span>
@@ -333,6 +337,15 @@
 														</div>
 													</div>
 													<hr class="dash" />
+													<div >
+															<div  class="col-xs-8 text-right">{{InvoiceMainBean.receipts[0].paymentType}}</div>
+															<div  class="col-xs-4 text-center" ng-bind="InvoiceMainBean.total"></div>
+															<!-- <div  class="col-xs-4 text-center" ng-bind="(InvoiceMainBean.receipts[0].paymentType)"></div> -->
+													</div>
+													
+							
+														
+														<hr class="dash" />
 													<div style="font-size: 12px">
 														<div class="col-xs-8 text-right">Balance</div>
 														<div class="col-xs-4 text-center">{{InvoiceMainBean.balance}}</div>
@@ -444,6 +457,10 @@
 												<div class="text-center col-md-12"
 													ng-bind="'Cashier: ' + userName"></div>
 											</div>
+											<div class="" style="font-size:12px; font-family: monospaced; font-weight: bolder;">
+												<div class="text-center col-md-12"
+													ng-bind="'Customer: ' + InvoiceMainBean.customerName"></div>
+											</div>
 											<hr class="vd-hr no-print">
 											<br>
 											<hr class="dash" />
@@ -530,6 +547,14 @@
 															<span class="text-center"
 																ng-bind="(InvoiceMainBean.total)"></span>
 														</div>
+														<hr class="dash" />
+													<div >
+															<div  class="col-xs-8 text-right">{{InvoiceMainBean.receipts[0].paymentType}}</div>
+															<div  class="col-xs-4 text-center" ng-bind="InvoiceMainBean.total"></div>
+															
+													</div>	
+														
+														
 													</div>
 													<hr class="dash" />
 													<div style="font-size: 12px">

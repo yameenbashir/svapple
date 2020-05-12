@@ -93,6 +93,12 @@ var SalesHistoryController = ['$scope', '$http', '$window','$cookieStore','$root
 			if($scope.InvoiceMainBeans.data[i].invoiceId == invoiceId){
 				$scope.InvoiceMainBean = $scope.InvoiceMainBeans.data[i];
 				
+				if( $scope.InvoiceMainBean.receipts[0].paymentType == "1"){
+					 $scope.InvoiceMainBean.receipts[0].paymentType = 'Payment (Cash)';
+				}else if ($scope.InvoiceMainBean.receipts[0].paymentType == "2"){
+					 $scope.InvoiceMainBean.receipts[0].paymentType = 'Payment (Credit)';
+				}
+				
 			}
 		}
 		 $timeout(function() {
