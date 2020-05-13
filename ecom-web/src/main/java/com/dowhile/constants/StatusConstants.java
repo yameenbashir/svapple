@@ -18,5 +18,7 @@ public class StatusConstants {
 	public static final String REGISTER_CLOSED = "REGISTERCLOSED";
 	public static final String OUTLET_CLOSED = "OUTLETCLOSED";
 	public static final String WARNING = "WARNING";
+	public static final String SALE_RESTRICTED = "SALERESTRICTED";
+	
 
 }
