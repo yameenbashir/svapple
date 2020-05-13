@@ -8,7 +8,7 @@ var App = angular.module('AngularSpringApp', ['ui.bootstrap','ngRoute','uiSlider
                                               'ngImgCrop','multipleDatePicker','ngPrint','LocalForageModule','autoCompleteModule','angular-barcode']);
 
 
-App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeout','$route',function($rootScope, $templateCache,$cookieStore,$window,$http,$timeout,$timeout ) {
+App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeout','$route',function($rootScope, $templateCache,$cookieStore,$window,$http,$timeout,$route ) {
 	//Kites,Xpressions,STYLEANDSTYLE
 	$rootScope.clientName = "Xpressions";
 	$rootScope.buttonsView = {
