@@ -1015,7 +1015,7 @@ public class SellController  {
 					int paymentTypeId = Integer.parseInt(invoiceMainBean
 							.getPaymentTypeId());
 					
-						if (invoiceMainBean.getInvoiceDetails() != null && invoiceMainBean.getInvoiceDetails().size() > 0) 
+/*						if (invoiceMainBean.getInvoiceDetails() != null && invoiceMainBean.getInvoiceDetails().size() > 0) 
 						{
 
 							for (InvoiceDetailBean invoiceDetailBean : invoiceMainBean.getInvoiceDetails()) {
@@ -1039,7 +1039,7 @@ public class SellController  {
 									}
 								}
 							}
-					}
+					}*/
 						
 						
 					
