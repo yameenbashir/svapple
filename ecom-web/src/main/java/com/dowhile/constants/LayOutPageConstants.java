@@ -62,4 +62,5 @@ public class LayOutPageConstants {
 	public static String SEND_SMS = "/app/#/sendSms";
 	public static String BACKUP = "/app/#/backup";
 	public static String MANAGE_COMPOSITE_PRODUCT = "/app/#/manageCompositeProduct";
+	public static String STATUS = "/app/#/status";
 }

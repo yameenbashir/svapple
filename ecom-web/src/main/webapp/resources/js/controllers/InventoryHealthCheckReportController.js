@@ -75,15 +75,33 @@ var InventoryHealthCheckReportController = ['$scope', '$http', '$window','$cooki
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
+		$rootScope.globalPageLoader = true;
 		$http.post('inventoryHealthCheckReport/getInventoryHealthCheckReportCustom/'+$scope._s_tk_com+'/'+$scope.inventoryHealthReport.outletId)
 		.success(function(Response) {
 			$scope.loading = false;
 			$scope.responseStatus = Response.status;
+			$rootScope.globalPageLoader = false;
 			if ($scope.responseStatus == 'SUCCESSFUL') {
 				$scope.success = true;
 				if($scope.data!=null){
 					if(Response.data !=null){
 						$scope.inventoryHealthCheckReportBeansList = Response.data;
+						var table = $('#myTable').DataTable();
+						table.destroy();
+						setTimeout(
+								function() 
+								{
+									$('#myTable').DataTable( {
+										responsive: true,
+										paging: true,
+										pageLength: 10,
+										searching:true,
+										bInfo : true,
+										dom : 'Bfrtip',
+										buttons :$rootScope.buttonsView
+									} );
+									
+								}, 1);
 					}
 				}
 			}
@@ -100,6 +118,7 @@ var InventoryHealthCheckReportController = ['$scope', '$http', '$window','$cooki
 			}
 
 		}).error(function() {
+			$rootScope.globalPageLoader = false;
 			$rootScope.emergencyInfoLoadedFully = false;
 			$scope.error = true;
 			$scope.errorMessage  = $scope.systemBusy;
