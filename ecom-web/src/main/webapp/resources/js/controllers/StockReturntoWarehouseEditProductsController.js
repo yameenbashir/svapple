@@ -115,12 +115,12 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		if($scope.isAdmin() == true){
 			var quantity = $scope.stockOrderDetailBean.orderProdQty;
 			if($scope.productVariantBean.isVariant.toString() == "true"){
-				$scope.addProduct();
+				$scope.addProductAdmin();
 			}
 			else{
 				$scope.hit = 0;
 				if($scope.productVariantBean.isProduct.toString() == "true"){
-					$scope.addProduct();
+					$scope.addProductAdmin();
 					$scope.hit++;
 				}
 				else{
@@ -138,7 +138,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				}
 				if($scope.hit < 1){
 					$scope.productVariantBean.isProduct = "true";
-					$scope.addProduct();
+					$scope.addProductAdmin();
 				}
 			}
 		}else{
@@ -348,7 +348,10 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 			if(obj.isProduct != "true"){
 				angular.forEach($scope.stockOrderDetailBeansList, function(value,key){
 					if(value.productVariantId == obj.productVariantId && value.isProduct != "true" && obj.isProduct != "true"){
-						if(isNaN(value.recvProdQty)){
+						if(isNaN(value.recvProdQty)  || value.recvProdQty == ""){
+							value.recvProdQty = "0";
+						}
+						if(value.recvProdQty == "NaN" || value.recvProdQty == ""){
 							value.recvProdQty = "0";
 						}
 						value.recvProdQty = parseInt(value.recvProdQty) + parseInt($scope.stockOrderDetailBean.recvProdQty);
@@ -506,7 +509,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		//$scope.calculateTotalAdmin(obj.productVariantId);
 		$scope.stockOrderDetailBean = {};
 		//$scope.calculateItemCountAdmin();
-		$scope.stockOrderDetailBean.isDirty = true;
+		//$scope.stockOrderDetailBean.isDirty = true;
 		//$scope.AllInOne();
 		$scope.airportName = [];
 	};
@@ -599,6 +602,12 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 					$scope.grandTotal = "0";
 				}
 				if($scope.isAdmin() == false){ //In Case of Admin
+					if(isNaN($scope.stockOrderDetailBeansList[i].recvProdQty)  || $scope.stockOrderDetailBeansList[i].recvProdQty == ""){
+						$scope.stockOrderDetailBeansList[i].recvProdQty = "0";
+					}
+					if(isNaN($scope.stockOrderDetailBeansList[i].recvTotal)  || $scope.stockOrderDetailBeansList[i].recvTotal == ""){
+						$scope.stockOrderDetailBeansList[i].recvTotal = "0";
+					}
 					//Calculate Total Recv for each Item
 					if($scope.stockOrderBean.retailPriceBill == true){
 						$scope.stockOrderDetailBeansList[i].recvTotal = $scope.stockOrderDetailBeansList[i].retailPrice * $scope.stockOrderDetailBeansList[i].recvProdQty;
