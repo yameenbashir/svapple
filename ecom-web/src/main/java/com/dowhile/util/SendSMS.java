@@ -304,7 +304,8 @@ public class SendSMS {
 			String phoneNum = "03046664547";
 			String message = "Testing kites mask through Eocean.";
 			String userName = "Kites%20Kids";
-			String password = "AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d";
+//			String password = "AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d";
+			String password = "AIho8p%2fHrpJXeAOV%2fBFnnyFPTRQ4YIkr9nnpWINYiwNVTW2gOIXx%2bkUXYMrKWlfLeQ%3d%3d";
 			String mask = "Kites%20Kids";
 			
 			/*String user = "xpressions";
