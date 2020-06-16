@@ -15,7 +15,7 @@
 	<properties>
 		<jsf-mojarra.version>2.2.4</jsf-mojarra.version>
 		<netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
-		<spring.version>3.2.8.RELEASE</spring.version>
+		<spring.version>5.2.0.RELEASE</spring.version>
 		<spring-security.version>3.2.3.RELEASE</spring-security.version>
 	</properties>
 
