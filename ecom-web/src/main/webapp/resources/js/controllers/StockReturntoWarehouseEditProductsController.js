@@ -115,12 +115,12 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 		if($scope.isAdmin() == true){
 			var quantity = $scope.stockOrderDetailBean.orderProdQty;
 			if($scope.productVariantBean.isVariant.toString() == "true"){
-				$scope.addProductAdmin();
+				$scope.addProduct();
 			}
 			else{
 				$scope.hit = 0;
 				if($scope.productVariantBean.isProduct.toString() == "true"){
-					$scope.addProductAdmin();
+					$scope.addProduct();
 					$scope.hit++;
 				}
 				else{
@@ -138,7 +138,7 @@ var StockReturntoWarehouseEditProductsController = ['$scope','$sce', '$http', '$
 				}
 				if($scope.hit < 1){
 					$scope.productVariantBean.isProduct = "true";
-					$scope.addProductAdmin();
+					$scope.addProduct();
 				}
 			}
 		}else{
