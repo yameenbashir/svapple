@@ -1215,20 +1215,23 @@ public class NewProductController {
 						if(!product.getVariantProducts().equalsIgnoreCase("true")){
 							if(productsList!=null){
 								for(Product productt:productsList){
-									OutletBean outletBean = new OutletBean();
-									Outlet tempOutlet = (Outlet)outletsMap.get(productt.getOutlet().getOutletId());
-									outletBean.setOutletId(tempOutlet.getOutletId().toString());
-									outletBean.setOutletName(tempOutlet.getOutletName());
-									outletBean.setCurrentInventory(productt.getCurrentInventory().toString());
-									outletBean.setOldInventory(productt.getCurrentInventory().toString());
-									outletBean.setReorderAmount(productt.getReorderAmount().toString());
-									outletBean.setReorderPoint(productt.getReorderPoint().toString());
-									SalesTax salesTax = (SalesTax) salesTaxMap.get(tempOutlet.getSalesTax().getSalesTaxId());
-//									SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(tempOutlet.getSalesTax().getSalesTaxId(), currentUser.getCompany().getCompanyId());
-									outletBean.setSalesTaxId(salesTax.getSalesTaxId().toString());
-									outletBean.setDefaultTax(salesTax.getSalesTaxPercentage().toString());
-									outletBean.setSalesTaxName(salesTax.getSalesTaxName()+"("+salesTax.getSalesTaxPercentage().toString()+")");
-									outletBeanList.add(outletBean);
+									if((Outlet)outletsMap.get(productt.getOutlet().getOutletId())!=null) {
+
+										OutletBean outletBean = new OutletBean();
+										Outlet tempOutlet = (Outlet)outletsMap.get(productt.getOutlet().getOutletId());
+										outletBean.setOutletId(tempOutlet.getOutletId().toString());
+										outletBean.setOutletName(tempOutlet.getOutletName());
+										outletBean.setCurrentInventory(productt.getCurrentInventory().toString());
+										outletBean.setOldInventory(productt.getCurrentInventory().toString());
+										outletBean.setReorderAmount(productt.getReorderAmount().toString());
+										outletBean.setReorderPoint(productt.getReorderPoint().toString());
+										SalesTax salesTax = (SalesTax) salesTaxMap.get(tempOutlet.getSalesTax().getSalesTaxId());
+										//									SalesTax salesTax = salesTaxService.getSalesTaxBySalesTaxId(tempOutlet.getSalesTax().getSalesTaxId(), currentUser.getCompany().getCompanyId());
+										outletBean.setSalesTaxId(salesTax.getSalesTaxId().toString());
+										outletBean.setDefaultTax(salesTax.getSalesTaxPercentage().toString());
+										outletBean.setSalesTaxName(salesTax.getSalesTaxName()+"("+salesTax.getSalesTaxPercentage().toString()+")");
+										outletBeanList.add(outletBean);
+									}
 								}
 								productBean.setOutletBeans(outletBeanList);
 							}
