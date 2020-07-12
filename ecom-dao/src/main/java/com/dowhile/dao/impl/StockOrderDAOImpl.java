@@ -443,7 +443,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 
 
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")   
 	@Override
 	public StockBasicDataWrapper GetStockBasicData(int companyId) {
 		try {
