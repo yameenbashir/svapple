@@ -449,7 +449,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 		try {
 			StockBasicDataWrapper stockBasicDataWrapper = new StockBasicDataWrapper();
 			List<Outlet> list = getSessionFactory().getCurrentSession()
-					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?")
+					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1")
 					.setParameter(0, companyId).list();
 			if(list != null&& list.size() > 0){
 				stockBasicDataWrapper.setOutletList(list);
@@ -480,7 +480,7 @@ public class StockOrderDAOImpl implements StockOrderDAO{
 			StockDataProductsWrapper stockDataProductsWrapper = new StockDataProductsWrapper();
 			System.out.println("get outlet Start: " + new Date());
 			List<Outlet> listOutlet = getSessionFactory().getCurrentSession()
-					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?")
+					.createQuery("from Outlet where COMPANY_ASSOCIATION_ID = ?  AND ACTIVE_INDICATOR = 1")
 					.setParameter(0, companyId).list();
 			if(listOutlet != null&& listOutlet.size() > 0){
 				stockDataProductsWrapper.setOutletList(listOutlet);
