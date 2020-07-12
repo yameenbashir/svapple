@@ -1238,7 +1238,9 @@ public class NewProductController {
 							if(productVariantsList!=null){
 
 								for(ProductVariant productVariant:productVariantsList){
-									if(productVariant.isActiveIndicator()){
+									
+									
+									if(productVariant.isActiveIndicator() && (Outlet)outletsMap.get(productVariant.getOutlet().getOutletId())!=null){
 										ProductVariantBean productVariantBean = new ProductVariantBean();
 										productVariantBean.setProductVariantId(productVariant.getProductVariantId().toString());
 										productVariantBean.setProductId(productVariant.getProduct().getProductId().toString());
