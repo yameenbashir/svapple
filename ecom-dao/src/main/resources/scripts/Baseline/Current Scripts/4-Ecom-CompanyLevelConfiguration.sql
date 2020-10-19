@@ -24,7 +24,7 @@ Exchange Of Size Within 15days Of Purchase Along With Receipt And Tag(Based On A
 </div>',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
 -- ---------------Receipt Image ------------------------------
 insert into configuration (PROPERTY_NAME,PROPERTY_VALUE,COMPANY_ASSOCIATION_ID,CREATED_BY,UPDATED_BY,CREATED_DATE,LAST_UPDATED,ACTIVE_INDICATOR) 
-values ('COMPANY_RECEIPT_IMAGE','brand_iqbal.jpg',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
+values ('COMPANY_RECEIPT_IMAGE','brand_zikriya.jpg',@companyId,@createdBy,@createdBy,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1);
 
 -- ---------------- Sub Domain --------------------------------------
 

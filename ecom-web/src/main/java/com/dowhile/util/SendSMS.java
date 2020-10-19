@@ -294,18 +294,16 @@ public class SendSMS {
 	public static void main (String args[]){
 		try{
 			
-			int i = 3;
-			if(i>=1){
-				System.out.println("hello world");
-			}
+			
 			
 			
 			String user = "Kites Kids";
 			String phoneNum = "03046664547";
 			String message = "Testing kites mask through Eocean.";
 			String userName = "Kites%20Kids";
+			//APIManagement/API/RequestAPI?user=Kites Kids&pwd=AAkEi%2fSxI%2bkrfkiwdzC9c3mBlytXJO92pWkRjWhWNyIodiMJs6LtOA%2fTOaZSkvkK7g%3d%3d&sender=Kites Kids&reciever=Number&msg-data=YOUR DATA HERE&response=string
 //			String password = "AE5fOuwKBv4MzNqo0K7eOcHeEoLKpsdzBzP828y6zG5RYiDDDES7cNA%2fHGOeeTn3sg%3d%3d";
-			String password = "AIho8p%2fHrpJXeAOV%2fBFnnyFPTRQ4YIkr9nnpWINYiwNVTW2gOIXx%2bkUXYMrKWlfLeQ%3d%3d";
+			String password = "AAkEi%2fSxI%2bkrfkiwdzC9c3mBlytXJO92pWkRjWhWNyIodiMJs6LtOA%2fTOaZSkvkK7g%3d%3d";
 			String mask = "Kites%20Kids";
 			
 			/*String user = "xpressions";

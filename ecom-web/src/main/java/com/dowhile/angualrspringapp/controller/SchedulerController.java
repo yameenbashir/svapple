@@ -46,6 +46,7 @@ public class SchedulerController {
 		 emailPasswordStr = "Abcd1234@@";
 	}
 	
+	 //run after every 23:50 (hh:mm)
 	 @Scheduled(cron="0 50 23 * * ?")
 	    public void schedulerForMVExecution()
 	    {
@@ -90,6 +91,7 @@ public class SchedulerController {
 	        
 	    }
 	 
+	//run after every 22:50 (hh:mm)
 	 @Scheduled(cron="0 50 22 * * ?")
 	    public void schedulerForMessageCountManagement()
 	    {
@@ -132,7 +134,7 @@ public class SchedulerController {
 	        	}catch(Exception e){ System.out.println(e);} 
 	        
 	    }
-	 
+	 //Runs after every 59th minute
 	 @Scheduled(cron="0 59 * * * ?")
 	    public void schedulerForMVInventoryExecution()
 	    {

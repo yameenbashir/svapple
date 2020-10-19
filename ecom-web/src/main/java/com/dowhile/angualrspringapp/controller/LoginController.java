@@ -24,13 +24,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.util.StringUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -59,6 +57,7 @@ import com.dowhile.UserOutlets;
 import com.dowhile.VariantAttribute;
 import com.dowhile.VariantAttributeValues;
 import com.dowhile.constant.Actions;
+import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
@@ -84,7 +83,6 @@ import com.dowhile.service.VariantAttributeService;
 import com.dowhile.service.VariantAttributeValuesService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.SessionValidator;
-import com.dowhile.util.StringUtils;
 
 /**
  * @author Yameen Bashir
@@ -217,16 +215,32 @@ public class LoginController {
 				List<Menu> menuList = menuService.getMenuByRoleId(user.getRole().getRoleId(),company.getCompanyId());
 				loginBean.setMapMenu(populateMenuBeanList(menuList));
 				loginBean.setUserMap(populateUserBeanList(resourceService.getAllEmployeesByCompanyId(company.getCompanyId())));
-				Configuration configuration = configurationMap.get("COMPANY_RECEIPT_IMAGE");
-				if(configuration!=null){
-					String companyImagePath = "/app/resources/images/"+configuration.getPropertyValue();
-					loginBean.setCompanyImagePath(companyImagePath.trim());
+				Configuration configurationCompanyLevelImageReceipt = configurationMap.get("COMPANY_LEVEL_IMAGE_RECEIPT");
+				if(configurationCompanyLevelImageReceipt!=null && configurationCompanyLevelImageReceipt.getPropertyValue().equalsIgnoreCase(ControllersConstants.TRUE)) {
+					Configuration configuration = configurationMap.get("COMPANY_RECEIPT_IMAGE_"+outlet.getOutletId()+"");
+					if(configuration!=null){
+						String companyImagePath = "/app/resources/images/"+configuration.getPropertyValue();
+						loginBean.setCompanyImagePath(companyImagePath.trim());
+					} 
+					Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS_"+outlet.getOutletId()+"");
+					if(configurationTermsAndContitions!=null){
+						String termsAndContitions = configurationTermsAndContitions.getPropertyValue();
+						loginBean.setTermsAndConditions(termsAndContitions);
+					}
+				}else {
+					Configuration configuration = configurationMap.get("COMPANY_RECEIPT_IMAGE");
+					if(configuration!=null){
+						String companyImagePath = "/app/resources/images/"+configuration.getPropertyValue();
+						loginBean.setCompanyImagePath(companyImagePath.trim());
+					} 
+					Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS");
+					if(configurationTermsAndContitions!=null){
+						String termsAndContitions = configurationTermsAndContitions.getPropertyValue();
+						loginBean.setTermsAndConditions(termsAndContitions);
+					}
 				}
-				Configuration configurationTermsAndContitions = configurationMap.get("TERMS_AND_CONDITIONS");
-				if(configurationTermsAndContitions!=null){
-					String termsAndContitions = configurationTermsAndContitions.getPropertyValue();
-					loginBean.setTermsAndConditions(termsAndContitions);
-				}
+				
+				
 				Configuration domianConfiguration = configurationMap.get("SUB_DOMAIN_NAME");
 				if(domianConfiguration!=null){
 					String subDomianName = domianConfiguration.getPropertyValue();

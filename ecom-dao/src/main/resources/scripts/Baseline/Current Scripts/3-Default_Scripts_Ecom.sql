@@ -6,7 +6,7 @@
 -- no need updatedBy on default script we will use createdBy for both
 -- In case of new server set all ***Ids to 1
 USE `ecom`;
-SELECT @companyId := 1, @createdBy := 1, @companyName := 'Iqbal Electronics' , @defaultUserEmail:='admin@iqbalelectronics.com', @outletId:=1 , @RegisterId:=1 , @saleTaxId:=1, @contactGroupId:=1;
+SELECT @companyId := 1, @createdBy := 1, @companyName := 'ZIKRIYA MOBILE' , @defaultUserEmail:='admin@zikriyamobile.com', @outletId:=1 , @RegisterId:=1 , @saleTaxId:=1, @contactGroupId:=1;
 
 -- ----------Company----------------------
 
@@ -49,8 +49,8 @@ INSERT INTO user_outlets (`COMPANY_ASSOCIATION_ID`, `USER_ASSOCIATION_ID`, `OUTL
 UPDATE `ecom`.`user` SET `OUTLET_ASSOCICATION_ID`=@outletId WHERE `USER_ID`=@createdBy;
 -- -------------------------Contacts--------------------------------------
 
-INSERT INTO `ecom`.`contact` (`CONTACT_NAME`, `CONTACT_BALANCE`, `ACTIVE_INDICATOR`, `CREATED_DATE`, `LAST_UPDATED`, `CONTACT_OUTLET_ID`, `CREATED_BY`, `COMPANY_ASSOCIATION_ID`,CONTACT_GROUP_ASSOCIATION_ID,OUTLET_ASSOCIATION_ID) 
-VALUES ('Main Outlet', '0.00000', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, @outletId, @createdBy, @companyId,@contactGroupId, @outletId);
+INSERT INTO `ecom`.`contact` (`CONTACT_NAME`, `CONTACT_BALANCE`, `ACTIVE_INDICATOR`, `CREATED_DATE`, `LAST_UPDATED`, `CONTACT_OUTLET_ID`, `CREATED_BY`, `COMPANY_ASSOCIATION_ID`,CONTACT_GROUP_ASSOCIATION_ID,OUTLET_ASSOCIATION_ID,CONTACT_TYPE) 
+VALUES ('Main Outlet', '0.00000', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, @outletId, @createdBy, @companyId,@contactGroupId, @outletId,'OUTLET');
 
 -- ------------------------ Expense Type
 INSERT INTO `ecom`.`expense_type` ( EXPENSE_TYPE_ID,`EXPENSE_TYPE_NAME`, `COUNTRY_ASSOCICATION_ID`, `ACTIVE_INDICATOR`, `CREATED_DATE`, `LAST_UPDATED`, `CREATED_BY`, `UPDATED_BY`, `COMPANY_ASSOCIATION_ID`)

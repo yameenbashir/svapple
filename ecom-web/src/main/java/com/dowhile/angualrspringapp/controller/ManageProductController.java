@@ -12,9 +12,11 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -331,8 +333,8 @@ public class ManageProductController {
 								}else{
 									attribut1 =attribut1+","+attributeValue.getValue();
 								}
-								
 							}
+							attribut1 = removeDuplicate(attribut1);
 							product.setAttribute1(attribut1);
 						}
 						if(productBean.getProductVariantValuesCollectionTwo()!=null){
@@ -347,6 +349,7 @@ public class ManageProductController {
 								}
 								
 							}
+							attribut2 = removeDuplicate(attribut2);
 							product.setAttribute2(attribut2);
 						}
 						if(productBean.getProductVariantValuesCollectionThree()!=null){
@@ -361,6 +364,7 @@ public class ManageProductController {
 								}
 								
 							}
+							attribut3 = removeDuplicate(attribut3);
 							product.setAttribute3(attribut3);
 						}
 						
@@ -1133,6 +1137,46 @@ public class ManageProductController {
 		itemCountReturn = 0.0;
 		headOfficeId = 0;	
 		productControllerWrapper = null;
+	}
+	
+	public static void main(String args[]) {
+		try {
+			String attributes = "peach,peach,black,falsa,pinkish,pista,zinc";
+			String duplicateElements[] = attributes.split(",");
+			String finalString = "";
+			 HashSet<String> set = new HashSet<String>(); 
+			for(int index=0;index<duplicateElements.length;index++) {
+			        // Use add() method to add elements into the Set 
+			        set.add(duplicateElements[index]); 
+			}
+			System.out.println(set);
+			finalString  = set.toString().replace("[", "");
+			finalString = finalString.replace("]", "");
+			System.out.println("finalString: "+finalString.trim());
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public String removeDuplicate(String attributes) {
+		try {
+//			String attributes = "peach,peach,black,falsa,pinkish,pista,zinc";
+			String duplicateElements[] = attributes.split(",");
+			String finalString = "";
+			 HashSet<String> set = new HashSet<String>(); 
+			for(int index=0;index<duplicateElements.length;index++) {
+			        // Use add() method to add elements into the Set 
+			        set.add(duplicateElements[index]); 
+			}
+//			System.out.println(set);
+			finalString  = set.toString().replace("[", "");
+			finalString = finalString.replace("]", "");
+			System.out.println("finalString: "+finalString);
+			return finalString;
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return attributes;
 	}
 
 
