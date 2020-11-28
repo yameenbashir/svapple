@@ -2692,8 +2692,7 @@ public class InventoryCountDetailsController {
 	}
 	public void destroyClassObjects(){
 		System.out.println("Inside method destroyClassObjects of InventoryCountDetailController");
-		/*purchaseOrderController = null;
-		purchaseOrderDetailsController = null;*/
+		/*9*/
 		productList = null;; //outlet + Warehouse Products
 		productVariantList = null; //outlet + Warehouse Product Variants
 		compProductMap = null; // Outlet + Warehouse Product
