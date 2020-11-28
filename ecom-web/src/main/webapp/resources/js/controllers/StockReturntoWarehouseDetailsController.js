@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * StockReturntoWarehouseDetailsController
  * @constructor
@@ -116,32 +116,37 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 
 	$scope.copyAllProducts = function(){
 		$scope.globalPageLoader = true;
+		$scope.loading = true;
 		if($scope.productVariantBeansList != null && $scope.productVariantBeansList.length > 0){
 			$scope.counter = 1;
 			for (var j = 0; j < $scope.productVariantBeansList.length; j++) {							
 				if($scope.productVariantBeansList[j].productVariantId != null){
 					$scope.productVariantBean = {};
 					$scope.productVariantBean = angular.copy($scope.productVariantBeansList[j]);					
-					$scope.stockOrderDetailBean.orderProdQty = angular.copy($scope.productVariantBeansList[j].currentInventory);
-					$scope.checkProductStatusAllProducts();			
+					if(parseInt($scope.productVariantBeansList[j].currentInventory) > 0 ){
+						$scope.stockOrderDetailBean.orderProdQty = angular.copy($scope.productVariantBeansList[j].currentInventory);
+						$scope.checkProductStatusAllProducts();			
+					}
 				}
 			}
 			for (var j = 0; j < $scope.productBeansList.length; j++) {							
 				if($scope.productBeansList[j].productVariantId != null){
-					$scope.productVariantBean = {};
-					$scope.productVariantBean.productVariantId = angular.copy($scope.productBeansList[j].productId);
-					$scope.hitVariant = false;
-					for (var i = 0; i < $scope.productVariantBeansList.length; i++) {						
-						if($scope.productVariantBeansList[i].productId == $scope.productVariantBean.productVariantId){
-							$scope.hitVariant = true;
-						}
-					}
-					if($scope.hitVariant == false){
+					if(parseInt($scope.productBeansList[j].currentInventory) > 0 ){
 						$scope.productVariantBean = {};
-						$scope.productVariantBean = angular.copy($scope.productBeansList[j]);	
-						$scope.stockOrderDetailBean.orderProdQty = angular.copy($scope.productBeansList[j].currentInventory);
-						$scope.checkProductStatusAllProducts();
-					}								
+						$scope.productVariantBean.productVariantId = angular.copy($scope.productBeansList[j].productId);
+						$scope.hitVariant = false;
+						for (var i = 0; i < $scope.productVariantBeansList.length; i++) {						
+							if($scope.productVariantBeansList[i].productId == $scope.productVariantBean.productVariantId){
+								$scope.hitVariant = true;
+							}
+						}
+						if($scope.hitVariant == false){
+							$scope.productVariantBean = {};
+							$scope.productVariantBean = angular.copy($scope.productBeansList[j]);	
+							$scope.stockOrderDetailBean.orderProdQty = angular.copy($scope.productBeansList[j].currentInventory);
+							$scope.checkProductStatusAllProducts();
+						}								
+					}
 				}
 			}
 			$scope.globalPageLoader = false;
@@ -149,6 +154,7 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 		else{
 			$scope.globalPageLoader = false;
 		}
+		$scope.loading = false;
 		$scope.AllInOne();
 	};
 
