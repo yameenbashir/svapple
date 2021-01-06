@@ -63,6 +63,7 @@ import com.dowhile.service.TempSaleService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
+import java.util.Date;
 
 /**
  * @author asif
@@ -120,6 +121,7 @@ public class StockDetByProductUuidController {
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
 			try {
+				System.out.println("Stock Detail By ProductUuid Fetching Data Start: " + (new Date()).toString());
 				Response response = getAllProducts(sessionId, request);
 				if(response.status.equals(StatusConstants.SUCCESS)){
 					productBeansList = (List<ProductVariantBean>) response.data;
@@ -130,7 +132,7 @@ public class StockDetByProductUuidController {
 				}*/
 			StockDetByProductUuidControllerBean stockDetByProductUuidControllerBean = new StockDetByProductUuidControllerBean();
 			stockDetByProductUuidControllerBean.setProductBeansList(productBeansList); 
-				
+			System.out.println("Stock Detail By ProductUuid Fetching Data End: " + (new Date()).toString());
 				util.AuditTrail(request, currentUser, "ProductStockHistoryReportController.getStockDetByProductUuidControllerData", 
 						"User "+ currentUser.getUserEmail()+" retrived getStockDetByProductUuidControllerData successfully",false);
 				return new Response(stockDetByProductUuidControllerBean, StatusConstants.SUCCESS,
@@ -173,7 +175,7 @@ public class StockDetByProductUuidController {
 			User currentUser = (User) session.getAttribute("user");
 			List<Product> products = null;
 			try {
-				
+				System.out.println("Stock Detail By ProductUuid Fetching Report Start: " + (new Date()).toString());
 				Date dateStartDate = new Date();
 				Date dateEndDate = new Date();
 				DateFormat parser = new SimpleDateFormat("MMM dd, yyyy");
@@ -207,7 +209,7 @@ public class StockDetByProductUuidController {
 					/*if(products!=null) {
 						stockDetByProductList = stockOrderDetailService.getStockOrderDetailByProductUUID(currentUser.getCompany().getCompanyId(), status ,stockOrdeType ,productUuid, dateStartDate, dateEndDate);
 					}*/else {
-						
+						System.out.println("Stock Detail By ProductUuid Fetching Report End: " + (new Date()).toString());
 						util.AuditTrail(request, currentUser, "StockDetByProductUuidController.getStockOrderDetailByProductUUID", 
 								" StockOrders are not found requested by User "+currentUser.getUserEmail(),false);
 						return new Response(MessageConstants.RECORD_NOT_FOUND,
@@ -235,7 +237,7 @@ public class StockDetByProductUuidController {
 							stockDetByProductUuidBeanList.add(stockDetByProductUuidBean);
 							
 						}
-						
+						System.out.println("Stock Detail By ProductUuid Fetching Report End: " + (new Date()).toString());
 						util.AuditTrail(request, currentUser, "StockDetByProductUuidController.getStockOrderDetailByProductUUID", 
 								"User "+ currentUser.getUserEmail()+" retrived all StockOrders successfully ",false);
 						return new Response(stockDetByProductUuidBeanList, StatusConstants.SUCCESS,
