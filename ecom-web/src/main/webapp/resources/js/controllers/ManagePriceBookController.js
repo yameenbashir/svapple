@@ -446,12 +446,60 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 	
 	$scope.deleteProdcutFromList = function(product){
 		$scope.deleteProdcut = product;
+		$scope.alertMessage = '';
 		$scope.alertMessage = 'Are you sure, you want to delete selective product/variant?';
 		$('#alertBox1').modal('show');
 		
 		
 		
 		
+	};
+	
+	$scope.deleteOutetFromListConfirmationModal = function(outlet){
+		$scope.deleteOutlet = outlet;
+		$scope.alertMessage = '';
+		$scope.alertMessage = 'Are you sure, you want to delete Outlet:'+outlet.outletName+' from current bricebook?';
+		$('#alertBox2').modal('show');
+		
+		
+		
+		
+	};
+	
+	$scope.deleteOutletFromPriceBook = function(){
+		$scope.priceBookSuccess = false;
+		$scope.priceBookError = false;
+		var newOutletGroup = '';
+		var outletGroups = $scope.priceBookBean.outeletsGroup;
+		var tempoutletGroups = outletGroups.split(',');
+		for(var i=0;i<tempoutletGroups.length;i++){
+			if(tempoutletGroups[i] != $scope.deleteOutlet.outletId){
+				if(newOutletGroup== ''){
+					newOutletGroup = tempoutletGroups[i];
+				}else{
+					newOutletGroup = newOutletGroup +','+tempoutletGroups[i];
+				}
+			}
+		}
+		if(newOutletGroup==''){
+			$scope.alertMessage = '';
+			$scope.alertMessage = 'You can not delete Outlet as its the only outlet in current pricebook.';
+//			$('#alertBox2').modal('show');
+		}else{
+			$scope.priceBookBean.outeletsGroup = newOutletGroup;
+			$('#alertBox2').modal('hide');
+			$scope.updatePriceBook();
+		}
+	
+	};
+	
+	$scope.removeOutletFromDisplayOutletList = function(outlet){
+		for(var i=0;i<$scope.displayOutletsList.length;i++){
+			if($scope.displayOutletsList[i].outletId==outlet.outletId){
+				$scope.displayOutletsList.splice(i,1);
+				break;
+			}
+		}
 	};
 	
 	$scope.markInactiveSelectiveProduct = function(){

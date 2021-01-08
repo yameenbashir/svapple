@@ -3,16 +3,19 @@
  */
 package com.dowhile.wrapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.dowhile.Brand;
 import com.dowhile.Contact;
 import com.dowhile.Outlet;
 import com.dowhile.Product;
+import com.dowhile.ProductHistory;
 import com.dowhile.ProductType;
 import com.dowhile.ProductVariant;
 import com.dowhile.SalesTax;
 import com.dowhile.Tag;
+import com.dowhile.User;
 import com.dowhile.VariantAttribute;
 
 /**
@@ -29,9 +32,11 @@ public class ProductControllerWrapper {
 	private List<Outlet> outlets;
 	private List<VariantAttribute> variantAttributesList;
 	private List<Tag> tagsList;
+	private List<User> usersList;
 	private int sku;
 	private int productVariantSku;
 	private List<SalesTax> salesTaxlist;
+	private HashMap<Integer,List<ProductHistory>> productHistoryMap;
 	/**
 	 * 
 	 */
@@ -46,16 +51,17 @@ public class ProductControllerWrapper {
 	 * @param outlets
 	 * @param variantAttributesList
 	 * @param tagsList
+	 * @param usersList
 	 * @param sku
 	 * @param productVariantSku
 	 * @param salesTaxlist
+	 * @param productHistoryMap
 	 */
-	public ProductControllerWrapper(List<Product> productList,
-			List<ProductVariant> productVariantList,
-			List<Contact> contactsList, List<ProductType> productTypeList,
-			List<Brand> brandsList, List<Outlet> outlets,
-			List<VariantAttribute> variantAttributesList, List<Tag> tagsList,
-			int sku, int productVariantSku, List<SalesTax> salesTaxlist) {
+	public ProductControllerWrapper(List<Product> productList, List<ProductVariant> productVariantList,
+			List<Contact> contactsList, List<ProductType> productTypeList, List<Brand> brandsList, List<Outlet> outlets,
+			List<VariantAttribute> variantAttributesList, List<Tag> tagsList, List<User> usersList, int sku,
+			int productVariantSku, List<SalesTax> salesTaxlist,
+			HashMap<Integer, List<ProductHistory>> productHistoryMap) {
 		this.productList = productList;
 		this.productVariantList = productVariantList;
 		this.contactsList = contactsList;
@@ -64,9 +70,11 @@ public class ProductControllerWrapper {
 		this.outlets = outlets;
 		this.variantAttributesList = variantAttributesList;
 		this.tagsList = tagsList;
+		this.usersList = usersList;
 		this.sku = sku;
 		this.productVariantSku = productVariantSku;
 		this.salesTaxlist = salesTaxlist;
+		this.productHistoryMap = productHistoryMap;
 	}
 	/**
 	 * @return the productList
@@ -149,8 +157,7 @@ public class ProductControllerWrapper {
 	/**
 	 * @param variantAttributesList the variantAttributesList to set
 	 */
-	public void setVariantAttributesList(
-			List<VariantAttribute> variantAttributesList) {
+	public void setVariantAttributesList(List<VariantAttribute> variantAttributesList) {
 		this.variantAttributesList = variantAttributesList;
 	}
 	/**
@@ -164,6 +171,18 @@ public class ProductControllerWrapper {
 	 */
 	public void setTagsList(List<Tag> tagsList) {
 		this.tagsList = tagsList;
+	}
+	/**
+	 * @return the usersList
+	 */
+	public List<User> getUsersList() {
+		return usersList;
+	}
+	/**
+	 * @param usersList the usersList to set
+	 */
+	public void setUsersList(List<User> usersList) {
+		this.usersList = usersList;
 	}
 	/**
 	 * @return the sku
@@ -200,5 +219,17 @@ public class ProductControllerWrapper {
 	 */
 	public void setSalesTaxlist(List<SalesTax> salesTaxlist) {
 		this.salesTaxlist = salesTaxlist;
+	}
+	/**
+	 * @return the productHistoryMap
+	 */
+	public HashMap<Integer, List<ProductHistory>> getProductHistoryMap() {
+		return productHistoryMap;
+	}
+	/**
+	 * @param productHistoryMap the productHistoryMap to set
+	 */
+	public void setProductHistoryMap(HashMap<Integer, List<ProductHistory>> productHistoryMap) {
+		this.productHistoryMap = productHistoryMap;
 	}
 }

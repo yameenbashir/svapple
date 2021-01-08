@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +48,7 @@ import com.dowhile.service.BrandService;
 import com.dowhile.service.CompositeProductService;
 import com.dowhile.service.ContactService;
 import com.dowhile.service.OutletService;
+import com.dowhile.service.ProductControllerWrapperService;
 import com.dowhile.service.ProductHistoryService;
 import com.dowhile.service.ProductService;
 import com.dowhile.service.ProductTagService;
@@ -59,6 +62,7 @@ import com.dowhile.service.VariantAttributeValuesService;
 import com.dowhile.service.util.ServiceUtil;
 import com.dowhile.util.DateTimeUtil;
 import com.dowhile.util.SessionValidator;
+import com.dowhile.wrapper.ProductControllerWrapper;
 
 /**
  * imran latif
@@ -98,6 +102,8 @@ public class ProductDetailsController {
 	private ContactService supplierService;
 	@Resource
 	private ProductHistoryService  proudHistoryService;
+	@Resource
+	private ProductControllerWrapperService productControllerWrapperService;
 
 	@RequestMapping("/layout")
 	public String getProductDetailsControllerPartialPage(ModelMap modelMap) {
@@ -360,21 +366,36 @@ public class ProductDetailsController {
 			User currentUser = (User) session.getAttribute("user");
 			List<Product> products = null;
 			try {
-				products = productService.getAllProductsByUuid(productUuid,currentUser.getCompany().getCompanyId());
+				boolean isHeadOffice = false;
+				if(currentUser.getRole().getRoleId()==1 && currentUser.getOutlet().getIsHeadOffice()!=null && currentUser.getOutlet().getIsHeadOffice().toString()=="true") {
+					isHeadOffice = true;
+				}
+				System.out.println("getProductHistoryByProductUuid request received for user: "+currentUser.getUserEmail()+" for companyId / company : "+currentUser.getCompany().getCompanyId()+" / "+currentUser.getCompany().getCompanyName()
+						+ " against outletId / outlet:"+currentUser.getOutlet().getOutletId()+" / "+currentUser.getOutlet().getOutletName());
+				long start = System.currentTimeMillis();
+				ProductControllerWrapper productControllerWrapper = productControllerWrapperService.getProductControllerWrapperDataForProductHistoryByProductUuidOutletIdCompanyId(productUuid, currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId(), isHeadOffice);
+				long endWrapper   = System.currentTimeMillis();
+				NumberFormat formatter = new DecimalFormat("#0.00000");
+				System.out.println("Execution time to get productControllerWrapper for productHistory is " + formatter.format((endWrapper - start) / 1000d) + " seconds");
+				products = productControllerWrapper.getProductList();
+//				products = productService.getAllProductsByUuid(productUuid,currentUser.getCompany().getCompanyId());
 				if(products!=null){
-					List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
+					List<Outlet> outlets = productControllerWrapper.getOutlets();
+//					List<Outlet> outlets = outletService.getOutlets(currentUser.getCompany().getCompanyId());
 					Map outletMap = new HashMap<>();
 					for(Outlet outlet:outlets){
 						outletMap.put(outlet.getOutletId(), outlet);
 					}
-					List<User> users = resourceService.getAllUsers(currentUser.getCompany().getCompanyId());
+					List<User> users = productControllerWrapper.getUsersList();
+//					List<User> users = resourceService.getAllUsers(currentUser.getCompany().getCompanyId());
 					Map userMap = new HashMap<>();
 					if(users!=null){
 						for(User user:users){
 							userMap.put(user.getUserId(), user);
 						}
 					}
-					List<ProductVariant> productVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
+					List<ProductVariant> productVariants = productControllerWrapper.getProductVariantList();
+//					List<ProductVariant> productVariants = productVariantService.getAllProductVariants(currentUser.getCompany().getCompanyId());
 					Map productVariantMap = new HashMap<>();
 					if(productVariants!=null){
 						for(ProductVariant productVariant:productVariants){
@@ -382,7 +403,8 @@ public class ProductDetailsController {
 						}
 					}
 					for(Product product:products){
-						prodHistories = proudHistoryService.getProductHistoryByProductId(product.getProductId(),currentUser.getCompany().getCompanyId());
+						prodHistories= productControllerWrapper.getProductHistoryMap().get(product.getProductId());
+//						prodHistories = proudHistoryService.getProductHistoryByProductId(product.getProductId(),currentUser.getCompany().getCompanyId());
 						if(prodHistories!=null){
 							for (ProductHistory productHistory : prodHistories) {
 								ProductHistoryBean  productHistoryBean = new ProductHistoryBean();
@@ -390,7 +412,10 @@ public class ProductDetailsController {
 									productHistoryBean.setActionDate(DateTimeUtil.convertDBDateTimeToGuiFormat(productHistory.getActionDate()));
 									productHistoryBean.setChangeQuantity(String.valueOf(productHistory.getChangeQuantity()));
 									Outlet outlet = (Outlet)outletMap.get(productHistory.getOutlet().getOutletId());
-
+									if(outlet==null) {
+										continue;
+									}
+//									System.out.println("productHistory.getOutlet().getOutletId(): "+productHistory.getOutlet().getOutletId());
 									productHistoryBean.setOutletName(outlet.getOutletName());
 									productHistoryBean.setOutletQuantity(String.valueOf(productHistory.getOutletQuantity()));
 									if(productHistory.getProductVariant()!=null){

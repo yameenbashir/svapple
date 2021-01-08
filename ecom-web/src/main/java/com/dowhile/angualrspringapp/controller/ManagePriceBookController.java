@@ -1148,6 +1148,7 @@ public class ManagePriceBookController {
 					}else{
 						priceBook.setActiveIndicator(false);
 					}
+					priceBook.setOuteletsGroup(priceBookBean.getOuteletsGroup());
 					priceBookService.updatePriceBook(priceBook);
 
 					util.AuditTrail(request, currentUser, "ManagePriceBookController.updatePriceBook", 

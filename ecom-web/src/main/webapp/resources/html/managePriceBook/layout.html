@@ -89,8 +89,10 @@
 												<div class="form-group">
 													<label for="inputEmail3" class="col-sm-4 control-label">Selected Outlets</label>
 													<div class="col-sm-6">
-														<div  ng-show="!loading" ng-repeat="outlet in priceBookBean.outletBeans"><a href="" data-toggle="tooltip" data-placement="top" title="Price book's outlet" ng-click="removeOutletFromDisplayOutletList(outlet)">{{outlet.outletName}}
-																</a></div>
+														<div  ng-show="!loading" ng-repeat="outlet in priceBookBean.outletBeans"><a href="" data-toggle="tooltip" data-placement="top" title="Price book's outlet" ng-click="deleteOutetFromListConfirmationModal(outlet)">{{outlet.outletName}}
+																<i style="margin-left: 2px; color: red; height: 20px"
+																class="fa fa-times" aria-hidden="true"
+																></i></a></div>
 													</div>
 													
 												</div>
@@ -175,7 +177,10 @@
 						</div>
 						<!-- /.box -->
 						<div class="box-footer">
-
+							<div class="col-md-8">
+								<i class="fa fa-warning text-yellow"></i> Note: Once you delete any outlet from current pricebook it will never be added again
+							</div>
+							<div class="col-md-4">
 							<button
 								class="btn btn-primary btn-sm pull-right btn-primary-spacing"
 								ng-click="updatePriceBook()"
@@ -183,13 +188,13 @@
 								ng-show="!loading">Update</button>
 							
 
-							<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
-								Update Processing<i
+								<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+									Update Processing<i
 									class="fa fa-arrow-right text-muted fa-spinner fa-spin "> </i>
-							</button>
-							<a href="#priceBook"><button
+								</button>
+								<a href="#priceBook"><button
 									class="btn btn-default btn-sm pull-right btn-primary-spacing">Cancel</button></a>
-
+							</div>
 
 						</div>
 					</div>
@@ -451,6 +456,29 @@
 				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 				<button type="button" class="btn btn-primary"
 					ng-click="markInactiveSelectiveProduct()"
+					ng-show="!loading" ng-cloak>Yes</button>
+				<button type="button" ng-show="loading"
+					class="btn btn-primary" ng-disabled="true" ng-cloak>
+					Yes <i class="fa fa-arrow-right fa-spinner fa-spin "></i>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade ng-scope" id="alertBox2" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;" ng-cloak>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="alert alert-danger">
+				<h4 class="" id="myModalLabel">Alert!</h4>
+			</div>
+			<div class="modal-body ng-binding" ng-bind="alertMessage"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary"
+					ng-click="deleteOutletFromPriceBook()"
 					ng-show="!loading" ng-cloak>Yes</button>
 				<button type="button" ng-show="loading"
 					class="btn btn-primary" ng-disabled="true" ng-cloak>

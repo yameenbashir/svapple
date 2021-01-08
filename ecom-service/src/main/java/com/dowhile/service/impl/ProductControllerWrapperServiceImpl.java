@@ -46,4 +46,11 @@ public class ProductControllerWrapperServiceImpl implements ProductControllerWra
 		// TODO Auto-generated method stub
 		return getProductControllerWrapperDAO().getProductControllerWrapperDataForManageProductByOutletIdCompanyId(outletId, companyId);
 	}
+
+	@Override
+	public ProductControllerWrapper getProductControllerWrapperDataForProductHistoryByProductUuidOutletIdCompanyId(
+			String productUuid, int outletId, int companyId, boolean isHeadOffice) {
+		// TODO Auto-generated method stub
+		return getProductControllerWrapperDAO().getProductControllerWrapperDataForProductHistoryByProductUuidOutletIdCompanyId(productUuid, outletId, companyId, isHeadOffice);
+	}
 }
