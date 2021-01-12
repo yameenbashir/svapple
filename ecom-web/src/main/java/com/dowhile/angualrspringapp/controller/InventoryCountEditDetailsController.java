@@ -106,6 +106,8 @@ public class InventoryCountEditDetailsController {
 	private Map<String, ProductVariantBean> productVariantBeansSKUMap;
 	private Map<String, ProductVariantBean> warehouseProductBeansSKUMap;
 	private Map<String, ProductVariantBean> warehouseProductVariantBeansSKUMap;
+	Map<Integer, ProductVariantBean> productVariantMap;
+	Map<Integer, ProductVariantBean> productMap;
 	private int headOfficeOutletId; //= 1;
 	private int outletId;
 	ProductListsWrapper productListsWrapper;
@@ -128,8 +130,11 @@ public class InventoryCountEditDetailsController {
 		List<ProductVariantBean> warehouseProductBeansList = new ArrayList<>();
 		List<ProductVariantBean> warehouseProductVariantBeansList = new ArrayList<>();
 		List<InventoryCountDetailBean> inventoryCountDetailBeansList = null;
+		productVariantMap = new HashMap<>();
+		productMap = new HashMap<>();
 		//productListsWrapper = new ProductListsWrapper();
 		//Map<Integer, ProductVariantBean> productsMap = new HashMap<>();
+		
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
@@ -329,6 +334,7 @@ public class InventoryCountEditDetailsController {
 									warehouseProductBeansSKUMap.put(product.getSku().toLowerCase(), productVariantBean);
 								}
 							}
+							productMap.put(product.getProductId(), productVariantBean);
 							productVariantBeansList.add(productVariantBean);
 						}		
 						compProductMap.put(product.getProductId(), product);
@@ -512,6 +518,7 @@ public class InventoryCountEditDetailsController {
 								warehouseProductVariantBeansSKUMap.put(productVariant.getSku().toLowerCase(), productVariantBean);
 							}
 						}
+						productVariantMap.put(productVariant.getProductVariantId(), productVariantBean);
 						productVariantBeansList.add(productVariantBean);
 					}
 					util.AuditTrail(request, currentUser, "InventoryCountDetails.getProductVariants", "User "+ 
@@ -783,6 +790,15 @@ public class InventoryCountEditDetailsController {
 						else {
 							i.setAuditTransfer("true");
 						}
+						if(ic.isIS_PRODUCT() == true) {
+							ProductVariantBean pv = productMap.get(ic.getPRODUCT_ASSOCIATION_ID());
+							i.setRetailPriceExclTax(pv.getRetailPriceExclTax());
+							i.setSupplyPriceExclTax(pv.getSupplyPriceExclTax());
+						}else {
+							ProductVariantBean pv = productVariantMap.get(ic.getPRODUCT_VARIANT_ASSOCICATION_ID());	
+							i.setRetailPriceExclTax(pv.getRetailPriceExclTax());
+							i.setSupplyPriceExclTax(pv.getSupplyPriceExclTax());
+						}						 
 						i.setCountDiff(Objects.toString(ic.getCOUNT_DIFF()));
 						i.setCreatedBy(Objects.toString(ic.getCREATED_BY()));
 						i.setCountedProdQty(Objects.toString(ic.getCOUNTED_PROD_QTY()));
