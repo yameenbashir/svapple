@@ -1386,8 +1386,72 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 		  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 		}
 	
+	$scope.confirmationtoAddProdut = function(){
+		$scope.showAddProductConfirmationModal = true;
+		var totalQuantity = 0;
+		var messageWithQuantity = false;
+		if(!$scope.gui.varientProducts && $scope.gui.trackingProduct){
+			messageWithQuantity = true;
+			for(var i=0;i<$scope.productBean.outletList.length;i++){
+				if(parseInt($scope.productBean.outletList[i].currentInventory)){
+					totalQuantity = totalQuantity +parseInt($scope.productBean.outletList[i].currentInventory);
+				}
+			}
+		}else if($scope.gui.varientProducts && $scope.gui.trackingProduct){
+			messageWithQuantity = true;
+			for(var i=0;i<$scope.productVariantValuesCollection.length;i++){
+				for(var j=0;j<$scope.productVariantValuesCollection[i].varientsOutletList.length;j++){
+					if(parseInt($scope.productVariantValuesCollection[i].varientsOutletList[j].currentInventory)){
+						totalQuantity = totalQuantity +parseInt($scope.productVariantValuesCollection[i].varientsOutletList[j].currentInventory);
+					} 
+				}
+			}
+		}
+		if(messageWithQuantity){
+			$scope.alertMessage = 'Are you sure you want to Add Product with total Quantity = '+totalQuantity+' ?';
+		}else{
+			$scope.alertMessage = 'Are you sure you want to Add Product ?';	
+		}
+		
+		
+	};
 	
+	$scope.confirmedToAddProdut = function(){
+		$scope.showAddProductConfirmationModal = false;
+		$scope.productSuccess = false;
+		$scope.productError = false;
+		$scope.productAddError = false;
+		$scope.loading = true;
+		$http.post('newProduct/addProduct/'+$scope._s_tk_com, $scope.productBean)
+		.success(function(Response) {
+			$scope.responseStatus = Response.status;
+			if ($scope.responseStatus == 'SUCCESSFUL') {
+				$scope.productSuccess = true;
+				$scope.productSuccessMessage = Response.data;
+				$scope.showAddSalesTaxModal = false;
+				$timeout(function(){
+					$scope.productSuccess = false;
+					$scope.loading = false;
+					$window.location = Response.layOutPath;
+				}, 1000);
+			}else if($scope.responseStatus == 'INVALIDSESSION'||$scope.responseStatus == 'SYSTEMBUSY') {
+				$scope.productError = true;
+				$scope.loading = false;
+				$scope.productErrorMessage = Response.data;
+				$window.location = Response.layOutPath;
+			}else {
+				$scope.productError = true;
+				$scope.loading = false;
+				$scope.productErrorMessage = Response.data;
+			}
+		}).error(function() {
+			$scope.loading = false;
+			$scope.productError = true;
+			$scope.productErrorMessage = $scope.systemBusy;
+		});
+	};
 	$scope.addProduct = function(dataUrl, name) {
+		
 		 $scope.imageData =  {
 		            file: dataUrl,
 		            id : name
@@ -1431,34 +1495,8 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 		$scope.productBean.imageData = $scope.imageData;
 		$scope.productBean.productPriceHistoryBean = $scope.productPriceHistoryBean;
 		$scope.setDefaultDutyCalcuation();
-		$scope.loading = true;
-		$http.post('newProduct/addProduct/'+$scope._s_tk_com, $scope.productBean)
-		.success(function(Response) {
-			$scope.responseStatus = Response.status;
-			if ($scope.responseStatus == 'SUCCESSFUL') {
-				$scope.productSuccess = true;
-				$scope.productSuccessMessage = Response.data;
-				$scope.showAddSalesTaxModal = false;
-				$timeout(function(){
-					$scope.productSuccess = false;
-					$scope.loading = false;
-					$window.location = Response.layOutPath;
-				}, 1000);
-			}else if($scope.responseStatus == 'INVALIDSESSION'||$scope.responseStatus == 'SYSTEMBUSY') {
-				$scope.productError = true;
-				$scope.loading = false;
-				$scope.productErrorMessage = Response.data;
-				$window.location = Response.layOutPath;
-			}else {
-				$scope.productError = true;
-				$scope.loading = false;
-				$scope.productErrorMessage = Response.data;
-			}
-		}).error(function() {
-			$scope.loading = false;
-			$scope.productError = true;
-			$scope.productErrorMessage = $scope.systemBusy;
-		});
+		$scope.confirmationtoAddProdut();
+		
 	};
 	
 	$scope.upload = function (dataUrl, name) {

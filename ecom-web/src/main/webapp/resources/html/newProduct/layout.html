@@ -1253,6 +1253,31 @@
 	</modal>
 	
 	<!-- Modal end -->	
+	<modal title="Add Product Confirmation" visible="showAddProductConfirmationModal" ng-cloak>
+	
+	<div class="registerForm popup-transparent">
+		<li class="list-group-item">
+			<form class="form-horizontal" name="myForm">
+				<div class="box-body">
+
+				<div  ng-bind="alertMessage"></div>
+			</div>
+			</form>
+			<div class="box-footer">
+					<button class="btn btn-primary btn-sm pull-right btn-primary-spacing" ng-click="confirmedToAddProdut()"
+						 ng-show="!loading">Yes
+						</button>
+					<button ng-show="loading" class="btn btn-primary btn-sm pull-right btn-primary-spacing">
+						Add Supplier Processing<i
+							class="fa fa-arrow-right text-muted fa-spinner fa-spin "></i>
+					</button>
+					<button class="btn btn-default btn-sm pull-right btn-primary-spacing" data-dismiss="modal">No</button>
+				
+		   </div>
+	</li>
+	</div>
+
+	</modal>
 
 <style>
 .cropArea_new {
