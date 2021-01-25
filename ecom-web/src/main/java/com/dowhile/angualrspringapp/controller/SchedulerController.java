@@ -3,9 +3,13 @@
  */
 package com.dowhile.angualrspringapp.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.Date;
+
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
@@ -91,8 +95,8 @@ public class SchedulerController {
 	        
 	    }
 	 
-	//run after every 22:50 (hh:mm)
-	 @Scheduled(cron="0 50 22 * * ?")
+	//run after every 21:50 (hh:mm)
+	 @Scheduled(cron="0 50 21 * * ?")
 	    public void schedulerForMessageCountManagement()
 	    {
 		 //0 0 1 * * *
@@ -155,6 +159,28 @@ public class SchedulerController {
 	        	}catch(Exception e){ System.out.println(e);} 
 	        
 	    }
+	 
+	 //run after every 22:50 (hh:mm)
+	 @Scheduled(cron="0 50 22 * * ?")
+	 public void runScript(String command){
+		 try {
+	            Process proc = Runtime.getRuntime().exec("/home/mysqldump.sh /"); //Whatever you want to execute
+	            BufferedReader read = new BufferedReader(new InputStreamReader(
+	                    proc.getInputStream()));
+	            try {
+	                proc.waitFor();
+	            } catch (InterruptedException e) {
+	                System.out.println(e.getMessage());
+	            }
+	            while (read.ready()) {
+	                System.out.println(read.readLine());
+	            }
+	            sendEmailDemo("bashir@shopvitals.com", "Bashir/Ali","Backup Scipt Executed Successfully");
+	        } catch (IOException e) {
+	            System.out.println(e.getMessage());
+	        }
+	    }
+
 	 
 	 public  boolean sendEmailDemo (String toEmail,String name,String message) {
 			populatEmailConfig();
