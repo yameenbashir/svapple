@@ -68,30 +68,32 @@ var OrgHierarchyController = ['$scope', '$http','$rootScope','$cookieStore','$co
 	    
 	
 	$scope.updateCompanyId = function(companyId,companyLevel){
-		
+		$scope.error = false;
+		$scope.errorMessage = '';
 		//alert('calling change Hierarchy level');
 		if(companyId == '' || typeof companyId == 'undefined'){
 			return;
 		}
 
-		if(companyLevel=="top-level"){
-			$scope.changeSkinChange('skin-blue');
-			
-		}else if(companyLevel=="middle-level"){
-			
-			$scope.changeSkinChange('skin-green');
-		}
-		else if(companyLevel=="bottom-level"){
-			$scope.changeSkinChange('skin-red');
-			
-		}else{
-			
-			$scope.changeSkinChange('skin-yellow');
-		}
+		
 		$http.post('orgHierarchy/changeHierarchyLevel/'+$scope.sessionId+'/'+companyId).success(function(Response) {
 
 			$scope.responseStatus = Response.status;
 			if ($scope.responseStatus == 'SUCCESSFUL') {
+				if(companyLevel=="top-level"){
+					$scope.changeSkinChange('skin-blue');
+					
+				}else if(companyLevel=="middle-level"){
+					
+					$scope.changeSkinChange('skin-green');
+				}
+				else if(companyLevel=="bottom-level"){
+					$scope.changeSkinChange('skin-red');
+					
+				}else{
+					
+					$scope.changeSkinChange('skin-yellow');
+				}
 				$window.location = '/app/#/home';
 				$cookieStore.put('_s_tk_oId', "");
 				$cookieStore.put('_s_tk_oId', companyId);
@@ -100,6 +102,15 @@ var OrgHierarchyController = ['$scope', '$http','$rootScope','$cookieStore','$co
 					$cookieStore.put('_hirearchy_comp_Id',true);
 					
 				}	
+				$rootScope.companyName = Response.data;
+				$cookieStore.put("companyName",Response.data);
+			}else if($scope.responseStatus == 'ACCESSDENIED'){
+				$scope.error = true;
+				$scope.errorMessage = Response.data;
+				$timeout(function(){
+					$scope.error = false;
+					$scope.errorMessage = '';
+				}, 5000);
 			}else if($scope.responseStatus == 'NORECORDFOUND'){
 				$scope.error = true;
 				$scope.errorMessage = Response.data;

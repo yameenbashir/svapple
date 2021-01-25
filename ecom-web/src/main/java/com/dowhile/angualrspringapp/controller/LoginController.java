@@ -211,6 +211,7 @@ public class LoginController {
 				else{
 					loginBean.setIsHeadOffice(String.valueOf(false));
 				}
+				loginBean.setCompnayName(outlet.getOutletName());
 				loginBean.setUserId(user.getUserId().toString());
 				List<Menu> menuList = menuService.getMenuByRoleId(user.getRole().getRoleId(),company.getCompanyId());
 				loginBean.setMapMenu(populateMenuBeanList(menuList));

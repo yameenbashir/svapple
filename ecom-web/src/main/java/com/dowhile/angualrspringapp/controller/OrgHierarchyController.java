@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dowhile.Configuration;
 import com.dowhile.Outlet;
 import com.dowhile.User;
+import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
@@ -63,23 +66,26 @@ public class OrgHierarchyController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			System.out.println("Old outlet id: "+currentUser.getOutlet().getOutletId());
-			Outlet outlet =  outletService.getOuletByOutletId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
-			if(outlet.getIsHeadOffice() != null && String.valueOf(outlet.getIsHeadOffice()) != "" && outlet.getIsHeadOffice()){
-				outlet.setIsHeadOffice(true);
+			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
+			Configuration configuration = configurationMap.get("ORGANIZATION_HIERARCHY_CHANGE_ALLOWED");
+			if(configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.FALSE)){
+				return new Response(MessageConstants.ACCESS_DENIED,StatusConstants.ACCESS_DENIED,LayOutPageConstants.ORG_HIERARCHY);
 			}else{
-				outlet.setIsHeadOffice(false);
+				System.out.println("Old outlet id: "+currentUser.getOutlet().getOutletId());
+				Outlet outlet =  outletService.getOuletByOutletId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+				if(outlet.getIsHeadOffice() != null && String.valueOf(outlet.getIsHeadOffice()) != "" && outlet.getIsHeadOffice()){
+					outlet.setIsHeadOffice(true);
+				}else{
+					outlet.setIsHeadOffice(false);
+				}
+				currentUser.setOutlet(outlet);
+				System.out.println("New outlet id: "+currentUser.getOutlet().getOutletId());
+				session.setAttribute("user", currentUser);
+				return new Response(currentUser.getOutlet().getOutletName(),StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
 			}
-			currentUser.setOutlet(outlet);
-			System.out.println("New outlet id: "+currentUser.getOutlet().getOutletId());
-			session.setAttribute("user", currentUser);
-			
-			return new Response(MessageConstants.REQUREST_PROCESSED,StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
 		}
-
 		else
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
-
 	}
 
 

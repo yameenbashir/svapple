@@ -15,9 +15,14 @@
 			<div class="top-buffer-contact"></div>
 			<div id="mydiv" ng-show="globalPageLoader" ng-cloak>
 				<div class="loader"></div>
+				
 			</div>
 			<!-- Main content -->
 			<section class="content" ng-show="!globalPageLoader" ng-cloak>
+				<div class="alert alert-success alert-sm" ng-show="success">
+					{{errorMessage}}</div>
+				<div class="alert alert-danger alert-sm" ng-show="error">
+					{{errorMessage}}</div>
 				<div id="chart-container" style="overflow-x: auto;">
 			</section>
 		</div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="AngularSpringApp"  manifest="resources/manifest.appcache>
+<html lang="en" ng-app="AngularSpringApp"  >
 <!--  manifest="resources/manifest.appcache" -->
 <!-- <html lang="en" ng-app="AngularSpringApp"   > -->
 <head>
@@ -118,7 +118,14 @@
 				</a>
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+					
 							<!-- <li class="dropdown user user-menu" ng-show="userRole==1" ng-if="online"><h1 class="blink-two" ng-bind="complianceTextForReporting"></h1></li> -->
+							<li class="dropdown user user-menu"  ng-if="online"><a
+							href="" class="dropdown-toggle"
+							data-toggle="dropdown">Current Outlet ( <i class="ionicons ion-ios-location"
+								style="background: #f39c1200; font-size: 1.5em;"></i> <span
+								class="hidden-xs" ng-bind="companyName"> </span> )
+						</a></li>
 						 <li class="dropdown user user-menu" ng-show="userRole==1" ng-if="online"><a
 							href="#orgHierarchy" class="dropdown-toggle"
 							data-toggle="dropdown"> <i class="ionicons ion-ios-location"
@@ -509,7 +516,7 @@
 		src="resources/bower_components/fullcalendar/dist/gcal.js"></script>
 		
 		
-	 <!-- Controllers   
+	 <!-- Controllers    -->
 	<script src="resources/js/controllers/StockDetByProductUuidController.js"></script> 
 	<script src="resources/js/controllers/StockDetByProductUuidController.js"></script> 
 	<script src="resources/js/controllers/LoginController.js"></script>
@@ -634,11 +641,11 @@
 	<script src="resources/js/controllers/DownloadProductsController.js"></script>
 	<script src="resources/js/controllers/SalesReportCurrentDateController.js"></script>
 	<script src="resources/js/controllers/InventoryReportLiveController.js"></script>
-	<script src="resources/js/controllers/InventoryHealthCheckReportController.js"></script> -->
+	<script src="resources/js/controllers/InventoryHealthCheckReportController.js"></script> 
 	
     <!-- Compressed Controller -->
-   <!--  last build made on 22-Jan-2021 old version 21.01.13    -->
-    <script src="resources/js/controllers/merged/output.js?v=21.01.22"></script>
+   <!--  last build made on 22-Jan-2021 old version 21.01.13   
+    <script src="resources/js/controllers/merged/output.js?v=21.01.22"></script>  -->
       
     
     <script src="resources/js/OrgHierarchyController.js"></script>
