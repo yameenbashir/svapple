@@ -162,7 +162,7 @@ public class SchedulerController {
 	 
 	 //run after every 22:50 (hh:mm)
 	 @Scheduled(cron="0 50 22 * * ?")
-	 public void runScript(String command){
+	 public void runScript(){
 		 try {
 	            Process proc = Runtime.getRuntime().exec("/home/mysqldump.sh /"); //Whatever you want to execute
 	            BufferedReader read = new BufferedReader(new InputStreamReader(
