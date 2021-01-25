@@ -75,11 +75,15 @@ public class OrgHierarchyController {
 				Outlet outlet =  outletService.getOuletByOutletId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
 				if(outlet.getIsHeadOffice() != null && String.valueOf(outlet.getIsHeadOffice()) != "" && outlet.getIsHeadOffice()){
 					outlet.setIsHeadOffice(true);
+					session.setAttribute("impersonate", false);
 				}else{
+					session.setAttribute("impersonate", true);
 					outlet.setIsHeadOffice(false);
 				}
 				currentUser.setOutlet(outlet);
 				System.out.println("New outlet id: "+currentUser.getOutlet().getOutletId());
+				boolean  impersonate= (boolean) session.getAttribute("impersonate");
+				System.out.println("Current user impersonate status = "+impersonate+" if value is true then impersonated otherwise not");
 				session.setAttribute("user", currentUser);
 				return new Response(currentUser.getOutlet().getOutletName(),StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
 			}

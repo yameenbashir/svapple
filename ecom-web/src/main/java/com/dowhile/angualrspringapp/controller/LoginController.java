@@ -184,6 +184,7 @@ public class LoginController {
 					
 				user.setOutlet(outlet);
 				session.setAttribute("user", user);
+				session.setAttribute("impersonate", false);
 				Map<String ,Configuration> configurationMap = configurationService.getAllConfigurationsByCompanyId(company.getCompanyId());
 				session.setAttribute("configurationMap", configurationMap);
 				//For Local Installation
