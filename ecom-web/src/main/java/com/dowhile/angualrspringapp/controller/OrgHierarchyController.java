@@ -66,27 +66,22 @@ public class OrgHierarchyController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
-			Map<String ,Configuration> configurationMap = (Map<String, Configuration>) session.getAttribute("configurationMap");
-			Configuration configuration = configurationMap.get("ORGANIZATION_HIERARCHY_CHANGE_ALLOWED");
-			if(configuration!=null && configuration.getPropertyValue().toString().equalsIgnoreCase(ControllersConstants.FALSE)){
-				return new Response(MessageConstants.ACCESS_DENIED,StatusConstants.ACCESS_DENIED,LayOutPageConstants.ORG_HIERARCHY);
+			System.out.println("Old outlet id: "+currentUser.getOutlet().getOutletId());
+			Outlet outlet =  outletService.getOuletByOutletId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
+			if(outlet.getIsHeadOffice() != null && String.valueOf(outlet.getIsHeadOffice()) != "" && outlet.getIsHeadOffice()){
+				outlet.setIsHeadOffice(true);
+				session.setAttribute("impersonate", false);
 			}else{
-				System.out.println("Old outlet id: "+currentUser.getOutlet().getOutletId());
-				Outlet outlet =  outletService.getOuletByOutletId(Integer.parseInt(outletId), currentUser.getCompany().getCompanyId());
-				if(outlet.getIsHeadOffice() != null && String.valueOf(outlet.getIsHeadOffice()) != "" && outlet.getIsHeadOffice()){
-					outlet.setIsHeadOffice(true);
-					session.setAttribute("impersonate", false);
-				}else{
-					session.setAttribute("impersonate", true);
-					outlet.setIsHeadOffice(false);
-				}
-				currentUser.setOutlet(outlet);
-				System.out.println("New outlet id: "+currentUser.getOutlet().getOutletId());
-				boolean  impersonate= (boolean) session.getAttribute("impersonate");
-				System.out.println("Current user impersonate status = "+impersonate+" if value is true then impersonated otherwise not");
-				session.setAttribute("user", currentUser);
-				return new Response(currentUser.getOutlet().getOutletName(),StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
+				session.setAttribute("impersonate", true);
+				outlet.setIsHeadOffice(false);
 			}
+			currentUser.setOutlet(outlet);
+			System.out.println("New outlet id: "+currentUser.getOutlet().getOutletId());
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			System.out.println("Current user impersonate status = "+impersonate+" if value is true then impersonated otherwise not");
+			session.setAttribute("user", currentUser);
+			return new Response(currentUser.getOutlet().getOutletName(),StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
+		
 		}
 		else
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
