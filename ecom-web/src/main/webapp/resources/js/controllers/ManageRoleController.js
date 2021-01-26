@@ -89,6 +89,11 @@ var ManageRoleController = ['$scope', '$http','$window','$cookieStore','$rootSco
 
 	
 	$scope.updatePageRights = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.manageRoleSuccess = false;
 		$scope.manageRoleError = false;
 		$scope.loadingUpdate = true;
