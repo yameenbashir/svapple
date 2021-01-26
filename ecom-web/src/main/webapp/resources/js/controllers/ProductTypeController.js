@@ -62,6 +62,11 @@ var ProductTypeController = ['$scope', '$http', '$timeout','$route', '$window','
 	};
 	
 	$scope.addProductType = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productTypeSuccess = false;
 		$scope.productTypeError = false;
 		$scope.loading = true;
@@ -104,6 +109,11 @@ var ProductTypeController = ['$scope', '$http', '$timeout','$route', '$window','
 	};
 	
 	$scope.updateProductType = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productTypeSuccess = false;
 		$scope.productTypeError = false;
 		$scope.loading = true;

@@ -201,6 +201,7 @@ public class LoginController {
 				
 				
 				LoginBean loginBean = new LoginBean();
+				loginBean.setImpersonate(false);
 				loginBean.setUserName(user.getFirstName() + " "
 						+ user.getLastName());
 				loginBean.setSessionId(session.getId());

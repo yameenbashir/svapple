@@ -102,8 +102,10 @@ var OrgHierarchyController = ['$scope', '$http','$rootScope','$cookieStore','$co
 					$cookieStore.put('_hirearchy_comp_Id',true);
 					
 				}	
-				$rootScope.companyName = Response.data;
-				$cookieStore.put("companyName",Response.data);
+				$rootScope.companyName = Response.data.compnayName;
+				$cookieStore.put("companyName",Response.data.compnayName);
+				$rootScope.impersonate = Response.data.impersonate;
+				$cookieStore.put("impersonate",Response.data.impersonate);
 			}else if($scope.responseStatus == 'ACCESSDENIED'){
 				$scope.error = true;
 				$scope.errorMessage = Response.data;

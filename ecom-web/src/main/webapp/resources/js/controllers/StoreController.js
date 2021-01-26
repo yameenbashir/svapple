@@ -53,6 +53,11 @@ var StoreController = ['$scope', '$http', '$window','$cookieStore','$rootScope',
 	};
 
 	$scope.updateCompany = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.companySuccess = false;
 		$scope.companyError = false;
 		$scope.loading = true;
@@ -87,6 +92,11 @@ var StoreController = ['$scope', '$http', '$window','$cookieStore','$rootScope',
 	};
 
 	$scope.updateContactInformation = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.companySuccess = false;
 		$scope.companyError = false;
 		$scope.contactInformationloading = true;
@@ -120,6 +130,11 @@ var StoreController = ['$scope', '$http', '$window','$cookieStore','$rootScope',
 	};
 
 	$scope.updateAddress = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.companySuccess = false;
 		$scope.companyError = false;
 		$scope.addressInformationloading = true;

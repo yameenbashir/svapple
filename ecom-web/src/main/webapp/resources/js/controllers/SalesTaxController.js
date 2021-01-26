@@ -80,6 +80,11 @@ var SalesTaxController = ['$scope', '$http', '$window','$cookieStore','$rootScop
 	};
 		
 	$scope.addSalesTax = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.salesTaxSuccess = false;
 		$scope.salesTaxError = false;
 		$scope.loading = true;
@@ -116,6 +121,11 @@ var SalesTaxController = ['$scope', '$http', '$window','$cookieStore','$rootScop
 	};
 	
 	$scope.editSalesTax = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.salesTaxSuccess = false;
 		$scope.salesTaxError = false;
 		$scope.loading = true;
@@ -155,7 +165,11 @@ var SalesTaxController = ['$scope', '$http', '$window','$cookieStore','$rootScop
 	
 	
 	$scope.editOutlet = function(outlet){
-
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$cookieStore.put('_e_cOt_gra',outlet.outletId) ;
 		$window.location = "/app/#/manageOutlet";
 

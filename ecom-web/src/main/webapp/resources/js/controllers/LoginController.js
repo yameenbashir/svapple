@@ -162,6 +162,8 @@ var LoginController = ['$scope', '$http', '$window', '$cookieStore','$rootScope'
 		$cookieStore.put('email', $scope.userBean.email);
 		$rootScope.companyName = Response.data.compnayName;
 		$cookieStore.put("companyName",Response.data.compnayName);
+		$rootScope.impersonate = Response.data.impersonate;
+		$cookieStore.put("impersonate",Response.data.impersonate);
 		$cookieStore.put('companyImagePath', Response.data.companyImagePath);
 		$cookieStore.put('termsAndConditions', Response.data.termsAndConditions);
 		SessionService.setUser($scope.userBean.email);

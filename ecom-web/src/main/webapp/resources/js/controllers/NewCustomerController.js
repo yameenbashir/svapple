@@ -79,6 +79,11 @@ var NewCustomerController = ['$scope', '$http', '$filter', '$timeout','$window',
 	};
 
 	$scope.addNewCustomer = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.newCustomerSuccess = false;
 		$scope.newCustomerError = false;
 		$scope.addNewCustomerButton = true;

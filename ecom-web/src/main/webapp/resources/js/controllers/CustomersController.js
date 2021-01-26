@@ -67,6 +67,11 @@ var CustomersController = ['$scope', '$http','$sce','$timeout', '$window','$cook
 	};
 	
 	$scope.activeInactiveAll = function(isActive) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.loading = true;
 		$http.get('customers/activeInactiveAllCustomers/'+$scope._s_tk_com+'/'+isActive)
 		.success(function(Response) {
@@ -91,10 +96,19 @@ var CustomersController = ['$scope', '$http','$sce','$timeout', '$window','$cook
 	
 
 	$scope.addCustomer = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$window.location = "/app/#/newCustomer";
 	};
 	$scope.editCustomer = function(customer) {
-		
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		
 		$http.get('customers/updateSelectedCustomer/'+$scope._s_tk_com+'/'+customer.customerId)
 		.success(function(Response) {
@@ -167,6 +181,11 @@ var CustomersController = ['$scope', '$http','$sce','$timeout', '$window','$cook
 	};
 
 	$scope.updateCustomer = function(customer) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$http.get('customers/getSelectedCustomer/'+$scope._s_tk_com+'/'+customer.customerId)
 		.success(function(Response) {
 			

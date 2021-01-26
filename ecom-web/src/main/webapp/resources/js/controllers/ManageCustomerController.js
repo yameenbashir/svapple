@@ -56,6 +56,11 @@ var ManageCustomerController = ['$scope', '$http', '$filter', '$timeout','$windo
 	};
 
 	$scope.updateCustomer = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.manageCustomerSuccess = false;
 		$scope.manageCustomerError = false;
 		$scope.loading = true;

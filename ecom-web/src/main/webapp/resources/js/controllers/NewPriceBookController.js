@@ -113,6 +113,11 @@ var NewPriceBookController = ['$scope', '$http', '$window','$cookieStore','$root
 	});
 	
 	$scope.addPriceBook = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		
 		$scope.priceBookSuccess = false;
 		$scope.priceBookError = false;

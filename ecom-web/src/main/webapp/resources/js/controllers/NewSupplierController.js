@@ -73,6 +73,11 @@ var NewSupplierController = ['$scope', '$http', '$window', '$cookieStore','$rout
 	
 
 	$scope.addSupplier = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.Success = false;
 		$scope.Error = false;
 		$scope.loading = true;

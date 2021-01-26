@@ -61,10 +61,20 @@ var SuppliersController = ['$scope', '$http', '$window','$cookieStore','$rootSco
 		$rootScope.globalPageLoader = false;
 	};
 	$scope.addSupplier = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$window.location = "/app/#/newSupplier";
 	};
 
 	$scope.EditRecord = function(supplier) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$cookieStore.put('supplier',supplier);
 		$window.location = "/app/#/newSupplier";
 	};
@@ -89,6 +99,11 @@ var SuppliersController = ['$scope', '$http', '$window','$cookieStore','$rootSco
 
 	
 	$scope.addSuppliersPayment = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -126,7 +141,12 @@ var SuppliersController = ['$scope', '$http', '$window','$cookieStore','$rootSco
 	};
 
 	
-	$scope.fetchStockOrders = function(supplierId) {		
+	$scope.fetchStockOrders = function(supplierId) {	
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$http.post('supplierDetails/getAllStockOrdersBySupplierId/'+$scope._s_tk_com+'/'+ supplierId)

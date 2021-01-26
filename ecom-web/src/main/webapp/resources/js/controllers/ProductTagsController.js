@@ -66,6 +66,11 @@ var ProductTagsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 	};
 	
 	$scope.addTag = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.tagSuccess = false;
 		$scope.tagError = false;
 		$scope.loading = true;
@@ -122,6 +127,11 @@ var ProductTagsController = ['$scope', '$http', '$window','$cookieStore','$rootS
 	};
 	
 	$scope.updateTag = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.tagSuccess = false;
 		$scope.tagError = false;
 		$scope.loading = true;

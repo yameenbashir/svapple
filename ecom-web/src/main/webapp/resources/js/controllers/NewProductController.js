@@ -922,6 +922,11 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 	};
 
 	$scope.addTag = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if($scope.tagBean==null || $scope.tagBean=='' || !$scope.tagBean){
 			return;
 		}
@@ -975,6 +980,11 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 	};
 
 	$scope.addVarientAttribute = function(varientAttributeBean) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.variantAttributeAddError = false;
 		if($scope.varientAttributesList!=null){
 			for(var index=0;index<$scope.varientAttributesList.length;index++){
@@ -1220,6 +1230,11 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 	};
 	
 	$scope.addProductType = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productSuccess = false;
 		$scope.productTypeError = false;
 		$scope.loading = true;
@@ -1258,6 +1273,11 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 	};
 	
 	$scope.addSupplier = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productSuccess = false;
 		$scope.Error = false;
 		$scope.loading = true;
@@ -1299,6 +1319,11 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 	};
 	
 	$scope.addBrand = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productSuccess = false;
 		$scope.brandError = false;
 		$scope.loading = true;
@@ -1451,7 +1476,11 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 		});
 	};
 	$scope.addProduct = function(dataUrl, name) {
-		
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		 $scope.imageData =  {
 		            file: dataUrl,
 		            id : name
@@ -1500,6 +1529,11 @@ var NewProductController = ['$scope', '$http', '$window','$cookieStore','$rootSc
 	};
 	
 	$scope.upload = function (dataUrl, name) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		 $scope.imageData =  {
             file: dataUrl,
             id : name

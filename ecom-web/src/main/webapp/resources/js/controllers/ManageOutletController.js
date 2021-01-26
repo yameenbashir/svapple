@@ -62,6 +62,11 @@ var ManageOutletController = ['$scope', '$http', '$window','$cookieStore','$root
 	};
 
 	$scope.updateOutlet = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.outletSuccess = false;
 		$scope.outletError = false;
 		$scope.loading = true;

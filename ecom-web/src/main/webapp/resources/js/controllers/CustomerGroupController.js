@@ -76,6 +76,11 @@ var CustomerGroupController = ['$scope', '$http', '$timeout', '$route', '$window
 		};
 		
 		$scope.addCustomerGroup = function() {
+			$rootScope.impersonate = $cookieStore.get("impersonate");
+			if($rootScope.impersonate){
+				$rootScope.permissionDenied();
+				return;
+			}
 			$scope.customerGroupSuccess = false;
 			$scope.customerGroupError = false;
 			$scope.loading = true;
@@ -118,6 +123,11 @@ var CustomerGroupController = ['$scope', '$http', '$timeout', '$route', '$window
 		};
 		
 		$scope.updateCustomerGroup = function() {
+			$rootScope.impersonate = $cookieStore.get("impersonate");
+			if($rootScope.impersonate){
+				$rootScope.permissionDenied();
+				return;
+			}
 			$scope.customerGroupSuccess = false;
 			$scope.customerGroupError = false;
 			$scope.loading = true;

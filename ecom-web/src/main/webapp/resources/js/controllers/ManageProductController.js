@@ -1040,6 +1040,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.removeFromDisplayTagList = function(tag){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		for(var i=0;i<$scope.tagDisplayList.length;i++){
 			if($scope.tagDisplayList[i].tagId==tag.tagId && $scope.tagDisplayList[i].productId=='-1'){
 				$scope.tagDisplayList.splice(i,1);
@@ -1087,6 +1092,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 
 
 	$scope.addTag = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if($scope.tagBean==null || $scope.tagBean=='' || !$scope.tagBean){
 			return;
 		}
@@ -1139,7 +1149,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 
 	$scope.addVarientAttribute = function(varientAttributeBean) {
-		
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.variantAttributeAddError = false;
 		if($scope.varientAttributesList!=null){
 			for(var index=0;index<$scope.varientAttributesList.length;index++){
@@ -1281,6 +1295,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.addProductType = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productSuccess = false;
 		$scope.productTypeError = false;
 		$scope.loading = true;
@@ -1319,6 +1338,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.addSupplier = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productSuccess = false;
 		$scope.Error = false;
 		$scope.loading = true;
@@ -1360,6 +1384,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.addBrand = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.productSuccess = false;
 		$scope.brandError = false;
 		$scope.loading = true;
@@ -1506,6 +1535,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.markInActiveProductVariant = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$http.post('manageProduct/markInActiveProductVariant/'+$scope._s_tk_com+'/'+$scope.productVariantId)
 		.success(function(Response) {
 			$('#alertBox1').modal('hide');
@@ -1546,6 +1580,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.markInActiveCompositeProductVariant = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$http.post('manageProduct/markInActiveCompositeProductVariant/'+$scope._s_tk_com+'/'+$scope.compositeProductVariantUuid)
 		.success(function(Response) {
 			$('#alertBox2').modal('hide');
@@ -1578,6 +1617,11 @@ var ManageProductController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.updateProduct = function(dataUrl, name) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		 $scope.imageData =  {
 		            file: dataUrl,
 		            id : name

@@ -93,6 +93,11 @@ var SupplierDetailsController = ['$scope', '$http', '$window', '$timeout', '$coo
 
 	
 	$scope.addSuppliersPayment = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -161,7 +166,12 @@ var SupplierDetailsController = ['$scope', '$http', '$window', '$timeout', '$coo
 
 	};
 
-	$scope.fetchStockOrders = function() {		
+	$scope.fetchStockOrders = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.sId = $cookieStore.get('sp_cto');
@@ -193,7 +203,12 @@ var SupplierDetailsController = ['$scope', '$http', '$window', '$timeout', '$coo
 
 	};
 
-	$scope.fetchSupplierPayments = function() {		
+	$scope.fetchSupplierPayments = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.sId = $cookieStore.get('sp_cto');

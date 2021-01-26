@@ -11,9 +11,19 @@ var OutletsController = ['$scope', '$http', '$window','$cookieStore','$rootScope
 	$scope.systemBusy = 'System is Busy Please try again';
 
 	$scope.addOutlet = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$window.location = "/app/#/outlet";
 	};
 	$scope.addRegister = function(outlet) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		localforage.setItem('_r_cO_gra',outlet);
 		$window.location = "/app/#/register";
 	};
@@ -45,6 +55,11 @@ var OutletsController = ['$scope', '$http', '$window','$cookieStore','$rootScope
 	};
 
 	$scope.showDetails= function(outlet) {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if($scope.headOffice != null && $scope.headOffice.toString() != ''){
 			if($scope.headOffice.toString() == "true"){
 				$cookieStore.put('sp_oto', outlet.outletId);
@@ -98,12 +113,22 @@ var OutletsController = ['$scope', '$http', '$window','$cookieStore','$rootScope
 	};
 
 	$scope.editOutlet = function(outlet){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$cookieStore.put('_e_cOt_gra',outlet.outletId);
 		$window.location = "/app/#/manageOutlet";
 
 	};
 
 	$scope.updateRegister = function(registerBean){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$cookieStore.put('_e_cOr_gra',registerBean.registerId) ;
 		$window.location = "/app/#/manageRegister";
 	};

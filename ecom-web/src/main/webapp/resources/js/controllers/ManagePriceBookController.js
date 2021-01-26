@@ -136,6 +136,11 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 	});
 	
 	$scope.updatePriceBook = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		
 		$scope.priceBookSuccess = false;
 		$scope.priceBookError = false;
@@ -503,6 +508,11 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 	};
 	
 	$scope.markInactiveSelectiveProduct = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.priceBookSuccess = false;
 		$scope.priceBookError = false;
 		if($scope.deleteProdcut.priceBookId==null||$scope.deleteProdcut.priceBookDetailId==null){
@@ -659,6 +669,11 @@ var ManagePriceBookController = ['$scope', '$http', '$window','$cookieStore','$r
 	
 	
 	$scope.manageProductsInPriceBook = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.priceBookSuccess = false;
 		$scope.priceBookError = false;
 		$scope.loading = true;

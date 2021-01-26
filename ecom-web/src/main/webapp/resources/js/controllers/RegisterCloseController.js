@@ -31,6 +31,11 @@ var RegisterCloseController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.closeRegister = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -69,6 +74,11 @@ var RegisterCloseController = ['$scope', '$http', '$window','$cookieStore','$roo
 	};
 	
 	$scope.openRegister = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loadingOpenRegister = true;
@@ -108,6 +118,11 @@ var RegisterCloseController = ['$scope', '$http', '$window','$cookieStore','$roo
 	$scope.cashManagmentBean.notes = "Opening float";
 	
 	$scope.cashInOut = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.addCashProcessingButton = true;
 		$http.post('cashManagement/cashInOut/' + $scope._s_tk_com,$scope.cashManagmentBean).success(
 				function(Response) {

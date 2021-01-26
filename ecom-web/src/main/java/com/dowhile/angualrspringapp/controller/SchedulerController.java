@@ -221,7 +221,7 @@ public class SchedulerController {
 						  "<tr>"+
 						    "<td style=\"font-size:12px;\"><a href=\"#\" target=\"_blank\">Contact info</a> | <a href=\"#\" target=\"_blank\">Privacy policy</a><br />"+
 						      "<br />"+
-						    "©2019 ShopVitals.</td>"+
+						    "©2021 ShopVitals.</td>"+
 						    "<td>&nbsp;</td>"+
 						  "</tr>"+
 						"</table>"+

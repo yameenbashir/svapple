@@ -4,7 +4,7 @@
  * OutletsController
  * @constructor
  */
-var PriceBookController = ['$scope', '$http', '$window','$cookieStore','$rootScope','SessionService','PriceBookControllerPreLoad',function($scope, $http, $window,$cookieStore,$rootScope,SessionService,PriceBookControllerPreLoad) {
+var PriceBookController = ['$scope', '$http', '$window','$cookieStore','$rootScope','SessionService','PriceBookControllerPreLoad','$timeout',function($scope, $http, $window,$cookieStore,$rootScope,SessionService,PriceBookControllerPreLoad,$timeout) {
 	
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
@@ -57,9 +57,19 @@ var PriceBookController = ['$scope', '$http', '$window','$cookieStore','$rootSco
 	};
 	
 	$scope.addPriceBook = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$window.location = "/app/#/newPriceBook";
 	};
 	$scope.editPriceBook = function(priceBook){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$cookieStore.put('_e_cPri_gra',priceBook.priceBookId) ;
 		$window.location = "/app/#/managePriceBook";
 	};

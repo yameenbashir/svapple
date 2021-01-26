@@ -52,6 +52,11 @@ var RegisterController = ['$scope', '$http', '$window','$cookieStore','$rootScop
 	
 	
 	$scope.addRegister = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.registerSuccess = false;
 		$scope.registerError = false;
 		$scope.loading = true;

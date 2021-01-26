@@ -65,6 +65,11 @@ var BrandsController = ['$scope', '$http', '$window','$cookieStore','$rootScope'
 	};
 
 	$scope.addBrand = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.brandSuccess = false;
 		$scope.brandError = false;
 		$scope.loading = true;
@@ -107,6 +112,11 @@ var BrandsController = ['$scope', '$http', '$window','$cookieStore','$rootScope'
 	};
 
 	$scope.updateBrand = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.brandSuccess = false;
 		$scope.brandError = false;
 		$scope.loading = true;

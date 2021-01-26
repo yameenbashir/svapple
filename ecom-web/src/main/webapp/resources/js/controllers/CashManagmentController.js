@@ -91,6 +91,11 @@ var CashManagmentController =['$scope', '$http', '$window', '$cookieStore','$roo
 	};
 	
 	$scope.cashInOut = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.cashManagmentBean.expenseType=$scope.selectedExpenseType;
 		$http.post('cashManagement/cashInOut/' + $scope._s_tk_com,$scope.cashManagmentBean).success(
 				function(Response) {
@@ -123,6 +128,11 @@ var CashManagmentController =['$scope', '$http', '$window', '$cookieStore','$roo
 		
 	};
 	$scope.enableCashStatus = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$http.post('cashManagement/enableCashStatus/' + $scope._s_tk_com).success(
 				function(Response) {
 					$rootScope.emergencyInfoLoadedFully = false;
@@ -150,6 +160,11 @@ var CashManagmentController =['$scope', '$http', '$window', '$cookieStore','$roo
 	};
 	
 	$scope.cashManagement = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$http.post('cashManagement/enableCash/' + $scope._s_tk_com).success(
 				function(Response) {
 					$rootScope.emergencyInfoLoadedFully = false;

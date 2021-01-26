@@ -1160,18 +1160,15 @@ public class ManageProductController {
 	
 	public String removeDuplicate(String attributes) {
 		try {
-//			String attributes = "peach,peach,black,falsa,pinkish,pista,zinc";
 			String duplicateElements[] = attributes.split(",");
 			String finalString = "";
 			 HashSet<String> set = new HashSet<String>(); 
 			for(int index=0;index<duplicateElements.length;index++) {
-			        // Use add() method to add elements into the Set 
 			        set.add(duplicateElements[index]); 
 			}
-//			System.out.println(set);
 			finalString  = set.toString().replace("[", "");
 			finalString = finalString.replace("]", "");
-			System.out.println("finalString: "+finalString);
+//			System.out.println("finalString: "+finalString);
 			return finalString;
 		}catch(Exception ex) {
 			ex.printStackTrace();

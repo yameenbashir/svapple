@@ -117,7 +117,11 @@ var ProductDetailsController = ['$scope', '$http', '$window','$cookieStore','$ro
 		return target.replace(new RegExp(search, 'g'), replacement);
 	};
 		$scope.editProduct = function(){
-
+			$rootScope.impersonate = $cookieStore.get("impersonate");
+			if($rootScope.impersonate){
+				$rootScope.permissionDenied();
+				return;
+			}
 			$cookieStore.put('_e_cPi_gra',$scope.product.productId) ;
 			$cookieStore.put('_e_cOi_gra',$scope.product.outletId) ;
 			$window.location = "/app/#/manageProduct";

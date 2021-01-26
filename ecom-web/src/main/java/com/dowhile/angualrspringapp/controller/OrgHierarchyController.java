@@ -25,6 +25,7 @@ import com.dowhile.constants.ControllersConstants;
 import com.dowhile.constants.LayOutPageConstants;
 import com.dowhile.constants.MessageConstants;
 import com.dowhile.constants.StatusConstants;
+import com.dowhile.controller.bean.LoginBean;
 import com.dowhile.controller.bean.Response;
 import com.dowhile.frontend.mapping.bean.Organization;
 import com.dowhile.frontend.mapping.bean.OrganizationGraph;
@@ -80,7 +81,10 @@ public class OrgHierarchyController {
 			boolean  impersonate= (boolean) session.getAttribute("impersonate");
 			System.out.println("Current user impersonate status = "+impersonate+" if value is true then impersonated otherwise not");
 			session.setAttribute("user", currentUser);
-			return new Response(currentUser.getOutlet().getOutletName(),StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
+			LoginBean loginBean = new LoginBean();
+			loginBean.setCompnayName(currentUser.getOutlet().getOutletName());
+			loginBean.setImpersonate(impersonate);
+			return new Response(loginBean,StatusConstants.SUCCESS,LayOutPageConstants.ORG_HIERARCHY);
 		
 		}
 		else

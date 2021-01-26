@@ -96,6 +96,7 @@ App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeo
 	$rootScope.userName = $cookieStore.get('userName');
 	$rootScope.companyId = $cookieStore.get("companyId");
 	$rootScope.companyName = $cookieStore.get("companyName");
+	$rootScope.impersonate = $cookieStore.get("impersonate");
 	$rootScope.userEmail = $cookieStore.get('email');
 	$rootScope.userCreatedDate = $cookieStore.get('userCreatedDate');
 	$rootScope.IsManager = $cookieStore.get('IsManager');
@@ -164,6 +165,13 @@ App.run(['$rootScope', '$templateCache','$cookieStore','$window','$http','$timeo
 			$rootScope.online = false;
 			//	$window.location = '/app/#/sell';
 		});
+	}
+	
+	$rootScope.permissionDenied = function() {
+		$rootScope.showErrorUnauthorizedModal = true;
+		$timeout(function(){
+			$rootScope.showErrorUnauthorizedModal = false;
+		}, 2000);
 	}
 
 	$rootScope.heartBeat();

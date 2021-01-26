@@ -14,9 +14,19 @@ var ProductsController = ['$scope', '$http','$sce', '$window','$cookieStore','$r
 	$scope.dataLoading = false;
 	
 	$scope.addProduct = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$window.location = "/app/#/newProduct";
 	};
 	$scope.addCompositeProduct = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$window.location = "/app/#/newCompositeProduct";
 	};
 	$scope.showProduct = function(product) {
@@ -26,7 +36,11 @@ var ProductsController = ['$scope', '$http','$sce', '$window','$cookieStore','$r
 	};
 	
 	$scope.editProduct = function(product){
-		
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$cookieStore.put('_e_cPi_gra',product.productId) ;
 		$cookieStore.put('_e_cOi_gra',product.outletId) ;
 		if(product.isComposite=="true"){
