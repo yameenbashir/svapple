@@ -15,6 +15,13 @@ var LayoutDesignController = ['$timeout','$scope', '$http','$sce', '$window','$c
 
 		if (SessionService.validate()) {
 			$scope._s_tk_com = $cookieStore.get('_s_tk_com');
+			$rootScope.impersonate = $cookieStore.get("impersonate");
+			if($rootScope.impersonate){
+				$rootScope.layoutDesignLoadedFully = false;
+				$rootScope.globalPageLoader = false;
+				$rootScope.permissionDenied();
+				return;
+			}
 
 			$scope.layoutDesignControllerBean = LayoutDesignControllerPreLoad.loadControllerData();
 			$scope.allProducts = $scope.layoutDesignControllerBean.productsBean;
@@ -32,6 +39,11 @@ var LayoutDesignController = ['$timeout','$scope', '$http','$sce', '$window','$c
 	};
 	$scope.allProductsSelected =[];
 	$scope.saveLayout = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.doneLoading = true;
 		for (var i = 0; i < $scope.layoutProducts.length ; i++) {
 			for (var j = 0; j < $scope.allProducts.length ; j++) {

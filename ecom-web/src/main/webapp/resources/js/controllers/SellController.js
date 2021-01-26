@@ -61,6 +61,13 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 
 		if (true) {
 			$scope._s_tk_com = $cookieStore.get('_s_tk_com');
+			$rootScope.impersonate = $cookieStore.get("impersonate");
+			if($rootScope.impersonate){
+				$rootScope.permissionDenied();
+				$scope.loadingSalePageComplete = false;
+				$rootScope.globalPageLoader = false;
+				return;
+			}
 
 			$scope.sellControllerBean = SellControllerPreLoad.loadControllerData();
 			
@@ -1376,6 +1383,11 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	};
 
 	$scope.openRegister = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loadingOpenRegister = true;
@@ -1413,6 +1425,11 @@ var SellController =  ['$scope', '$http', '$window', '$cookieStore', '$rootScope
 	$scope.registerOpen = false;
 	$scope.dailyRegesterId = "";
 	$scope.getAllProducts = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		/*if(!$rootScope.online){
 			$scope.registerOpen = true;
 			return;
