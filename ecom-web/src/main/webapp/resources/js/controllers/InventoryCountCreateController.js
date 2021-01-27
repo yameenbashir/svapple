@@ -5,7 +5,7 @@
  * @constructor ....
  */
 var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$cookieStore','$rootScope','$timeout','SessionService','InventoryCountCreateControllerPreLoad',function($scope, $filter, $http, $window,$cookieStore,$rootScope,$timeout,SessionService,InventoryCountCreateControllerPreLoad) {
-	
+
 	$rootScope.MainSideBarhideit = false;
 	$rootScope.MainHeaderideit = false;
 	$scope.inventoryCountBean = {};
@@ -42,7 +42,7 @@ var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$
 
 		}
 		else{
-			
+
 			if($scope.data.outletBeansList!=null){
 				$scope.outletList = $scope.data.outletBeansList;
 			}
@@ -55,38 +55,43 @@ var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$
 		}
 		$rootScope.globalPageLoader = false;
 	};
-	
-	$scope.addInventoryCount = function() {		
-			$scope.success = false;
-			$scope.error = false;
-			$scope.loading = true;
-			$scope.inventoryCountBean.statusId = "1"; // Initiated status at Inventory Count Creation page
-			$http.post('inventoryCountCreate/addInventoryCount/'+$scope._s_tk_com, $scope.inventoryCountBean)
-			.success(function(Response) {
-				$scope.loading = false;				
-				$scope.responseStatus = Response.status;
-				if ($scope.responseStatus == 'SUCCESSFUL') {
-					$scope.productTypeBean = {};
-					$scope.success = true;
-					$scope.successMessage = "Request Processed successfully!";
-					$scope.inventoryCountBean.inventoryCountId = Response.data;
-					$timeout(function(){
-						$scope.success = false;						
-						angular.forEach($scope.outletList, function(value,key){
-							if(value.outletId == $scope.inventoryCountBean.outletId){
-								$scope.inventoryCountBean.outletName = value.outletName;
-							}
-						});
-						angular.forEach($scope.inventoryCountTypeBeansList, function(value,key){
-							if(value.inventoryCountTypeId == $scope.inventoryCountBean.inventoryCountTypeId){
-								$scope.inventoryCountBean.inventoryCountTypeDesc = value.inventoryCountTypeDesc;
-							}
-						});
-						$cookieStore.put('_ct_sc_ost','');
-						$cookieStore.put('_ct_sc_ost',$scope.inventoryCountBean);
-						$window.location = Response.layOutPath;
-					    }, 3000);
-				}
+
+	$scope.addInventoryCount = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
+		$scope.success = false;
+		$scope.error = false;
+		$scope.loading = true;
+		$scope.inventoryCountBean.statusId = "1"; // Initiated status at Inventory Count Creation page
+		$http.post('inventoryCountCreate/addInventoryCount/'+$scope._s_tk_com, $scope.inventoryCountBean)
+		.success(function(Response) {
+			$scope.loading = false;				
+			$scope.responseStatus = Response.status;
+			if ($scope.responseStatus == 'SUCCESSFUL') {
+				$scope.productTypeBean = {};
+				$scope.success = true;
+				$scope.successMessage = "Request Processed successfully!";
+				$scope.inventoryCountBean.inventoryCountId = Response.data;
+				$timeout(function(){
+					$scope.success = false;						
+					angular.forEach($scope.outletList, function(value,key){
+						if(value.outletId == $scope.inventoryCountBean.outletId){
+							$scope.inventoryCountBean.outletName = value.outletName;
+						}
+					});
+					angular.forEach($scope.inventoryCountTypeBeansList, function(value,key){
+						if(value.inventoryCountTypeId == $scope.inventoryCountBean.inventoryCountTypeId){
+							$scope.inventoryCountBean.inventoryCountTypeDesc = value.inventoryCountTypeDesc;
+						}
+					});
+					$cookieStore.put('_ct_sc_ost','');
+					$cookieStore.put('_ct_sc_ost',$scope.inventoryCountBean);
+					$window.location = Response.layOutPath;
+				}, 3000);
+			}
 			else if($scope.responseStatus == 'SYSTEMBUSY'
 				||$scope.responseStatus=='INVALIDUSER'
 					||$scope.responseStatus =='ERROR'
@@ -110,8 +115,8 @@ var InventoryCountCreateController = ['$scope', '$filter', '$http', '$window','$
 			$scope.error = true;
 			$scope.errorMessage  = $scope.systemBusy;
 		});
-	
+
 	};
-	
+
 	$scope.sessionValidation();	
 }];

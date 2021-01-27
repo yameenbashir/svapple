@@ -388,7 +388,9 @@ public class PurchaseOrderController {
 			@RequestBody StockOrderBean stockOrderBean, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
+			User currentUser = (User) session.getAttribute("user");
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
 			try {			
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				if (stockOrderBean != null) {				
@@ -469,6 +471,10 @@ public class PurchaseOrderController {
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
+			}
+			else {
+				return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+			}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		
@@ -481,6 +487,8 @@ public class PurchaseOrderController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
 			try {			
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				if (stockOrderBean != null) {				
@@ -568,6 +576,10 @@ public class PurchaseOrderController {
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
+		}
+		else {
+			return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+		}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		

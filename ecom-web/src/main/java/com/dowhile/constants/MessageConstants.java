@@ -28,5 +28,6 @@ public class MessageConstants {
 	public static final String PATH_NOT_FOUND = "Backup path was not found !";
 	public static final String INVALID_TEXT = "Text length is too long to add into details limit is 200 characters";
 	public static final String INVALID_REQUEST = "Need to pay complete bill , without complete amount you can not proceed";
+	public static final String IMPERSONATE_USER_NOT_ALLOWED = "Impersonate user is not allowed to do this operation";
 	
 }

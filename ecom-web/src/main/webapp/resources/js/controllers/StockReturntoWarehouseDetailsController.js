@@ -106,6 +106,11 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 	};
 
 	$scope.returnAllProducts = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if($scope.returnAllProductsBean == "1"){
 			$scope.stockOrderDetailBeansList = [];
 			$scope.copyAllProducts();			
@@ -115,6 +120,11 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 	}
 
 	$scope.copyAllProducts = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.globalPageLoader = true;
 		$scope.loading = true;
 		if($scope.productVariantBeansList != null && $scope.productVariantBeansList.length > 0){
@@ -396,12 +406,22 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 
 
 	$scope.showConfirmDelete = function(stockOrderDetailBean){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.delStockOrderDetailBean = {};
 		$scope.delStockOrderDetailBean = angular.copy(stockOrderDetailBean);
 		$scope.showConfirmDeletePopup = true;
 	};
 
 	$scope.delStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
 			$scope.error = false;
 			$scope.loading = true;
@@ -672,6 +692,11 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 	};
 
 	$scope.addStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			$scope.success = false;
 			$scope.error = false;
@@ -719,9 +744,19 @@ var StockReturntoWarehouseDetailsController = ['$sce', '$scope', '$http', '$time
 	};
 
 	$scope.showSendTransferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmSendTransferPopup = true;
 	};
-	$scope.transferStockOrder = function(){		
+	$scope.transferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;

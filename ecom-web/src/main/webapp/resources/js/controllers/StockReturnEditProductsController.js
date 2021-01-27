@@ -294,12 +294,22 @@ var StockReturnEditProductsController = ['$sce', '$scope', '$http', '$timeout', 
 
 
 	$scope.showConfirmDelete = function(stockOrderDetailBean){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.delStockOrderDetailBean = {};
 		$scope.delStockOrderDetailBean = angular.copy(stockOrderDetailBean);
 		$scope.showConfirmDeletePopup = true;
 	};
 
 	$scope.delStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
 			$scope.error = false;
 			$scope.loading = true;
@@ -504,6 +514,11 @@ var StockReturnEditProductsController = ['$sce', '$scope', '$http', '$timeout', 
 	};	
 
 	$scope.updateStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			$scope.success = false;
 			$scope.error = false;
@@ -548,9 +563,19 @@ var StockReturnEditProductsController = ['$sce', '$scope', '$http', '$timeout', 
 
 	};
 	$scope.showSendTransferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmSendTransferPopup = true;
 	};
-	$scope.transferStockOrder = function(){		
+	$scope.transferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -591,9 +616,19 @@ var StockReturnEditProductsController = ['$sce', '$scope', '$http', '$timeout', 
 
 	};
 	$scope.showSendReturnStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmSendReturnPopup = true;
 	};	
 	$scope.returnStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;

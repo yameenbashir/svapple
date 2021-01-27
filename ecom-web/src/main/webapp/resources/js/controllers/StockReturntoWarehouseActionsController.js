@@ -275,10 +275,20 @@ var StockReturntoWarehouseActionsController = ['$scope', '$http', '$window', '$t
 	};
 	
 	$scope.showCancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmCancelPopup = true;
 	};	
 
-	$scope.cancelStockOrder = function(){		
+	$scope.cancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -418,6 +428,11 @@ var StockReturntoWarehouseActionsController = ['$scope', '$http', '$window', '$t
 	};
 	
 	$scope.showSendTransferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if($scope.checkStockOrderDetailList() == false){
 			$window.location = "/app/#/stockReturntoWarehouseEditProducts";
 		}
@@ -446,7 +461,12 @@ var StockReturntoWarehouseActionsController = ['$scope', '$http', '$window', '$t
 		}
 	};	
 
-	$scope.transferStockOrder = function(){		
+	$scope.transferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;

@@ -102,7 +102,12 @@ var StockReturntoWarehouseController = ['$scope', '$filter', '$http', '$timeout'
 		}
 	};
 
-	$scope.addStockOrder = function() {		
+	$scope.addStockOrder = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;

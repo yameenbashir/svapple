@@ -458,12 +458,22 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 
 
 	$scope.showConfirmDelete = function(stockOrderDetailBean){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.delStockOrderDetailBean = {};
 		$scope.delStockOrderDetailBean = angular.copy(stockOrderDetailBean);
 		$scope.showConfirmDeletePopup = true;
 	};
 
 	$scope.delStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
 			$scope.error = false;
 			$scope.loading = true;
@@ -700,16 +710,30 @@ var StockTransferDetailsController = ['$sce', '$scope', '$http', '$timeout', '$w
 	};
 
 	$scope.saveAndTransferStockOrderDetail = function(){
-
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.addStockOrderDetail();
 		$window.location = "/app/#/stockTransfer";
 	};
 
 
 	$scope.showSendTransferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmSendTransferPopup = true;
 	};
-	$scope.transferStockOrder = function(){		
+	$scope.transferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;

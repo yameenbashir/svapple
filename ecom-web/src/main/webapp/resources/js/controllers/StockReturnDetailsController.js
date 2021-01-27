@@ -312,6 +312,11 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 	};
 
 	$scope.delStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
 			$scope.error = false;
 			$scope.loading = true;
@@ -549,9 +554,19 @@ var StockReturnDetailsController = ['$scope', '$sce', '$http', '$timeout', '$win
 	};
 
 	$scope.showSendReturnStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmSendReturnPopup = true;
 	};	
-	$scope.returnStockOrder = function(){		
+	$scope.returnStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 			$scope.success = false;
 			$scope.error = false;
 			$scope.loading = true;

@@ -305,6 +305,8 @@ public class InventoryCountDetailsController {
 			List<InventoryCountDetailCustom> inventoryCountDetailCustomList;
 			String stockDetails = "<p> Please Close/Complete following Stock Orders before iniating an Audit";
 			List<StockOrder> stockOrderList = null;
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
 			try {			
 				DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 				stockOrderList = stockOrderService.getStockOrderByOutletIdNotComp(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
@@ -370,6 +372,10 @@ public class InventoryCountDetailsController {
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
+			}
+			else {
+				return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+			}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		
@@ -381,7 +387,9 @@ public class InventoryCountDetailsController {
 			@RequestBody InventoryCountBean inventoryCountBean, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
+			User currentUser = (User) session.getAttribute("user");
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
 			List<InventoryCountDetailBean> inventoryCountDetailBeansList = inventoryCountBean.getInventoryCountDetailBeansList(); 
 			List<InventoryCountDetail> inventoryCountDetailsAddList = new ArrayList<>();
 			String stockDetails = "<p> Please Close/Complete following Stock Orders before iniating an Audit";
@@ -665,6 +673,10 @@ public class InventoryCountDetailsController {
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
+		}
+		else {
+			return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+		}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		
@@ -677,6 +689,8 @@ public class InventoryCountDetailsController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
 			Double grandTotal = 0.0;
 			Double itemCount = 0.0;
 			List<InventoryCountDetailBean> inventoryCountDetailBeansList = inventoryCountBean.getInventoryCountDetailBeansList(); 
@@ -1203,6 +1217,10 @@ public class InventoryCountDetailsController {
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
+		}
+		else {
+			return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+		}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		
@@ -1262,7 +1280,9 @@ public class InventoryCountDetailsController {
 			@RequestBody InventoryCountDetailBean inventoryCountDetailBean, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
+			User currentUser = (User) session.getAttribute("user");
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
 			try {			
 				InventoryCountDetail inventoryCountDetail = new InventoryCountDetail();
 				inventoryCountDetail.setInventoryCountDetailId(Integer.parseInt(inventoryCountDetailBean.getInventoryCountDetailId()));
@@ -1278,6 +1298,10 @@ public class InventoryCountDetailsController {
 						"Error Occured " + errors.toString(),true);
 				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
+		}
+		else {
+			return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+		}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
 		}		

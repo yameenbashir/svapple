@@ -57,7 +57,7 @@ import com.dowhile.util.SessionValidator;
 @Controller
 @RequestMapping("/inventoryCountCreate")
 public class InventoryCountCreateController {
-	
+
 	// private static Logger logger = Logger.getLogger(InventoryCountCreateController.class.getName());
 	@Resource
 	private ServiceUtil util;
@@ -295,66 +295,72 @@ public class InventoryCountCreateController {
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
 			User currentUser = (User) session.getAttribute("user");	
-			String stockDetails = "<p> Please Close/Complete following Stock Orders before iniating an Audit";
-			List<StockOrder> stockOrderList = null;
-			try {			
-				DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-				stockOrderList = stockOrderService.getStockOrderByOutletIdNotComp(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
-				for(StockOrder stockOrder:stockOrderList){
-					String status = "";
-					if(stockOrder.getStatus() != null){
-						if(stockOrder.getStatus().getStatusId() == 1){
-							status = "Initiated";
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
+				String stockDetails = "<p> Please Close/Complete following Stock Orders before iniating an Audit";
+				List<StockOrder> stockOrderList = null;
+				try {			
+					DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+					stockOrderList = stockOrderService.getStockOrderByOutletIdNotComp(currentUser.getOutlet().getOutletId(), currentUser.getCompany().getCompanyId());
+					for(StockOrder stockOrder:stockOrderList){
+						String status = "";
+						if(stockOrder.getStatus() != null){
+							if(stockOrder.getStatus().getStatusId() == 1){
+								status = "Initiated";
+							}
+							else if (stockOrder.getStatus().getStatusId() == 2){
+								status = "In progress";
+							}
 						}
-						else if (stockOrder.getStatus().getStatusId() == 2){
-							status = "In progress";
-						}
+						stockDetails = stockDetails + "<br>" + stockOrder.getStockRefNo() + " - " + status + " - Last Updated =" + dateFormat.format(stockOrder.getLastUpdated());
 					}
-					stockDetails = stockDetails + "<br>" + stockOrder.getStockRefNo() + " - " + status + " - Last Updated =" + dateFormat.format(stockOrder.getLastUpdated());
-				}
-				stockDetails = stockDetails + "</p>";
-				if(stockOrderList.size() < 1){
-					if (inventoryCountBean != null) {				
-						InventoryCount inventoryCount = new InventoryCount();
-						inventoryCount.setActiveIndicator(true);
-						inventoryCount.setCreatedBy(currentUser.getUserId());
-						inventoryCount.setCreatedDate(new Date());
-						inventoryCount.setLastUpdated(new Date());
-						inventoryCount.setStatus(statusService.getStatusByStatusId(Integer.parseInt(inventoryCountBean.getStatusId().trim()))); 				
-						inventoryCount.setInventoryCountType(inventoryCountTypeService.getInventoryCountTypeByInventoryCountTypeId(Integer.parseInt(inventoryCountBean.getInventoryCountTypeId()))); 
-						inventoryCount.setInventoryCountRefNo(inventoryCountBean.getInventoryCountRefNo());
-						inventoryCount.setOutlet(outletService.getOuletByOutletId(Integer.parseInt(inventoryCountBean.getOutletId()),currentUser.getCompany().getCompanyId()));					
-						inventoryCount.setUpdatedBy(currentUser.getUserId());
-						inventoryCount.setCompany(currentUser.getCompany());
-						if(inventoryCountBean.getRemarks() != null){
-							inventoryCount.setRemarks(inventoryCountBean.getRemarks());
-						}	
-						System.out.println(inventoryCount.getOutlet().getOutletId());
-						System.out.println(inventoryCount.getStatus().getStatusId());
-						inventoryCountService.addInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
-						String path = LayOutPageConstants.INVENTORY_COUNT_DETAILS;
-						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", 
-								"User "+ currentUser.getUserEmail()+" Added InventoryCount+"+inventoryCountBean.getInventoryCountId()+" successfully ",false);
-						return new Response(inventoryCount.getInventoryCountId(),StatusConstants.SUCCESS,path);
-					}else{
+					stockDetails = stockDetails + "</p>";
+					if(stockOrderList.size() < 1){
+						if (inventoryCountBean != null) {				
+							InventoryCount inventoryCount = new InventoryCount();
+							inventoryCount.setActiveIndicator(true);
+							inventoryCount.setCreatedBy(currentUser.getUserId());
+							inventoryCount.setCreatedDate(new Date());
+							inventoryCount.setLastUpdated(new Date());
+							inventoryCount.setStatus(statusService.getStatusByStatusId(Integer.parseInt(inventoryCountBean.getStatusId().trim()))); 				
+							inventoryCount.setInventoryCountType(inventoryCountTypeService.getInventoryCountTypeByInventoryCountTypeId(Integer.parseInt(inventoryCountBean.getInventoryCountTypeId()))); 
+							inventoryCount.setInventoryCountRefNo(inventoryCountBean.getInventoryCountRefNo());
+							inventoryCount.setOutlet(outletService.getOuletByOutletId(Integer.parseInt(inventoryCountBean.getOutletId()),currentUser.getCompany().getCompanyId()));					
+							inventoryCount.setUpdatedBy(currentUser.getUserId());
+							inventoryCount.setCompany(currentUser.getCompany());
+							if(inventoryCountBean.getRemarks() != null){
+								inventoryCount.setRemarks(inventoryCountBean.getRemarks());
+							}	
+							System.out.println(inventoryCount.getOutlet().getOutletId());
+							System.out.println(inventoryCount.getStatus().getStatusId());
+							inventoryCountService.addInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
+							String path = LayOutPageConstants.INVENTORY_COUNT_DETAILS;
+							util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", 
+									"User "+ currentUser.getUserEmail()+" Added InventoryCount+"+inventoryCountBean.getInventoryCountId()+" successfully ",false);
+							return new Response(inventoryCount.getInventoryCountId(),StatusConstants.SUCCESS,path);
+						}else{
+							util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
+									currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountRefNo(),false);
+							return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+						}
+					}			
+					else{
 						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
-								currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountRefNo(),false);
-						return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+								currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
+						return new Response(stockDetails,StatusConstants.WARNING,LayOutPageConstants.STAY_ON_PAGE);
 					}
-				}			
-				else{
-					util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
-							currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
-					return new Response(stockDetails,StatusConstants.WARNING,LayOutPageConstants.STAY_ON_PAGE);
+				}
+				catch(Exception e){
+					e.printStackTrace();// logger.error(e.getMessage(),e);
+					StringWriter errors = new StringWriter();
+					e.printStackTrace(new PrintWriter(errors));
+					util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount",
+							"Error Occured " + errors.toString(),true);
+					return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 				}
 			}
-			catch(Exception e){
-				e.printStackTrace();// logger.error(e.getMessage(),e);
-				StringWriter errors = new StringWriter();
-				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount",
-						"Error Occured " + errors.toString(),true);
-				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+			else {
+				return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);
@@ -367,45 +373,51 @@ public class InventoryCountCreateController {
 			@RequestBody InventoryCountBean inventoryCountBean, HttpServletRequest request){
 		if(SessionValidator.isSessionValid(sessionId, request)){
 			HttpSession session =  request.getSession(false);
-			User currentUser = (User) session.getAttribute("user");	
-			try {			
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				if (inventoryCountBean != null) {				
-					InventoryCount inventoryCount = inventoryCountService.getInventoryCountByInventoryCountID(Integer.parseInt(inventoryCountBean.getInventoryCountId()),currentUser.getCompany().getCompanyId());
-					inventoryCount.setActiveIndicator(true);
-					inventoryCount.setCreatedBy(currentUser.getUserId());
-					inventoryCount.setCreatedDate(new Date());
-					inventoryCount.setLastUpdated(new Date());
-					inventoryCount.setStatus(statusService.getStatusByStatusId(Integer.parseInt(inventoryCountBean.getStatusId().trim()))); 				
-					inventoryCount.setInventoryCountType(inventoryCountTypeService.getInventoryCountTypeByInventoryCountTypeId(Integer.parseInt(inventoryCountBean.getInventoryCountTypeId()))); 
-					inventoryCount.setInventoryCountRefNo(inventoryCountBean.getInventoryCountRefNo());
-					inventoryCount.setOutlet(outletService.getOuletByOutletId(Integer.parseInt(inventoryCountBean.getOutletId()),currentUser.getCompany().getCompanyId()));					
-					inventoryCount.setUpdatedBy(currentUser.getUserId());
-					inventoryCount.setCompany(currentUser.getCompany());
-					if(inventoryCountBean.getRemarks() != null){
-						inventoryCount.setRemarks(inventoryCountBean.getRemarks());
-					}
-					inventoryCountService.updateInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
+			User currentUser = (User) session.getAttribute("user");
+			boolean  impersonate= (boolean) session.getAttribute("impersonate");
+			if(impersonate == false) {
+				try {			
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					if (inventoryCountBean != null) {				
+						InventoryCount inventoryCount = inventoryCountService.getInventoryCountByInventoryCountID(Integer.parseInt(inventoryCountBean.getInventoryCountId()),currentUser.getCompany().getCompanyId());
+						inventoryCount.setActiveIndicator(true);
+						inventoryCount.setCreatedBy(currentUser.getUserId());
+						inventoryCount.setCreatedDate(new Date());
+						inventoryCount.setLastUpdated(new Date());
+						inventoryCount.setStatus(statusService.getStatusByStatusId(Integer.parseInt(inventoryCountBean.getStatusId().trim()))); 				
+						inventoryCount.setInventoryCountType(inventoryCountTypeService.getInventoryCountTypeByInventoryCountTypeId(Integer.parseInt(inventoryCountBean.getInventoryCountTypeId()))); 
+						inventoryCount.setInventoryCountRefNo(inventoryCountBean.getInventoryCountRefNo());
+						inventoryCount.setOutlet(outletService.getOuletByOutletId(Integer.parseInt(inventoryCountBean.getOutletId()),currentUser.getCompany().getCompanyId()));					
+						inventoryCount.setUpdatedBy(currentUser.getUserId());
+						inventoryCount.setCompany(currentUser.getCompany());
+						if(inventoryCountBean.getRemarks() != null){
+							inventoryCount.setRemarks(inventoryCountBean.getRemarks());
+						}
+						inventoryCountService.updateInventoryCount(inventoryCount,currentUser.getCompany().getCompanyId());
 
-					util.AuditTrail(request, currentUser, "InventoryCountController.updateInventoryCount", 
-							"User "+ currentUser.getUserEmail()+" Added InventoryCount+"+inventoryCountBean.getInventoryCountId()+" successfully ",false);
-					String path = LayOutPageConstants.INVENTORY_COUNT_EDIT_DETAILS;
-					util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
-							currentUser.getUserEmail()+" added InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
-					return new Response(inventoryCount.getInventoryCountId(),StatusConstants.SUCCESS,path);
-				}else{
-					util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
-							currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
+						util.AuditTrail(request, currentUser, "InventoryCountController.updateInventoryCount", 
+								"User "+ currentUser.getUserEmail()+" Added InventoryCount+"+inventoryCountBean.getInventoryCountId()+" successfully ",false);
+						String path = LayOutPageConstants.INVENTORY_COUNT_EDIT_DETAILS;
+						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
+								currentUser.getUserEmail()+" added InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
+						return new Response(inventoryCount.getInventoryCountId(),StatusConstants.SUCCESS,path);
+					}else{
+						util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount", "User "+ 
+								currentUser.getUserEmail()+" Unable to add InventoryCount : "+inventoryCountBean.getInventoryCountId(),false);
+						return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+					}
+
+				}catch(Exception e){
+					e.printStackTrace();// logger.error(e.getMessage(),e);
+					StringWriter errors = new StringWriter();
+					e.printStackTrace(new PrintWriter(errors));
+					util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount",
+							"Error Occured " + errors.toString(),true);
 					return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 				}
-
-			}catch(Exception e){
-				e.printStackTrace();// logger.error(e.getMessage(),e);
-				StringWriter errors = new StringWriter();
-				e.printStackTrace(new PrintWriter(errors));
-				util.AuditTrail(request, currentUser, "InventoryCountController.addInventoryCount",
-						"Error Occured " + errors.toString(),true);
-				return new Response(MessageConstants.SYSTEM_BUSY,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
+			}
+			else {
+				return new Response(MessageConstants.IMPERSONATE_USER_NOT_ALLOWED,StatusConstants.BUSY,LayOutPageConstants.STAY_ON_PAGE);
 			}
 		}else{
 			return new Response(MessageConstants.INVALID_SESSION,StatusConstants.INVALID,LayOutPageConstants.LOGIN);

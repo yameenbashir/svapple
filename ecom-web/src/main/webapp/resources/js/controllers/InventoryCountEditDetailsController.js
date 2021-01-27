@@ -718,6 +718,11 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 	};	
 
 	$scope.addInventoryCountDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if ($scope.inventoryCountDetailBeansList.length > 0) {
 			$scope.success = false;
 			$scope.error = false;
@@ -777,6 +782,11 @@ var InventoryCountEditDetailsController = ['$sce', '$scope', '$http', '$timeout'
 	};
 	
 	$scope.addAndUpdateInventoryCountDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if ($scope.inventoryCountDetailBeansList.length > 0) {
 			$scope.success = false;
 			$scope.error = false;

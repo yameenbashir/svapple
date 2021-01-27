@@ -125,11 +125,11 @@ var StockTransferActionsController = ['$scope', '$http', '$window', '$timeout', 
 										caption : "Mike Smith",
 										buttons : {
 											buttons : [
-													{
+												{
 													customize: function ( win ) {
-										                    $(win.document.body)
-									                        .css( 'font-size', '10pt' )
-									                        .prepend(printHeader);},
+														$(win.document.body)
+														.css( 'font-size', '10pt' )
+														.prepend(printHeader);},
 														extend : 'print',
 														text : '<i class="fa fa-print"></i> Print',
 														title : $('h1').text(),
@@ -142,41 +142,41 @@ var StockTransferActionsController = ['$scope', '$http', '$window', '$timeout', 
 														},
 														footer : true,
 														autoPrint : true
-													},
-													{
-														extend : 'excel',
-														text : '<i class="fa fa-book"></i> Excel',
-														title : $('h1').text(),
-														key : {
-															key : 'p',
-															altkey : true
-														},
-														exportOptions : {
-															columns : ':not(.no-print)'
-														},
-														footer : true,
-														autoPrint : false
-													},
-													{
-														extend : 'pdf',
-														text : '<i class="fa fa-file-pdf-o"></i> PDF',
-														title : $('h1').text(),
-														exportOptions : {
-															columns : ':not(.no-print)'
-														},
-														footer : true
-													} ],
-											dom : {
-												container : {
-													className : 'dt-buttons'
 												},
-												button : {
-													className : 'btn btn-default'
+												{
+													extend : 'excel',
+													text : '<i class="fa fa-book"></i> Excel',
+													title : $('h1').text(),
+													key : {
+														key : 'p',
+														altkey : true
+													},
+													exportOptions : {
+														columns : ':not(.no-print)'
+													},
+													footer : true,
+													autoPrint : false
+												},
+												{
+													extend : 'pdf',
+													text : '<i class="fa fa-file-pdf-o"></i> PDF',
+													title : $('h1').text(),
+													exportOptions : {
+														columns : ':not(.no-print)'
+													},
+													footer : true
+												} ],
+												dom : {
+													container : {
+														className : 'dt-buttons'
+													},
+													button : {
+														className : 'btn btn-default'
+													}
 												}
-											}
 										}
 									});
-					
+
 						}, 100);
 				setTimeout(
 						function() 
@@ -188,11 +188,11 @@ var StockTransferActionsController = ['$scope', '$http', '$window', '$timeout', 
 										caption : "Mike Smith",
 										buttons : {
 											buttons : [
-													{
+												{
 													customize: function ( win ) {
-										                    $(win.document.body)
-									                        .css( 'font-size', '10pt' )
-									                        .prepend(printHeader);},
+														$(win.document.body)
+														.css( 'font-size', '10pt' )
+														.prepend(printHeader);},
 														extend : 'print',
 														text : '<i class="fa fa-print"></i> Print',
 														title : $('h1').text(),
@@ -205,43 +205,43 @@ var StockTransferActionsController = ['$scope', '$http', '$window', '$timeout', 
 														},
 														footer : true,
 														autoPrint : true
-													},
-													{
-														extend : 'excel',
-														text : '<i class="fa fa-book"></i> Excel',
-														title : $('h1').text(),
-														key : {
-															key : 'p',
-															altkey : true
-														},
-														exportOptions : {
-															columns : ':not(.no-print)'
-														},
-														footer : true,
-														autoPrint : false
-													},
-													{
-														extend : 'pdf',
-														text : '<i class="fa fa-file-pdf-o"></i> PDF',
-														title : $('h1').text(),
-														exportOptions : {
-															columns : ':not(.no-print)'
-														},
-														footer : true
-													} ],
-											dom : {
-												container : {
-													className : 'dt-buttons'
 												},
-												button : {
-													className : 'btn btn-default'
+												{
+													extend : 'excel',
+													text : '<i class="fa fa-book"></i> Excel',
+													title : $('h1').text(),
+													key : {
+														key : 'p',
+														altkey : true
+													},
+													exportOptions : {
+														columns : ':not(.no-print)'
+													},
+													footer : true,
+													autoPrint : false
+												},
+												{
+													extend : 'pdf',
+													text : '<i class="fa fa-file-pdf-o"></i> PDF',
+													title : $('h1').text(),
+													exportOptions : {
+														columns : ':not(.no-print)'
+													},
+													footer : true
+												} ],
+												dom : {
+													container : {
+														className : 'dt-buttons'
+													},
+													button : {
+														className : 'btn btn-default'
+													}
 												}
-											}
 										}
 									});
-					
+
 						}, 100);
-			
+
 			}
 		}
 		$rootScope.globalPageLoader = false;
@@ -261,10 +261,20 @@ var StockTransferActionsController = ['$scope', '$http', '$window', '$timeout', 
 	};
 
 	$scope.showCancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmCancelPopup = true;
 	};	
 
-	$scope.cancelStockOrder = function(){		
+	$scope.cancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -356,6 +366,11 @@ var StockTransferActionsController = ['$scope', '$http', '$window', '$timeout', 
 	};
 
 	$scope.showSendTransferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if($scope.checkStockOrderDetailList() == false){
 			$window.location = "/app/#/stockTransferEditProducts";
 		}
@@ -384,7 +399,12 @@ var StockTransferActionsController = ['$scope', '$http', '$window', '$timeout', 
 		}
 	};	
 
-	$scope.transferStockOrder = function(){		
+	$scope.transferStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;

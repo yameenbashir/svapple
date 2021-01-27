@@ -135,7 +135,12 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 
 
 
-	$scope.addStockOrderUpdate = function() {		
+	$scope.addStockOrderUpdate = function() {	
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -197,7 +202,12 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 		$scope.showConfirmReceivePopup = true;
 	};
 
-	$scope.addStockOrderUpdateandReceive = function() {		
+	$scope.addStockOrderUpdateandReceive = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -423,6 +433,11 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 	};
 
 	$scope.delStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if (typeof $scope.delStockOrderDetailBean.stockOrderDetailId != 'undefined') {
 			$scope.error = false;
 			$scope.loading = true;
@@ -671,6 +686,11 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 
 
 	$scope.updateStockOrderDetail = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
 				$scope.stockOrderDetailBeansList[i].stockOrderId = $scope.stockOrderId;
@@ -720,6 +740,11 @@ var POCreateandReceiveEditController = ['$sce', '$filter', '$scope', '$http', '$
 
 
 	$scope.updateAndReceiveStockOrderDetails = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		if ($scope.stockOrderDetailBeansList.length > 0) {
 			for (var i = 0; i < $scope.stockOrderDetailBeansList.length; i++) {
 				$scope.stockOrderDetailBeansList[i].stockOrderId = $scope.stockOrderId;

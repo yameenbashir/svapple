@@ -67,7 +67,12 @@ var StockReturntoWarehouseEditDetailsController = ['$scope', '$http', '$timeout'
 	};
 
 
-	$scope.updateStockOrder = function() {		
+	$scope.updateStockOrder = function() {
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;

@@ -225,9 +225,19 @@ var PurchaseOrderActionsController = ['$scope', '$http', '$window', '$timeout', 
 
 
 	$scope.showCancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmCancelPopup = true;
 	};	
-	$scope.cancelStockOrder = function(){		
+	$scope.cancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;

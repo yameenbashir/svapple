@@ -254,9 +254,19 @@ var StockSupplierTransferActionsController = ['$scope', '$http', '$window', '$ti
 	};
 
 	$scope.showCancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.showConfirmCancelPopup = true;
 	};	
-	$scope.cancelStockOrder = function(){		
+	$scope.cancelStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
@@ -377,7 +387,12 @@ var StockSupplierTransferActionsController = ['$scope', '$http', '$window', '$ti
 		}
 	};	
 
-	$scope.returnStockOrder = function(){				
+	$scope.returnStockOrder = function(){
+		$rootScope.impersonate = $cookieStore.get("impersonate");
+		if($rootScope.impersonate){
+			$rootScope.permissionDenied();
+			return;
+		}
 		$scope.success = false;
 		$scope.error = false;
 		$scope.loading = true;
