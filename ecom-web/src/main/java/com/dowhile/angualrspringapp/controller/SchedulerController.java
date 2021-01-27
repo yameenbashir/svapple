@@ -175,7 +175,7 @@ public class SchedulerController {
 	            while (read.ready()) {
 	                System.out.println(read.readLine());
 	            }
-	            sendEmailDemo("bashir@shopvitals.com", "Bashir/Ali","Backup Scipt Executed Successfully");
+	            sendEmailDemo("bashir@shopvitals.com", "Bashir/Ali","Database Backup Script Executed Successfully");
 	        } catch (IOException e) {
 	            System.out.println(e.getMessage());
 	        }
