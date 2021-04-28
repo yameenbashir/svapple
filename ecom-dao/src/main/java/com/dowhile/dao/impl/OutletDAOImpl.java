@@ -58,6 +58,20 @@ public class OutletDAOImpl implements OutletDAO{
 		// TODO Auto-generated method stub
 		try{
 			getSessionFactory().getCurrentSession().update(outlet);
+			getSessionFactory()
+			.getCurrentSession()
+			.createQuery(
+					"update Product set SALES_TAX_ASSOCICATION_ID = ? where OUTLET_ASSOCICATION_ID=? AND COMPANY_ASSOCIATION_ID = ?")
+					.setParameter(0, outlet.getSalesTax().getSalesTaxId())
+					.setParameter(1, outlet.getOutletId())
+					.setParameter(2, companyId).executeUpdate();
+			getSessionFactory()
+			.getCurrentSession()
+			.createQuery(
+					"update ProductVariant set SALES_TAX_ASSOCICATION_ID = ? where OUTLET_ASSOCICATION_ID=? AND COMPANY_ASSOCIATION_ID = ?")
+					.setParameter(0, outlet.getSalesTax().getSalesTaxId())
+					.setParameter(1, outlet.getOutletId())
+					.setParameter(2, companyId).executeUpdate();
 			return outlet;
 
 		}catch(HibernateException ex){
